@@ -2,6 +2,11 @@
 
 ## Updated direction (approved September 19)
 
+The latest product framing is `docs/Beacon_Product_Direction.md`: ongoing trip
+coordination reduces avoidable burden. Public research does not establish working
+street lighting, an open indoor waiting place, or a sober companion. These imports
+must not become crime predictions or route-safety certifications.
+
 Safety research is now an internal capability; the separate ANS safety-agent design
 below is superseded. ANS remains the transport provider identity boundary. The user
 asked to research and import real public crime logs, lighting, activity, closures,

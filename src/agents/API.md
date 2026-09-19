@@ -5,6 +5,12 @@ Rishit owns UI; Akshar owns the decision engine. Do not import Student Agent int
 into browser components. All trip routes return the `Trip` object directly, with
 camelCase fields (`id`, not `trip_id`) matching `src/types/trip.ts`.
 
+Use `docs/Beacon_Product_Direction.md` for the current product scope and open
+shared-contract flags. A booking ID/status does not supply provider-confirmed
+pickup instructions. Missing optional transfer counts remain omitted at the
+provider boundary; Akshar's downstream numeric fallback still needs an agreed
+unknown representation before it can be presented as an observed trip detail.
+
 ## Run the local demo
 
 ```sh
