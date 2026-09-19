@@ -28,6 +28,7 @@ const keys = {
 const documents = {
   crime: 'crime-records-2026.json', lighting: 'lighting/observations.json',
   activity: 'activity/historical-pedestrian-summary-2015.json', closures: 'closures.json',
+  'lighting-measured-history': 'lighting-measured-2026.json',
   'emergency-equipment': 'emergency-equipment.json', notices: 'notices.json', weather: 'weather.json',
 };
 

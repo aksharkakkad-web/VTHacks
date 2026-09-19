@@ -1,6 +1,10 @@
 # Beacon — Databricks track PRD and build contract
 
-**Owner:** Akshar · **Version:** 5 (expanded-pilot addendum; not completed) · **Date:** September 19, 2026
+**Owner:** Akshar · **Version:** 6 (combined-vision data-side POC) · **Date:** September 19, 2026
+
+### Version 6: combined-vision data-side POC
+
+The [completion/activation record](DATABRICKS_FULL_VISION_COMPLETION.md) and [server handoff](DATABRICKS_APP_HANDOFF.md) supersede older status statements below. Akshar explicitly permits unsupported lighting/pickup coverage for the POC; unknowns remain visible, not eligibility blockers or fabricated measurements. Full-feed Delta tables and expanded public records are activated and readback-verified. Added 72 historical lighting measurements, nonblocking journey readiness, exact network-offer price/identity/recovery semantics, and combined provider/walk/transit ranking. Live SQL, audit, native AI and combined server checks passed. `beacon-v2` weights and shared booking/API contracts remain unchanged. This is data-side readiness, not a claim of complete real-world lighting/crime coverage, 50-direction navigation, deployed UI or real commercial bookings. Mahin/Rishit own the remaining all-track integration.
 
 ### Version 5: current local expansion
 

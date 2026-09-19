@@ -1,6 +1,8 @@
 /** Pure public-data sidecar. A policy block is not a crime prediction or safety guarantee. */
 import { closureEvidence, currentWeather, isCurrentWeather, parseSnapshot, record, type Snapshot, type Source } from "../campus-evidence/evidence";
 import { parseRouteEvidence, type RouteEvidence } from "./route-evidence";
+import { summarizeHistoricalLighting, type HistoricalLightingSummary } from './historical-lighting';
+import { assessJourneyReadiness } from './journey-readiness';
 
 export const SAFETY_EVIDENCE_VERSION = "beacon-safety-evidence-v1" as const;
 const HOUR = 3_600_000, DAY = 24 * HOUR;
@@ -15,6 +17,7 @@ export type SafetyEvidenceInput = {
   routeConditions?: unknown;
   /** Existing loadDataset(name) results. Read once in the server; this function never fetches. */
   campusDatasets?: Partial<Record<SafetyDatasetName, unknown>>;
+  historicalLighting?: unknown;
 };
 type ValidDataset = Snapshot & { version: string; coverage: string; metadata: Record<string, unknown> };
 type FreshnessStatus = "current_snapshot" | "historical_snapshot" | "stale" | "invalid" | "unavailable";
@@ -54,6 +57,8 @@ export type SafetyEvidence = {
     matchedReports: { reportId: string; reportedDate: string; location: string; offense: string; disposition: string; sourceUrl: string }[];
   };
   lighting: { status: "community_unverified" | "unavailable"; mapObjectCount: number | null; measuredRouteMeters: null; attribution: string | null; attributionUrl: string | null };
+  historicalLighting: HistoricalLightingSummary | null;
+  walkingAlternativeReadiness: ReturnType<typeof assessJourneyReadiness> | null;
   activity: { status: "historical_2015" | "unavailable"; historicalSiteCount: number | null; currentRouteCount: null };
   warnings: string[];
   missingSignals: string[];
@@ -106,6 +111,13 @@ export function buildSafetyEvidence(input: SafetyEvidenceInput): SafetyEvidence 
   const now = timestamp(input.evaluatedAt);
   if (!Number.isFinite(now) || !["newman-pritchard", "eggleston-pritchard", "downtown-pritchard"].includes(input.corridorId)) throw new Error("A supported named corridor and timezone-qualified evaluation time are required");
   const warnings: string[] = [], valid: Partial<Record<SafetyDatasetName, ValidDataset>> = {};
+  let historicalLighting: HistoricalLightingSummary | null = null;
+  if (input.historicalLighting !== undefined) {
+    try {
+      historicalLighting = summarizeHistoricalLighting(input.historicalLighting);
+      if (Date.parse(historicalLighting.capturedAt) > now) historicalLighting = null;
+    } catch { warnings.push('Historical measured lighting is unavailable or invalid.'); }
+  }
   const freshness = {} as SafetyEvidence["freshness"];
   const sourceProvenance: SafetyEvidence["sourceProvenance"] = [];
   for (const name of DATASETS) {
@@ -135,6 +147,20 @@ export function buildSafetyEvidence(input: SafetyEvidenceInput): SafetyEvidence 
   } catch { warnings.push("Mapped route evidence is missing, stale or does not match this trip."); }
   const versionMatches = route !== null && input.expectedRouteVersion === route.source_version;
   const path = route?.status === "supported" && versionMatches ? route.geometry!.coordinates : null;
+  let walkingAlternativeReadiness: ReturnType<typeof assessJourneyReadiness> | null = null;
+  if (path && route) {
+    const segments = path.slice(1).map(([lng, lat], i) => {
+      const [previousLng, previousLat] = path[i], radians = Math.PI / 180;
+      const h = Math.sin((lat - previousLat) * radians / 2) ** 2
+        + Math.cos(lat * radians) * Math.cos(previousLat * radians) * Math.sin((lng - previousLng) * radians / 2) ** 2;
+      return { segmentId: `segment:${i}`, lengthMeters: 6371000 * 2 * Math.asin(Math.min(1, Math.sqrt(h))) };
+    }).filter(segment => segment.lengthMeters > 0);
+    if (segments.length) {
+      const inventory = { routeId: route.corridor_id, routeVersion: route.source_version, segments };
+      walkingAlternativeReadiness = assessJourneyReadiness({ evaluatedAt: input.evaluatedAt,
+        expectedRoute: inventory, observedRoute: inventory, lightingRequired: true, pickup: { kind: 'walk' } });
+    }
+  }
   if (route?.status === "supported" && !versionMatches) warnings.push("Walking map version is unconfirmed; closure evidence cannot block this path.");
 
   const weather = currentWeather(freshness.weather.status === "current_snapshot" ? valid.weather : undefined, input.corridorId, now);
@@ -175,6 +201,8 @@ export function buildSafetyEvidence(input: SafetyEvidenceInput): SafetyEvidence 
     weather,
     incidents: { publishedRecordCount: crime?.records.length ?? null, endpointMatchCount: crime && endpoints.length ? matched.length : null, matchMethod: "exact_named_endpoint_place", coverage: crime ? "partial_historical" : "unavailable", completeCrimeCoverage: false, matchedReports: matched.map(r => ({ reportId: String(r.report_id), reportedDate: String(r.reported_date), location: String(r.location), offense: String(r.offense), disposition: String(r.disposition), sourceUrl: String(r.source_url) })) },
     lighting: { status: valid.lighting ? "community_unverified" : "unavailable", mapObjectCount: valid.lighting?.records.length ?? null, measuredRouteMeters: null, attribution: valid.lighting ? "© OpenStreetMap contributors" : null, attributionUrl: valid.lighting ? "https://www.openstreetmap.org/copyright" : null },
+    historicalLighting,
+    walkingAlternativeReadiness,
     activity: { status: valid.activity ? "historical_2015" : "unavailable", historicalSiteCount: valid.activity?.records.length ?? null, currentRouteCount: null },
     warnings,
     missingSignals: ["Measured route-wide illumination", "Current route pedestrian activity", "Complete incident coverage", "Observed provider completion/cancellation history", "Verified lamp and emergency-phone operating status"],

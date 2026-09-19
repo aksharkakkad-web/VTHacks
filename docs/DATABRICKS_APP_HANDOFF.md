@@ -53,3 +53,49 @@ For a route rebuilt to conservatively avoid published construction areas, `const
 ## Local verification
 
 Run `bash src/agents/test.sh`. Focused additions in `src/agents/public-trip-integration.test.ts` cover matching/mismatched public routes, default-demo compatibility, scheduled source labels and demo walking assumptions, production omission, local route briefing, one evaluation per normal request, sidecar ownership/expiry, closure rejection and cancellation recovery. Tests use explicitly constructed inputs; they do not assert live vehicle operation, Databricks execution or a real booking.
+
+## September 19 combined-vision additions
+
+The UI branch described above is now included in consolidated main `d7d2bc9`; inclusion alone does not prove deployed UI/API wiring. Latest user instruction permits unsupported evidence and explicitly labeled access estimates for the POC.
+
+`evaluateTripIntelligence` adds `publicContext`: dataset inventory, full-feed counts, historical measured lighting and published waiting hours. `safetyEvidence.historicalLighting` retains 72 historical measurements without claiming current lighting. `safetyEvidence.walkingAlternativeReadiness` assesses the complete walking alternative with `availabilityImpact: "none"`. Do not label it as the selected ride's pickup route.
+
+New **internal server-only** adapters, not new HTTP/provider wire protocols:
+
+```ts
+import { evaluateProviderNetwork, getFullTransitOption } from '@/lib/decision-client/server';
+
+// Mahin maps already-admitted offers to NetworkOffer. No secrets or precise GPS.
+const result = await evaluateProviderNetwork(offers, {
+  maxBudget: 10, minimizeWalking: true,
+}, {
+  committedMinor: 0,
+  excludedServices: [{ operatorId: 'failed-operator', serviceId: 'failed-service' }],
+}, {
+  corridorId: 'eggleston-pritchard',
+  allowEstimatedStopWalks: true, // POC estimates, not verified paths
+});
+// result.decision: existing decision envelope.
+// result.selectedOffer: exact binding, or null when a public walk/bus wins.
+// result.remainingBudgetMinor / committedMinor: integer cents.
+// publicTrip, publicContext, safetyEvidence: preserve source/limitations in UI.
+
+const bus = await getFullTransitOption({
+  fromStopId: '8008', toStopId: '1400', evaluatedAt: new Date().toISOString(),
+  accessWalkingMinutes: 3, egressWalkingMinutes: 3,
+  maxWaitMinutes: 45, walkingSource: 'estimated',
+});
+// Public feed stops; no guarantee of a catchable direct departure.
+// Compare with rides via options.publicOptions:
+// bus ? [bus] : []
+// result.publicOptionEvidence preserves each plan's source / access estimate / warnings.
+// Do not duplicate public options.
+```
+
+Offers carry operator/service/quote/version IDs; source and issuance/expiry; admitted service-area/auth/payment support; fixed or capped all-fee USD price in integer cents; wait/travel/walking/known transfers. See `NetworkOffer` in `src/lib/decision-client/network-offers.ts`. This is NOT authorization: Mahin must recheck selected quote, current ANS identity, consent and grant before any request. Deduplicate charges/holds/fees before supplying `committedMinor`; pending refunds do not restore budget.
+
+Named-corridor network comparisons apply fresh campus weather and exact mapped-path closure evidence. No corridor means no inferred campus location/weather. Unknown lighting/pickup remain nonblocking POC limitations. Public options plus offers are bounded at 16. Full-feed access uses the schema of existing `DATABRICKS_TRANSIT_TABLE`; no new env contract. Missing configuration returns null; transport/invalid-data errors reject. Runtime needs server credentials as before; local OAuth launch is `node databricks/run.mjs dev --profile beacon`, not a hosted renewable-credential deployment.
+
+Run `node databricks/network-smoke.mjs`; add `--live --profile beacon` with existing environment to require SQL. Offers are simulated, no booking/contact occurs, and this smoke does not write audits. Existing `intelligence --live --enable-ai --profile beacon` verifies managed ranking/audit, route reads, grounded AI and zero-budget walking.
+
+See [completion/activation record](DATABRICKS_FULL_VISION_COMPLETION.md) for proof and limits.
