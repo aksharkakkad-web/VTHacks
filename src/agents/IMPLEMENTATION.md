@@ -200,3 +200,18 @@ used real Redis/live ANS/hosted simulated providers, with Telegram notifications
 simulated. Separate review found no material issues and independently checked outbox
 ordering, duplicate suppression and location consent. Live Telegram acceptance still
 requires the user's authorized one-message test after deploying this change.
+
+That acceptance test then passed against production deployment
+`dpl_HKfAUWD26M5cSH4HWWQq6ZX1saWV` (code `a79a71f`). It used real ANS verification,
+hosted simulated booking, the deadline control, and the real Telegram adapter. Exactly
+one `ALERT_SENT` event was recorded; no location or personal trip data was included.
+The message was visibly labeled `[Beacon demo test]`. The fixture then reached ARRIVED
+and provider data release was cleared. Telegram API acceptance is verified; a read
+receipt is not. Private attempt evidence is ignored in `.vercel/telegram/` and prevents
+blindly rerunning the authorized send. PRs #12 and #13 both passed CI.
+
+Mahin's checkpoint E readiness now uses Telegram per the user's explicit transport
+change: hosted automatic monitoring/arrival suppression was verified above, and real
+custom Telegram acceptance is verified here. The real Telegram probe used the deadline
+control, not a second scheduled-message test. The complete mobile flow remains Rishit's
+integration gate.
