@@ -13,6 +13,7 @@ export function buildDashboardRequest(catalog, schema, warehouseId) {
     ['decisions', 'Recorded evaluations', '02_recent_decisions.sql'],
     ['context', 'Source freshness and limits', '03_context_freshness.sql'],
     ['resources', 'Public campus resource locations', '04_emergency_resources.sql'],
+    ['routes', 'Mapped walking alternatives', '08_route_evidence.sql'],
   ];
   const datasets = definitions.map(([name, displayName, file]) => ({
     name, displayName,
@@ -66,7 +67,11 @@ export function buildDashboardRequest(catalog, schema, warehouseId) {
     ['corridor_id', 'Area'], ['freshness', 'Freshness'], ['valid_until', 'Valid until'],
     ['weather', 'Weather'], ['lighting', 'Lighting'], ['historical_report_count', 'Contextual reports'],
     ['interpretation_limit', 'Limit'],
-  ], { x: 0, y: 12, width: 12, height: 5 })];
+  ], { x: 0, y: 12, width: 12, height: 5 }), table('route_table', 'Real paths, explicit unknowns', 'Official connected campus paths. Phones are geometric proximity only; lighting and access may be unknown.', 'routes', [
+    ['corridor_id', 'Corridor'], ['coverage', 'Coverage'], ['mapped_meters', 'Path meters'],
+    ['phones_within_50m', 'Nearby phones'], ['lighting_unknown_meters', 'Unknown lighting (m)'],
+    ['selected_endpoint_reports', 'Selected historical reports'], ['limits', 'Limits'],
+  ], { x: 0, y: 17, width: 12, height: 5 })];
   return {
     display_name: 'Beacon — decisions, evidence and campus context',
     warehouse_id: warehouseId,

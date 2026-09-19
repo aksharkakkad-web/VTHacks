@@ -1,5 +1,46 @@
 # Databricks track — execution evidence
 
+## Version 3: completed intelligence backend (September 19, 07:04–07:07 UTC)
+
+Fresh acceptance after all material code fixes:
+
+- **48 Node tests**, **19 importer/route tests**, **6 native-job tests** passed. `scripts/pre-pr.sh` passed ESLint, four checkpoint tests, typecheck and production build. `git diff --check` passed.
+- `node databricks/run.mjs intelligence --live --enable-ai` passed: managed route read, Databricks ranking/audits, native model output validation and a second $0-budget evaluation. The actual 604.26m Eggleston path is labeled `mapped`; the $7 ride is labeled `simulated`.
+- `node databricks/run.mjs demo --live` passed all seven decision scenarios plus managed GTFS lookup, each with cloud execution and persisted audits. The schedule test remains a clearly labeled historical replay.
+- Focused independent review passed after fixes for removed-feed trips, partial-hour severe alerts and superseded forecast/alert versions. An additional read-only expiry probe advanced the clock during AI: the expired sole quote became `NO_FEASIBLE_PLAN`, and the stale model briefing was discarded.
+
+| Actual cloud operation | Result / statement ID |
+| --- | --- |
+| Personalized $10 budget/reduced-walking decision | Simulated $7 ride; audited. `01f1b3f8-5daa-1ca3-ba25-6b1f1a79bda7` |
+| Managed route used by briefing | `01f1b3f8-62c7-1440-b487-d009f41f83b4` |
+| Native `ai_query` briefing | `databricks-meta-llama-3-3-70b-instruct`, valid fact IDs and required warnings. `01f1b3f8-636b-13f9-94c3-a2dbcae6d2f4` |
+| Same options, $0 budget | Free mapped walk; audited. `01f1b3f8-6528-1773-b941-d78d8711c688` |
+| Baseline / cancellation | `01f1b3f8-5dee-1514-af82-51cd14651649` / `01f1b3f8-645f-12dc-be62-2d50e4fe5244` |
+| Reduced budget / cheapest priority | `01f1b3f8-6773-127f-bc63-a5689d8c2565` / `01f1b3f8-6a94-1a12-9986-e85dbd1bd960` |
+| No feasible option | `01f1b3f8-6d4e-1c43-84e2-d578a9d39812` |
+| Current managed forecast window | `01f1b3f8-7054-1c81-9a62-919e0feb4821`, version `nws-452855730fd1-e8e73429d88e-2026-09-19T07:01:30.229467Z`. Weather category is unknown for this window, not fabricated clear. |
+| GTFS lookup / ranking | `01f1b3f8-7363-19bb-add2-7c34f1f2a0e8` / `01f1b3f8-7431-12a7-a36f-c642a04a5f0b`; current feed hash `aed7634f4df2` |
+| Route dashboard query | `01f1b3f7-b45a-1f47-9a79-eb3227eb094b`; two supported paths and explicitly unsupported downtown |
+| Updated freshness query | `01f1b3f7-cbb1-1035-b4ff-5810631b1b9e`; older one-hash context versions correctly labeled superseded |
+| Managed data counts | `01f1b3f8-5ef5-1954-995d-553ff53b1313`: 754 retained scheduled departures, 130 phones, 12 selected reports, 6 source manifests, 3 route records (2 supported), 3 currently valid context corridors. Counts are not real-time service availability. |
+
+### Native refresh and dashboard
+
+- Existing Free Edition workspace and warehouse below, **eight** managed Delta tables now, with additive `route_context.valid_from` migration.
+- Native job **1118599535446767**, `/Shared/Beacon/refresh-public-data-v2`. Initial run `336465213726176` succeeded; after the alert-interval/hash fix, rebuilt notebook run **748744025713625** and task **57174209832663** both returned **SUCCESS**. Final run: 205s serverless setup + 89s execution. `get-run-output` confirmed success; no notebook exit-result payload was configured. Actual tables were separately queried as above.
+- Finite six-hour schedule enabled and read back as `UNPAUSED`. Notebook refuses fetching/writes at or after **2026-09-20 16:00 UTC (noon Eastern)**. No unbounded background job, paid upgrade or extra service. This cadence is not live emergency monitoring.
+- Dashboard **01f1b3f083701e98a2dd137a860f6d07** updated and read back with **five datasets/six widgets**, including route evidence and corrected freshness labels. Still a private draft; visual rendering remains unverified because console automation is blocked. No publication implied.
+
+### Handoff and remaining boundaries
+
+The **Databricks backend scope** in PRD v3 is implemented and live-tested. Mahin still wires the additive `getMappedWalkingOption` / `evaluateTripIntelligence` exports into his flow; Rishit presents the result, evidence and labels. No teammate source/API/shared type was changed. The backend does not book rides, authorize GPS disclosure or prove end-to-end app integration.
+
+Lighting, current campus crime alerts, verified closures, phone operation and comprehensive crime coverage remain unknown. Historical reports are a reviewed partial sample, not route-risk predictions; route geometry is a static official snapshot, not doorstep navigation. Provider offers in the demo remain simulated. AI curates exact evidence, not new prose or a safety prediction. Static route/incident rebuild, sponsor registration and approval-based audit deletion remain explicit follow-ups, not silently completed actions.
+
+The older v2 results below are preserved as historical evidence; their table/test/widget counts and one-hour weather expiry are superseded by v3.
+
+## Version 2 historical acceptance
+
 Verified September 19, 2026, approximately 06:07–06:14 UTC. These are actual workspace statements, not mocked responses.
 
 Final repeat check at 06:18 UTC: all 30 track tests, nine importer tests, repository pre-PR checks, six local fallback scenarios and seven live scenarios passed again with the frozen $10 baseline budget. The repeated live baseline statement was `01f1b3f1-d9e4-157b-ae2a-1ea6f51bbf87`; the final scheduled-option ranking was `01f1b3f1-e93f-180e-b4ef-5852d777b0cb`. The corrected dashboard decision-history query also returned actual selected-plan IDs (`01f1b3f1-7400-114d-b764-8ec3f8050ee7`).

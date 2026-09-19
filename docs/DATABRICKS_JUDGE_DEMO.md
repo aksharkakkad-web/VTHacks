@@ -1,6 +1,15 @@
 # Beacon: 90-second Databricks story
 
-**Status:** Live Databricks ranking, managed GTFS lookup, weather-context join, persisted audits, spatial/H3 queries, and the three-record AI extraction ran successfully on September 19, 2026. A native dashboard draft was created and read back through the API. Visual widget inspection is not yet verified because the console blocks automated browser control. See [statement IDs and limitations](DATABRICKS_LIVE_EVIDENCE.md). Provider offers remain simulated; historical timetable runs remain labeled replay.
+**Status:** Live Databricks ranking, managed GTFS and mapped-path reads, grounded native AI briefing, persisted audits, spatial/H3 queries and native data refresh are implemented and tested as recorded in [execution evidence](DATABRICKS_LIVE_EVIDENCE.md). A five-dataset/six-widget native dashboard draft was read back through the API. Visual widget inspection is not verified because the console blocks automated browser control. Provider offers remain simulated; historical timetable runs remain labeled replay.
+
+## Start here: the intelligence demonstration
+
+```sh
+node databricks/run.mjs intelligence --live --enable-ai
+node databricks/run.mjs demo --live
+```
+
+The first command reads the real Eggleston→Pritchard path from Databricks (604m, one geometrically nearby mapped phone, lighting unknown). With a $10 budget and reduced-walking preference, a **simulated** $7 ride wins; with $0, the free mapped walk wins. The native model curates a briefing using verified cost, walking and evidence facts. Show `engine: databricks_ai`, the SQL/model statement IDs and mandatory coverage warnings—not a claim that AI knows which street is crime-free. These CLI commands prove the backend, not completed UI integration.
 
 ## The story
 
@@ -9,10 +18,10 @@
 | 0–20 seconds | The evaluator's chosen plan, budget, walking time and source labels | “We compare the options for this student's needs. These providers are simulated; the system never claims that a historical crime count proves a route is safe.” |
 | 20–40 seconds | Cancel Campus Ride, then lower the budget from $10 to $6 | “The logic first replaces the canceled provider, then changes its choice again when the budget changes. It can also say no option fits.” |
 | 40–60 seconds | A real query's statement ID and the matching audit row | “Databricks computes the decision and keeps the explanation and policy version. If unavailable, our local fallback is visibly labeled.” **Only say this after a verified live ranking.** |
-| 60–80 seconds | Public campus phone locations, source/expiry table and one official incident record | “The data layer joins campus information with clear provenance. Unknown lighting stays unknown. A mapped emergency phone is not a guarantee that it is operating.” |
+| 60–80 seconds | Mapped path, nearby phones, AI evidence briefing and source/expiry table | “The model explains verified tradeoffs; it cannot override the rules or make up safety facts. Unknown lighting stays unknown.” |
 | 80–90 seconds | One concrete next step | “A campus pilot would add participating providers and operationally maintained campus feeds, then measure replan success, cost and walking time.” |
 
-Before a live run, warm the SQL warehouse, refresh the small source snapshot, run the local demo, then run one live evaluation. Keep its sanitized output and statement ID. If access is still missing, demonstrate the local decision engine and label these SQL assets **prepared, not connected**. Never disguise a saved replay as a live result.
+Before judging, check the native refresh job's last result, warm the SQL warehouse and run the commands above. Keep the statement IDs. If cloud access fails, use the local demo and preserve the fallback label. Never disguise a saved replay as a live result. A six-hour weather refresh is not real-time alert monitoring.
 
 ## Prepared native SQL assets
 
@@ -25,11 +34,12 @@ Each `.sql` file is one read-only statement. The setup runner substitutes `__SCH
 | `03_context_freshness.sql` | Context provenance, expiry and unknown fields | Uses imported route context. A recent import does not validate the completeness of crime reports or guarantee path conditions. |
 | `04_emergency_resources.sql` | Native spatial distance and H3 labels | Uses real public GIS phone locations around a fixed public campus reference. Spherical straight-line meters, not walkable routes. Requires supported non-Classic SQL compute. |
 | `05_phone_hexagons.sql` | H3 resource-distribution aggregates / GeoJSON | Phone count by hexagon. Never a “safe area” heatmap. |
+| `08_route_evidence.sql` | Connected walking paths, nearby resources and lighting coverage | Two supported paths, one unsupported; endpoint reports remain an incomplete historical sample. |
 | `optional/06_ai_extract_public_reports.sql` | Native AI structured extraction with citations and confidence | Optional, explicitly gated, at most three public reviewed records. Not in the decision path and not automatically run. |
 
-The saved native dashboard has the six-scenario table, recent-decisions table, source-freshness table and resource-location map using query 04's longitude/latitude. Query 05 separately supplies GeoJSON hexagons. Labels distinguish **simulated quote scenario**, **recorded evaluation**, and **public resource location**. The draft is not publicly published or shared by this task.
+The saved native dashboard has the six-scenario table, recent-decisions table, source-freshness table, resource-location map and route-evidence table. Query 05 separately supplies GeoJSON hexagons. Labels distinguish **simulated quote scenario**, **recorded evaluation**, **mapped path** and **public resource location**. The draft is not publicly published or shared by this task.
 
-`databricks/sql/showcase/dashboard-request.mjs` builds a [Lakeview draft-create request](https://docs.databricks.com/aws/en/dashboards/tutorials/dashboard-crud-api) from the same queries, including a table/map layout. Run `node databricks/sql/showcase/dashboard-request.mjs CATALOG SCHEMA WAREHOUSE_ID` to print the JSON request; it does not send it or create anything. It uses the [Databricks-maintained widget specification](https://github.com/databricks/databricks-agent-skills/blob/main/plugins/databricks/copilot/skills/databricks-aibi-dashboards/references/1-widget-specifications.md). Test all four dataset queries on the workspace before creating the draft, then visually check every widget. No publish, schedule, public share or embedded credentials are included.
+`databricks/sql/showcase/dashboard-request.mjs` builds a [Lakeview draft-create request](https://docs.databricks.com/aws/en/dashboards/tutorials/dashboard-crud-api) from the same queries, including a table/map layout. Run `node databricks/sql/showcase/dashboard-request.mjs CATALOG SCHEMA WAREHOUSE_ID` to print the JSON request; it does not send it or create anything. It uses the [Databricks-maintained widget specification](https://github.com/databricks/databricks-agent-skills/blob/main/plugins/databricks/copilot/skills/databricks-aibi-dashboards/references/1-widget-specifications.md). Test all five dataset queries on the workspace before creating the draft, then visually check every widget. No dashboard publish, schedule, public share or embedded credentials are included.
 
 ## Optional AI: useful proof, honest scope
 

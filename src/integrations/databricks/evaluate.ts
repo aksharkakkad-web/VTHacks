@@ -23,7 +23,8 @@ function mergeRouteContext(raw: string | null, existing: PlanSignals | undefined
   }
   for (const key of ["walkingPathClosed", "activeOfficialAlert"] as const) {
     if (row[key] !== undefined && row[key] !== null && typeof row[key] !== "boolean") return invalid();
-    result[key] = existing[key] === true || row[key] === true;
+    if(existing[key]===true || row[key]===true) result[key]=true;
+    else if(row[key]===false) result[key]=false;
   }
   if (row.historicalReportCount !== null && row.historicalReportCount !== undefined) {
     if (!Number.isSafeInteger(row.historicalReportCount) || Number(row.historicalReportCount) < 0 || !Number.isSafeInteger(row.historyLookbackDays) || Number(row.historyLookbackDays) <= 0 || typeof row.sourceUrl !== "string" || row.sourceUrl.length > 1000 || !/^https:\/\//.test(row.sourceUrl)) return invalid();

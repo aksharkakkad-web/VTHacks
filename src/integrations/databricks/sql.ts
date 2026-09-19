@@ -3,10 +3,15 @@ import type { PreparedDecision } from "../../lib/decision-client/decision";
 
 /** Values travel as named JSON parameters. Only validated deployment-owned table identifiers are interpolated. */
 export function buildEvaluationSql(routeContextTable?: string): string {
+  const manifest = routeContextTable ? qualifiedTable(`${routeContextTable.split(".").slice(0, -1).join(".")}.source_manifest`) : "";
   const context = routeContextTable ? `SELECT rc.* FROM ${qualifiedTable(routeContextTable)} rc CROSS JOIN context_input ci
     WHERE rc.updated_at <= CAST(ci.ctx.evaluatedAt AS TIMESTAMP)
       AND rc.updated_at >= CAST(ci.ctx.evaluatedAt AS TIMESTAMP) - INTERVAL 24 HOURS
+      AND (rc.valid_from IS NULL OR rc.valid_from <= CAST(ci.ctx.evaluatedAt AS TIMESTAMP))
       AND rc.valid_until > CAST(ci.ctx.evaluatedAt AS TIMESTAMP)
+      AND (rc.context_version NOT LIKE 'nws-%' OR startswith(rc.context_version, concat(
+        'nws-', (SELECT substring(sha256, 1, 12) FROM ${manifest} WHERE source_id = 'nws-hourly' LIMIT 1),
+        '-', (SELECT substring(sha256, 1, 12) FROM ${manifest} WHERE source_id = 'nws-alerts' LIMIT 1), '-')))
     QUALIFY row_number() OVER (PARTITION BY rc.corridor_id ORDER BY rc.updated_at DESC, rc.context_version DESC) = 1` : `SELECT CAST(NULL AS STRING) corridor_id, CAST(NULL AS STRING) context_version,
     CAST(NULL AS STRING) weather, CAST(NULL AS STRING) lighting,
     CAST(NULL AS BOOLEAN) walking_path_closed, CAST(NULL AS BOOLEAN) active_official_alert,

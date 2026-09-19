@@ -8,6 +8,8 @@ test("managed transit lookup binds corridor/time and produces a scheduled candid
     const body = JSON.parse(String(init?.body));
     assert.ok(!body.statement.includes("2026-09-19T"));
     assert.ok(body.statement.includes("`workspace`.`beacon`.`transit_departures`"));
+    assert.ok(body.statement.includes("source_manifest"));
+    assert.ok(body.statement.includes("substring(sha256, 1, 12)"));
     assert.equal(body.parameters[0].value, "eggleston-pritchard");
     return new Response(JSON.stringify({statement_id:"schedule-1",status:{state:"SUCCEEDED"},manifest:{schema:{columns:names.map((name,position)=>({name,position}))},total_row_count:1},result:{data_array:[["eggleston-pritchard","trip-1","CAS","Campus Shuttle","2026-09-19",String(Date.parse("2026-09-19T12:10:00Z")),String(Date.parse("2026-09-19T12:20:00Z")),"10","1143","1146","bt-gtfs","FY27"]]}}));
   }) as typeof fetch;
