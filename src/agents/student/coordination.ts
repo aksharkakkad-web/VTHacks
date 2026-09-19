@@ -60,7 +60,8 @@ export function acceptNetworkResult(record: TripRecord, result: ProviderTrip | v
     if (result.status === "declined" && paymentLiability(payment) !== 0) throw new Error("Declined payment still held");
     if (result.status === "completed" && (payment.state !== "captured" || payment.retainedMinor !== attempt.amountMinor)) throw new Error("Completion not settled");
     attempt.payment = { mode: "simulated", currency: "USD", amountMinor: payment.amountMinor, retainedMinor: payment.retainedMinor, state: payment.state };
-    if (["accepted", "waiting", "in_trip", "completed"].includes(result.status)) attempt.acceptedAt ??= new Date(now).toISOString();
+    // Status-only responses do not establish when the provider actually accepted.
+    // Leave acceptedAt absent until a future profile supplies a validated event time.
     if (["completed", "cancelled", "declined"].includes(result.status)) {
       attempt.finalizedAt ??= new Date(now).toISOString();
       attempt.outcome ??= result.status === "cancelled" ? "canceled" : result.status as "completed" | "declined";
@@ -94,8 +95,11 @@ export function coordinationView(record: TripRecord, now: number) {
   const network = selectedOffer(record);
   const terminal = ["ARRIVED", "FAILED"].includes(record.trip.state) && !record.pendingBooking;
   const expired = network ? Date.parse(network.offer.expiresAt) <= now : record.quoteDeadline <= now;
+  const beforeStart = ["SELECTED", "VERIFYING_PROVIDER"].includes(record.trip.state) || (record.trip.state === "OVERDUE" && !record.confirmed);
+  const expiredSelection = beforeStart && !!record.trip.selectedPlan && !record.booking && !record.pendingBooking && expired;
   const needsConfirmation = !!record.trip.selectedPlan && !record.confirmed && !record.booking && !record.pendingBooking && ["SELECTED", "OVERDUE"].includes(record.trip.state);
   const requiredAction = record.pendingBooking || record.networkAction === "check_booking" ? "check_booking"
+    : !terminal && expiredSelection ? "refresh_quotes"
     : record.networkAction === "payment_declined" ? "payment_declined"
     : terminal ? "none" : needsConfirmation ? expired ? "refresh_quotes" : "confirm" : record.trip.state === "COLLECTING_QUOTES" && expired ? "refresh_quotes" : "none";
   return {

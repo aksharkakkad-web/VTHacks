@@ -34,6 +34,7 @@ try {
   const initial = await start(trip);
   const evidence = await call(`/api/trips/${trip.id}/evidence`, {}, 200, "GET");
   assert.ok(["current", "unknown"].includes(evidence.weather.status));
+  if (process.env.BEACON_SMOKE_NETWORK === "true") assert.ok(evidence.coordination?.selectedOffer, "v2 network offers must be active");
   await call(`/api/trips/${trip.id}/evidence`, {}, 401, "GET", false);
   for (const code of [decisionEngine === "databricks" ? "DATABRICKS_EVALUATION" : "LOCAL_POLICY_FALLBACK", "SIMULATED_TRANSPORT"]) assert.ok(initial.recommendation.reasonCodes.includes(code));
   assert.equal(initial.selectedPlan.mode, "campus_ride");

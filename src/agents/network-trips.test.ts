@@ -50,7 +50,7 @@ function setup() {
       getStatus: async id => { if (controls.statusOffline) throw new Error("Status outage"); return structuredClone(bookings.get(id)!); },
       getRequestStatus: async id => { if (controls.lostResponse) throw new Error("Offline"); return controls.requestMissing ? undefined : structuredClone(bookings.get(id)); },
       cancelTrip: async id => {
-        const result = bookings.get(id)!; if (controls.cancellationActive) return structuredClone(result); result.status = "cancelled";
+        const result = bookings.get(id)!; if (controls.cancellationActive || result.status === "completed") return structuredClone(result); result.status = "cancelled";
         const payment = { ...result.payment!, state: controls.feeMinor ? "captured" as const : "voided" as const, retainedMinor: controls.feeMinor };
         result.payment = payment;
         return controls.cancellationUnknown ? { id, status: "cancelled" } : structuredClone(result);
@@ -251,4 +251,57 @@ test("accepted network bookings keep monitoring after their original quote expir
   assert.equal((await s.evidence(id)).coordination.requiredAction, "none");
   await s.agent.act(id, "owner", "request");
   assert.equal(s.released.length, 1);
+});
+
+test("every reconciliation checkpoint retains a restartable booking or replacement", async () => {
+  const s = setup(); const id = await s.start(); s.controls.lostResponse = true;
+  await assert.rejects(s.confirm(id), { code: "BOOKING_UNCERTAIN" });
+  const booking = s.bookings.get(s.released[0].tripId)!;
+  booking.status = "cancelled"; booking.payment!.state = "voided"; s.controls.lostResponse = false;
+  const snapshots: Awaited<ReturnType<typeof s.store.read>>[] = [];
+  const checkpoint = s.store.checkpoint.bind(s.store);
+  s.store.checkpoint = async record => { snapshots.push(structuredClone(record)); await checkpoint(record); };
+  await s.agent.monitor();
+  assert.ok(snapshots.length);
+  for (const snapshot of snapshots) {
+    assert.ok(!(snapshot.trip.state === "FAILED" && snapshot.booking && !snapshot.pendingBooking && !snapshot.pendingReplacement), "crash checkpoint must retain monitor retry intent");
+  }
+});
+
+test("confirmed but unbooked network offers require refresh after expiry", async () => {
+  const s = setup(); const id = await s.start();
+  const offer = (await s.evidence(id)).coordination.selectedOffer!;
+  await s.agent.act(id, "owner", "confirm", { planId: offer.planId, quoteId: offer.quoteId });
+  await s.agent.act(id, "owner", "verify"); s.advance(120_001);
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "refresh_quotes");
+});
+
+test("completion-only reconciliation cannot invent an acceptance time", async () => {
+  const s = setup(); const id = await s.start(); s.controls.lostResponse = true;
+  await assert.rejects(s.confirm(id), { code: "BOOKING_UNCERTAIN" });
+  const booking = s.bookings.get(s.released[0].tripId)!;
+  booking.status = "completed"; booking.payment!.state = "captured"; booking.payment!.retainedMinor = booking.payment!.amountMinor;
+  s.controls.lostResponse = false; s.advance(30_000); await s.agent.monitor();
+  assert.equal(s.outcomes[0].finalOutcome, "completed");
+  assert.equal(s.outcomes[0].acceptedAt, null);
+});
+
+test("late network location updates cannot restore private data after arrival", async () => {
+  const s = setup(); const id = await s.start(); await s.confirm(id);
+  await s.agent.act(id, "owner", "arrive");
+  await assert.rejects(s.agent.act(id, "owner", "location", { lat: 37.229, lng: -80.414 }), { code: "INVALID_STATE" });
+  assert.equal((await s.agent.read(id, "owner")).lastKnownLocation, undefined);
+  assert.equal((await s.store.read(id)).private, undefined);
+});
+
+test("started navigation does not request quote refresh when its selection expires", async () => {
+  const s = setup(); s.controls.paidFirst = true; s.controls.feeMinor = 400;
+  const id = await s.start(); await s.confirm(id);
+  await s.agent.act(id, "owner", "cancel-provider");
+  assert.equal((await s.agent.read(id, "owner")).selectedPlan!.mode, "walk");
+  await s.confirm(id); s.advance(120_001);
+  assert.equal((await s.agent.read(id, "owner")).state, "NAVIGATING");
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "none");
+  await s.agent.act(id, "owner", "expire-deadline");
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "none");
 });

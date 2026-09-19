@@ -88,7 +88,7 @@ export class StudentAgent {
         requireState(record, ["SELECTED", "VERIFYING_PROVIDER"]); await this.coordinate(record);
       }
       if (action === "location") await this.location(record, input);
-      if (action === "arrive") { if (!record.pendingBooking && !record.pendingReplacement && !(record.networkAttempts?.length && record.trip.selectedPlan)) requireState(record, [...activeStates, "ARRIVED"]); if (record.trip.state !== "ARRIVED") await this.arrive(record); }
+      if (action === "arrive") { if (!record.pendingBooking && !record.pendingReplacement && !(record.private && record.networkAttempts?.length && record.trip.selectedPlan)) requireState(record, [...activeStates, "ARRIVED"]); if (record.trip.state !== "ARRIVED") await this.arrive(record); }
       if (action === "cancel-provider") { if (!this.deps.demo) throw new TripError("DEMO_DISABLED", "Demo controls are disabled", 404); requireState(record, ["WAITING_FOR_PICKUP", "IN_TRIP"]); await this.recover(record); }
       if (action === "expire-deadline") { if (!this.deps.demo) throw new TripError("DEMO_DISABLED", "Demo controls are disabled", 404); requireState(record, [...activeStates]); record.trip.alertDeadlineAt = new Date(this.now() - 1).toISOString(); await this.checkDeadline(record); }
       await this.flushOutcomes(record);
@@ -267,7 +267,7 @@ export class StudentAgent {
     if (!r.booking) throw new TripError("NO_BOOKING", "No provider booking to replace");
     const failed = this.selectedProvider(r);
     if (networkAttempt(r)) {
-      uncertainPayment(r); await this.deps.store.checkpoint(r);
+      if (!knownResult) { uncertainPayment(r); await this.deps.store.checkpoint(r); }
       const client = this.deps.provider(failed, r.identity);
       let result;
       try { result = knownResult ?? (cancellationConfirmed ? await client.getStatus(r.booking.id) : await client.cancelTrip(r.booking.id)); }
@@ -306,7 +306,7 @@ export class StudentAgent {
     }
   }
   private async location(r: TripRecord, input: unknown) {
-    if (!r.pendingBooking && !r.pendingReplacement && !(r.networkAttempts?.length && r.trip.selectedPlan)) requireState(r, [...activeStates]); const raw = object(input); const location = point(raw);
+    if (!r.pendingBooking && !r.pendingReplacement && !(r.private && r.networkAttempts?.length && r.trip.selectedPlan)) requireState(r, [...activeStates]); const raw = object(input); const location = point(raw);
     const recorded = Date.parse(String(raw.recordedAt ?? new Date(this.now()).toISOString()));
     if (!Number.isFinite(recorded) || recorded > this.now() + 30_000 || recorded < this.now() - 120_000 || (r.trip.lastKnownLocation && recorded <= Date.parse(r.trip.lastKnownLocation.recordedAt))) throw new TripError("INVALID_LOCATION_TIME", "Location timestamp is stale or out of order", 400);
     r.trip.lastKnownLocation = { ...location, recordedAt: new Date(recorded).toISOString() };
