@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "captured_at": "2026-09-19T17:08:35Z",
+  "captured_at": "2026-09-19T22:27:30.888824Z",
   "owner": "Virginia Tech Student Affairs / University Libraries / campus GIS",
-  "capture_method": "Manual review of rendered official date-specific hours and official building-reference GIS attributes",
+  "capture_method": "Rendered official date-specific hours reviewed in browser: Student Centers viewing 2026-09-19 and Libraries week September 14-20; GLC football-day exception preserved as unknown.",
   "service_date": "2026-09-19",
   "timezone": "America/New_York",
   "refresh_policy": "Recheck date-specific hours and exceptions before each demo; operational availability and pickup permissions require separate confirmation.",
@@ -13,7 +13,10 @@
       "site_id": "squires",
       "name": "Squires Student Center",
       "building_object_id": 36457,
-      "reference_point": [-80.41793863, 37.22960669],
+      "reference_point": [
+        -80.41793863,
+        37.22960669
+      ],
       "indoor": true,
       "hours_source_url": "https://apps.students.vt.edu/schours/",
       "opens_at": "2026-09-19T09:00:00-04:00",
@@ -27,7 +30,10 @@
       "site_id": "newman-library",
       "name": "Newman Library",
       "building_object_id": 36451,
-      "reference_point": [-80.41916034, 37.2287881],
+      "reference_point": [
+        -80.41916034,
+        37.2287881
+      ],
       "indoor": true,
       "hours_source_url": "https://lib.vt.edu/about-us/hours.html",
       "opens_at": "2026-09-19T09:00:00-04:00",
@@ -41,7 +47,10 @@
       "site_id": "graduate-life-center",
       "name": "Graduate Life Center at Donaldson Brown",
       "building_object_id": 36445,
-      "reference_point": [-80.4175766, 37.22828939],
+      "reference_point": [
+        -80.4175766,
+        37.22828939
+      ],
       "indoor": true,
       "hours_source_url": "https://apps.students.vt.edu/schours/",
       "exception_source_url": "https://graduatelifecenter.vt.edu/",

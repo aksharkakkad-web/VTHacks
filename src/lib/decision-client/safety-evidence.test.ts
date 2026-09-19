@@ -8,7 +8,11 @@ const snapshots = Object.fromEntries(datasets.map(name => [name, loadDataset(nam
 const derivedAt = routeConditions("eggleston-pritchard").route?.construction_avoidance?.evaluated_at;
 const now = Math.max(derivedAt ? Date.parse(derivedAt) : 0, ...Object.values(snapshots).flatMap(s => [Date.parse(s.captured_at), ...s.sources.map(p => Date.parse(p.captured_at))])) + 1000;
 const evaluatedAt = new Date(now).toISOString();
-const conditions = routeConditions("eggleston-pritchard", now);
+const actualConditions = routeConditions("eggleston-pritchard", now);
+// Refreshed public snapshots outlive the legacy derived path. Test joins against
+// an explicit geometry fixture; do not renew the deployed path's actual deadline.
+const conditions = structuredClone(actualConditions);
+delete conditions.route!.construction_avoidance;
 const baseline: SafetyEvidenceInput = { corridorId: "eggleston-pritchard", evaluatedAt, routeConditions: conditions, expectedRouteVersion: conditions.route!.source_version, campusDatasets: snapshots };
 test('historical measurements reach the evidence view but never establish present route lighting', () => {
   const measured = JSON.parse(readFileSync('data/campus/research/lighting-measured-2026.json', 'utf8'));
@@ -32,7 +36,7 @@ function blockingFixture(): SafetyEvidenceInput {
   return { ...baseline, routeConditions: altered };
 }
 
-test("actual imported datasets retain counts, sources and honest unknown measurements", () => {
+test("imported datasets with an explicit route fixture retain counts and honest unknown measurements", () => {
   const result = buildSafetyEvidence(baseline);
   assert.equal(result.incidents.publishedRecordCount, snapshots.crime.records.length);
   assert.ok(result.incidents.publishedRecordCount! > 700);
@@ -133,7 +137,9 @@ test("untrusted precomputed block flags cannot create a closure without source r
 });
 
 test("unsupported downtown geometry and empty evidence remain unknown, never safe or zero", () => {
-  const downtown = buildSafetyEvidence({ ...baseline, corridorId: "downtown-pritchard", routeConditions: routeConditions("downtown-pritchard", now) });
+  const downtownConditions = routeConditions("downtown-pritchard", now);
+  delete downtownConditions.route!.construction_avoidance;
+  const downtown = buildSafetyEvidence({ ...baseline, corridorId: "downtown-pritchard", routeConditions: downtownConditions });
   assert.equal(downtown.coverage.geometry, "unsupported");
   assert.equal(downtown.hardBlocks.walkingPathClosed, null);
   assert.equal(downtown.incidents.endpointMatchCount, null);
@@ -189,4 +195,11 @@ test("construction-derived geometry is unavailable outside its derivation validi
     assert.equal(result.hardBlocks.walkingPathClosed, null);
     assert.equal(result.routeExposureScore, null);
   }
+});
+
+// A source refresh cannot renew a separately derived route.
+test('expired construction-derived path remains unavailable after independent source refresh', () => {
+ const expired=structuredClone(actualConditions);
+ if(expired.route?.construction_avoidance) expired.route.construction_avoidance.valid_until=evaluatedAt;
+ assert.equal(buildSafetyEvidence({...baseline,routeConditions:expired}).coverage.geometry,'stale_or_invalid');
 });

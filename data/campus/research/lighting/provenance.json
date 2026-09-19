@@ -1,8 +1,8 @@
 {
   "source": "OpenStreetMap contributors",
   "url": "https://overpass-api.de/api/interpreter",
-  "captured_at": "2026-09-19T13:44:14.590408+00:00",
-  "osm_base_timestamp": "2026-09-19T13:42:17Z",
+  "captured_at": "2026-09-19T22:13:01.620Z",
+  "osm_base_timestamp": "2026-09-19T22:11:14Z",
   "method": "POST",
   "query": "[out:json][timeout:40];(nwr[\"highway\"=\"street_lamp\"](37.205,-80.44,37.245,-80.395);nwr[\"lit\"](37.205,-80.44,37.245,-80.395););out meta geom;",
   "bbox": {
@@ -12,11 +12,11 @@
     "east": -80.395
   },
   "coordinate_reference_system": "EPSG:4326",
-  "sha256": "875b0172c6c6c92225f65748f89d43384cd23d04974b08b9de05de3babf3ae0e",
+  "sha256": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
   "files": [
     {
-      "path": "osm-lighting-2026-09-19.json",
-      "sha256": "875b0172c6c6c92225f65748f89d43384cd23d04974b08b9de05de3babf3ae0e",
+      "path": "osm-lighting-latest.json",
+      "sha256": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
       "role": "unaltered source response"
     },
     {
@@ -45,7 +45,7 @@
   "license": {
     "name": "ODbL 1.0",
     "url": "https://opendatacommons.org/licenses/odbl/1-0/",
-    "attribution": "\u00a9 OpenStreetMap contributors",
+    "attribution": "© OpenStreetMap contributors",
     "attribution_url": "https://www.openstreetmap.org/copyright"
   },
   "limitations": [

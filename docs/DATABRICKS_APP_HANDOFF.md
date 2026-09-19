@@ -99,3 +99,7 @@ Named-corridor network comparisons apply fresh campus weather and exact mapped-p
 Run `node databricks/network-smoke.mjs`; add `--live --profile beacon` with existing environment to require SQL. Offers are simulated, no booking/contact occurs, and this smoke does not write audits. Existing `intelligence --live --enable-ai --profile beacon` verifies managed ranking/audit, route reads, grounded AI and zero-budget walking.
 
 See [completion/activation record](DATABRICKS_FULL_VISION_COMPLETION.md) for proof and limits.
+
+## Complete-journey addition (September 19, later implementation)
+
+Use [JOURNEY_HANDOFF.md](JOURNEY_HANDOFF.md) for the new additive `getCompleteJourney(request)` interface, full fixture input/output, deterministic whole-journey policy, exact walking geometry, waiting/departure timing, recovery inputs, live verification and configuration blockers. Existing functions above remain compatible. This new track is not live-complete until approved routing configuration and the complete live journey check succeed. Refresh activation is documented separately in [JOURNEY_REFRESH.md](JOURNEY_REFRESH.md).

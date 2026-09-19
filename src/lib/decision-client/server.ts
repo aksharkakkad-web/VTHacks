@@ -118,3 +118,20 @@ export function getSafetyEvidence(corridorId:string,evaluatedAt=new Date().toISO
 export function getPublicTripOptions(corridorId:PublicCorridor,demo:boolean,evaluatedAt:string) {
   return collectPublicTripOptions(corridorId,demo,evaluatedAt,{walking:getMappedWalkingOption,transit:getScheduledTransitOption});
 }
+
+/** Additive whole-journey handoff. Mahin retains consent, booking, progression and recovery execution. */
+export async function getCompleteJourney(request: import('./journey-types').JourneyRequest) {
+  const [{ planJourney }, { createWalkingRouter }, { assessPathEvidence }, { loadJourneyPlaces }] = await Promise.all([
+    import('./journey-planner'), import('./walking-router'), import('./path-evidence'), import('./journey-data'),
+  ]);
+  const places = loadJourneyPlaces(request.evaluatedAt);
+  const host = process.env.DATABRICKS_HOST, token = process.env.DATABRICKS_TOKEN, warehouseId = process.env.DATABRICKS_WAREHOUSE_ID;
+  const result = await planJourney({ ...request, waitingPlaces: request.waitingPlaces ?? places.waitingPlaces }, {
+    route: createWalkingRouter(process.env), evidence: assessPathEvidence, stops: places.stops, transitSourceSha256: places.transitSourceSha256,
+    directTransit: getFullTransitOption,
+    rankOptions: { workspace: host && token && warehouseId ? { host, token, warehouseId, auditTable: process.env.DATABRICKS_AUDIT_TABLE } : undefined,
+      persistAudit: process.env.BEACON_JOURNEY_AUDIT_WRITES === 'true' },
+  });
+  result.warnings.push(...places.warnings);
+  return result;
+}

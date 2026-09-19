@@ -1,0 +1,18 @@
+{
+  "version": "beacon-refresh-run-v1",
+  "startedAt": "2026-09-19T22:27:31.037Z",
+  "finishedAt": "2026-09-19T22:27:31.057Z",
+  "state": "success",
+  "sources": [
+    {
+      "dataset": "waiting",
+      "attemptedAt": "2026-09-19T22:27:31.039Z",
+      "state": "refreshed",
+      "exitCode": 0,
+      "error": null,
+      "priorSnapshotRetained": false,
+      "finishedAt": "2026-09-19T22:27:31.057Z"
+    }
+  ],
+  "cloudWrites": false
+}
