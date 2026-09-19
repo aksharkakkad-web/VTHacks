@@ -1,0 +1,41 @@
+[
+  {
+    "corridor_id": "newman-pritchard",
+    "context_version": "nws-529c96e615af",
+    "updated_at": "2026-09-19T05:30:35+00:00",
+    "valid_until": "2026-09-19T03:00:00-04:00",
+    "weather": "clear",
+    "lighting": "unknown",
+    "walking_path_closed": null,
+    "active_official_alert": null,
+    "historical_report_count": null,
+    "history_lookback_days": null,
+    "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "context_version": "nws-529c96e615af",
+    "updated_at": "2026-09-19T05:30:35+00:00",
+    "valid_until": "2026-09-19T03:00:00-04:00",
+    "weather": "clear",
+    "lighting": "unknown",
+    "walking_path_closed": null,
+    "active_official_alert": null,
+    "historical_report_count": null,
+    "history_lookback_days": null,
+    "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
+  },
+  {
+    "corridor_id": "downtown-pritchard",
+    "context_version": "nws-529c96e615af",
+    "updated_at": "2026-09-19T05:30:35+00:00",
+    "valid_until": "2026-09-19T03:00:00-04:00",
+    "weather": "clear",
+    "lighting": "unknown",
+    "walking_path_closed": null,
+    "active_official_alert": null,
+    "historical_report_count": null,
+    "history_lookback_days": null,
+    "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
+  }
+]
