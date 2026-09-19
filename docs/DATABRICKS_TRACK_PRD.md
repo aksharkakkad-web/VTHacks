@@ -158,7 +158,7 @@ Logical call: `evaluateCandidates(candidates, context, evidenceByPlanId) -> Deci
 
 Keep the existing `CandidatePlan` and successful `Recommendation` shapes. Add metadata in a sidecar and wrapper instead of forcing the three tracks to rewrite their current code.
 
-**Context:** random `evaluationId`; monotonically increasing `objectiveVersion` for this trip; server-captured evaluation time; budget in cents; `minimizeWalking`; `minimizeTransfers`; optional hard `maxWalkingMinutes`; excluded provider IDs; coarse corridor ID; explicit emergency flag; optional derived reduced-walking preference. No exact coordinates, student identity, contact details, or raw sensitive free text.
+**Context:** random `evaluationId`; `objectiveVersion` (currently `0` for Mahin's immutable-objective trip API; monotonically increasing mutable objectives require a future shared-contract change); server-captured evaluation time; budget in cents; `minimizeWalking`; `minimizeTransfers`; optional hard `maxWalkingMinutes`; excluded provider IDs; coarse corridor ID; explicit emergency flag; optional derived reduced-walking preference. No exact coordinates, student identity, contact details, or raw sensitive free text.
 
 **Per-plan evidence:** `collectedAt`, `validUntil`, source kind (`simulated`, `scheduled`, `mapped`, or `live`), source/data version, whether service availability is established, transfer-count provenance, and optional matching transit trip/stop identifiers. `mapped` is only a dated walking estimate, not live navigation. Missing evidence is not silently treated as live data. Mahin owns preserving the quote evidence; Akshar validates and uses it.
 
@@ -286,7 +286,7 @@ Agents handle normal installation, code, queries, and tests within the approved 
 - **Databricks unavailable/too slow:** run the same local policy with the submitted fresh quotes and the most recent valid context snapshot, at most 24 hours old and still within service-date coverage. Label the engine `local_fallback`; show “Advanced context temporarily unavailable.” If no valid transit context exists, omit that transit option rather than inventing it.
 - **No observations:** use neutral reliability and explain that performance history is unavailable. Do not turn missing history into a negative claim about a provider.
 - **No valid options:** return no feasible plan; offer settings changes or campus resources without automatically relaxing the user's constraints.
-- **Provider cancels:** Mahin adds the failed provider to exclusions, increments `objectiveVersion`, refreshes quotes, and calls the evaluator. Akshar returns a new decision; Mahin still owns confirmation/authorization requirements before action.
+- **Provider cancels:** Mahin adds the failed provider to exclusions, refreshes quotes, and calls the evaluator while preserving `objectiveVersion: 0` in the current immutable-objective API. Mutable objectives with an incremented version are a future coordinated contract, not current behavior. Akshar returns a new decision; Mahin still owns confirmation/authorization requirements before action.
 - **Old answer arrives:** ignore it if its objective version is no longer current. Do not cache a recommendation across different candidate snapshots or objective versions.
 - **Audit write fails:** keep the valid choice, expose `auditPersisted: false`, and report the evidence gap. A fallback/local event does not count as proof of live Databricks execution.
 
