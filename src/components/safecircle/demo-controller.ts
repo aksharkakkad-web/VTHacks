@@ -109,8 +109,6 @@ function beginTrip(state: DemoState): DemoState {
   if (!selected) return withRevision(cleanState, { stage: "no-options" });
   return withRevision(cleanState, {
     stage: "discovering",
-    selectedPlanId: selected.planId,
-    recommendation: recommendationFor(selected),
     failedPlanIds: [],
     providerVerified: false,
     providerAuthorized: false,
@@ -174,20 +172,27 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
     case "ADVANCE": {
       if (state.paused || state.stage === "offline") return state;
       const initialNext = nextIn(initialSequence, state.stage);
+      if (initialNext === "recommendation") {
+        const selected = selectedFor(state);
+        return selected
+          ? withRevision(state, { stage: "recommendation", selectedPlanId: selected.planId, recommendation: recommendationFor(selected) })
+          : withRevision(state, { stage: "no-options" });
+      }
       if (initialNext) return withRevision(state, { stage: initialNext });
 
       const confirmationNext = nextIn(confirmationSequence, state.stage);
       if (confirmationNext) {
         return withRevision(state, {
           stage: confirmationNext,
+          ...(confirmationNext === "waiting-initial" ? { lastTripUpdateAt: action.now } : {}),
           providerVerified: state.providerVerified || state.stage === "verifying-initial",
           providerAuthorized: state.providerAuthorized || (state.stage === "authorizing-initial" && state.providerVerified && !!state.userApproved),
           sensitiveDataReleased: state.sensitiveDataReleased || (state.stage === "authorizing-initial" && state.providerVerified && !!state.userApproved),
         });
       }
 
-      if (state.stage === "waiting-initial") return withRevision(state, { stage: "arriving-initial" });
-      if (state.stage === "arriving-initial") return withRevision(state, { stage: "in-trip-initial" });
+      if (state.stage === "waiting-initial") return withRevision(state, { stage: "arriving-initial", lastTripUpdateAt: action.now });
+      if (state.stage === "arriving-initial") return withRevision(state, { stage: "in-trip-initial", lastTripUpdateAt: action.now });
       if (state.stage === "in-trip-initial") {
         return withRevision(state, {
           stage: "arrival",
@@ -214,14 +219,15 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         }
         return withRevision(state, {
           stage: recoveryNext,
+          ...(recoveryNext === "waiting-replacement" ? { lastTripUpdateAt: action.now } : {}),
           providerVerified: state.providerVerified || state.stage === "verifying-replacement",
           providerAuthorized: state.providerAuthorized || (state.stage === "authorizing-replacement" && state.providerVerified && !!state.userApproved),
           sensitiveDataReleased: state.sensitiveDataReleased || (state.stage === "authorizing-replacement" && state.providerVerified && !!state.userApproved),
         });
       }
 
-      if (state.stage === "waiting-replacement") return withRevision(state, { stage: "arriving-replacement" });
-      if (state.stage === "arriving-replacement") return withRevision(state, { stage: "in-trip-replacement" });
+      if (state.stage === "waiting-replacement") return withRevision(state, { stage: "arriving-replacement", lastTripUpdateAt: action.now });
+      if (state.stage === "arriving-replacement") return withRevision(state, { stage: "in-trip-replacement", lastTripUpdateAt: action.now });
       if (state.stage === "in-trip-replacement") {
         return withRevision(state, {
           stage: "arrival",
@@ -532,7 +538,8 @@ function timelineFor(state: DemoState): TechnicalStep[] {
 export function deriveViewModel(state: DemoState): DemoViewModel {
   const selectedPlan = demoCandidates.find((plan) => plan.planId === state.selectedPlanId);
   const profile = state.profile;
-  const effectiveStage = state.stage === "offline" ? state.offlineResume?.stage ?? state.previousStage ?? "home" : state.stage;
+  const interruptedStage = state.stage === "offline" ? state.offlineResume?.stage ?? state.previousStage ?? "home" : state.stage;
+  const effectiveStage = interruptedStage === "overdue" ? state.offlineResume?.previousStage ?? state.previousStage ?? "in-trip-initial" : interruptedStage;
   const progressStep = progressFor(effectiveStage);
   const isReplacement = replacementStages.has(state.stage) || (state.stage === "arrival" && state.recoveryCount > 0);
   const isActiveTrip = activeInitial.has(state.stage) || activeReplacement.has(state.stage);
@@ -559,7 +566,8 @@ export function deriveViewModel(state: DemoState): DemoViewModel {
     isReplacement,
     isActiveTrip,
     isRouteVisible: activeInitial.has(effectiveStage) || activeReplacement.has(effectiveStage),
-    isStale: state.stage === "offline",
+    isStale: state.stage === "offline" || state.stage === "overdue",
+    lastTripUpdateAt: state.lastTripUpdateAt,
     progressStep,
     timeline: timelineFor(state),
     paused: state.paused,

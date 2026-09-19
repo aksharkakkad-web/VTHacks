@@ -76,6 +76,7 @@ export type DemoState = {
   statusRevision: number;
   paused: boolean;
   completedAt?: number;
+  lastTripUpdateAt?: number;
   userApproved?: boolean;
   fallbackActive?: boolean;
   offlineResume?: { stage: DemoStage; previousStage?: DemoStage; paused: boolean };
@@ -125,6 +126,7 @@ export type DemoViewModel = {
   isActiveTrip: boolean;
   isRouteVisible: boolean;
   isStale: boolean;
+  lastTripUpdateAt?: number;
   progressStep: "none" | "waiting" | "arriving" | "in-trip" | "arrived";
   timeline: TechnicalStep[];
   paused: boolean;

@@ -193,3 +193,24 @@ test('reset returns to usable setup rather than waiting forever for initial rest
   assert.equal(reset.stage,'setup-home');
   assert.equal(reset.profile,null);
 });
+test('search never exposes a selected provider or recommendation before evaluation finishes',()=>{
+  let state=act(createDemoState(defaultProfile),{type:'START_TRIP'});
+  for(const stage of ['discovering','collecting-quotes','evaluating']) {
+    assert.equal(state.stage,stage);
+    assert.equal(view(state).selectedPlan,undefined);
+    assert.equal(view(state).recommendation,undefined);
+    state=advance(state);
+  }
+  assert.equal(state.stage,'recommendation');
+  assert.equal(view(state).selectedPlan.planId,campusRide.planId);
+});
+test('overdue preserves a stale trip snapshot and recorded update without inventing GPS',()=>{
+  const now=1789792200000;
+  const state=act(createDemoState(defaultProfile),{type:'JUMP',stage:'overdue',now});
+  assert.equal(view(state).isStale,true);
+  assert.equal(view(state).isRouteVisible,true);
+  assert.equal(view(state).progressStep,'in-trip');
+  assert.equal(view(state).lastTripUpdateAt,now);
+  assert.equal(view(state).trip.lastKnownLocation,undefined);
+  assert.equal(view(state).trip.alertDeadlineAt,undefined);
+});

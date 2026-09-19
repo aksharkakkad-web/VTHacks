@@ -98,8 +98,8 @@ function HomeSetupScreen({ draft, onContinue }: { draft: SavedProfile; onContinu
       <h1 id="setup-home-title">Where is home?</h1>
       <p className="sc-screen-subtitle">Save this now so it is ready when you need it.</p>
       <form className="sc-form" onSubmit={submit} noValidate>
-        <label><span>Place name</span><input value={name} onChange={(event) => setName(event.target.value)} autoComplete="off" placeholder="Home" /></label>
-        <label><span>Campus address</span><input value={address} onChange={(event) => setAddress(event.target.value)} autoComplete="street-address" placeholder="Pritchard Hall" /></label>
+        <label><span>Place name</span><input maxLength={60} value={name} onChange={(event) => setName(event.target.value)} autoComplete="off" placeholder="Home" /></label>
+        <label><span>Campus address</span><input maxLength={160} value={address} onChange={(event) => setAddress(event.target.value)} autoComplete="street-address" placeholder="Pritchard Hall" /></label>
         <p className="sc-field-note">The map is an illustrative campus demo, not address geocoding.</p>
         {error && <p className="sc-form-error" role="alert">{error}</p>}
         <PrimaryButton type="submit">CONTINUE</PrimaryButton>
@@ -115,7 +115,7 @@ function PreferencesSetupScreen({ draft, onSave, onBack }: { draft: SavedProfile
   const [showOptional, setShowOptional] = useState(false);
   const [contact, setContact] = useState(draft.trustedContact ?? "");
   const numericBudget = Number(budget);
-  const valid = Number.isFinite(numericBudget) && numericBudget >= 0 && numericBudget <= 100;
+  const valid = budget.trim() !== "" && Number.isFinite(numericBudget) && numericBudget >= 0 && numericBudget <= 100;
   const contactValid = isValidOptionalPhone(contact);
 
   function submit(event: FormEvent) {
@@ -279,9 +279,9 @@ function RecoveryScreen({ model, onDetails }: { model: DemoViewModel; onDetails:
       <div className={`sc-state-symbol${cancelled ? " is-amber" : ""}`}>{cancelled ? <XCircle size={23} /> : selected ? <CheckCircle2 size={23} /> : <Route size={23} />}</div>
       <p className={`sc-eyebrow${cancelled ? " is-amber" : ""}`}>{cancelled ? "Provider update" : selected ? "Replacement selected" : "Automatic recovery"}</p>
       <h1 id="recovery-title">{cancelled ? "Your ride cancelled." : selected ? "Another option fits." : "We’re handling it."}</h1>
-      <p className="sc-screen-subtitle">{cancelled ? "You don’t need to retry. SafeCircle is already finding another way home." : selected ? `${model.selectedPlan?.providerName} stays within your approved budget and walking preference.` : "The same approved constraints are being used for your replacement."}</p>
+      <p className="sc-screen-subtitle">{cancelled ? "You don’t need to retry. SafeCircle will find another way home." : selected ? `${model.selectedPlan?.providerName} stays within your approved budget and walking preference.` : "The same approved constraints are being used for your replacement."}</p>
       {selected && model.selectedPlan ? <><ProviderCard plan={model.selectedPlan} recommendation={model.recommendation} verified={false} replacement /><p className="sc-inline-progress" role="status"><span className="sc-loader is-small" /> Confirming this option…</p></> : <div className="sc-status-list"><StatusRow icon={<Check size={18} />} title="Previous provider removed" detail="Temporary access revoked" state="done" /><StatusRow icon={<Search size={18} />} title="Finding suitable replacements" detail="No price above your budget" state={cancelled ? "pending" : "active"} /><StatusRow icon={<ShieldCheck size={18} />} title="Replacement verification" detail="Starts after selection" state="pending" /></div>}
-      <TextButton onClick={onDetails}>View recovery details <ArrowRight size={16} /></TextButton>
+      {selected && model.selectedPlan && <TextButton onClick={onDetails}>View replacement details <ArrowRight size={16} /></TextButton>}
     </BottomSheet>
   );
 }
@@ -305,11 +305,12 @@ function SupportingStateScreen(props: ScreenProps) {
   if (stage === "offline") return <MessageSheet stage={stage} icon={<WifiOff size={24} />} eyebrow="Updates paused" title="You’re offline." body="SafeCircle is holding the last known trip state. No new provider updates are being simulated." primary="TRY TO RECONNECT" onPrimary={() => onAction({ type: "RECONNECT" })} />;
   if (stage === "verification-failed") return <MessageSheet stage={stage} icon={<XCircle size={24} />} eyebrow="Verification stopped" title="We couldn’t verify this provider." body="Precise pickup was not shared. You can retry the identity check or return home." primary="RETRY VERIFICATION" onPrimary={() => onAction({ type: "RETRY" })} secondary="RETURN HOME" onSecondary={() => onAction({ type: "FINISH" })} />;
   if (stage === "no-options") return <MessageSheet stage={stage} icon={<Search size={24} />} eyebrow="No suitable option" title="Nothing fits your limits right now." body={`No remaining option stays within your $${model.constraints?.maxBudget.toFixed(0)} budget and walking preference.`} primary="EDIT PREFERENCES" onPrimary={onEditProfile} secondary="TRY AGAIN" onSecondary={() => onAction({ type: "RETRY" })} />;
-  return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Trip check-in" title="Are you home?" body="This simulated trip is overdue. SafeCircle has not contacted anyone automatically." primary="YES, I’M HOME" onPrimary={() => onAction({ type: "CONFIRM_ARRIVAL", now: Date.now() })} secondary="STILL TRAVELLING" onSecondary={() => onAction({ type: "STILL_TRAVELLING" })} tertiary="Get help" onTertiary={onOpenHelp} />;
+  const updated = model.lastTripUpdateAt ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(model.lastTripUpdateAt) : "Time unavailable";
+  return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Trip check-in" title="Are you home?" body="This simulated trip is overdue. SafeCircle has not contacted anyone automatically." detail={<div className="sc-last-known"><strong>Last known: on the way home</strong><p>{model.selectedPlan?.providerName ?? "Trip"} · {model.profile?.homeAddress}</p><small>Updated {updated}. Precise location is unavailable in this demo.</small></div>} primary="YES, I’M HOME" onPrimary={() => onAction({ type: "CONFIRM_ARRIVAL", now: Date.now() })} secondary="STILL TRAVELLING" onSecondary={() => onAction({ type: "STILL_TRAVELLING" })} tertiary="Get help" onTertiary={onOpenHelp} />;
 }
 
-function MessageSheet({ stage, icon, eyebrow, title, body, primary, secondary, tertiary, onPrimary, onSecondary, onTertiary }: { stage: DemoStage; icon: ReactNode; eyebrow: string; title: string; body: string; primary: string; secondary?: string; tertiary?: string; onPrimary: () => void; onSecondary?: () => void; onTertiary?: () => void }) {
-  return <BottomSheet className="is-message" labelledBy="message-title" testId={`screen-${stage}`}><div className="sc-state-symbol">{icon}</div><p className="sc-eyebrow">{eyebrow}</p><h1 id="message-title">{title}</h1><p className="sc-screen-subtitle">{body}</p><div className="sc-message-actions"><PrimaryButton onClick={onPrimary}>{primary}</PrimaryButton>{secondary && <SecondaryButton onClick={onSecondary}>{secondary}</SecondaryButton>}{tertiary && <TextButton onClick={onTertiary}>{tertiary}</TextButton>}</div></BottomSheet>;
+function MessageSheet({ stage, icon, eyebrow, title, body, detail, primary, secondary, tertiary, onPrimary, onSecondary, onTertiary }: { stage: DemoStage; icon: ReactNode; eyebrow: string; title: string; body: string; detail?: ReactNode; primary: string; secondary?: string; tertiary?: string; onPrimary: () => void; onSecondary?: () => void; onTertiary?: () => void }) {
+  return <BottomSheet className="is-message" labelledBy="message-title" testId={`screen-${stage}`}><div className="sc-state-symbol">{icon}</div><p className="sc-eyebrow">{eyebrow}</p><h1 id="message-title">{title}</h1><p className="sc-screen-subtitle">{body}</p>{detail}<div className="sc-message-actions"><PrimaryButton onClick={onPrimary}>{primary}</PrimaryButton>{secondary && <SecondaryButton onClick={onSecondary}>{secondary}</SecondaryButton>}{tertiary && <TextButton onClick={onTertiary}>{tertiary}</TextButton>}</div></BottomSheet>;
 }
 
 function StatusRow({ icon, title, detail, state }: { icon: ReactNode; title: string; detail: string; state: "done" | "active" | "pending" | "failed" }) {

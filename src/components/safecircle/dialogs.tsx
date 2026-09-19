@@ -48,8 +48,8 @@ function ProfileDialogContent({ open, onOpenChange, profile, onSave }: { open: b
   return (
     <AppDialog open={open} onOpenChange={onOpenChange} title="Home and preferences" description="Used for recommendations in this interactive demo.">
       <form className="sc-form sc-dialog-form" onSubmit={submit}>
-        <label><span>Place name</span><input value={draft.homeName} onChange={(event) => setDraft({ ...draft, homeName: event.target.value })} /></label>
-        <label><span>Campus address</span><input value={draft.homeAddress} onChange={(event) => setDraft({ ...draft, homeAddress: event.target.value })} /></label>
+        <label><span>Place name</span><input maxLength={60} value={draft.homeName} onChange={(event) => setDraft({ ...draft, homeName: event.target.value })} /></label>
+        <label><span>Campus address</span><input maxLength={160} value={draft.homeAddress} onChange={(event) => setDraft({ ...draft, homeAddress: event.target.value })} /></label>
         <label><span>Maximum trip cost</span><div className="sc-money-input"><span>$</span><input type="number" min="0" max="100" value={draft.maxBudget} onChange={(event) => setDraft({ ...draft, maxBudget: Number(event.target.value) })} /></div></label>
         <fieldset className="sc-choice-field"><legend>Walking preference</legend><div className="sc-choice-row"><label><input type="radio" checked={draft.walkingPreference === "minimal"} onChange={() => setDraft({ ...draft, walkingPreference: "minimal" })} /><span>Minimal</span></label><label><input type="radio" checked={draft.walkingPreference === "normal"} onChange={() => setDraft({ ...draft, walkingPreference: "normal" })} /><span>Normal</span></label></div></fieldset>
         <label className="sc-check-row"><input type="checkbox" checked={draft.avoidTransfers} onChange={(event) => setDraft({ ...draft, avoidTransfers: event.target.checked })} /><span><strong>Avoid transfers</strong><small>Prefer one continuous ride</small></span></label>
