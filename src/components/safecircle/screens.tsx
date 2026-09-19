@@ -204,12 +204,11 @@ function RecommendationScreen({ model, onGo }: { model: DemoViewModel; onGo: () 
     return true;
   }).slice(0, 2);
   return (
-    <BottomSheet className="is-recommendation" labelledBy="recommendation-title" testId="screen-recommendation">
+    <BottomSheet className="is-recommendation" labelledBy="recommendation-title" testId="screen-recommendation" footer={<PrimaryButton onClick={onGo}>GO WITH THIS PLAN</PrimaryButton>}>
       <p className="sc-eyebrow">One clear recommendation</p>
       <div className="sc-time-hero"><strong>{plan.totalMinutes} min</strong><span>to {model.profile?.homeName.toLowerCase()}</span></div>
       <h1 id="recommendation-title">Your plan is ready.</h1>
       <ProviderCard plan={plan} recommendation={model.recommendation} verified={model.providerVerified} />
-      <PrimaryButton onClick={onGo}>GO WITH THIS PLAN</PrimaryButton>
       {alternatives.length > 0 && <details className="sc-alternatives"><summary>Other options <span>{alternatives.length} shown</span></summary>{alternatives.map((item) => <AlternativeRow key={item.planId} plan={item} />)}</details>}
     </BottomSheet>
   );

@@ -49,6 +49,7 @@ test('GO precedes identity and authorization; precise data is withheld until bot
 test('cancellation revokes original access and independently verifies replacement',()=>{
   let state=until(act(recommendation(),{type:'GO'}),'waiting-initial');
   state=act(state,{type:'CANCEL_PROVIDER'});
+  assert.equal(state.selectedPlanId,undefined);
   assert.equal(state.providerVerified,false);
   assert.equal(state.providerAuthorized,false);
   assert.equal(state.sensitiveDataReleased,false);
@@ -158,7 +159,12 @@ test('cancelled route disappears and recoverable states are not failures',()=>{
   assert.equal(view(cancelled).isRouteVisible,false);
   assert.equal(view(cancelled).isReplacement,false);
   assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).trip.state,'WAITING_FOR_PICKUP');
+  assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).isRouteVisible,true);
+  assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).isStale,true);
   assert.equal(view(act(createDemoState(defaultProfile),{type:'SIMULATE',scenario:'context-fallback'})).trip.state,'EVALUATING');
+});
+test('empty context does not pretend a temporary preference was applied',()=>{
+  assert.deepEqual(act(createDemoState(defaultProfile),{type:'SET_CONTEXT',context:{note:'none',maxBudget:undefined}}).tripContext,{});
 });
 test('judge shortcuts use the same constraints and verification invariants',()=>{
   const state=act(createDemoState(defaultProfile),{type:'JUMP',stage:'waiting-replacement'});

@@ -31,7 +31,7 @@
   --sc-forest: #34484a;
   --sc-carbon: #0d1212;
   --sc-muted: #667280;
-  --sc-muted-soft: #8b969c;
+  --sc-muted-soft: #6b7780;
   --sc-border: #e5e7e8;
   --sc-border-strong: #d4d9d7;
   --sc-amber: #9a5c0d;
@@ -124,8 +124,10 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 .sc-map-disclaimer { position: absolute; z-index: 2; top: 74px; left: var(--sc-space-4); color: var(--sc-muted); font-size: var(--sc-type-meta); }
 .sc-map-offline { position: absolute; z-index: 7; top: 108px; left: var(--sc-space-4); padding: 6px 9px; border-radius: var(--sc-radius-sm); background: var(--sc-forest); color: var(--sc-on-dark); font-size: var(--sc-type-meta); font-weight: 650; }
 
-.sc-sheet { position: absolute; z-index: 10; right: 0; bottom: 0; left: 0; max-height: calc(100% - 74px); overflow: hidden; border-radius: var(--sc-radius-sheet) var(--sc-radius-sheet) 0 0; background: var(--sc-paper); box-shadow: var(--sc-shadow-sheet); }
-.sc-sheet-content { max-height: calc(100svh - 74px); overflow-y: auto; padding: var(--sc-space-6) var(--sc-space-5) max(var(--sc-space-5), calc(var(--sc-space-4) + env(safe-area-inset-bottom))); overscroll-behavior: contain; }
+.sc-sheet { position: absolute; z-index: 10; right: 0; bottom: 0; left: 0; display: flex; max-height: calc(100% - 74px); flex-direction: column; overflow: hidden; border-radius: var(--sc-radius-sheet) var(--sc-radius-sheet) 0 0; background: var(--sc-paper); box-shadow: var(--sc-shadow-sheet); }
+.sc-sheet-content { min-height: 0; overflow-y: auto; padding: var(--sc-space-6) var(--sc-space-5) max(var(--sc-space-5), calc(var(--sc-space-4) + env(safe-area-inset-bottom))); overscroll-behavior: contain; }
+.sc-sheet-footer { flex: 0 0 auto; padding: var(--sc-space-2) var(--sc-space-5) max(var(--sc-space-5), calc(var(--sc-space-4) + env(safe-area-inset-bottom))); background: var(--sc-paper); }
+.sc-sheet.is-recommendation .sc-sheet-content { padding-bottom: var(--sc-space-3); }
 .sc-sheet.is-home .sc-sheet-content, .sc-sheet.is-active .sc-sheet-content { padding-top: var(--sc-space-5); }
 .sc-sheet.is-setup { max-height: calc(100% - 88px); }
 .sc-sheet.is-recommendation, .sc-sheet.is-recovery { max-height: calc(100% - 84px); }
@@ -333,7 +335,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 .sc-demo-actions .sc-button { min-height: 44px; font-size: var(--sc-type-meta); }
 .sc-scenario-grid { grid-template-columns: repeat(2, 1fr); }
 .sc-demo-disclaimer { margin: var(--sc-space-4) 0 0; color: var(--sc-muted); font-size: var(--sc-type-meta); line-height: 1.45; }
-.sc-session-note { position: absolute; z-index: 24; top: 68px; right: var(--sc-space-4); left: var(--sc-space-4); margin: 0; padding: 8px 12px; border-radius: var(--sc-radius-sm); background: var(--sc-forest); color: var(--sc-on-dark); font-size: var(--sc-type-meta); text-align: center; box-shadow: var(--sc-shadow-float); }
+.sc-session-note { position: absolute; z-index: 24; top: 68px; right: 72px; left: var(--sc-space-4); margin: 0; padding: 8px 12px; border-radius: var(--sc-radius-sm); background: var(--sc-forest); color: var(--sc-on-dark); font-size: var(--sc-type-meta); text-align: center; box-shadow: var(--sc-shadow-float); }
 
 @keyframes sc-spin { to { transform: rotate(360deg); } }
 
@@ -342,7 +344,6 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 @media (min-width: 760px) {
   .sc-stage { padding: var(--sc-space-4); }
   .sc-phone { width: 430px; height: min(880px, calc(100svh - 32px)); border: 6px solid var(--sc-carbon); border-radius: 34px; box-shadow: var(--sc-shadow-phone); }
-  .sc-sheet-content { max-height: calc(min(880px, 100svh - 32px) - 74px); }
   .sc-dialog-viewport { place-items: center; }
 }
 
@@ -362,7 +363,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 
 @media (max-height: 700px) {
   .sc-sheet { max-height: calc(100% - 60px); }
-  .sc-sheet-content { max-height: calc(100svh - 60px); padding-top: var(--sc-space-4); }
+  .sc-sheet-content { padding-top: var(--sc-space-4); }
   .sc-provider-card { margin: var(--sc-space-3) 0; }
   .sc-map-disclaimer { display: none; }
 }
