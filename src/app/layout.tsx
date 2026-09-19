@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans } from "next/font/google";
+import { PwaRegistration } from "@/components/pwa-registration";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -13,6 +14,10 @@ export const metadata: Metadata = {
   description:
     "SafeCircle coordinates and verifies a simple way home across campus.",
   applicationName: "SafeCircle",
+  icons: {
+    icon: "/safecircle-192.png",
+    apple: "/safecircle-180.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -26,13 +31,14 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#eef3f0",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${instrumentSans.variable} antialiased`}>
-      <body>{children}</body>
+      <body>{children}<PwaRegistration /></body>
     </html>
   );
 }
