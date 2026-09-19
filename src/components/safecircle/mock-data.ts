@@ -1,7 +1,6 @@
 import type { CandidatePlan } from "@/types/provider";
 import type { Recommendation } from "@/types/recommendation";
-import type { Trip } from "@/types/trip";
-import type { DemoScreen, TechnicalStep } from "./types";
+import type { SavedProfile, TripContext } from "./types";
 
 export const campusRide: CandidatePlan = {
   planId: "campus-ride-042",
@@ -71,110 +70,60 @@ export const walk: CandidatePlan = {
   requiresProviderVerification: false,
 };
 
-export const initialRecommendation: Recommendation = {
-  selectedPlanId: campusRide.planId,
-  runnerUpPlanId: rideshare.planId,
-  reasonCodes: ["WITHIN_BUDGET", "LOW_WALKING", "HIGH_RELIABILITY"],
-  explanation:
-    "Campus Shuttle is within your budget and gets you home with almost no walking.",
-  evaluatedAt: "2026-09-19T21:41:18-04:00",
+export const demoCandidates: CandidatePlan[] = [campusRide, rideshare, transit, walk];
+
+export const defaultProfile: SavedProfile = {
+  homeName: "Home",
+  homeAddress: "Pritchard Hall",
+  maxBudget: 10,
+  walkingPreference: "minimal",
+  avoidTransfers: true,
+  trustedContact: "",
 };
 
-export const replacementRecommendation: Recommendation = {
-  selectedPlanId: rideshare.planId,
-  runnerUpPlanId: transit.planId,
-  reasonCodes: ["FASTEST_AVAILABLE", "WITHIN_BUDGET", "LOW_WALKING"],
-  explanation:
-    "Rideshare is the fastest available replacement and stays within your $10 budget.",
-  evaluatedAt: "2026-09-19T21:49:05-04:00",
-};
+export function resolveConstraints(profile: SavedProfile, context: TripContext) {
+  const reducedAttention = context.note === "tired" || context.note === "drinking";
+  return {
+    maxBudget: context.maxBudget ?? profile.maxBudget,
+    walkingPreference: reducedAttention
+      ? "minimal" as const
+      : context.walkingPreference ?? profile.walkingPreference,
+    avoidTransfers: reducedAttention || profile.avoidTransfers,
+  };
+}
 
-export const demoTrip: Trip = {
-  id: "trip-demo-2409",
-  state: "IDLE",
-  candidates: [campusRide, rideshare, transit, walk],
-  recommendation: initialRecommendation,
-  selectedPlan: campusRide,
-  providerVerified: false,
-  sensitiveDataReleased: false,
-  expectedArrivalAt: "2026-09-19T22:01:00-04:00",
-  lastKnownLocation: {
-    lat: 37.2294,
-    lng: -80.4139,
-    recordedAt: "2026-09-19T21:41:00-04:00",
-  },
-  statusMessage: "Ready when you are",
-};
-
-const progressIndex: Record<DemoScreen, number> = {
-  home: 0,
-  searching: 2,
-  recommendation: 4,
-  verifying: 5,
-  active: 7,
-  cancelled: 7,
-  replanning: 4,
-  replacement: 7,
-  "replacement-active": 7,
-  arrival: 9,
-};
-
-const baseSteps = [
-  ["objective", "Objective received", "Home · under $10 · minimize walking"],
-  ["discovery", "Providers discovered", "3 provider agents + walking route"],
-  ["quotes", "Coarse quotes collected", "No exact location or student identity shared"],
-  ["evaluation", "Databricks evaluated plans", "Cost, wait, walking, reliability, exposure"],
-  ["selection", "Best plan selected", "Campus Shuttle · LOW_WALKING · WITHIN_BUDGET"],
-  ["identity", "ANS identity verified", "campusride.beacon.dev · operator resolved"],
-  ["release", "Precise location released", "Authorized provider only · minimum data"],
-  ["accepted", "Trip accepted", "Pickup coordinated · access is temporary"],
-  ["expired", "Provider access expired", "Location sharing ended at arrival"],
-] as const;
-
-export function getTechnicalSteps(screen: DemoScreen): TechnicalStep[] {
-  const current = progressIndex[screen];
-  return baseSteps.map(([id, title, detail], index) => {
-    let state: TechnicalStep["state"] =
-      index < current ? "complete" : index === current ? "active" : "waiting";
-
-    if (screen === "cancelled" && id === "accepted") state = "blocked";
-    if ((screen === "replanning" || screen === "replacement") && id === "selection") {
-      state = index === current ? "active" : "complete";
-    }
-    if (
-      ["replacement", "replacement-active", "arrival"].includes(screen) &&
-      id === "selection"
-    ) {
-      return {
-        id,
-        title: "Replacement selected",
-        detail: "Rideshare · FASTEST_AVAILABLE · WITHIN_BUDGET",
-        state,
-      };
-    }
-    if (
-      ["replacement", "replacement-active", "arrival"].includes(screen) &&
-      id === "identity"
-    ) {
-      return {
-        id,
-        title: "Replacement ANS verified",
-        detail: "ride.beacon.dev · operator resolved",
-        state,
-      };
-    }
-    return { id, title, detail, state };
+export function eligiblePlans(
+  profile: SavedProfile,
+  context: TripContext,
+  excludedPlanIds: string[] = [],
+) {
+  const constraints = resolveConstraints(profile, context);
+  return demoCandidates.filter((plan) => {
+    if (!plan.available || excludedPlanIds.includes(plan.planId)) return false;
+    if (plan.cost > constraints.maxBudget) return false;
+    if (constraints.walkingPreference === "minimal" && plan.walkingMinutes > 5) return false;
+    if (constraints.avoidTransfers && (plan.transfers ?? 0) > 0) return false;
+    return true;
   });
 }
 
-export const demoScreens: { id: DemoScreen; label: string }[] = [
-  { id: "home", label: "Home" },
-  { id: "searching", label: "Search" },
-  { id: "recommendation", label: "Plan" },
-  { id: "verifying", label: "Verify" },
-  { id: "active", label: "Active" },
-  { id: "cancelled", label: "Cancel" },
-  { id: "replanning", label: "Replan" },
-  { id: "replacement", label: "New ride" },
-  { id: "arrival", label: "Arrival" },
-];
+export function recommendationFor(plan: CandidatePlan): Recommendation {
+  const reasonCodes =
+    plan.planId === campusRide.planId
+      ? ["WITHIN_BUDGET", "LOW_WALKING", "HIGH_RELIABILITY"]
+      : plan.planId === rideshare.planId
+        ? ["FASTEST_AVAILABLE", "WITHIN_BUDGET", "LOW_WALKING"]
+        : ["WITHIN_BUDGET", "AVAILABLE_NOW"];
+
+  return {
+    selectedPlanId: plan.planId,
+    reasonCodes,
+    explanation:
+      plan.planId === campusRide.planId
+        ? "Campus Shuttle stays within your budget and keeps walking to one minute."
+        : plan.planId === rideshare.planId
+          ? "Rideshare keeps walking to one minute and stays within your approved budget."
+          : `${plan.providerName} is available within your approved trip constraints.`,
+    evaluatedAt: "2026-09-19T21:41:18-04:00",
+  };
+}
