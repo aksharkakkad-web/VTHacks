@@ -124,6 +124,7 @@ export type DemoViewModel = {
   isReplacement: boolean;
   isActiveTrip: boolean;
   isRouteVisible: boolean;
+  isStale: boolean;
   progressStep: "none" | "waiting" | "arriving" | "in-trip" | "arrived";
   timeline: TechnicalStep[];
   paused: boolean;

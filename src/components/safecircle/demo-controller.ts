@@ -126,6 +126,8 @@ function beginRecovery(state: DemoState): DemoState {
   return withRevision(state, {
     stage: "provider-cancelled",
     failedPlanIds,
+    selectedPlanId: undefined,
+    recommendation: undefined,
     providerVerified: false,
     providerAuthorized: false,
     sensitiveDataReleased: false,
@@ -149,7 +151,11 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
       if (maxBudget !== undefined && (!Number.isFinite(maxBudget) || maxBudget < 0 || maxBudget > 100)) return state;
       if (walkingPreference !== undefined && !["normal", "minimal"].includes(walkingPreference)) return state;
       if (note !== undefined && !["none", "tired", "drinking"].includes(note)) return state;
-      return withRevision(state, { tripContext: { maxBudget, walkingPreference, note } });
+      return withRevision(state, { tripContext: {
+        ...(maxBudget !== undefined ? { maxBudget } : {}),
+        ...(walkingPreference !== undefined ? { walkingPreference } : {}),
+        ...(note && note !== "none" ? { note } : {}),
+      } });
     }
     case "CLEAR_CONTEXT":
       return state.stage === "home" ? withRevision(state, { tripContext: {} }) : state;
@@ -449,12 +455,18 @@ function timelineFor(state: DemoState): TechnicalStep[] {
     steps.splice(3, 0, {
       id: "provider-failure",
       title: "Previous provider unavailable",
-      detail: "Access revoked before replacement search",
+      detail: `${state.failedPlanIds.map(id => demoCandidates.find(plan => plan.planId === id)?.providerName).filter(Boolean).join(", ")} · access revoked`,
       state: effectiveStage === "provider-cancelled" ? "active" : "done",
     });
   }
 
   steps.push(
+    {
+      id: "approval",
+      title: "User approved GO",
+      detail: "Original budget and preferences remain binding during recovery",
+      state: state.userApproved ? "done" : effectiveStage === "recommendation" ? "active" : "pending",
+    },
     {
       id: "identity",
       title: "ANS identity verified",
@@ -500,6 +512,12 @@ function timelineFor(state: DemoState): TechnicalStep[] {
             : "pending",
     },
     {
+      id: "progress",
+      title: "Trip progress",
+      detail: effectiveStage.startsWith("waiting") ? "Waiting for pickup" : effectiveStage.startsWith("arriving") ? "Provider arriving" : effectiveStage.startsWith("in-trip") ? "On the way home" : state.stage === "arrival" ? "Arrived home" : "Awaiting trip start",
+      state: activeInitial.has(effectiveStage) || activeReplacement.has(effectiveStage) ? "active" : state.stage === "arrival" ? "done" : "pending",
+    },
+    {
       id: "arrival",
       title: "Trip completed",
       detail: "Sharing ended and provider access expired",
@@ -514,7 +532,8 @@ function timelineFor(state: DemoState): TechnicalStep[] {
 export function deriveViewModel(state: DemoState): DemoViewModel {
   const selectedPlan = demoCandidates.find((plan) => plan.planId === state.selectedPlanId);
   const profile = state.profile;
-  const progressStep = progressFor(state.stage);
+  const effectiveStage = state.stage === "offline" ? state.offlineResume?.stage ?? state.previousStage ?? "home" : state.stage;
+  const progressStep = progressFor(effectiveStage);
   const isReplacement = replacementStages.has(state.stage) || (state.stage === "arrival" && state.recoveryCount > 0);
   const isActiveTrip = activeInitial.has(state.stage) || activeReplacement.has(state.stage);
 
@@ -539,7 +558,8 @@ export function deriveViewModel(state: DemoState): DemoViewModel {
     sensitiveDataReleased: state.sensitiveDataReleased,
     isReplacement,
     isActiveTrip,
-    isRouteVisible: isActiveTrip,
+    isRouteVisible: activeInitial.has(effectiveStage) || activeReplacement.has(effectiveStage),
+    isStale: state.stage === "offline",
     progressStep,
     timeline: timelineFor(state),
     paused: state.paused,
