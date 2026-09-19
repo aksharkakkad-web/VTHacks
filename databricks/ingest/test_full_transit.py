@@ -68,6 +68,22 @@ class FullTransitTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             import_archive(fixture(), date(2026, 9, 20), 13)
 
+    def test_agency_references_and_duplicate_sequences_fail_cleanly(self):
+        invalid_cases = [
+            {'agency.txt': [{'agency_id': 'ONE', 'agency_name': 'Test', 'agency_timezone': 'America/New_York'}, {'agency_id': 'ONE', 'agency_name': 'Other', 'agency_timezone': 'America/New_York'}]},
+            {'agency.txt': [{'agency_id': 'ONE', 'agency_name': 'Test', 'agency_timezone': 'America/New_York'}],
+             'routes.txt': [{'route_id': 'R', 'route_long_name': 'Route', 'agency_id': 'MISSING'}]},
+            {'stop_times.txt': [{'trip_id': 'T', 'stop_id': 'A', 'stop_sequence': '1', 'arrival_time': '12:00:00', 'departure_time': '12:00:00'},
+                                {'trip_id': 'T', 'stop_id': 'B', 'stop_sequence': '1', 'arrival_time': '12:00:00', 'departure_time': '12:00:00'}]},
+        ]
+        for change in invalid_cases:
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                import_archive(fixture(change), date(2026, 9, 19), 14)
+
+    def test_single_agency_optional_ids_remain_valid(self):
+        result = import_archive(fixture(), date(2026, 9, 19), 14)
+        self.assertEqual(len(result['routes']), 1)
+
 
 if __name__ == '__main__':
     unittest.main()

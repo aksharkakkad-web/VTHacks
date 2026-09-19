@@ -57,9 +57,17 @@ def import_archive(raw, start, days):
     agency = tables['agency']
     if not agency or not agency[0].get('agency_timezone'):
         raise ValueError('Missing agency timezone')
+    if len(agency) > 1 or any(row.get('agency_id') for row in agency):
+        agency_ids = _unique(agency, 'agency_id', 'agency')
+    else:
+        agency_ids = set()
     tz = ZoneInfo(agency[0]['agency_timezone'])
     stop_ids = _unique(tables['stops'], 'stop_id', 'stops')
     route_ids = _unique(tables['routes'], 'route_id', 'routes')
+    for route in tables['routes']:
+        route_agency = route.get('agency_id', '')
+        if (route_agency and route_agency not in agency_ids) or (len(agency) > 1 and not route_agency):
+            raise ValueError('Route has invalid agency reference')
     trip_ids = _unique(tables['trips'], 'trip_id', 'trips')
     for stop in tables['stops']:
         try:
@@ -98,7 +106,7 @@ def import_archive(raw, start, days):
             raise ValueError('Invalid stop timing or boarding restriction')
         groups[row['trip_id']].append((sequence, arrival, departure, row))
     for trip_id, times in groups.items():
-        ordered = sorted(times)
+        ordered = sorted(times, key=lambda item: item[0])
         if len({x[0] for x in ordered}) != len(ordered) or any(a[2] > b[1] for a, b in zip(ordered, ordered[1:])):
             raise ValueError(f'Invalid stop sequence or chronology for {trip_id}')
     if set(groups) != trip_ids:
