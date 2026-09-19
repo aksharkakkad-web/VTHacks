@@ -157,3 +157,25 @@ It does not close checkpoint E's real SMS requirement: `DEMO_MODE=true` still re
 simulated notifications. The remaining live integration gates are custom Beacon SMS,
 Akshar's Databricks adapter, and Rishit's deployed mobile flow. QStash remains on Free;
 the cadence and delivery limits are documented in `DEPLOYMENT.md`.
+
+## Databricks handoff integration (2026-09-19)
+
+Integrated Akshar's `cdb4ff6` branch without editing its decision/data modules. The trip
+runtime now calls `evaluateTrip` for initial selection and provider replacement. It
+allowlists ranking context, carries simulation/expiry separately from shared types,
+preserves immutable objectives and exclusions, and rechecks expiry after evaluation.
+An expired evaluation returns to a refreshable state. Discovery reserves one of the
+16 evaluator slots for walking and explicitly reports omitted providers.
+
+Validation: 49 agent/backend tests, 30 Databricks track tests, and the repository
+lint/checkpoint/typecheck/production-build checks passed. The production-build HTTP
+smoke at localhost:3200 exercised live ANS and hosted providers with real Redis,
+initial selection, confirmation, booking, automatic replacement, arrival, and one
+simulated overdue alert. It asserted `LOCAL_POLICY_FALLBACK` and `SIMULATED_TRANSPORT`.
+The local server was stopped after testing. No Databricks token or authenticated CLI
+profile exists in this checkout, so this does not claim live SQL here; Akshar's own
+workspace evidence remains separately documented. Scheduled transit awaits a real
+supported corridor/itinerary rather than fabricated walking estimates.
+
+The user has now requested Telegram instead of Twilio. That transport replacement
+will be a separate change; no Twilio paid upgrade or number purchase was performed.

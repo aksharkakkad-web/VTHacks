@@ -62,9 +62,19 @@ Do not upload `.env.local`, identity private keys, or the local state directory 
 | `BEACON_PROVIDER_CREDENTIALS` | JSON `{ "<registration>:campus_ride": {"baseUrl":"https://<domain>/api/demo/providers/campus_ride","token":"<provider token>"}, ... }` |
 | `BEACON_MONITOR_TOKEN` | Authenticated `POST /api/trips/monitor` worker credential |
 
-Keep `DEMO_MODE=true` until the real decision adapter and approved-recipient SMS setup
-are connected. ANS can be live independently, but recommendation and notification
-events remain explicitly labeled as demo. Adding an ANS key alone does not enable live mode.
+Keep `DEMO_MODE=true` while using demo controls and simulated SMS. The decision adapter
+and ANS can use live services independently. Ranking now calls Akshar's server-only
+`evaluateTrip` adapter; set `DATABRICKS_HOST`, `DATABRICKS_TOKEN`, and
+`DATABRICKS_WAREHOUSE_ID` to enable SQL. Without them, `LOCAL_POLICY_FALLBACK` is explicit.
+Validated SQL uses `DATABRICKS_EVALUATION`; fixture quotes remain `SIMULATED_TRANSPORT`
+in either mode. `DATABRICKS_AUDIT_TABLE` optionally enables the teammate's sanitized audit.
+This checkout currently has no Databricks access token or authenticated CLI profile;
+the teammate's separate workspace evidence does not prove hosted credentials here.
+
+The current Twilio trial allows only preset messages. It cannot send Beacon's custom
+alert text or location link. Staying on Free keeps SMS simulated; enabling custom SMS
+requires an upgraded account, an eligible owned sender and a verified end-to-end test.
+Adding credentials or an ANS key alone never changes these modes.
 
 ## Deployment and registration sequence
 

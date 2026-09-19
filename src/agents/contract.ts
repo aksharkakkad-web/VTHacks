@@ -14,7 +14,7 @@ export type TripRequest = { tripId: string; pickup: Point; destination: Point };
 export type ProviderTripStatus = "accepted" | "waiting" | "cancelled" | "in_trip" | "completed";
 export type ProviderTrip = { id: string; status: ProviderTripStatus };
 /** Adapter metadata is stripped before publishing the frozen CandidatePlan shape. */
-export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number };
+export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number; quoteSource?: "simulated" };
 export function providerServiceId(ansId: string, mode: ProviderDescriptor["mode"]) { return `${ansId}:${mode}`; }
 export interface ProviderAgent {
   descriptor: ProviderDescriptor;
@@ -55,6 +55,7 @@ export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now
   const travelMinutes = number(q.travel_time_minutes, "travel", 1440);
   const walkingMinutes = number(q.walking_minutes, "walking", 1440);
   return {
+    ...(q.simulated === true ? { quoteSource: "simulated" as const } : {}),
     quoteExpiresAt: Math.min(now + 120_000, q.expires_at === undefined ? Infinity : Date.parse(q.expires_at as string)),
     planId: `${provider.id}-${now}`, providerId: provider.id, providerName: provider.name,
     mode: provider.mode, available: q.available, cost, waitMinutes, travelMinutes, walkingMinutes,

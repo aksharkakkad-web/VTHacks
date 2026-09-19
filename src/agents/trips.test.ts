@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
-import { StudentAgent } from "./student/service";
+import { StudentAgent, type Dependencies } from "./student/service";
+import { decisionRecommendation } from "./student/databricks";
+import { runDecision } from "../integrations/databricks/evaluate";
 import { MemoryTripStore } from "../lib/trip-state/store";
 import { demoDescriptors } from "./demo-provider";
 import { LocalDemoDirectory } from "../integrations/ans/directory";
@@ -8,27 +10,57 @@ import { normalizeQuote, type ProviderAgent, type ProviderTripStatus, type TripR
 import type { CandidatePlan } from "../types/provider";
 import type { TripRecord } from "../lib/trip-state/model";
 
-function setup() {
+function setup(recommend?: Dependencies["recommend"]) {
   let now = 10_000; let sends = 0; const released: TripRequest[] = [];
-  const control = { cancelFails: false, requestFails: false, requestMissing: false, evaluationFails: false, canReconcile: true, cancellations: 0, status: "waiting" as ProviderTripStatus, quoteTtl: 120_000 };
+  const control = { cancelFails: false, requestFails: false, requestMissing: false, evaluationFails: false, evaluationDelay: 0, canReconcile: true, cancellations: 0, status: "waiting" as ProviderTripStatus, quoteTtl: 120_000 };
   const store = new MemoryTripStore();
   const providers = demoDescriptors.filter((p) => p.mode !== "transit");
   const agent = new StudentAgent({ store, directory: new LocalDemoDirectory(providers, true), demo: true, clock: () => now,
     provider: (descriptor): ProviderAgent => ({ descriptor,
-      quote: async () => normalizeQuote({ provider_id: descriptor.id, available: true, cost: descriptor.id === "campus_ride" ? 0 : 7, pickup_eta_minutes: 8, travel_time_minutes: 11, walking_minutes: 1, expires_at: new Date(now + control.quoteTtl).toISOString() }, descriptor, now),
+      quote: async () => normalizeQuote({ provider_id: descriptor.id, available: true, simulated: true, cost: descriptor.id === "campus_ride" ? 0 : 7, pickup_eta_minutes: 8, travel_time_minutes: 11, walking_minutes: 1, expires_at: new Date(now + control.quoteTtl).toISOString() }, descriptor, now),
       requestTrip: async (request) => { released.push(request); if (control.requestFails) throw new Error("Response lost"); return { id: descriptor.id + "-booking", status: "waiting" }; },
       getStatus: async () => ({ id: descriptor.id + "-booking", status: control.status }),
       cancelTrip: async () => { control.cancellations++; if (control.cancelFails) throw new Error("Provider unavailable"); },
       getRequestStatus: control.canReconcile ? async (id) => { if (control.requestFails) throw new Error("Provider unavailable"); return !control.requestMissing && released.some((r) => r.tripId === id) ? { id: descriptor.id + "-booking", status: control.status } : undefined; } : undefined,
       cancelRequest: control.canReconcile ? async () => { control.cancellations++; if (control.cancelFails) throw new Error("Provider unavailable"); } : undefined,
     }),
-    recommend: async (plans: CandidatePlan[]) => { if (control.evaluationFails) throw new Error("Evaluator unavailable"); return { selectedPlanId: plans.find((p) => p.mode === "campus_ride")?.planId ?? plans.find((p) => p.mode === "independent_ride")?.planId ?? plans[0].planId, reasonCodes: ["DEMO"], explanation: "Demo evaluator", evaluatedAt: new Date(now).toISOString() }; },
+    recommend: recommend ?? (async (plans: CandidatePlan[]) => { if (control.evaluationFails) throw new Error("Evaluator unavailable"); now += control.evaluationDelay; return { selectedPlanId: plans.find((p) => p.mode === "campus_ride")?.planId ?? plans.find((p) => p.mode === "independent_ride")?.planId ?? plans[0].planId, reasonCodes: ["DEMO"], explanation: "Demo evaluator", evaluatedAt: new Date(now).toISOString() }; }),
     notify: async () => { sends++; return { id: "demo-message", simulated: true }; },
     graceMinutes: 5,
   });
   return { agent, store, released, control, sends: () => sends, advance: (ms: number) => { now += ms; } };
 }
 const input = { origin: { lat: 37.229, lng: -80.414 }, preferences: { home: { lat: 37.221, lng: -80.420 }, maxBudget: 10, walkingPreference: "minimize", trustedContact: { name: "Maya", phone: "+15555550100", consent: true, shareLocation: true } } };
+test("teammate decision policy integrates with confirmation and autonomous replacement", async () => {
+  const s = setup(decisionRecommendation(runDecision));
+  const trip = await start(s);
+  assert.equal(trip.selectedPlan?.mode, "campus_ride");
+  assert.ok(trip.recommendation?.reasonCodes.includes("LOCAL_POLICY_FALLBACK"));
+  assert.ok(trip.recommendation?.reasonCodes.includes("SIMULATED_TRANSPORT"));
+  assert.equal(s.released.length, 0);
+  assert.ok(trip.candidates.every(p => !("quoteSource" in p) && !("quoteExpiresAt" in p)));
+  for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
+  const replacement = await s.agent.act(trip.id, "owner", "cancel-provider");
+  assert.equal(replacement.selectedPlan?.mode, "independent_ride");
+  assert.ok(replacement.recommendation?.reasonCodes.includes("REPLANNED_AFTER_PROVIDER_FAILURE"));
+  assert.equal(s.released.length, 2);
+});
+
+test("a quote expiring while the evaluator awaits never reaches selected or booking", async () => {
+  const s = setup();
+  s.control.quoteTtl = 1000;
+  s.control.evaluationDelay = 1001;
+  const trip = await s.agent.create("owner", input);
+  await s.agent.act(trip.id, "owner", "discover");
+  await assert.rejects(s.agent.act(trip.id, "owner", "evaluate"), { code: "QUOTE_EXPIRED" });
+  assert.equal(s.released.length, 0);
+  assert.equal((await s.agent.read(trip.id, "owner")).selectedPlan, undefined);
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "COLLECTING_QUOTES");
+  s.control.evaluationDelay = 0;
+  await s.agent.act(trip.id, "owner", "discover");
+  assert.equal((await s.agent.act(trip.id, "owner", "evaluate")).state, "SELECTED");
+});
+
 async function start(s: ReturnType<typeof setup>) {
   let trip = await s.agent.create("owner", input);
   trip = await s.agent.act(trip.id, "owner", "discover");

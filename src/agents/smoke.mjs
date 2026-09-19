@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 const base = process.env.BEACON_SMOKE_URL ?? "http://localhost:3100";
 const liveAns = process.env.BEACON_SMOKE_LIVE_ANS === "true";
+const decisionEngine = process.env.BEACON_SMOKE_DECISION_ENGINE ?? "local_fallback";
+assert.ok(["local_fallback", "databricks"].includes(decisionEngine));
 let cookie = "";
 async function call(path, body = {}, status = 200, method = "POST", useCookie = true) {
   const response = await fetch(`${base}${path}`, { method, headers: { "Content-Type": "application/json", ...(useCookie ? { Cookie: cookie } : {}) }, ...(method === "POST" ? { body: JSON.stringify(body) } : {}) });
@@ -19,10 +21,12 @@ const trip = await create();
 await call(`/api/trips/${trip.id}/request`, {}, 409);
 await call(`/api/trips/${trip.id}`, {}, 401, "GET", false);
 const initial = await start(trip);
+for (const code of [decisionEngine === "databricks" ? "DATABRICKS_EVALUATION" : "LOCAL_POLICY_FALLBACK", "SIMULATED_TRANSPORT"]) assert.ok(initial.recommendation.reasonCodes.includes(code));
 assert.equal(initial.selectedPlan.mode, "campus_ride");
 assert.equal(initial.providerVerified, liveAns);
 assert.equal(initial.sensitiveDataReleased, true);
 const replacement = await call(`/api/demo/trips/${trip.id}/cancel-provider`);
+assert.ok(replacement.recommendation.reasonCodes.includes("REPLANNED_AFTER_PROVIDER_FAILURE"));
 assert.equal(replacement.selectedPlan.mode, "independent_ride");
 assert.equal(replacement.state, "WAITING_FOR_PICKUP");
 assert.equal(replacement.providerVerified, liveAns);
@@ -42,6 +46,4 @@ assert.equal(events.filter((e) => e.code === "DEMO_ALERT").length, 1);
 await call(`/api/trips/${second.id}/events`, { event: "provider.cancelled" }, 503);
 await call("/api/demo/reset");
 console.log("PASS: real provider HTTP → recommendation → confirmation → trust gate → booking → autonomous replacement → arrival; overdue demo alert once; session and callback protection.");
-console.log(liveAns
-  ? "Evidence: live ANS resolution, DNS/badge/TLS identity checks, and verified provider HTTP handoff. Transportation, ranking, and SMS remain simulated; no live Databricks or Beacon SMS claim."
-  : "Evidence: provider availability, ranking, identity trust, and SMS are explicitly demo inputs. This does not prove live ANS, Databricks, or Twilio.");
+console.log(`Evidence: ${liveAns ? "live ANS resolution and DNS/badge/TLS verification" : "local demo identity trust"}; ${decisionEngine === "databricks" ? "Databricks evaluation" : "explicit local decision-policy fallback"}. Transportation and SMS remain simulated.`);

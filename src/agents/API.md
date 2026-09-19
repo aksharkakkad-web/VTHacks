@@ -19,8 +19,11 @@ node src/agents/smoke.mjs
 
 The smoke test drives HTTP routes, not just functions. Providers are separate HTTP
 servers on loopback 4311–4313. Availability, costs, movement, cancellations, and SMS
-are simulated. The current decision fallback is marked `DEMO_EVALUATION`; it is not
-Databricks. Local identity trust is marked `LOCAL_DEMO_TRUST`; `providerVerified`
+are simulated. The trip runtime now calls Akshar's `evaluateTrip` adapter. Missing
+or unavailable workspace credentials produce `LOCAL_POLICY_FALLBACK`; successful
+validated SQL produces `DATABRICKS_EVALUATION`. `SIMULATED_TRANSPORT` labels fixture
+quotes independently of the evaluation engine. Display the recommendation explanation
+and these source/fallback distinctions. Local identity trust is marked `LOCAL_DEMO_TRUST`; `providerVerified`
 stays **false** until live ANS verification succeeds. `alertSent` stays **false** for
 a simulated alert. Never show those as a live ANS badge or a delivered SMS.
 
@@ -63,6 +66,7 @@ Emergency flags (`immediate_danger`, `medical_emergency`, `serious_injury`) retu
 
 Errors are `{error:{code,message}}`. 401 means no session, 404 means missing or foreign
 trip, 409 means wrong state/stale quote/busy trip, 403 means verification/policy denied,
+409 `NO_FEASIBLE_PLAN` means no option satisfies the approved constraints,
 502 `BOOKING_UNCERTAIN` means the request may have been accepted. Keep polling the
 same trip; do not create another trip to retry. The server checks the original request
 without resending coordinates when the provider supports `reconcile_trip`. It books a
@@ -104,6 +108,22 @@ Notifications require explicit contact consent; location is included only with s
 `TWILIO_FROM_NUMBER` enable real SMS outside demo mode. The outbox claim is persisted
 before sending; ambiguous sends are flagged, not blindly retried. Accepted does not
 prove delivered. Beacon is not emergency dispatch.
+
+The Databricks handoff passes budget, walking/transfer preferences, excluded provider
+IDs, expiry, and explicit simulated-source labels. It never receives coordinates,
+trusted contacts, identity, free text, or the raw drinking/exhaustion flags. Those
+temporary flags only strengthen the walking preference. Objectives are immutable
+within a trip and remain version 0 during provider replacement. Quotes are checked
+again after evaluation and before confirmation/booking.
+Discovery quotes at most 15 providers (stable ID order), reserving one of the evaluator's
+16 slots for walking. Additional omitted providers produce a `PROVIDER_LIMIT` event;
+the result is not an exhaustive search of every registry entry.
+
+Configure the server-only `DATABRICKS_HOST`, `DATABRICKS_TOKEN`, and
+`DATABRICKS_WAREHOUSE_ID` for hosted SQL; `DATABRICKS_AUDIT_TABLE` is optional.
+Never deploy a short-lived CLI token as a durable credential. This handoff does not
+invent corridor IDs or walking estimates to call `getScheduledTransitOption`:
+the current coarse origin/destination contract does not identify a supported itinerary.
 
 Vercel needs the marketplace's `KV_REST_API_URL` + `KV_REST_API_TOKEN` (or a complete
 `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` pair) and a scheduler

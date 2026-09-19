@@ -70,6 +70,18 @@ test("untrusted HTTP and private provider endpoints are blocked outside explicit
   }
 });
 
+test("discovery reserves walking capacity within the 16-plan decision contract", async () => {
+  const providers = Array.from({ length: 20 }, (_, i) => {
+    const descriptor = { ...provider, id: `provider-${i}` };
+    return { descriptor, quote: async () => normalizeQuote({ ...raw, provider_id: descriptor.id, simulated: true }, descriptor) };
+  });
+  const result = await collectCandidates(providers, request, new Set());
+  assert.equal(result.candidates.length, 16);
+  assert.equal(result.omittedProviderCount, 5);
+  assert.equal(result.simulatedPlanIds.length, 16);
+  assert.ok(result.candidates.every(p => !("quoteSource" in p)));
+});
+
 test("public quotes never receive provider credentials", async (t) => {
   const headers: unknown[] = [];
   t.mock.method(transport, "publicJson", async (_url: string, options: { headers?: unknown }) => {

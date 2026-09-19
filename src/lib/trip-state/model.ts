@@ -10,6 +10,7 @@ export type TripRecord = {
   originZone: string; destinationZone: string; providers: ProviderDescriptor[];
   excluded: string[]; confirmed: boolean; quoteDeadline: number;
   quoteExpirations?: Record<string, number>;
+  simulatedPlanIds?: string[];
   identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
   pendingBooking?: { providerId: string; requestId: string; attempts?: number; retryAt?: number };
   pendingReplacement?: { attempts: number; retryAt: number };

@@ -10,12 +10,13 @@ import type { TripStore } from "../../lib/trip-state/store";
 import { distanceMeters } from "../../lib/trip-state/geofence";
 import { collectCandidates } from "../discovery";
 import { parseTripInput } from "./input";
+import type { DecisionHandoff } from "./databricks";
 
 export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline";
 export type Dependencies = {
   store: TripStore; directory: AgentDirectory; demo: boolean; clock?: () => number; graceMinutes?: number;
   provider: (descriptor: ProviderDescriptor, identity?: VerifiedIdentity) => ProviderAgent;
-  recommend: (plans: CandidatePlan[], context: TripContext) => Promise<Recommendation>;
+  recommend: (plans: CandidatePlan[], context: TripContext, handoff: DecisionHandoff) => Promise<Recommendation>;
   notify: (contact: Contact, message: string, key: string) => Promise<{ id: string; simulated: boolean }>;
 };
 const activeStates = ["NAVIGATING", "WAITING_FOR_PICKUP", "IN_TRIP", "OVERDUE"] as const;
@@ -78,17 +79,25 @@ export class StudentAgent {
     catch { this.log(r, "FAILED", "DISCOVERY_FAILED", "Provider discovery is unavailable; no location was shared"); throw new TripError("DISCOVERY_FAILED", "Provider discovery unavailable", 503); }
     this.log(r, "COLLECTING_QUOTES", "COARSE_QUOTES", "Requesting quotes using approximate zones only");
     const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded), 22, this.now());
-    r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000; r.quoteExpirations = result.quoteExpirations;
+    r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000; r.quoteExpirations = result.quoteExpirations; r.simulatedPlanIds = result.simulatedPlanIds;
+    if (result.omittedProviderCount) this.log(r, "COLLECTING_QUOTES", "PROVIDER_LIMIT", `${result.omittedProviderCount} additional providers omitted from this bounded search`);
     if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
   }
   private async evaluate(r: TripRecord) {
-    if (r.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quotes expired; refresh providers");
+    const expired = (): never => {
+      delete r.trip.selectedPlan; delete r.trip.recommendation; delete r.identity;
+      r.trip.providerVerified = false;
+      this.log(r, "COLLECTING_QUOTES", "QUOTE_EXPIRED", "Quotes expired; refresh providers");
+      throw new TripError("QUOTE_EXPIRED", "Quotes expired; refresh providers");
+    };
+    if (r.quoteDeadline <= this.now()) expired();
     this.log(r, "EVALUATING", "EVALUATION_STARTED", "Evaluating transportation options");
     let recommendation: Recommendation;
-    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }); }
-    catch { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
+    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }, { quoteDeadline: r.quoteDeadline, quoteExpirations: r.quoteExpirations ?? {}, simulatedPlanIds: r.simulatedPlanIds ?? [], excludedProviderIds: [...r.excluded] }); }
+    catch (error) { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); if (error instanceof TripError) throw error; throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
     const plan = r.trip.candidates.find((p) => p.planId === recommendation.selectedPlanId && p.available && p.cost <= r.context.maxBudget && !r.excluded.includes(p.providerId ?? ""));
     if (!plan || !Array.isArray(recommendation.reasonCodes) || !recommendation.reasonCodes.every((c) => typeof c === "string") || typeof recommendation.explanation !== "string" || !Number.isFinite(Date.parse(recommendation.evaluatedAt))) { this.log(r, "FAILED", "INVALID_RECOMMENDATION", "No valid plan fits the approved constraints"); throw new TripError("INVALID_RECOMMENDATION", "Decision engine returned an invalid plan", 502); }
+    if (Math.min(r.quoteDeadline, r.quoteExpirations?.[plan.planId] ?? Infinity) <= this.now()) expired();
     r.trip.recommendation = recommendation; r.trip.selectedPlan = plan; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length); delete r.identity;
     this.log(r, "SELECTED", "PLAN_SELECTED", `${plan.providerName} recommended; awaiting confirmation`);
   }
