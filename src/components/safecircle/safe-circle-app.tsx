@@ -12,7 +12,6 @@ import {
 import { defaultProfile } from "./mock-data";
 import { MapSurface } from "./map-surface";
 import { ConsumerScreen } from "./screens";
-import { LaunchAnimation } from "./launch-animation";
 import {
   ContextDialog,
   DetailsDialog,
@@ -121,34 +120,31 @@ export function SafeCircleApp() {
   const showMap = !["bootstrap", "arrival"].includes(model.stage);
 
   return (
-    <>
-      <LaunchAnimation />
-      <AppShell onTechnicalOpen={() => setPanel("technical")}>
-        {showMap && <MapSurface model={model} />}
-        <div className="sc-live-region" aria-live="polite" aria-atomic="true">
-          <span className="sr-only">SafeCircle status: {model.trip.statusMessage}</span>
-        </div>
-        <ConsumerScreen
-          model={model}
-          onboardingDraft={onboardingDraft}
-          hasTripContext={Object.keys(state.tripContext).length > 0}
-          onSetupHome={setupHome}
-          onSaveProfile={persistProfile}
-          onAction={act}
-          onEditProfile={() => setPanel("profile")}
-          onOpenContext={() => setPanel("context")}
-          onOpenDetails={() => setPanel("details")}
-          onOpenHelp={() => setPanel("help")}
-          onOpenTechnical={() => setPanel("technical")}
-        />
-        {sessionOnly && <p className="sc-session-note" role="status">Preferences are saved for this session only.</p>}
+    <AppShell onTechnicalOpen={() => setPanel("technical")}>
+      {showMap && <MapSurface model={model} />}
+      <div className="sc-live-region" aria-live="polite" aria-atomic="true">
+        <span className="sr-only">SafeCircle status: {model.trip.statusMessage}</span>
+      </div>
+      <ConsumerScreen
+        model={model}
+        onboardingDraft={onboardingDraft}
+        hasTripContext={Object.keys(state.tripContext).length > 0}
+        onSetupHome={setupHome}
+        onSaveProfile={persistProfile}
+        onAction={act}
+        onEditProfile={() => setPanel("profile")}
+        onOpenContext={() => setPanel("context")}
+        onOpenDetails={() => setPanel("details")}
+        onOpenHelp={() => setPanel("help")}
+        onOpenTechnical={() => setPanel("technical")}
+      />
+      {sessionOnly && <p className="sc-session-note" role="status">Preferences are saved for this session only.</p>}
 
-        {model.profile && <ProfileDialog open={panel === "profile"} onOpenChange={(open) => setPanel(open ? "profile" : null)} profile={model.profile} onSave={persistProfile} />}
-        <ContextDialog open={panel === "context"} onOpenChange={(open) => setPanel(open ? "context" : null)} current={state.tripContext} onApply={(context) => act({ type: "SET_CONTEXT", context })} onClear={() => act({ type: "CLEAR_CONTEXT" })} />
-        <HelpDialog open={panel === "help"} onOpenChange={(open) => setPanel(open ? "help" : null)} trustedContact={model.profile?.trustedContact} />
-        <DetailsDialog open={panel === "details"} onOpenChange={(open) => setPanel(open ? "details" : null)} model={model} />
-        <TechnicalDialog open={panel === "technical"} onOpenChange={(open) => setPanel(open ? "technical" : null)} model={model} onAction={act} />
-      </AppShell>
-    </>
+      {model.profile && <ProfileDialog open={panel === "profile"} onOpenChange={(open) => setPanel(open ? "profile" : null)} profile={model.profile} onSave={persistProfile} />}
+      <ContextDialog open={panel === "context"} onOpenChange={(open) => setPanel(open ? "context" : null)} current={state.tripContext} onApply={(context) => act({ type: "SET_CONTEXT", context })} onClear={() => act({ type: "CLEAR_CONTEXT" })} />
+      <HelpDialog open={panel === "help"} onOpenChange={(open) => setPanel(open ? "help" : null)} trustedContact={model.profile?.trustedContact} />
+      <DetailsDialog open={panel === "details"} onOpenChange={(open) => setPanel(open ? "details" : null)} model={model} />
+      <TechnicalDialog open={panel === "technical"} onOpenChange={(open) => setPanel(open ? "technical" : null)} model={model} onAction={act} />
+    </AppShell>
   );
 }

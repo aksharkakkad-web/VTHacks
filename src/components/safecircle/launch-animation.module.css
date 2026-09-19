@@ -1,17 +1,11 @@
 .launch {
-  position: fixed;
-  z-index: 100;
-  inset: 0;
   display: grid;
   min-height: 100svh;
   place-items: center;
   overflow: hidden;
   background: var(--sc-sage);
   color: var(--sc-carbon);
-  pointer-events: auto;
 }
-
-.launch.isAnimating { animation: launch-exit 2300ms linear both; }
 
 .lockup {
   display: grid;
@@ -37,21 +31,21 @@
   stroke-dashoffset: 1;
 }
 
-.isAnimating .geometry {
+.geometry {
   animation: draw-geometry 620ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
-.isAnimating .geometryOne { animation-delay: 70ms; }
-.isAnimating .geometryTwo { animation-delay: 160ms; }
-.isAnimating .geometryThree { animation-delay: 230ms; }
-.isAnimating .geometryFour { animation-delay: 120ms; }
+.geometryOne { animation-delay: 70ms; }
+.geometryTwo { animation-delay: 160ms; }
+.geometryThree { animation-delay: 230ms; }
+.geometryFour { animation-delay: 120ms; }
 
 .routeNode {
   fill: var(--sc-sage-strong);
   opacity: 0;
 }
 
-.isAnimating .routeNode {
+.routeNode {
   animation: node-resolve 260ms cubic-bezier(0.22, 1, 0.36, 1) 500ms forwards;
 }
 
@@ -60,7 +54,7 @@
   opacity: 0;
 }
 
-.isAnimating .logoField {
+.logoField {
   animation: field-resolve 420ms cubic-bezier(0.22, 1, 0.36, 1) 260ms forwards;
 }
 
@@ -75,7 +69,7 @@
   transform-origin: 140px 112px;
 }
 
-.isAnimating .orbit {
+.orbit {
   animation: draw-orbit 720ms cubic-bezier(0.32, 0.72, 0, 1) 350ms forwards;
 }
 
@@ -85,7 +79,7 @@
   transform-origin: 140px 112px;
 }
 
-.isAnimating .signalOrbit {
+.signalOrbit {
   animation: travel-signal 720ms cubic-bezier(0.32, 0.72, 0, 1) 680ms forwards;
 }
 
@@ -99,7 +93,7 @@
   transform-origin: 145px 124px;
 }
 
-.isAnimating .core {
+.core {
   animation: core-resolve 420ms cubic-bezier(0.22, 1, 0.36, 1) 1230ms forwards;
 }
 
@@ -126,7 +120,7 @@
   line-height: 1;
 }
 
-.isAnimating .wordmark {
+.wordmark {
   animation: type-resolve 390ms cubic-bezier(0.22, 1, 0.36, 1) 1320ms forwards;
 }
 
@@ -139,7 +133,7 @@
   line-height: 1.35;
 }
 
-.isAnimating .tagline {
+.tagline {
   animation: type-resolve 360ms cubic-bezier(0.22, 1, 0.36, 1) 1480ms forwards;
 }
 
@@ -177,11 +171,6 @@
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
-@keyframes launch-exit {
-  0%, 84% { opacity: 1; filter: blur(0); }
-  100% { opacity: 0; filter: blur(2px); }
-}
-
 @media (max-width: 340px) {
   .lockup { padding: 18px; }
   .routeGraphic { width: min(78vw, 250px); }
@@ -189,16 +178,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .launch {
-    opacity: 0;
-    animation: none;
-    pointer-events: none;
-  }
-
   .launch *,
   .launch *::before,
   .launch *::after {
     animation: none !important;
     transition: none !important;
   }
+
+  .geometry { stroke-dashoffset: 0; }
+  .routeNode,
+  .logoField,
+  .signalOrbit,
+  .core,
+  .wordmark,
+  .tagline { opacity: 1; }
+  .orbit { stroke-dashoffset: 0; }
+  .signalOrbit { transform: rotate(0deg); }
+  .core { transform: scale(1); }
+  .wordmark,
+  .tagline { filter: blur(0); transform: translateY(0); }
 }

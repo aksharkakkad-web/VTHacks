@@ -1,41 +1,10 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import styles from "./launch-animation.module.css";
 
-const LAUNCH_DURATION_MS = 2300;
-
 export function LaunchAnimation() {
-  const [visible, setVisible] = useState(true);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (motionPreference.matches) {
-      const frame = window.requestAnimationFrame(() => setVisible(false));
-      return () => window.cancelAnimationFrame(frame);
-    }
-
-    let timer: number | undefined;
-    const frame = window.requestAnimationFrame(() => {
-      setStarted(true);
-      timer = window.setTimeout(() => setVisible(false), LAUNCH_DURATION_MS);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      if (timer !== undefined) window.clearTimeout(timer);
-    };
-  }, []);
-
-  if (!visible) return null;
-
   return (
-    <div
-      className={`${styles.launch}${started ? ` ${styles.isAnimating}` : ""}`}
+    <main
+      className={styles.launch}
       data-testid="launch-animation"
-      aria-hidden="true"
     >
       <div className={styles.lockup}>
         <svg
@@ -82,10 +51,10 @@ export function LaunchAnimation() {
         </svg>
 
         <div className={styles.typeLockup}>
-          <p className={styles.wordmark}>SafeCircle</p>
+          <h1 className={styles.wordmark}>SafeCircle</h1>
           <p className={styles.tagline}>Get home. We handle the rest.</p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
