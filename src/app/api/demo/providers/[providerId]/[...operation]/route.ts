@@ -1,4 +1,5 @@
-import { demoDescriptors, networkToken } from "@/agents/demo-provider";
+import { networkToken } from "@/agents/demo-provider";
+import { developerDemoDescriptors } from "@/agents/developer-demo";
 import { networkProfile } from "@/agents/provider-manifest";
 import { providerUrl } from "@/agents/http-provider";
 import { providerServiceId, type ProviderDescriptor } from "@/agents/contract";
@@ -11,12 +12,12 @@ async function handle(request: Request, context: Context) {
   if (process.env.BEACON_HOSTED_PROVIDERS !== "true") return Response.json({ error: "Not found" }, { status: 404 });
   if (process.env.BEACON_HOSTED_PROVIDER_TOKEN && !networkToken(process.env.BEACON_HOSTED_PROVIDER_TOKEN)) return Response.json({ error: "Provider authorization not configured" }, { status: 503 });
   const { providerId, operation } = await context.params;
-  const seed = demoDescriptors.find((p) => p.id === providerId);
+  const seed = developerDemoDescriptors.find((p) => p.id === providerId);
   if (!seed) return Response.json({ error: "Provider not found" }, { status: 404 });
   const publicOrigin = process.env.BEACON_PROVIDER_ORIGIN;
-  if (!publicOrigin || !publicOrigin.startsWith("https://")) return Response.json({ error: "Provider origin not configured" }, { status: 503 });
+  if (!publicOrigin) return Response.json({ error: "Provider origin not configured" }, { status: 503 });
   let origin: string;
-  try { const url = providerUrl(publicOrigin); if (url.pathname !== "/") throw new Error("Invalid origin"); origin = url.origin; }
+  try { const url = providerUrl(publicOrigin, process.env.DEMO_MODE === "true" && !process.env.VERCEL); if (url.pathname !== "/") throw new Error("Invalid origin"); origin = url.origin; }
   catch { return Response.json({ error: "Provider origin not configured" }, { status: 503 }); }
   const ansId = process.env.BEACON_ANS_AGENT_ID;
   const descriptor: ProviderDescriptor = { ...seed, id: ansId ? providerServiceId(ansId, seed.id) : seed.id, ...(ansId ? { ansId, source: "ans" } : {}), serviceId: seed.id, ...(networkToken(process.env.BEACON_HOSTED_PROVIDER_TOKEN) ? { profileVersion: networkProfile } : {}), baseUrl: `${origin}/api/demo/providers/${seed.id}`, agentHost: new URL(origin).hostname };

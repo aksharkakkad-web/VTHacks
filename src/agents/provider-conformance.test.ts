@@ -73,6 +73,25 @@ test("network conformance: three configured HTTP services include two services w
   } finally { await Promise.all(endpoints.map(e => e.close())); }
 });
 
+test("Lyft-style developer example uses the real HTTP lifecycle with simulated payment and no affiliation", async () => {
+  const e = await endpoint("lyft-demo");
+  try {
+    const quote = await e.client.quote(query); assert.ok(quote.network);
+    assert.equal(quote.network.manifest.operatorName, "Beacon demo team");
+    assert.equal(quote.network.manifest.executionMode, "simulated");
+    assert.equal(quote.network.offer.serviceId, "lyft-demo");
+    const payload = { tripId: "lyft-example-attempt", ...coordinates, network: { offer: quote.network.offer, consentId: "confirmed" } };
+    const booked = await e.client.requestTrip(payload);
+    assert.equal(booked.payment?.state, "authorized");
+    assert.deepEqual(await e.client.getStatus(booked.id), booked);
+    assert.deepEqual(await e.client.requestTrip(payload), booked);
+    const cancelled = await e.client.cancelTrip(booked.id);
+    assert.equal(cancelled?.status, "cancelled");
+    assert.deepEqual(await e.client.getRequestStatus!(payload.tripId), cancelled);
+    assert.equal([...e.records.values()][0].sensitive, undefined);
+  } finally { await e.close(); }
+});
+
 test("network conformance: booking requires trusted offer, matching grant and persistent request fingerprint", async () => {
   const e = await endpoint();
   try {
