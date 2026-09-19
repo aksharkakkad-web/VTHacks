@@ -1,5 +1,5 @@
-import { SafeCircleApp } from "@/components/safecircle/safe-circle-app";
+import { BeaconApp } from "@/components/safecircle/beacon-app";
 
 export default function Home() {
-  return <SafeCircleApp />;
+  return <BeaconApp />;
 }
