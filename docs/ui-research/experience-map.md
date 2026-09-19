@@ -14,7 +14,8 @@ Recommendation → GO → Identity check → Authorized coordination → Accepte
 Waiting → Arriving → In trip → Arrived → Finish → Home
 Waiting / coordination → Provider cancelled → Reevaluate → Replacement selected
 → Replacement identity check → Authorized coordination → New ride confirmed → Waiting
-Any stage ↔ optional technical timeline / help
+Any stage ↔ optional technical timeline
+Active trip / overdue ↔ help
 Search or recovery → No suitable options → Adjust preferences / Try again
 Identity failure → Precise location withheld → Retry / Return home
 Connection loss → Keep last known state, label stale, pause demo → Reconnect
@@ -60,6 +61,8 @@ Overdue → Are you home? → Confirm arrival / Still travelling / Help
 - Status changes announced; dialogs manage focus, Escape and return focus. No fake mobile system bar.
 - Default fonts: Instrument Sans; body 16px, secondary 14px, metadata 12px, screen titles 32px, primary ETA 44px.
 - Map route dark forest; mint limited to CTA/current/verified/success. All colors and geometry centralized.
+- Walking is a local route option, not a provider: no ANS, authorization, pickup request or provider cancellation is manufactured.
+- Judge shortcuts replay the same guarded model and cannot skip required setup or exceed saved constraints.
 - Onboarding/profile data persists locally. No auth, messaging, payment, map search service, or new backend.
 
 ## Review plan

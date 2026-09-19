@@ -27,3 +27,6 @@ The supplied SafeCircle board remains the authority for color, typography and sh
 ## Deliberately rejected
 
 Transit's orange full surfaces, Apple Maps translucency, large mode selectors, duplicated comparison cards, Uber branding, arbitrary decorative gradients, animated route dashes, fake system home indicator. These conflict with the approved SafeCircle system or add cognitive work.
+# Help contact verification
+
+The [official Virginia Tech Police contact page](https://police.vt.edu/about/contact.html), checked September 19, 2026, distinguishes emergency 911, non-emergency dispatch 540-382-4343, and general information 540-231-6411. The help sheet should link to emergency and non-emergency dispatch, not mislabel the general office line as dispatch. QA verifies the `tel:` targets without placing calls.

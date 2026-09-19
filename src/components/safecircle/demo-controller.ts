@@ -193,7 +193,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
 
       if (state.stage === "replanning-evaluation") {
         const replacement = selectedFor(state);
-        if (!replacement) return withRevision(state, { stage: "no-options", selectedPlanId: undefined });
+        if (!replacement) return withRevision(state, { stage: "no-options", selectedPlanId: undefined, recommendation: undefined });
         return withRevision(state, {
           stage: "replacement-selected",
           selectedPlanId: replacement.planId,
@@ -245,6 +245,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         if (state.stage === "offline") return state;
         return withRevision(state, { stage: "offline", previousStage: state.stage, paused: true, offlineResume: { stage: state.stage, previousStage: state.previousStage, paused: state.paused } });
       }
+      if (!state.profile) return state;
       if (action.scenario === "context-fallback") {
         return withRevision(beginTrip(state), { stage: "context-fallback", fallbackActive: true });
       }
@@ -252,9 +253,12 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         if (!state.stage.startsWith("in-trip")) return state;
         return withRevision(state, { stage: "overdue", previousStage: state.stage });
       }
+      if (action.scenario === "verification-failed" && !state.stage.startsWith("verifying")) return state;
       return withRevision(state, {
         stage: action.scenario,
         previousStage: state.stage,
+        selectedPlanId: action.scenario === "no-options" ? undefined : state.selectedPlanId,
+        recommendation: action.scenario === "no-options" ? undefined : state.recommendation,
         providerVerified: false,
         providerAuthorized: false,
         sensitiveDataReleased: false,
@@ -302,6 +306,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
 function snapshotForStage(state: DemoState, stage: DemoStage, now?: number): DemoState {
   // Judge shortcuts replay the same transitions instead of inventing trust flags.
   let cursor = { ...createDemoState(state.profile), tripContext: state.tripContext };
+  if (!state.profile && !["bootstrap", "setup-home", "setup-preferences"].includes(stage)) return { ...cursor, stage: "setup-home" };
   if (["home", "setup-home", "setup-preferences", "bootstrap"].includes(stage)) return { ...cursor, stage };
   if (stage === "offline") return transitionDemo(state, { type: "SIMULATE", scenario: "offline" });
   const recovering = stage.includes("replacement") || stage.startsWith("replanning") || stage === "provider-cancelled" || (stage === "arrival" && state.recoveryCount > 0);
@@ -553,6 +558,8 @@ export function validatedProfile(input: unknown): SavedProfile | null {
   const homeName = candidate.homeName.trim();
   const homeAddress = candidate.homeAddress.trim();
   const maxBudget = candidate.maxBudget;
+  const contact = candidate.trustedContact?.trim() ?? "";
+  if (contact && (!/^\+?[\d()\s.-]+$/.test(contact) || contact.replace(/\D/g, "").length < 7 || contact.replace(/\D/g, "").length > 15)) return null;
   if (homeName.length < 2 || homeName.length > 60 || homeAddress.length < 5 || homeAddress.length > 160) return null;
   if (!Number.isFinite(maxBudget) || maxBudget < 0 || maxBudget > 100) return null;
   return {
@@ -561,6 +568,6 @@ export function validatedProfile(input: unknown): SavedProfile | null {
     maxBudget,
     walkingPreference: candidate.walkingPreference,
     avoidTransfers: candidate.avoidTransfers,
-    trustedContact: candidate.trustedContact?.trim() ?? "",
+    trustedContact: contact,
   };
 }

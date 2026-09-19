@@ -104,6 +104,8 @@ test('invalid stored profiles fail closed instead of crashing startup',()=>{
     assert.equal(validatedProfile(invalid),null);
   }
   assert(validatedProfile(defaultProfile));
+  assert(validatedProfile({...defaultProfile,trustedContact:'+1 (540) 555-0100'}));
+  assert.equal(validatedProfile({...defaultProfile,trustedContact:'javascript:alert(1)'}),null);
 });
 
 test('walking never impersonates a provider or releases pickup data',()=>{
@@ -172,4 +174,11 @@ test('profile actions validate storage data at the state boundary',()=>{
   const bad={...defaultProfile,maxBudget:NaN};
   assert.equal(act(home,{type:'SAVE_PROFILE',profile:bad}),home);
   assert.equal(act(home,{type:'RESTORE_PROFILE',profile:bad}).stage,'setup-home');
+});
+test('judge controls cannot skip required setup or manufacture a trip without a profile',()=>{
+  const state=createDemoState(null);
+  for(const stage of ['home','recommendation','waiting-initial','arrival','overdue']) {
+    assert.equal(act(state,{type:'JUMP',stage}).stage,'setup-home');
+  }
+  assert.equal(act(state,{type:'SIMULATE',scenario:'verification-failed'}),state);
 });
