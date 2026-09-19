@@ -12,7 +12,7 @@ npm ci
 # .env.local must contain DEMO_MODE=true. Keep all credentials out of Git.
 bash src/agents/serve-demo.sh
 # In a second terminal:
-DEMO_MODE=true npm run dev -- --port 3100
+DEMO_MODE=true BEACON_ANS_MODE=local npm run dev -- --port 3100
 # In a third terminal:
 node src/agents/smoke.mjs
 ```
@@ -123,7 +123,9 @@ only after ANS identity verification and an exact identity/endpoint match. See
 
 - Replace the explicit demo decision seam in `student/decision.ts` with Akshar's
   `decisionEngine.recommend(plans, context)` after its real contract lands.
-- Register callable Beacon providers using ANS; verify a live handoff and negative case.
-- Provision shared hosted storage and a server-side scheduler before claiming Vercel monitoring.
-- Verify live Twilio acceptance with an explicitly approved test recipient before claiming SMS.
+- Live ANS registration, deployed handoff/replacement, negative identity checks, and shared
+  hosted storage are verified; see `IMPLEMENTATION.md` for the evidence and simulation boundaries.
+- Connect a server-side scheduler before claiming automatic Vercel monitoring.
+- Upgrade the Twilio trial and verify a custom Beacon alert with an approved recipient.
+  One trial-template message was accepted, but this does not prove custom alert delivery.
 - Run the deployed mobile demo with Rishit's UI; this PR does not implement UI.

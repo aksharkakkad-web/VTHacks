@@ -46,7 +46,7 @@ and branch protection; never bypass a required review.
 
 The starting commit is `df29f8c`. No provider, trip API, ANS, or Databricks implementation
 exists there. ANS credentials are now saved locally and a user-owned domain is available;
-full deployed trip integration remains pending. The phase plan requires
+full UI/Databricks/monitor/SMS integration remains pending. The phase plan requires
 overdue monitoring even though the PRD labels it P1; implement the stronger phase gate.
 Use the shared `SELECTED` state for awaiting confirmation; do not add a new shared state.
 Default monitoring grace will be configurable (five minutes for the local demo), explicitly
@@ -65,7 +65,8 @@ replacement recovery after an outage or interrupted checkpoint.
 The production-build HTTP smoke on the reconciliation branch exercises session ownership,
 confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
-build, lint and typecheck pass. Shared checkpoints A/B are ready for integration.
+build, lint and typecheck pass. Mahin's checkpoints A/B/D/F are ready for integration;
+D/F use live ANS and HTTP handoff with the explicit demo decision seam.
 Databricks, custom Beacon SMS, hosted scheduling, and deployed UI verification remain open.
 
 ## Hosted provider and registration slice
@@ -90,8 +91,18 @@ The application directory now uses the official SDK's `/v1/agents` search and it
 `agents[]` / `status` response shape. The separate console search surface rejected
 `HTTP-API`. A live application-code probe discovered all three services and verified
 each against ANS resolution, the published DNS badge, trusted transparency evidence,
-and the actual HTTPS leaf fingerprint. This proves live identity checks; end-to-end
-deployed booking is recorded separately after the configured deployment is tested.
+and the actual HTTPS leaf fingerprint. Negative live probes rejected a substituted
+registration ID and a mismatched certificate pin before application data was sent.
+
+The deployed HTTP trip smoke passed on production commit `5463eba` with
+`BEACON_ANS_MODE=live`: quote collection, confirmation, verified Campus Ride booking,
+autonomous verified Independent Ride replacement, geofence arrival, private-state cleanup,
+one simulated overdue alert, session guards, callback rejection, and reset. Both provider
+selections emitted `ANS_VERIFIED`; neither used local-demo trust. An older local server
+sharing Redis was stopped after its monitor conflicted with the first smoke's final reset;
+the complete rerun then passed. Recommendation scoring, rides, and SMS remain simulated.
+The hosted scheduler, custom Beacon SMS, Databricks integration, and Rishit's deployed UI
+remain open; checkpoints C/E/G are not marked ready.
 
 ## Verified Upstash setup (2026-09-19)
 
