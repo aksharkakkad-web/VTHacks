@@ -10,7 +10,7 @@ import { normalizeQuote, type ProviderAgent, type ProviderTripStatus, type TripR
 import type { CandidatePlan } from "../types/provider";
 import type { TripRecord } from "../lib/trip-state/model";
 
-function setup(recommend?: Dependencies["recommend"]) {
+function setup(recommend?: Dependencies["recommend"], campusWeather?: Dependencies["campusWeather"]) {
   let now = 10_000; let sends = 0; const released: TripRequest[] = [];
   const control = { cancelFails: false, requestFails: false, requestMissing: false, evaluationFails: false, evaluationDelay: 0, canReconcile: true, cancellations: 0, status: "waiting" as ProviderTripStatus, quoteTtl: 120_000 };
   const store = new MemoryTripStore();
@@ -26,11 +26,50 @@ function setup(recommend?: Dependencies["recommend"]) {
     }),
     recommend: recommend ?? (async (plans: CandidatePlan[]) => { if (control.evaluationFails) throw new Error("Evaluator unavailable"); now += control.evaluationDelay; return { selectedPlanId: plans.find((p) => p.mode === "campus_ride")?.planId ?? plans.find((p) => p.mode === "independent_ride")?.planId ?? plans[0].planId, reasonCodes: ["DEMO"], explanation: "Demo evaluator", evaluatedAt: new Date(now).toISOString() }; }),
     notify: async () => { sends++; return { id: "demo-message", simulated: true }; },
-    graceMinutes: 5,
+    graceMinutes: 5, campusWeather,
   });
   return { agent, store, released, control, sends: () => sends, advance: (ms: number) => { now += ms; } };
 }
 const input = { origin: { lat: 37.229, lng: -80.414 }, preferences: { home: { lat: 37.221, lng: -80.420 }, maxBudget: 10, walkingPreference: "minimize", trustedContact: { name: "Maya", telegramChatId: "123456789", consent: true, shareLocation: true } } };
+test("campus weather stays private, affects recommendation, and expires before confirmation", async () => {
+  const calls: unknown[] = [];
+  const s = setup(decisionRecommendation(runDecision), (at) => {
+    calls.push(at);
+    return { status: "current", condition: "rain", issuedAt: new Date(at - 1000).toISOString(), validUntil: new Date(at + 1000).toISOString(), sourceUrl: "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly" };
+  });
+  const trip = await start(s);
+  assert.deepEqual(calls, [10000], "research receives only a clock, no GPS or student identity");
+  assert.ok(trip.recommendation?.reasonCodes.includes("RAIN_INCREASES_WALKING_COST"));
+  assert.equal((await s.agent.evidence(trip.id, "owner")).weather.condition, "rain");
+  await assert.rejects(s.agent.evidence(trip.id, "another-owner"), { code: "TRIP_NOT_FOUND" });
+  s.advance(1001);
+  await assert.rejects(s.agent.act(trip.id, "owner", "confirm"), { code: "QUOTE_EXPIRED" });
+  assert.equal((await s.agent.evidence(trip.id, "owner")).weather.status, "unknown");
+});
+
+test("campus forecast is not attached to trips outside its supported area", async () => {
+  const s = setup(decisionRecommendation(runDecision), () => { throw new Error("Must not be called"); });
+  const trip = await s.agent.create("owner", { ...input, origin: { lat: 38.9, lng: -77 } });
+  await s.agent.act(trip.id, "owner", "discover");
+  await s.agent.act(trip.id, "owner", "evaluate");
+  assert.equal((await s.agent.evidence(trip.id, "owner")).weather.status, "unknown");
+});
+
+test("weather expiry after verification releases the selection so the user can refresh", async () => {
+  const s = setup(decisionRecommendation(runDecision), (at) => ({ status: "current", condition: "rain", issuedAt: new Date(at - 1000).toISOString(), validUntil: new Date(at + 1000).toISOString(), sourceUrl: "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly" }));
+  const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm");
+  await s.agent.act(trip.id, "owner", "verify");
+  s.advance(1001);
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"), { code: "QUOTE_EXPIRED" });
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "COLLECTING_QUOTES");
+  assert.equal(s.released.length, 0);
+  await s.agent.act(trip.id, "owner", "discover");
+  await s.agent.act(trip.id, "owner", "evaluate");
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"), { code: "CONFIRMATION_REQUIRED" });
+  for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
+  assert.equal(s.released.length, 1);
+});
 test("teammate decision policy integrates with confirmation and autonomous replacement", async () => {
   const s = setup(decisionRecommendation(runDecision));
   const trip = await start(s);

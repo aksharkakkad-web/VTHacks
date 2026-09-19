@@ -11,6 +11,7 @@ import { telegramSender } from "../../integrations/notifications/telegram";
 import { FileTripStore } from "./store";
 import { RedisTripStore } from "./redis-store";
 import { redisConfiguration } from "./redis-config";
+import { campusWeather } from "../campus-evidence/catalog";
 
 type Runtime = { agent: StudentAgent; timer?: ReturnType<typeof setInterval>; };
 const globalRuntime = globalThis as typeof globalThis & { beaconRuntime?: Runtime };
@@ -29,6 +30,7 @@ export function getRuntime(): Runtime {
     // ANS discovery must never cause that credential to be sent to a third party.
     provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : scopedProviderToken(descriptor, identity, process.env.BEACON_PROVIDER_CREDENTIALS) }),
     recommend: decisionRecommendation(evaluateTrip),
+    campusWeather,
     notify: (contact, message, key) => sendNotification(contact, demo ? `[Beacon demo test] ${message}` : message, key),
     graceMinutes: Number(process.env.BEACON_GRACE_MINUTES ?? 5),
   });

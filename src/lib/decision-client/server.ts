@@ -5,6 +5,7 @@ import { runDecision } from "../../integrations/databricks/evaluate";
 import { loadScheduledTransit } from "../../integrations/databricks/transit-query";
 import type { TransitRequest } from "./transit";
 import { runIntelligence, loadRouteEvidence, walkingOption } from "../../integrations/databricks/intelligence";
+import { applyPublicRouteEvidence } from "../campus-evidence/routing";
 
 /** Mahin's server/API integration point. Never import this module into a Client Component. */
 export function evaluateTrip(candidates: CandidatePlan[], context: DecisionContext, signals: Record<string, PlanSignals> = {}) {
@@ -16,7 +17,7 @@ export function evaluateTrip(candidates: CandidatePlan[], context: DecisionConte
     routeContextTable: process.env.DATABRICKS_ROUTE_CONTEXT_TABLE,
     auditTable: process.env.DATABRICKS_AUDIT_TABLE,
   } : undefined;
-  return runDecision(candidates, context, signals, { workspace });
+  return runDecision(candidates, context, applyPublicRouteEvidence(candidates, signals, context.evaluatedAt ? Date.parse(context.evaluatedAt) : Date.now()), { workspace });
 }
 
 /** No configuration/no catchable departure returns null; transport/data errors reject for caller handling. */
@@ -33,7 +34,7 @@ export function getScheduledTransitOption(request: TransitRequest) {
 export function evaluateTripIntelligence(candidates:CandidatePlan[],context:DecisionContext,signals:Record<string,PlanSignals>={},options:{corridorId?:string;enableAi?:boolean}={}) {
   const host=process.env.DATABRICKS_HOST,token=process.env.DATABRICKS_TOKEN,warehouseId=process.env.DATABRICKS_WAREHOUSE_ID;
   const workspace=host&&token&&warehouseId?{host,token,warehouseId,routeContextTable:process.env.DATABRICKS_ROUTE_CONTEXT_TABLE,auditTable:process.env.DATABRICKS_AUDIT_TABLE,routeEvidenceTable:process.env.DATABRICKS_ROUTE_EVIDENCE_TABLE}:undefined;
-  return runIntelligence(candidates,context,signals,{...options,workspace,enableAi:options.enableAi??process.env.DATABRICKS_ENABLE_AI==="true"});
+  return runIntelligence(candidates,context,applyPublicRouteEvidence(candidates,signals,context.evaluatedAt?Date.parse(context.evaluatedAt):Date.now()),{...options,workspace,enableAi:options.enableAi??process.env.DATABRICKS_ENABLE_AI==="true"});
 }
 
 export async function getMappedWalkingOption(corridorId:string,evaluatedAt=new Date().toISOString()) {
@@ -42,5 +43,5 @@ export async function getMappedWalkingOption(corridorId:string,evaluatedAt=new D
   const loaded=await loadRouteEvidence({host,token,warehouseId,routeEvidenceTable},corridorId);
   if(!loaded) return null;
   const option=walkingOption(loaded.evidence,evaluatedAt);
-  return option?{...option,route:loaded.evidence,statementId:loaded.statementId}:null;
+  return option?{...option,signals:applyPublicRouteEvidence([option.candidate],{[option.candidate.planId]:option.signals},Date.parse(evaluatedAt))[option.candidate.planId],route:loaded.evidence,statementId:loaded.statementId}:null;
 }

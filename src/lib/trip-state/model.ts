@@ -1,6 +1,7 @@
 import type { Trip, TripState } from "../../types/trip";
 import type { Point, ProviderDescriptor } from "../../agents/contract";
 import type { VerifiedIdentity } from "../../integrations/ans/directory";
+import type { WeatherEvidence } from "../campus-evidence/evidence";
 
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
@@ -11,6 +12,8 @@ export type TripRecord = {
   excluded: string[]; confirmed: boolean; quoteDeadline: number;
   quoteExpirations?: Record<string, number>;
   simulatedPlanIds?: string[];
+  weatherEvidence?: WeatherEvidence;
+  weatherPlanIds?: string[];
   identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
   pendingBooking?: { providerId: string; requestId: string; attempts?: number; retryAt?: number };
   pendingReplacement?: { attempts: number; retryAt: number };

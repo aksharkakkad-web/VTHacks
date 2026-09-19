@@ -11,6 +11,7 @@ import { distanceMeters } from "../../lib/trip-state/geofence";
 import { collectCandidates } from "../discovery";
 import { parseTripInput } from "./input";
 import type { DecisionHandoff } from "./databricks";
+import { isCurrentWeather, withinCampusForecast, type WeatherEvidence } from "../../lib/campus-evidence/evidence";
 
 export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline";
 export type Dependencies = {
@@ -18,6 +19,7 @@ export type Dependencies = {
   provider: (descriptor: ProviderDescriptor, identity?: VerifiedIdentity) => ProviderAgent;
   recommend: (plans: CandidatePlan[], context: TripContext, handoff: DecisionHandoff) => Promise<Recommendation>;
   notify: (contact: Contact, message: string, key: string) => Promise<{ id: string; simulated: boolean }>;
+  campusWeather?: (now: number) => WeatherEvidence;
 };
 const activeStates = ["NAVIGATING", "WAITING_FOR_PICKUP", "IN_TRIP", "OVERDUE"] as const;
 export class StudentAgent {
@@ -30,6 +32,13 @@ export class StudentAgent {
   }
   async read(id: string, owner: string) { const record = await this.deps.store.read(id); owns(record, owner); return record.trip; }
   async events(id: string, owner: string) { const record = await this.deps.store.read(id); owns(record, owner); return record.events; }
+  async evidence(id: string, owner: string) {
+    const r = await this.deps.store.read(id); owns(r, owner);
+    const current = isCurrentWeather(r.weatherEvidence, this.now());
+    return { weather: current ? r.weatherEvidence! : { status: "unknown", condition: "unknown" },
+      appliedToPlanIds: current ? r.weatherPlanIds ?? [] : [], catalog: "/api/demo/campus-data",
+      limitations: ["Area forecast, not observed conditions on each path.", "No current foot-traffic measurement, verified route lighting or crime-risk score is available."] };
+  }
   async providerEvent(id: string, providerId: string, bookingId: string, event: string) {
     return this.deps.store.update(id, async (r) => {
       if (r.booking?.providerId !== providerId || r.booking.id !== bookingId) throw new TripError("STALE_PROVIDER_EVENT", "Event does not belong to the active booking");
@@ -56,7 +65,7 @@ export class StudentAgent {
       owns(record, owner);
       if (action === "discover") { requireState(record, ["OBJECTIVE_RECEIVED", "COLLECTING_QUOTES"]); await this.discover(record); }
       if (action === "evaluate") { requireState(record, ["COLLECTING_QUOTES", "SELECTED"]); if (record.confirmed) throw new TripError("ALREADY_CONFIRMED", "Plan is already confirmed"); await this.evaluate(record); }
-      if (action === "confirm") { requireState(record, ["SELECTED"]); if (this.selectedDeadline(record) <= this.now()) throw new TripError("QUOTE_EXPIRED", "Refresh the recommendation before confirming"); record.confirmed = true; this.log(record, "SELECTED", "USER_CONFIRMED", "Plan confirmed"); }
+      if (action === "confirm") { requireState(record, ["SELECTED"]); if (this.selectedDeadline(record) <= this.now()) this.expireSelection(record); record.confirmed = true; this.log(record, "SELECTED", "USER_CONFIRMED", "Plan confirmed"); }
       if (action === "verify") { requireState(record, ["SELECTED"]); await this.verify(record); }
       if (action === "request") {
         if (record.pendingBooking) { await this.reconcileBooking(record); await this.checkDeadline(record); return structuredClone(record.trip); }
@@ -72,7 +81,20 @@ export class StudentAgent {
   }
   private log(r: TripRecord, state: TripRecord["trip"]["state"], code: string, message: string) { transition(r, state, code, message, this.now()); }
   private selectedProvider(r: TripRecord) { const p = r.providers.find((p) => p.id === r.trip.selectedPlan?.providerId); if (!p) throw new TripError("PROVIDER_MISSING", "Selected provider is unavailable"); return p; }
-  private selectedDeadline(r: TripRecord) { return Math.min(r.quoteDeadline, r.quoteExpirations?.[r.trip.selectedPlan?.planId ?? ""] ?? Infinity); }
+  private planDeadline(r: TripRecord, planId: string) {
+    const weatherLimit = r.weatherPlanIds?.includes(planId) && r.weatherEvidence?.validUntil ? Date.parse(r.weatherEvidence.validUntil) : Infinity;
+    return Math.min(r.quoteDeadline, r.quoteExpirations?.[planId] ?? Infinity, weatherLimit);
+  }
+  private selectedDeadline(r: TripRecord) { return this.planDeadline(r, r.trip.selectedPlan?.planId ?? ""); }
+  private expireSelection(r: TripRecord): never {
+    delete r.trip.selectedPlan; delete r.trip.recommendation; delete r.identity;
+    r.trip.providerVerified = false;
+    // Cancellation recovery already has authorization within the saved objective.
+    // An ordinary stale selection needs a fresh, explicit confirmation.
+    if (!r.pendingReplacement) r.confirmed = false;
+    this.log(r, "COLLECTING_QUOTES", "QUOTE_EXPIRED", "Quotes or weather context expired; refresh the recommendation");
+    throw new TripError("QUOTE_EXPIRED", "Refresh the recommendation before confirming or booking");
+  }
   private async discover(r: TripRecord) {
     this.log(r, "DISCOVERING", "DISCOVERY_STARTED", "Finding transportation providers");
     try { r.providers = await this.deps.directory.discover(); }
@@ -84,20 +106,23 @@ export class StudentAgent {
     if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
   }
   private async evaluate(r: TripRecord) {
-    const expired = (): never => {
-      delete r.trip.selectedPlan; delete r.trip.recommendation; delete r.identity;
-      r.trip.providerVerified = false;
-      this.log(r, "COLLECTING_QUOTES", "QUOTE_EXPIRED", "Quotes expired; refresh providers");
-      throw new TripError("QUOTE_EXPIRED", "Quotes expired; refresh providers");
-    };
+    const expired = (): never => this.expireSelection(r);
     if (r.quoteDeadline <= this.now()) expired();
+    delete r.weatherEvidence; r.weatherPlanIds = [];
+    // Research reads a pre-imported campus forecast. Student coordinates stay local.
+    const latest = r.trip.lastKnownLocation;
+    const origin = latest && Date.parse(latest.recordedAt) >= this.now() - 120_000 ? latest : r.private?.origin;
+    if (origin && r.private && withinCampusForecast(origin) && withinCampusForecast(r.private.home)) {
+      try { r.weatherEvidence = this.deps.campusWeather?.(this.now()); } catch { /* Missing evidence stays unknown. */ }
+      if (isCurrentWeather(r.weatherEvidence, this.now())) r.weatherPlanIds = [...(r.simulatedPlanIds ?? [])];
+    }
     this.log(r, "EVALUATING", "EVALUATION_STARTED", "Evaluating transportation options");
     let recommendation: Recommendation;
-    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }, { quoteDeadline: r.quoteDeadline, quoteExpirations: r.quoteExpirations ?? {}, simulatedPlanIds: r.simulatedPlanIds ?? [], excludedProviderIds: [...r.excluded] }); }
+    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }, { quoteDeadline: r.quoteDeadline, quoteExpirations: r.quoteExpirations ?? {}, simulatedPlanIds: r.simulatedPlanIds ?? [], excludedProviderIds: [...r.excluded], weatherEvidence: r.weatherEvidence }); }
     catch (error) { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); if (error instanceof TripError) throw error; throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
     const plan = r.trip.candidates.find((p) => p.planId === recommendation.selectedPlanId && p.available && p.cost <= r.context.maxBudget && !r.excluded.includes(p.providerId ?? ""));
     if (!plan || !Array.isArray(recommendation.reasonCodes) || !recommendation.reasonCodes.every((c) => typeof c === "string") || typeof recommendation.explanation !== "string" || !Number.isFinite(Date.parse(recommendation.evaluatedAt))) { this.log(r, "FAILED", "INVALID_RECOMMENDATION", "No valid plan fits the approved constraints"); throw new TripError("INVALID_RECOMMENDATION", "Decision engine returned an invalid plan", 502); }
-    if (Math.min(r.quoteDeadline, r.quoteExpirations?.[plan.planId] ?? Infinity) <= this.now()) expired();
+    if (this.planDeadline(r, plan.planId) <= this.now()) expired();
     r.trip.recommendation = recommendation; r.trip.selectedPlan = plan; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length); delete r.identity;
     this.log(r, "SELECTED", "PLAN_SELECTED", `${plan.providerName} recommended; awaiting confirmation`);
   }
@@ -115,7 +140,7 @@ export class StudentAgent {
   }
   private async coordinate(r: TripRecord) {
     if (!r.confirmed || !r.private || !r.trip.selectedPlan) throw new TripError("CONFIRMATION_REQUIRED", "Confirm a plan before requesting a trip");
-    if (this.selectedDeadline(r) <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quote expired before coordination");
+    if (this.selectedDeadline(r) <= this.now()) this.expireSelection(r);
     const plan = r.trip.selectedPlan;
     if (plan.mode === "walk" || plan.mode === "transit") { delete r.pendingReplacement; this.startMonitoring(r); this.log(r, "NAVIGATING", "NAVIGATION_STARTED", "Navigation started; no precise data shared with a provider"); return; }
     const provider = this.selectedProvider(r);

@@ -2,6 +2,7 @@ import type { CandidatePlan } from "../../types/provider";
 import type { Recommendation } from "../../types/recommendation";
 import type { DecisionContext, DecisionResult, PlanSignals } from "../../lib/decision-client/decision";
 import { TripError, type TripContext } from "../../lib/trip-state/model";
+import { isCurrentWeather, type WeatherEvidence } from "../../lib/campus-evidence/evidence";
 
 /** Internal metadata; never adds fields to the shared CandidatePlan contract. */
 export type DecisionHandoff = {
@@ -9,6 +10,7 @@ export type DecisionHandoff = {
   quoteExpirations: Record<string, number>;
   simulatedPlanIds: string[];
   excludedProviderIds: string[];
+  weatherEvidence?: WeatherEvidence;
 };
 type Evaluate = (plans: CandidatePlan[], context: DecisionContext, signals: Record<string, PlanSignals>) => Promise<DecisionResult>;
 
@@ -24,6 +26,12 @@ export function decisionRecommendation(evaluate: Evaluate) {
         source: "simulated",
         validUntil: new Date(Math.min(handoff.quoteDeadline, handoff.quoteExpirations[plan.planId] ?? Infinity)).toISOString(),
       };
+      const weather = handoff.weatherEvidence;
+      if (signals[plan.planId] && isCurrentWeather(weather, now)) {
+        signals[plan.planId] = { ...signals[plan.planId], weather: weather.condition,
+          ...(weather.activeOfficialAlert ? { activeOfficialAlert: true } : {}),
+          validUntil: new Date(Math.min(Date.parse(signals[plan.planId].validUntil!), Date.parse(weather.validUntil))).toISOString() };
+      }
     }
     const result = await evaluate(fresh, {
       maxBudget: context.maxBudget,

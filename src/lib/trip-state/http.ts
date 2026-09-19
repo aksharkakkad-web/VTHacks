@@ -54,6 +54,12 @@ export function tripAction(request: Request, id: string, action: string, demo = 
     return json(await getRuntime().agent.act(id, s.owner, action as Action, input));
   });
 }
-export function tripEvents(request: Request, id: string, action: string) { return handle(async () => { if (action !== "events") throw new TripError("NOT_FOUND", "Operation not found", 404); return json(await getRuntime().agent.events(id, session(request).owner)); }); }
+export function tripEvents(request: Request, id: string, action: string) {
+  return handle(async () => {
+    if (!["events", "evidence"].includes(action)) throw new TripError("NOT_FOUND", "Operation not found", 404);
+    const owner = session(request).owner;
+    return json(action === "evidence" ? await getRuntime().agent.evidence(id, owner) : await getRuntime().agent.events(id, owner));
+  });
+}
 export function resetDemo(request: Request) { return handle(async () => { sameOrigin(request); await getRuntime().agent.reset(session(request).owner); return json({ reset: true }); }); }
 export function monitorTrips(request: Request) { return handle(async () => { secret(request, process.env.BEACON_MONITOR_TOKEN); await getRuntime().agent.monitor(); return json({ checked: true }); }); }

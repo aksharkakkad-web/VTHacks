@@ -59,3 +59,25 @@ test("decision handoff rejects an evaluation for a different objective", async (
   const recommend = decisionRecommendation(async (candidates, input, signals) => ({ ...evaluateCandidates(candidates, input, signals), objectiveVersion: 1 }));
   await assert.rejects(recommend(plans, context, handoff), { code: "STALE_RECOMMENDATION" });
 });
+
+test("imported current weather affects scoring without changing transport provenance", async () => {
+  const recommend = decisionRecommendation(async (candidates, input, signals) => {
+    assert.equal(signals["campus-quote"].weather, "rain");
+    assert.equal(signals["campus-quote"].source, "simulated");
+    assert.equal(signals["campus-quote"].validUntil, new Date(now + 10000).toISOString());
+    assert.equal(signals["independent-quote"], undefined, "an unknown transport source must stay unknown");
+    return evaluateCandidates(candidates, input, signals);
+  });
+  const result = await recommend(plans, context, { ...handoff, simulatedPlanIds: ["campus-quote"], weatherEvidence: { status: "current", condition: "rain", issuedAt: new Date(now - 1000).toISOString(), validUntil: new Date(now + 10000).toISOString(), sourceUrl: "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly" } });
+  assert.ok(result.reasonCodes.includes("RAIN_INCREASES_WALKING_COST"));
+});
+
+test("expired or future weather cannot affect recommendations", async () => {
+  const recommend = decisionRecommendation(async (candidates, input, signals) => {
+    assert.equal(signals["campus-quote"].weather, undefined);
+    return evaluateCandidates(candidates, input, signals);
+  });
+  for (const times of [{ issuedAt: now - 1000, validUntil: now - 1 }, { issuedAt: now + 1, validUntil: now + 1000 }]) {
+    await recommend(plans, context, { ...handoff, weatherEvidence: { status: "current", condition: "severe", issuedAt: new Date(times.issuedAt).toISOString(), validUntil: new Date(times.validUntil).toISOString(), sourceUrl: "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly" } });
+  }
+});
