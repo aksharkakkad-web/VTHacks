@@ -1,0 +1,414 @@
+{
+  "baseURL": "http://localhost:3001",
+  "captures": [
+    {
+      "name": "01-onboarding-home",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "02-onboarding-preferences",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "03-home",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "map-centered",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "04-edit-home",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "05-trip-context",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "discovering",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "collecting-quotes",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "evaluating",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "recommendation",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "recommendation-alternatives",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "verifying-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "authorizing-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "coordinating-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "accepted-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "waiting-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "judge-paused",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "trip-details",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "help",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "technical-timeline",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "provider-cancelled",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "replanning-discovery",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "replanning-evaluation",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "replacement-selected",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "verifying-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "authorizing-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "coordinating-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "accepted-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "waiting-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "arriving-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "in-trip-replacement",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "arrival",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "home",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "arriving-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "in-trip-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "arrival-initial",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "no-options",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "verification-failed",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "context-fallback",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "offline",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "overdue",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "offline-last-known-trip",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "responsive-320-home",
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320
+    },
+    {
+      "name": "responsive-320-recommendation",
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320
+    },
+    {
+      "name": "responsive-320-recommendation-scrolled",
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320
+    },
+    {
+      "name": "responsive-320-edit-home",
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320
+    },
+    {
+      "name": "responsive-320-edit-home-scrolled",
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320
+    },
+    {
+      "name": "responsive-430-home",
+      "width": 430,
+      "height": 932,
+      "scrollWidth": 430
+    },
+    {
+      "name": "responsive-430-recommendation",
+      "width": 430,
+      "height": 932,
+      "scrollWidth": 430
+    },
+    {
+      "name": "responsive-1440-home",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440
+    },
+    {
+      "name": "responsive-1440-recommendation",
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1440
+    },
+    {
+      "name": "walking-recommendation",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "walking-active",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "walking-arrival",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "returning-user",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    },
+    {
+      "name": "reset-profile",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    }
+  ],
+  "interactions": [
+    "setup-home",
+    "setup-preferences",
+    "home",
+    "discovering",
+    "collecting-quotes",
+    "evaluating",
+    "recommendation",
+    "verifying-initial",
+    "authorizing-initial",
+    "coordinating-initial",
+    "accepted-initial",
+    "waiting-initial",
+    "provider-cancelled",
+    "replanning-discovery",
+    "replanning-evaluation",
+    "replacement-selected",
+    "verifying-replacement",
+    "authorizing-replacement",
+    "coordinating-replacement",
+    "accepted-replacement",
+    "waiting-replacement",
+    "arriving-replacement",
+    "in-trip-replacement",
+    "arrival",
+    "home",
+    "arriving-initial",
+    "in-trip-initial",
+    "arrival",
+    "no-options",
+    "home",
+    "verification-failed",
+    "home",
+    "context-fallback",
+    "home",
+    "offline",
+    "home",
+    "overdue",
+    "home",
+    "no-options",
+    "discovering",
+    "home",
+    "context-fallback",
+    "discovering",
+    "home",
+    "verification-failed",
+    "verifying-initial",
+    "home",
+    "overdue",
+    "in-trip-initial",
+    "overdue",
+    "arrival",
+    "waiting-initial",
+    "offline",
+    "waiting-initial",
+    "home",
+    "offline",
+    "home",
+    "recommendation",
+    "home",
+    "recommendation",
+    "home",
+    "recommendation",
+    "home",
+    "collecting-quotes",
+    "evaluating",
+    "recommendation",
+    "in-trip-initial",
+    "arrival",
+    "home",
+    "setup-home"
+  ],
+  "errors": []
+}
