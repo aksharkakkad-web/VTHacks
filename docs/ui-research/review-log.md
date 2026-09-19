@@ -37,3 +37,13 @@ Accepted: remove consumer reason-code chips and technical authorization prose, m
 Rejected: removing a legitimate keyboard focus ring and converting recommendation into an unrelated full-page layout. Keyboard focus is required; the approved map-plus-sheet shell remains consistent while information density is reduced.
 
 These scores describe intermediate renders, not final approval. The final review is performed after the fixes and complete browser run.
+
+## Final independent whole-flow review and closure
+
+Visual reviewer: **8.7/10**, with no meaningful visual issues after directly inspecting the 320px scrolled recommendation, updated judge header controls and overdue summary. Retaining map-plus-sheet on recommendation was accepted as intentional. The fixed footer keeps GO visible; the full card and alternatives remain reachable above it.
+
+Flow reviewer: **9/10**, no P1 remaining. Verified walking arrival omits provider access and says Not shared; cancellation no longer exposes misleading generic details; overdue retains stale route/provider/estimate and an actual demo update time; search does not expose selection before evaluation finishes. Final P2 copy discrepancy (already searching versus pending row during the brief cancellation announcement) was resolved by future-tense reassurance.
+
+Additional final regression fixes: reset saved profile returns to setup rather than hanging on bootstrap; genuine offline retry cannot pretend the browser is online; no-op temporary context is normalized; contact phone and profile lengths are validated; no GPS or deadline is invented for missing integrations.
+
+Final production verification: lint, typecheck, 25 Node tests and build pass. Public-control browser verification covers 56 screenshots, plus two PWA/fallback screenshots. No browser errors, no horizontal overflow, visible button/link/disclosure targets at least 44px, fixed GO visible at 320×568, dialogs keyboard-contained, and original/replacement/walking flows complete. The public offline cache contains no API or trip data.
