@@ -22,6 +22,8 @@ Read [the kickoff guide](docs/Beacon_START_HERE.md) together, then review [the p
 
 For this 24-hour sprint, the three tracks can start now against the shared types and mocks. Agree on the proposed demo values quickly; verify Databricks, ANS, and PWA prerequisites in parallel rather than delaying all coding. Meet at the phase plan's integration checkpoints, and do not claim a real sponsor integration until it is demonstrated.
 
+Akshar's [Databricks track PRD and build contract](docs/DATABRICKS_TRACK_PRD.md) specifies the logic, scoring, data, teammate handoffs, acceptance tests, and sponsor-aligned demo using the opening-ceremony challenge brief. It is an implementation baseline, not a claim that the Databricks integration is already built.
+
 ## Repository layout
 
 ```text

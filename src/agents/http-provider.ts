@@ -1,6 +1,6 @@
-import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import { coarseQuote, normalizeQuote, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
+import { publicJson } from "../integrations/ans/transport";
+import { coarseQuote, normalizeQuote, object, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
 
 export function privateAddress(ip: string) {
   return /^(0\.|10\.|127\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|224\.|255\.)/.test(ip) || ip === "::" || ip === "::1" || /^(fc|fd|fe80|::ffff:)/i.test(ip);
@@ -15,18 +15,21 @@ export function providerUrl(value: string, demo = false): URL {
 export class HttpProvider implements ProviderAgent {
   readonly descriptor: ProviderDescriptor;
   private readonly base: URL;
-  constructor(descriptor: ProviderDescriptor, private readonly options: { allowLocalDemo?: boolean; timeoutMs?: number; token?: string } = {}) {
+  constructor(descriptor: ProviderDescriptor, private readonly options: { allowLocalDemo?: boolean; timeoutMs?: number; token?: string; pin?: string } = {}) {
     this.descriptor = descriptor;
     this.base = providerUrl(descriptor.baseUrl, descriptor.source === "demo" && options.allowLocalDemo);
   }
   private async call(path: string, method = "GET", body?: unknown): Promise<unknown> {
+    // Quote discovery is public and precedes identity verification. It must never
+    // carry a credential, even when this client also supports authenticated booking.
+    const authorization: Record<string, string> = path !== "/agent/quote" && this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {};
     if (this.descriptor.source !== "demo") {
-      const addresses = await lookup(this.base.hostname, { all: true });
-      if (!addresses.length || addresses.some((a) => privateAddress(a.address))) throw new Error("Private provider address blocked");
+      if (path !== "/agent/quote" && !this.options.pin) throw new Error("Sensitive provider calls require an ANS certificate pin");
+      return (await publicJson(`${this.base.href.replace(/\/$/, "")}${path}`, { method, body, pin: this.options.pin, timeoutMs: this.options.timeoutMs, headers: authorization })).value;
     }
     const response = await fetch(`${this.base.href.replace(/\/$/, "")}${path}`, {
       method, redirect: "error", signal: AbortSignal.timeout(this.options.timeoutMs ?? 4000),
-      headers: { "Content-Type": "application/json", ...(this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {}) },
+      headers: { "Content-Type": "application/json", ...authorization },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
     if (!response.ok) throw new Error(`Provider request failed (${response.status})`);
@@ -38,4 +41,14 @@ export class HttpProvider implements ProviderAgent {
   async requestTrip(request: TripRequest) { return parseProviderTrip(await this.call("/agent/request-trip", "POST", { trip_id: request.tripId, pickup: request.pickup, destination: request.destination })); }
   async getStatus(id: string) { return parseProviderTrip(await this.call(`/agent/trip-status/${encodeURIComponent(id)}`)); }
   async cancelTrip(id: string) { await this.call("/agent/cancel-trip", "POST", { trip_id: id }); }
+  async getRequestStatus(id: string) {
+    if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
+    const result = object(await this.call(`/agent/request-status/${encodeURIComponent(id)}`));
+    return result.trip === null ? undefined : parseProviderTrip(result.trip);
+  }
+  async cancelRequest(id: string) {
+    if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
+    const result = parseProviderTrip(await this.call("/agent/cancel-request", "POST", { request_id: id }));
+    if (result.status !== "cancelled") throw new Error("Provider did not confirm cancellation");
+  }
 }

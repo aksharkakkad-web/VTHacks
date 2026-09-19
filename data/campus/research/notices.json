@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "dataset": "notices",
+  "captured_at": "2026-09-19T13:51:52.852232Z",
+  "records": [
+    {
+      "id": "8b9481ce152c3f3d40e0f100",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/01/crimealert-01-24-2026-2.html",
+      "published_at": "2026-01-24T19:21:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "66fa4b6f5f4197c3ac5340f4",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/01/crimealert-01-24-2026.html",
+      "published_at": "2026-01-24T14:04:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "2c22dc5c5a2f01a9fa7ec1a4",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/02/crimealert-02-06-2026.html",
+      "published_at": "2026-02-07T07:58:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "205520949e79a478d3b7efcb",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/02/crimealert-02-13-2026.html",
+      "published_at": "2026-02-13T17:43:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "0a09aca95804fc030d192058",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/03/crimealert-03-05-2026.html",
+      "published_at": "2026-03-05T19:02:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "5b7c8719a7e5c0c74a221a38",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/05/crimealert-05-08-2026.html",
+      "published_at": "2026-05-08T16:30:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "7abb9a555b18e31db82d746a",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/06/crimealert-06-04-2026.html",
+      "published_at": "2026-06-04T13:32:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "33b4a727dac01507f2363e80",
+      "title": " Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/08/crimealert-08-31-2026.html",
+      "published_at": "2026-09-01T08:50:41Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "0d87fd27a802df9b47fc57da",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/09/crimealert-09-05-2026.html",
+      "published_at": "2026-09-06T11:23:00Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "fa029aeacf8dc17c9a5396fd",
+      "title": "Crime alert: Sexual assault - content warning",
+      "source_url": "https://news.vt.edu/articles/2026/09/crimealert-09-07-2026.html",
+      "published_at": "2026-09-07T15:45:38Z",
+      "category": "crime_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "d98a384d29b3cb9ec92fb30f",
+      "title": "Dietrick Hall ADA ramp improvement beginning Aug. 17",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/08/14-03.html",
+      "published_at": "2026-08-14T15:11:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "369fe35d05573f21e7ca8059",
+      "title": "Navigating the Blacksburg campus this fall ",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/08/18-010.html",
+      "published_at": "2026-08-18T09:34:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "5938cc191c56cfa79b74df71",
+      "title": "Noise amplification notice: Athletics region on Aug. 31",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/08/28-01.html",
+      "published_at": "2026-08-28T08:50:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "693b4a087960a1ca924a6370",
+      "title": "Fleet Services parking and pathway impacts beginning Sept. 14",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/09/02-01.html",
+      "published_at": "2026-09-02T10:38:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "68685bc92513223b78a9d722",
+      "title": "Noise amplification notice: Athletics Region, Sept. 2-5",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/09/02-04.html",
+      "published_at": "2026-09-02T15:31:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "be0949a572afc31f5d55be34",
+      "title": "Elevator outage: McBryde Hall ",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/09/08-01.html",
+      "published_at": "2026-09-08T08:28:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "e83ab655ace5323024479ece",
+      "title": "North End Center Parking Garage now requires Hokie Passport access",
+      "source_url": "https://news.vt.edu/notices/facilities/2026/Transportation-Logistics/08/31-01.html",
+      "published_at": "2026-08-31T15:31:00Z",
+      "category": "campus_impact",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "58ab0370c406828c2a015b26",
+      "title": "Blacksburg Transit Receives Inaugural Hill Spencer Ridership Award",
+      "source_url": "https://ridebt.org/news-alerts/605-hill-spencer-award",
+      "published_at": null,
+      "category": "transit_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "e363c901a58f639061796baf",
+      "title": "Amtrak Is Coming - We Want To Hear From You",
+      "source_url": "https://ridebt.org/news-alerts/606-amtrak-access-survey",
+      "published_at": null,
+      "category": "transit_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    },
+    {
+      "id": "61aef45c7896112d495cd3c9",
+      "title": "Fall 2026 Full-Service Updates",
+      "source_url": "https://ridebt.org/news-alerts/610-fall-2026-full-service-updates",
+      "published_at": null,
+      "category": "transit_notice",
+      "current_applicability": "unknown",
+      "ranking_use": "display_only"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://police.vt.edu/crime-alerts.html",
+      "sha256": "7a372cc8db850183a7974122c8d2b006294aca572a616318409f527f9998d18a",
+      "captured_at": "2026-09-19T13:51:48.318288Z",
+      "row_count": 10,
+      "coverage": "First official listing page, no completeness claim",
+      "limitations": "Notices are not a live emergency feed.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/01/crimealert-01-24-2026-2.html",
+      "sha256": "e5dcc801bc1abb4abf980aee0cd9f86a3f66f04388231acb1d1a9001f588c7cd",
+      "captured_at": "2026-09-19T13:51:48.513652Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/01/crimealert-01-24-2026.html",
+      "sha256": "c8d90bd9d9200a23634b62c547f779e69cff227e3c229462088f9cf7eb1259c7",
+      "captured_at": "2026-09-19T13:51:48.650286Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/02/crimealert-02-06-2026.html",
+      "sha256": "322f0a6b82d305899a94d44736953be3aa1c79e41348536e5b5eb935327a302a",
+      "captured_at": "2026-09-19T13:51:48.789208Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/02/crimealert-02-13-2026.html",
+      "sha256": "426ddeb18cc9bf863eb9e04208acb5958311fc13d241ae941768c4c680ee756b",
+      "captured_at": "2026-09-19T13:51:48.921827Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/03/crimealert-03-05-2026.html",
+      "sha256": "27a1592c6d54d7013fc22ae68cc42f6e6f27ab036de965c0eb5e4236fcdc950d",
+      "captured_at": "2026-09-19T13:51:49.046366Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/05/crimealert-05-08-2026.html",
+      "sha256": "5f20ee4c1dc24c85c619915ddbb39dfee9a2c22b92bcb77b87d487bdb21fd19c",
+      "captured_at": "2026-09-19T13:51:49.179015Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/06/crimealert-06-04-2026.html",
+      "sha256": "cab827b3f89029d6416dff59b03f4e475e1226f4ecadaf72faf0e218511d3690",
+      "captured_at": "2026-09-19T13:51:49.316996Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/08/crimealert-08-31-2026.html",
+      "sha256": "1b6ad922101753866b59993eba13c5a52a21e57bda07a0036f448a96f8120beb",
+      "captured_at": "2026-09-19T13:51:49.459411Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/09/crimealert-09-05-2026.html",
+      "sha256": "d6a3a9f4a7ec343ad60a8fd8f763a3123ca310b415287a40fd9a3401483b3744",
+      "captured_at": "2026-09-19T13:51:49.592088Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/articles/2026/09/crimealert-09-07-2026.html",
+      "sha256": "9650996a2d6eca68b78ce2d95288e3741241ee1756a7717855579d52940b9e4c",
+      "captured_at": "2026-09-19T13:51:49.734986Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://www.facilities.vt.edu/campus-impacts.html",
+      "sha256": "e229356a08450a35846023cbafdddc4b34eeb2bc1059ddcc3f308db1866a00ab",
+      "captured_at": "2026-09-19T13:51:49.885261Z",
+      "row_count": 8,
+      "coverage": "First official listing page, no completeness claim",
+      "limitations": "Notices are not a live emergency feed.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/08/14-03.html",
+      "sha256": "cd5fc3b92671011a52aa959e7786caa7fb22323be3c01e67e5ffee870620059f",
+      "captured_at": "2026-09-19T13:51:50.036031Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/08/18-010.html",
+      "sha256": "d331d5eea811de7f010aff6d0e78d985b11cf41191bbc68dc19c9e7506611ac3",
+      "captured_at": "2026-09-19T13:51:50.198104Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/08/28-01.html",
+      "sha256": "7591809ae36b78e643297c19957086ed6b168f526d08e5a3aa671cdbd4489504",
+      "captured_at": "2026-09-19T13:51:50.465942Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/09/02-01.html",
+      "sha256": "262b67fff07578b611857bf8355c69e6cebe2976ae25e744b457b995dd3a58dc",
+      "captured_at": "2026-09-19T13:51:50.735300Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/09/02-04.html",
+      "sha256": "cf0e1d1de6d5eaf78fa7d0e0d1a09d29436a9d45b34e775ad3e5dcfc56daffc3",
+      "captured_at": "2026-09-19T13:51:50.868316Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/09/08-01.html",
+      "sha256": "3e99f35c088a1dfa79fac3c9aca8445865f9826f885275325124aa9e1e52a4a4",
+      "captured_at": "2026-09-19T13:51:50.992732Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://news.vt.edu/notices/facilities/2026/Transportation-Logistics/08/31-01.html",
+      "sha256": "aadad15d7b5595995ced74310c2172dbd2aabbd92a23a7b845705e0efa959052",
+      "captured_at": "2026-09-19T13:51:51.125468Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://ridebt.org/news-alerts",
+      "sha256": "7af1d9020ac4cf80090cee46032a827e5585e983af8b4b49e8b11b8eafac01a0",
+      "captured_at": "2026-09-19T13:51:51.620177Z",
+      "row_count": 3,
+      "coverage": "First official listing page, no completeness claim",
+      "limitations": "Notices are not a live emergency feed.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://ridebt.org/news-alerts/605-hill-spencer-award",
+      "sha256": "c600d3abc0557a89c47bc6708d64de54781a6f3476c788bb0f3d178b1d6c782b",
+      "captured_at": "2026-09-19T13:51:52.019867Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://ridebt.org/news-alerts/606-amtrak-access-survey",
+      "sha256": "65334e9fbfc2401a6c8e6b00f4da135c4ba69270a955f917fcee10ba8832db75",
+      "captured_at": "2026-09-19T13:51:52.459924Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://ridebt.org/news-alerts/610-fall-2026-full-service-updates",
+      "sha256": "a61121ace3bc9802cb307d59a5b775c2386f37701d66cfe5ec8609963838a750",
+      "captured_at": "2026-09-19T13:51:52.852177Z",
+      "row_count": 1,
+      "coverage": "Metadata verified on the underlying official page",
+      "limitations": "Publication time is not an expiry time or evidence of an active threat.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    }
+  ],
+  "limitations": [
+    "Official index-linked notices. Verify the linked page for current instructions. No inferred geography, expiry, or all-clear status."
+  ],
+  "gaps": [
+    {
+      "source_url": "https://news.vt.edu/notices/facilities/2026/Transportation-Logistics/09/04-01.html",
+      "attempted_at": "2026-09-19T13:51:51.210472Z",
+      "error": "HTTPError"
+    }
+  ],
+  "coverage": "partial_listing"
+}

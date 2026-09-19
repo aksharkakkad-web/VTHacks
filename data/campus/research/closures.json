@@ -1,0 +1,1758 @@
+{
+  "schema_version": 1,
+  "dataset": "closures",
+  "captured_at": "2026-09-19T17:06:08.174143Z",
+  "records": [
+    {
+      "id": "areas:17472",
+      "kind": "area",
+      "name": "Mitchell Hall Construction",
+      "starts_at": "2024-05-20T10:00:00Z",
+      "ends_at": "2028-05-22T10:00:00Z",
+      "source_status": null,
+      "description": "Area closed for the construction of Mitchell Hall",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.42308065272921,
+                37.230932417938405
+              ],
+              [
+                -80.42301417938519,
+                37.230977218369866
+              ],
+              [
+                -80.42306083795387,
+                37.23103410240884
+              ],
+              [
+                -80.4232691463682,
+                37.231249090030836
+              ],
+              [
+                -80.42331548684965,
+                37.23128772731283
+              ],
+              [
+                -80.42336598704931,
+                37.23140935886412
+              ],
+              [
+                -80.42298579884411,
+                37.23166625756766
+              ],
+              [
+                -80.42304476503922,
+                37.23170698124016
+              ],
+              [
+                -80.4231722733991,
+                37.23176792156827
+              ],
+              [
+                -80.42348811738084,
+                37.231519477451855
+              ],
+              [
+                -80.42393713858266,
+                37.2311915924473
+              ],
+              [
+                -80.42381973565459,
+                37.231087010453415
+              ],
+              [
+                -80.4237829559368,
+                37.231059087908406
+              ],
+              [
+                -80.42396180198153,
+                37.230926597748116
+              ],
+              [
+                -80.42413352539,
+                37.230816631057706
+              ],
+              [
+                -80.42428418032209,
+                37.230955375440125
+              ],
+              [
+                -80.42466359572144,
+                37.23066490055351
+              ],
+              [
+                -80.42454032469391,
+                37.23055377880712
+              ],
+              [
+                -80.42385006030072,
+                37.229946299027105
+              ],
+              [
+                -80.42384153648402,
+                37.22992594370927
+              ],
+              [
+                -80.42383869069117,
+                37.22989384949579
+              ],
+              [
+                -80.42385351570907,
+                37.229852758208295
+              ],
+              [
+                -80.42385891280514,
+                37.22984543115627
+              ],
+              [
+                -80.42383188178083,
+                37.22982602187831
+              ],
+              [
+                -80.42365765516058,
+                37.22993641020794
+              ],
+              [
+                -80.42316590425484,
+                37.23027857636724
+              ],
+              [
+                -80.42298072789592,
+                37.230327614291966
+              ],
+              [
+                -80.4226278887392,
+                37.230572970752114
+              ],
+              [
+                -80.42266674120884,
+                37.23062467713986
+              ],
+              [
+                -80.42268322186985,
+                37.23070314822392
+              ],
+              [
+                -80.42289459251705,
+                37.230839454344434
+              ],
+              [
+                -80.42292111442129,
+                37.23081768448793
+              ],
+              [
+                -80.42308065272921,
+                37.230932417938405
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.42239731081882,
+                37.23261300601711
+              ],
+              [
+                -80.42267311466945,
+                37.23243200385803
+              ],
+              [
+                -80.42227641980492,
+                37.23208305857788
+              ],
+              [
+                -80.42189064459106,
+                37.23239704068191
+              ],
+              [
+                -80.42210928759927,
+                37.23254852366668
+              ],
+              [
+                -80.42223544413281,
+                37.23246536953368
+              ],
+              [
+                -80.42239731081882,
+                37.23261300601711
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:18405",
+      "kind": "area",
+      "name": "Torgersen Hall Building Envelope Improvement",
+      "starts_at": "2024-11-20T11:00:00Z",
+      "ends_at": "2027-01-17T23:00:00Z",
+      "source_status": null,
+      "description": "Torgersen Hall Building Envelope Improvement Project- Tuckpointing , adding structural wall ties, replacing clerestory windows, Hokie Stone repairs",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.41976254018985,
+                37.22972533222518
+              ],
+              [
+                -80.41971436627615,
+                37.22975608685403
+              ],
+              [
+                -80.41973910481205,
+                37.229783210545975
+              ],
+              [
+                -80.42011865678126,
+                37.22954941170355
+              ],
+              [
+                -80.42004919759772,
+                37.22947810018346
+              ],
+              [
+                -80.42009887766703,
+                37.22944705954133
+              ],
+              [
+                -80.42006306167869,
+                37.22941413340528
+              ],
+              [
+                -80.419869857069,
+                37.229445982540824
+              ],
+              [
+                -80.41970509940761,
+                37.22954516486467
+              ],
+              [
+                -80.41972239385298,
+                37.22956442878052
+              ],
+              [
+                -80.41967877778204,
+                37.2295914014055
+              ],
+              [
+                -80.41966229380763,
+                37.22957395660667
+              ],
+              [
+                -80.41963344198965,
+                37.229591441975295
+              ],
+              [
+                -80.41976254018985,
+                37.22972533222518
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.41956977535365,
+                37.22950811113897
+              ],
+              [
+                -80.41966469792683,
+                37.22951833734148
+              ],
+              [
+                -80.41976955226426,
+                37.229454802473605
+              ],
+              [
+                -80.41967667489902,
+                37.2294434002726
+              ],
+              [
+                -80.41956977535365,
+                37.22950811113897
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.42035196119387,
+                37.229561578194414
+              ],
+              [
+                -80.42079812765272,
+                37.23002297513974
+              ],
+              [
+                -80.42089337120765,
+                37.2299552118285
+              ],
+              [
+                -80.42072830851778,
+                37.22977222126714
+              ],
+              [
+                -80.42051299804568,
+                37.22953568815399
+              ],
+              [
+                -80.42048208458135,
+                37.22952153266623
+              ],
+              [
+                -80.42045442633207,
+                37.2295152635933
+              ],
+              [
+                -80.42043069513863,
+                37.22951320720249
+              ],
+              [
+                -80.42035196119387,
+                37.229561578194414
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20175",
+      "kind": "area",
+      "name": "New Business Building Construction",
+      "starts_at": "2025-10-17T10:00:00Z",
+      "ends_at": "2027-10-17T10:00:00Z",
+      "source_status": null,
+      "description": "Area closed for construction of the New Business Building. See attached logistics and mobility plan.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42862846509955,
+              37.23130809846393
+            ],
+            [
+              -80.4285900596398,
+              37.231194440647876
+            ],
+            [
+              -80.42856661345522,
+              37.23108883472689
+            ],
+            [
+              -80.42854721163994,
+              37.23096104256033
+            ],
+            [
+              -80.42852202558947,
+              37.230832422875444
+            ],
+            [
+              -80.4284871043472,
+              37.2306836860825
+            ],
+            [
+              -80.42844296587388,
+              37.23053510075713
+            ],
+            [
+              -80.42840931599477,
+              37.230436111970995
+            ],
+            [
+              -80.42836901182368,
+              37.2303473704022
+            ],
+            [
+              -80.42833518700536,
+              37.230281232582556
+            ],
+            [
+              -80.4282860517132,
+              37.230205943580145
+            ],
+            [
+              -80.42816113153437,
+              37.23005167294617
+            ],
+            [
+              -80.42813111024141,
+              37.23003151854654
+            ],
+            [
+              -80.42809019294941,
+              37.23001803044066
+            ],
+            [
+              -80.42803379293595,
+              37.23003369751773
+            ],
+            [
+              -80.4274185682563,
+              37.230501140529284
+            ],
+            [
+              -80.42761384714609,
+              37.23065555366879
+            ],
+            [
+              -80.4276534440793,
+              37.230709394970866
+            ],
+            [
+              -80.42768482083441,
+              37.23078261466838
+            ],
+            [
+              -80.42769767355242,
+              37.2308525975238
+            ],
+            [
+              -80.42769470692437,
+              37.230932124616835
+            ],
+            [
+              -80.4276773300746,
+              37.23098033855367
+            ],
+            [
+              -80.42759305223818,
+              37.23105986312195
+            ],
+            [
+              -80.42767147954227,
+              37.23112674639815
+            ],
+            [
+              -80.42764273852994,
+              37.231149626103935
+            ],
+            [
+              -80.4277278196251,
+              37.23122273219625
+            ],
+            [
+              -80.42787882319308,
+              37.23134085229175
+            ],
+            [
+              -80.42807167983823,
+              37.23149858583459
+            ],
+            [
+              -80.4281049545955,
+              37.231499366333445
+            ],
+            [
+              -80.42814896244367,
+              37.231509993767276
+            ],
+            [
+              -80.42818578739735,
+              37.231536525365996
+            ],
+            [
+              -80.42822795455272,
+              37.23157004836074
+            ],
+            [
+              -80.42827179178325,
+              37.2315881132117
+            ],
+            [
+              -80.42833856266603,
+              37.2315971439027
+            ],
+            [
+              -80.42837744749524,
+              37.2315888405923
+            ],
+            [
+              -80.42849134900733,
+              37.23154274135317
+            ],
+            [
+              -80.42862846509955,
+              37.23130809846393
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20194",
+      "kind": "area",
+      "name": "Inn Facade Repairs",
+      "starts_at": "2025-12-01T14:00:00Z",
+      "ends_at": "2026-10-01T19:00:00Z",
+      "source_status": null,
+      "description": "Courtyard area will be closed. Courtyard exterior exit doors may be re-routed during the construction process. Occupants may experience typical construction-related noise and dust associated with the work. Work will occur 9:00 a.m. to 3:00 M-F.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42989881397303,
+              37.22905260967616
+            ],
+            [
+              -80.42949987601857,
+              37.2292229303653
+            ],
+            [
+              -80.4298357182825,
+              37.2297287487105
+            ],
+            [
+              -80.43022356402302,
+              37.229589069855784
+            ],
+            [
+              -80.43053692653216,
+              37.22958399138111
+            ],
+            [
+              -80.4307169790647,
+              37.22961932587081
+            ],
+            [
+              -80.43130644066592,
+              37.2299011544607
+            ],
+            [
+              -80.43156671310302,
+              37.230260905092074
+            ],
+            [
+              -80.43167477597747,
+              37.23027899207215
+            ],
+            [
+              -80.43135472644481,
+              37.229847417695744
+            ],
+            [
+              -80.43074337625761,
+              37.22956841777996
+            ],
+            [
+              -80.43053248607289,
+              37.22952112653252
+            ],
+            [
+              -80.43019873563466,
+              37.22952437800125
+            ],
+            [
+              -80.42989881397303,
+              37.22905260967616
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20195",
+      "kind": "area",
+      "name": "Fleet Services ADA Parking and Pathway",
+      "starts_at": "2026-09-14T11:00:00Z",
+      "ends_at": "2026-10-09T23:00:00Z",
+      "source_status": null,
+      "description": "There will be contractors grading, milling and paving a new ADA parking spot and ADA path.  This will temporarily affect the normal driving path to the fuel center.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.4140973810447,
+              37.218923027974654
+            ],
+            [
+              -80.41402709742836,
+              37.21894526134434
+            ],
+            [
+              -80.41406444449927,
+              37.21903376080051
+            ],
+            [
+              -80.41410912892053,
+              37.21912050723044
+            ],
+            [
+              -80.41433442374803,
+              37.2190501314939
+            ],
+            [
+              -80.41431220201811,
+              37.21900418140837
+            ],
+            [
+              -80.4141484817301,
+              37.21904863450115
+            ],
+            [
+              -80.4140973810447,
+              37.218923027974654
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20251",
+      "kind": "area",
+      "name": "Smith Career Center Facade Repair",
+      "starts_at": "2026-07-20T10:00:00Z",
+      "ends_at": "2026-10-01T21:00:00Z",
+      "source_status": null,
+      "description": "Virginia Tech Hokie Stone Crew will be building scaffold on the north side of the Smith Career Center in a small parking lot closest to the building. The parking spaces against the building will be closed, but access to adjoining lots will be open.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.42277325171055,
+                37.2217027714629
+              ],
+              [
+                -80.42285976530253,
+                37.22180068698372
+              ],
+              [
+                -80.42298041891581,
+                37.221732792564914
+              ],
+              [
+                -80.42289532734404,
+                37.221637877765076
+              ],
+              [
+                -80.42282380212747,
+                37.221679374458674
+              ],
+              [
+                -80.42282027238691,
+                37.22167548434541
+              ],
+              [
+                -80.42277325171055,
+                37.2217027714629
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.42270213546932,
+                37.22301864706143
+              ],
+              [
+                -80.42272866626087,
+                37.22308135418898
+              ],
+              [
+                -80.422766067413,
+                37.22307123460482
+              ],
+              [
+                -80.42273953659388,
+                37.22300852748557
+              ],
+              [
+                -80.42270213546932,
+                37.22301864706143
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20306",
+      "kind": "area",
+      "name": "Improving Campus Accessibility",
+      "starts_at": "2026-06-08T12:00:00Z",
+      "ends_at": "2026-10-30T21:00:00Z",
+      "source_status": null,
+      "description": "The general contractor will begin to mobilize for Phase 1 of construction on a universal and multimodal pathway through the Residential District to achieve an accessible route between East Eggleston and Deitrick Halls. ",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.4184029358658,
+                37.22596001354474
+              ],
+              [
+                -80.41822320560722,
+                37.226103968651884
+              ],
+              [
+                -80.41813811475846,
+                37.22619597879019
+              ],
+              [
+                -80.4180385491325,
+                37.22632198784122
+              ],
+              [
+                -80.4180073785941,
+                37.22631081824335
+              ],
+              [
+                -80.41797304972967,
+                37.22637424487329
+              ],
+              [
+                -80.41800778166956,
+                37.22639299045811
+              ],
+              [
+                -80.4179936436419,
+                37.22641118270703
+              ],
+              [
+                -80.41792485653039,
+                37.22643536686867
+              ],
+              [
+                -80.41796802129744,
+                37.226463690349945
+              ],
+              [
+                -80.41783558582046,
+                37.22671058218747
+              ],
+              [
+                -80.4180304948881,
+                37.226844828999894
+              ],
+              [
+                -80.41796995228667,
+                37.2267164825907
+              ],
+              [
+                -80.41804104740719,
+                37.226619227436586
+              ],
+              [
+                -80.41804478188314,
+                37.22649301361107
+              ],
+              [
+                -80.41808752959781,
+                37.226393153786226
+              ],
+              [
+                -80.41817333451785,
+                37.226254189787
+              ],
+              [
+                -80.41827878493005,
+                37.22616270677649
+              ],
+              [
+                -80.41844793298169,
+                37.226034668950724
+              ],
+              [
+                -80.41855773202968,
+                37.22597989536655
+              ],
+              [
+                -80.41864289662713,
+                37.225972223763435
+              ],
+              [
+                -80.41869734607783,
+                37.22597812445069
+              ],
+              [
+                -80.41871404417756,
+                37.22595459547387
+              ],
+              [
+                -80.41866645588995,
+                37.22593652503396
+              ],
+              [
+                -80.41865046516327,
+                37.225897385467235
+              ],
+              [
+                -80.4184029358658,
+                37.22596001354474
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.41884724069476,
+                37.225792868435434
+              ],
+              [
+                -80.41872694332473,
+                37.225872159248006
+              ],
+              [
+                -80.41876958761094,
+                37.22594855349891
+              ],
+              [
+                -80.41881338251508,
+                37.22591755764765
+              ],
+              [
+                -80.41886654278377,
+                37.225937742883254
+              ],
+              [
+                -80.41887922513918,
+                37.226022438267215
+              ],
+              [
+                -80.41897528780264,
+                37.226023998632634
+              ],
+              [
+                -80.41902752830799,
+                37.22598845272842
+              ],
+              [
+                -80.41922135973742,
+                37.2260540645481
+              ],
+              [
+                -80.41922115712835,
+                37.22611511249611
+              ],
+              [
+                -80.419349450199,
+                37.226053385113744
+              ],
+              [
+                -80.4190598727008,
+                37.225811107294504
+              ],
+              [
+                -80.41903159956995,
+                37.22583490021472
+              ],
+              [
+                -80.41894978250609,
+                37.22576839994976
+              ],
+              [
+                -80.41884724069476,
+                37.225792868435434
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.41792112587108,
+                37.22690403748549
+              ],
+              [
+                -80.41784062867838,
+                37.22706576880309
+              ],
+              [
+                -80.41802427007508,
+                37.22713051890575
+              ],
+              [
+                -80.41813217119007,
+                37.227224030932426
+              ],
+              [
+                -80.41813642285996,
+                37.22697638188437
+              ],
+              [
+                -80.41797511363615,
+                37.22686313621006
+              ],
+              [
+                -80.41791454031727,
+                37.22681674641513
+              ],
+              [
+                -80.41792112587108,
+                37.22690403748549
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20327",
+      "kind": "area",
+      "name": "Chapel Roof and Facade Restoration",
+      "starts_at": "2026-06-29T11:00:00Z",
+      "ends_at": "2026-11-30T22:00:00Z",
+      "source_status": null,
+      "description": "During the course of this project, the building will be closed and will only be accessible to the contractors performing the restoration. Pedestrians will see construction fencing around the entire building.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42061369557267,
+              37.22858948592002
+            ],
+            [
+              -80.42040475270409,
+              37.22837408951503
+            ],
+            [
+              -80.42027940032592,
+              37.22868655692208
+            ],
+            [
+              -80.42010787871362,
+              37.22883895064273
+            ],
+            [
+              -80.42039364689516,
+              37.22913403276549
+            ],
+            [
+              -80.42049472440361,
+              37.22906080411358
+            ],
+            [
+              -80.42085907065568,
+              37.229041784744474
+            ],
+            [
+              -80.4209752945754,
+              37.22892208070113
+            ],
+            [
+              -80.42077349670222,
+              37.22876235252852
+            ],
+            [
+              -80.42061369557267,
+              37.22858948592002
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20333",
+      "kind": "area",
+      "name": "Torgersen Hall Roof Replacement",
+      "starts_at": "2026-07-14T10:00:00Z",
+      "ends_at": "2027-01-18T01:00:00Z",
+      "source_status": null,
+      "description": "Areas closed for laydown of materials pertaining to roof replacement project",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.41927232948251,
+                37.22972413481222
+              ],
+              [
+                -80.4193000907787,
+                37.2297534725619
+              ],
+              [
+                -80.4195122120074,
+                37.229625138429704
+              ],
+              [
+                -80.41948445177977,
+                37.2295957998102
+              ],
+              [
+                -80.41927232948251,
+                37.22972413481222
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.41924550057293,
+                37.229828669810225
+              ],
+              [
+                -80.41927326189712,
+                37.2298580075658
+              ],
+              [
+                -80.41948538346519,
+                37.22972967348351
+              ],
+              [
+                -80.41945762320954,
+                37.22970033485809
+              ],
+              [
+                -80.41924550057293,
+                37.229828669810225
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.42050676733786,
+                37.23042459465783
+              ],
+              [
+                -80.42054907815104,
+                37.23046529759835
+              ],
+              [
+                -80.42061088049856,
+                37.2304236001652
+              ],
+              [
+                -80.42057244182256,
+                37.23038353274012
+              ],
+              [
+                -80.42050676733786,
+                37.23042459465783
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20337",
+      "kind": "area",
+      "name": "Hahn Hall - North Facade Repairs",
+      "starts_at": "2026-07-01T11:00:00Z",
+      "ends_at": "2027-08-17T21:00:00Z",
+      "source_status": null,
+      "description": "The exterior of the building and a portion of lawn will be closed to repair the building facade. Black shaded areas on the diagram will receive overhead protection and will remain open to pedestrians during work.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.42647543958059,
+                37.22838775952044
+              ],
+              [
+                -80.4267362908264,
+                37.2285996763761
+              ],
+              [
+                -80.42691178308546,
+                37.228479465764245
+              ],
+              [
+                -80.42693468232034,
+                37.2284561795635
+              ],
+              [
+                -80.42693407072484,
+                37.22843222355528
+              ],
+              [
+                -80.42692531643785,
+                37.22840948921773
+              ],
+              [
+                -80.42683507639317,
+                37.2282900408552
+              ],
+              [
+                -80.42647543958059,
+                37.22838775952044
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.426224891157,
+                37.228533428844884
+              ],
+              [
+                -80.42623703782368,
+                37.22852590771805
+              ],
+              [
+                -80.42619806880546,
+                37.22849389197372
+              ],
+              [
+                -80.42616935311344,
+                37.22851624006942
+              ],
+              [
+                -80.42599566968144,
+                37.2283735440535
+              ],
+              [
+                -80.42597948776408,
+                37.22838613851733
+              ],
+              [
+                -80.42589799166032,
+                37.22836141482751
+              ],
+              [
+                -80.42595944368621,
+                37.22831358970313
+              ],
+              [
+                -80.42596782827522,
+                37.22832047839332
+              ],
+              [
+                -80.42597870922974,
+                37.22831136915581
+              ],
+              [
+                -80.42595295224095,
+                37.22829250557762
+              ],
+              [
+                -80.42587849452127,
+                37.228362996525945
+              ],
+              [
+                -80.42596205678772,
+                37.22839161340312
+              ],
+              [
+                -80.42598573028259,
+                37.228396804278916
+              ],
+              [
+                -80.425995192475,
+                37.22839176945097
+              ],
+              [
+                -80.42616636643524,
+                37.22853254522703
+              ],
+              [
+                -80.42619591726098,
+                37.228509752691856
+              ],
+              [
+                -80.426224891157,
+                37.228533428844884
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -80.42652636872566,
+                37.228754237698155
+              ],
+              [
+                -80.42658570474897,
+                37.228714613299466
+              ],
+              [
+                -80.42656555015083,
+                37.228697196902125
+              ],
+              [
+                -80.42652688461871,
+                37.22872728815774
+              ],
+              [
+                -80.42650053322916,
+                37.22870563771845
+              ],
+              [
+                -80.42647756003576,
+                37.228723517346076
+              ],
+              [
+                -80.42634260998608,
+                37.22861265205675
+              ],
+              [
+                -80.42632641506123,
+                37.22862690063247
+              ],
+              [
+                -80.42647766948438,
+                37.22874833956901
+              ],
+              [
+                -80.42650168520935,
+                37.228730015719385
+              ],
+              [
+                -80.42652636872566,
+                37.228754237698155
+              ]
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20354",
+      "kind": "area",
+      "name": "Student Services Building Renovations",
+      "starts_at": "2026-07-29T12:00:00Z",
+      "ends_at": "2027-02-28T22:00:00Z",
+      "source_status": null,
+      "description": "The second and third-floor Financial Aid spaces will be undergoing a renovation project, and the work will be completed in two phases. A construction dumpster will be located in the grassy area adjacent to the loading dock for the duration of the project.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42229321404325,
+              37.22199709536707
+            ],
+            [
+              -80.42223203967019,
+              37.22193568598856
+            ],
+            [
+              -80.42218279314886,
+              37.22196706037539
+            ],
+            [
+              -80.42224396748433,
+              37.22202846887826
+            ],
+            [
+              -80.42229321404325,
+              37.22199709536707
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20356",
+      "kind": "area",
+      "name": "Cassell Coliseum ADA Ramp Project",
+      "starts_at": "2026-09-03T11:00:00Z",
+      "ends_at": "2026-10-16T21:00:00Z",
+      "source_status": null,
+      "description": "Pedestrians will experience periodic closures of the sidewalk as heavy equipment is moved in and out of the construction area. Building occupants may experience general construction-related noise associated with the work throughout the duration of the project.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.4193059071553,
+              37.22189094588533
+            ],
+            [
+              -80.41934027382456,
+              37.22194849355727
+            ],
+            [
+              -80.4191024095234,
+              37.22211585910688
+            ],
+            [
+              -80.41907000185404,
+              37.22213842054763
+            ],
+            [
+              -80.41908741472353,
+              37.222154392040906
+            ],
+            [
+              -80.41946098310486,
+              37.22189719537847
+            ],
+            [
+              -80.41942834963682,
+              37.22185387151738
+            ],
+            [
+              -80.4193059071553,
+              37.22189094588533
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20357",
+      "kind": "area",
+      "name": "Dietrick ADA Ramp",
+      "starts_at": "2026-08-17T10:00:00Z",
+      "ends_at": "2026-10-30T21:00:00Z",
+      "source_status": null,
+      "description": "The pedestrian ramp and surrounding areas will be closed to pedestrian traffic. Construction fencing will be installed around the entire construction site. Intermittent vehicle activity and impacts to Ag Quad Lane are expected for material disposal, deliveries, and concrete placement.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42143785490853,
+              37.22394233958469
+            ],
+            [
+              -80.42124032299746,
+              37.22376251458861
+            ],
+            [
+              -80.42114157164548,
+              37.22394990306441
+            ],
+            [
+              -80.42126479063474,
+              37.224048268699306
+            ],
+            [
+              -80.42143785490853,
+              37.22394233958469
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    },
+    {
+      "id": "areas:20364",
+      "kind": "area",
+      "name": "Duck Pond and Fairway Residence Halls Construction",
+      "starts_at": "2026-06-08T10:00:00Z",
+      "ends_at": "2028-11-30T23:00:00Z",
+      "source_status": null,
+      "description": "Construction of residence halls capital project — consisting of four new residence halls. Estimated completion is fall 2028.",
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.42791367818499,
+              37.22934556830027
+            ],
+            [
+              -80.42828363275295,
+              37.22896983847908
+            ],
+            [
+              -80.4283747818042,
+              37.22893116167444
+            ],
+            [
+              -80.42834715945219,
+              37.22888039123985
+            ],
+            [
+              -80.42883846642302,
+              37.2286366049673
+            ],
+            [
+              -80.42891427874802,
+              37.22875324578545
+            ],
+            [
+              -80.42905171695487,
+              37.22870609345161
+            ],
+            [
+              -80.42914530663774,
+              37.228865946710656
+            ],
+            [
+              -80.4291439881448,
+              37.22892570976678
+            ],
+            [
+              -80.42921177229462,
+              37.228891524000154
+            ],
+            [
+              -80.42911270285549,
+              37.228688958439605
+            ],
+            [
+              -80.42944403973077,
+              37.22867512331032
+            ],
+            [
+              -80.4294606881406,
+              37.22870853031161
+            ],
+            [
+              -80.42959558786897,
+              37.2287336908774
+            ],
+            [
+              -80.42964571732294,
+              37.22871598769346
+            ],
+            [
+              -80.42968829112714,
+              37.22870871326845
+            ],
+            [
+              -80.43001793700475,
+              37.22886236338947
+            ],
+            [
+              -80.43006785057185,
+              37.228971182909994
+            ],
+            [
+              -80.43025633932822,
+              37.228969813299656
+            ],
+            [
+              -80.43042992017078,
+              37.22888817470154
+            ],
+            [
+              -80.4306531050697,
+              37.2288194285543
+            ],
+            [
+              -80.43075165359213,
+              37.228819530036084
+            ],
+            [
+              -80.43089306879652,
+              37.228736703512325
+            ],
+            [
+              -80.43068219370898,
+              37.228532873915015
+            ],
+            [
+              -80.43106838938604,
+              37.228135688348296
+            ],
+            [
+              -80.43128686959317,
+              37.228051893485805
+            ],
+            [
+              -80.43155619123662,
+              37.22786076436856
+            ],
+            [
+              -80.43160721591204,
+              37.22759440601603
+            ],
+            [
+              -80.43151469873116,
+              37.22757879013603
+            ],
+            [
+              -80.43153342776831,
+              37.22730610870597
+            ],
+            [
+              -80.43167589214299,
+              37.227264376932325
+            ],
+            [
+              -80.43192384581674,
+              37.22715924912049
+            ],
+            [
+              -80.43208630775592,
+              37.226894493269505
+            ],
+            [
+              -80.4318800167357,
+              37.22661864222158
+            ],
+            [
+              -80.43170004454186,
+              37.22645028248484
+            ],
+            [
+              -80.43169676346112,
+              37.22640579746528
+            ],
+            [
+              -80.43145153818045,
+              37.22611516549784
+            ],
+            [
+              -80.43146385381866,
+              37.226010467395724
+            ],
+            [
+              -80.4313493064247,
+              37.225887289536054
+            ],
+            [
+              -80.43069027804633,
+              37.22549893033342
+            ],
+            [
+              -80.43023333681404,
+              37.225305976119984
+            ],
+            [
+              -80.43023975673403,
+              37.22522193193783
+            ],
+            [
+              -80.43007633313071,
+              37.22508440697793
+            ],
+            [
+              -80.42997148133341,
+              37.22519904677295
+            ],
+            [
+              -80.42967674915838,
+              37.225452889930324
+            ],
+            [
+              -80.42967472365093,
+              37.225493267172546
+            ],
+            [
+              -80.42973512288361,
+              37.22559334962279
+            ],
+            [
+              -80.42989073461585,
+              37.22547945739833
+            ],
+            [
+              -80.430000953003,
+              37.225600994975345
+            ],
+            [
+              -80.43007393296352,
+              37.225606653230614
+            ],
+            [
+              -80.43049246761554,
+              37.22588931453015
+            ],
+            [
+              -80.43038584427799,
+              37.22599212816968
+            ],
+            [
+              -80.42996588414199,
+              37.22607265636559
+            ],
+            [
+              -80.42989055503924,
+              37.22631028909991
+            ],
+            [
+              -80.4300365250023,
+              37.226489485726965
+            ],
+            [
+              -80.42981609754345,
+              37.22649822880964
+            ],
+            [
+              -80.42978157663065,
+              37.22657245413282
+            ],
+            [
+              -80.42952678572486,
+              37.22624257509108
+            ],
+            [
+              -80.42949209067424,
+              37.2263099507225
+            ],
+            [
+              -80.42975059485168,
+              37.226617500235086
+            ],
+            [
+              -80.42934009482872,
+              37.22731970878222
+            ],
+            [
+              -80.42927567904609,
+              37.22731390917263
+            ],
+            [
+              -80.42918670099188,
+              37.22726911139165
+            ],
+            [
+              -80.4290616731627,
+              37.22732254584927
+            ],
+            [
+              -80.4289694631534,
+              37.227318913632125
+            ],
+            [
+              -80.42889669679849,
+              37.227237876914884
+            ],
+            [
+              -80.42891762683938,
+              37.22713475172383
+            ],
+            [
+              -80.42900214606418,
+              37.22717277011725
+            ],
+            [
+              -80.42912463534307,
+              37.22702002070536
+            ],
+            [
+              -80.42888619814812,
+              37.22691085584172
+            ],
+            [
+              -80.42878450872432,
+              37.2270392829045
+            ],
+            [
+              -80.42879399339046,
+              37.2270751017177
+            ],
+            [
+              -80.42888943880354,
+              37.22712150744373
+            ],
+            [
+              -80.42885845870875,
+              37.2272504924216
+            ],
+            [
+              -80.42892724792034,
+              37.22734358661971
+            ],
+            [
+              -80.42881777853076,
+              37.22741903635938
+            ],
+            [
+              -80.42892332434455,
+              37.227609173092056
+            ],
+            [
+              -80.42890268009272,
+              37.22839408679083
+            ],
+            [
+              -80.4285128602343,
+              37.22848096947927
+            ],
+            [
+              -80.42846063761112,
+              37.22853321377551
+            ],
+            [
+              -80.42846780555706,
+              37.22856221890842
+            ],
+            [
+              -80.42827407833383,
+              37.228777801511676
+            ],
+            [
+              -80.42815263268974,
+              37.228887707556744
+            ],
+            [
+              -80.42800570852557,
+              37.229006594500156
+            ],
+            [
+              -80.42786769622718,
+              37.22905510148647
+            ],
+            [
+              -80.427865775587,
+              37.22914763685341
+            ],
+            [
+              -80.42778604101997,
+              37.22919110011909
+            ],
+            [
+              -80.42791367818499,
+              37.22934556830027
+            ]
+          ]
+        ]
+      },
+      "ranking_use": "area_overlap_with_valid_dates_only"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "sha256": "61048f6990cc9cf4d1c2c8c53355ac4ec20c74ea80ec5372a2b0ab26e56b6f9d",
+      "captured_at": "2026-09-19T17:06:07.463902Z",
+      "row_count": 14,
+      "coverage": "facilities/Construction_Closures/FeatureServer/0",
+      "limitations": "Published current closure layers only; missing features do not prove every path is open. Apply source dates and snapshot freshness. Road delays do not establish a pedestrian closure.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    },
+    {
+      "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Road_Closures_new/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Clabel%2Cclosurestartdate%2Cclosureenddate%2Cclosuredelay%2Caddl_cmmts&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "sha256": "ed778c73ea51338d6576fb5992b189f2b94d9f3d5e199f46c1af520d6b0b3e6c",
+      "captured_at": "2026-09-19T17:06:08.174119Z",
+      "row_count": 0,
+      "coverage": "facilities/Road_Closures_new/FeatureServer/0",
+      "limitations": "Published current closure layers only; missing features do not prove every path is open. Apply source dates and snapshot freshness. Road delays do not establish a pedestrian closure.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    }
+  ],
+  "limitations": [
+    "Published current closure layers only; missing features do not prove every path is open. Apply source dates and snapshot freshness. Road delays do not establish a pedestrian closure."
+  ]
+}

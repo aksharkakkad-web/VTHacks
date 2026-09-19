@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "source_index_url": "https://police.vt.edu/crime-stats/crime-logs.html",
+  "captured_at": "2026-09-19T13:48:55.773751Z",
+  "scope": {
+    "campus": "Blacksburg",
+    "published_months": [
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+    ],
+    "requested_reported_date_start": "2026-01-01",
+    "requested_reported_date_end": "2026-09-19",
+    "selection": "Every row in indexed Blacksburg PDFs for these months. Earlier/later reported dates are retained and counted separately.",
+    "excluded_campuses": [
+      "Greater DC/Innovation Center",
+      "VT Carilion"
+    ]
+  },
+  "coverage": "partial",
+  "all_crime_occurrence_coverage": false,
+  "coverage_note": "Published Blacksburg monthly log row, not a crime occurrence census or a safety measure. Dates, offense wording, and disposition history are retained as published; source data may be incomplete, delayed, or erroneous. Complete refers only to extraction of the captured published documents, not reporting through the capture date.",
+  "pdfs": 9,
+  "pages": 79,
+  "records": 719,
+  "unique_report_ids": 717,
+  "source_candidate_rows": 720,
+  "quarantined_rows": 1,
+  "duplicate_report_ids": {
+    "2026-16251": 2,
+    "2026-2206": 2
+  },
+  "reported_date_min": "2025-02-10",
+  "reported_date_max": "3036-03-30",
+  "reported_date_min_within_scope": "2026-01-02",
+  "reported_date_max_within_scope": "2026-09-17",
+  "records_within_requested_reported_dates": 713,
+  "records_outside_requested_reported_dates": 6,
+  "records_with_date_quality_flags": 17,
+  "documents": [
+    {
+      "month": "2026-01",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202601.pdf",
+      "source_hash": "4377538699fe42b5fe2ca9aa22644fa3821b50c5b9e495b71513a4f9929b0dbf",
+      "captured_at": "2026-09-19T13:48:56.264157Z",
+      "source_bytes": 686390,
+      "archive_file": "crime-2026-01.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 24,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 30,
+          "candidate_rows": 11
+        },
+        {
+          "page": 3,
+          "table_lines": 29,
+          "candidate_rows": 11
+        },
+        {
+          "page": 4,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 5,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 32,
+          "candidate_rows": 10
+        },
+        {
+          "page": 7,
+          "table_lines": 24,
+          "candidate_rows": 8
+        }
+      ],
+      "page_count": 7,
+      "records": 68,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-02",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202602.pdf",
+      "source_hash": "272a2571249b39074b9d239adb4f8f9a865f349707ef37db00c9acfaa01f5a2e",
+      "captured_at": "2026-09-19T13:48:57.259238Z",
+      "source_bytes": 731617,
+      "archive_file": "crime-2026-02.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 26,
+          "candidate_rows": 9
+        },
+        {
+          "page": 2,
+          "table_lines": 27,
+          "candidate_rows": 10
+        },
+        {
+          "page": 3,
+          "table_lines": 30,
+          "candidate_rows": 9
+        },
+        {
+          "page": 4,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 5,
+          "table_lines": 28,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 7,
+          "table_lines": 29,
+          "candidate_rows": 9
+        },
+        {
+          "page": 8,
+          "table_lines": 32,
+          "candidate_rows": 8
+        },
+        {
+          "page": 9,
+          "table_lines": 31,
+          "candidate_rows": 7
+        },
+        {
+          "page": 10,
+          "table_lines": 27,
+          "candidate_rows": 8
+        },
+        {
+          "page": 11,
+          "table_lines": 32,
+          "candidate_rows": 11
+        },
+        {
+          "page": 12,
+          "table_lines": 25,
+          "candidate_rows": 8
+        },
+        {
+          "page": 13,
+          "table_lines": 6,
+          "candidate_rows": 1
+        }
+      ],
+      "page_count": 13,
+      "records": 110,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-03",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+      "source_hash": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+      "captured_at": "2026-09-19T13:48:58.562382Z",
+      "source_bytes": 732473,
+      "archive_file": "crime-2026-03.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 24,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 29,
+          "candidate_rows": 9
+        },
+        {
+          "page": 3,
+          "table_lines": 30,
+          "candidate_rows": 9
+        },
+        {
+          "page": 4,
+          "table_lines": 30,
+          "candidate_rows": 11
+        },
+        {
+          "page": 5,
+          "table_lines": 30,
+          "candidate_rows": 9
+        },
+        {
+          "page": 6,
+          "table_lines": 30,
+          "candidate_rows": 8
+        },
+        {
+          "page": 7,
+          "table_lines": 31,
+          "candidate_rows": 9
+        },
+        {
+          "page": 8,
+          "table_lines": 30,
+          "candidate_rows": 12
+        },
+        {
+          "page": 9,
+          "table_lines": 30,
+          "candidate_rows": 9
+        },
+        {
+          "page": 10,
+          "table_lines": 31,
+          "candidate_rows": 9
+        },
+        {
+          "page": 11,
+          "table_lines": 29,
+          "candidate_rows": 11
+        },
+        {
+          "page": 12,
+          "table_lines": 30,
+          "candidate_rows": 8
+        }
+      ],
+      "page_count": 12,
+      "records": 112,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-04",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+      "source_hash": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+      "captured_at": "2026-09-19T13:49:00.101180Z",
+      "source_bytes": 741039,
+      "archive_file": "crime-2026-04.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 23,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 30,
+          "candidate_rows": 8
+        },
+        {
+          "page": 3,
+          "table_lines": 31,
+          "candidate_rows": 10
+        },
+        {
+          "page": 4,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 5,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 7,
+          "table_lines": 28,
+          "candidate_rows": 11
+        },
+        {
+          "page": 8,
+          "table_lines": 30,
+          "candidate_rows": 11
+        },
+        {
+          "page": 9,
+          "table_lines": 32,
+          "candidate_rows": 7
+        },
+        {
+          "page": 10,
+          "table_lines": 28,
+          "candidate_rows": 9
+        },
+        {
+          "page": 11,
+          "table_lines": 29,
+          "candidate_rows": 11
+        },
+        {
+          "page": 12,
+          "table_lines": 9,
+          "candidate_rows": 3
+        }
+      ],
+      "page_count": 12,
+      "records": 108,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-05",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf",
+      "source_hash": "30f69522a1417063bdb3ffbe4f2e460b10e8ceabc6885f7b0b773c4aed3bb172",
+      "captured_at": "2026-09-19T13:49:01.493272Z",
+      "source_bytes": 663863,
+      "archive_file": "crime-2026-05.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 24,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 31,
+          "candidate_rows": 10
+        },
+        {
+          "page": 3,
+          "table_lines": 29,
+          "candidate_rows": 11
+        },
+        {
+          "page": 4,
+          "table_lines": 31,
+          "candidate_rows": 11
+        },
+        {
+          "page": 5,
+          "table_lines": 31,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 23,
+          "candidate_rows": 8
+        }
+      ],
+      "page_count": 6,
+      "records": 57,
+      "gap_count": 1
+    },
+    {
+      "month": "2026-06",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202606.pdf",
+      "source_hash": "d818032a95f92fa31f0a86aa05f5f1be4d46662164961aa9f16060bce189377c",
+      "captured_at": "2026-09-19T13:49:02.457771Z",
+      "source_bytes": 622915,
+      "archive_file": "crime-2026-06.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 24,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 27,
+          "candidate_rows": 8
+        },
+        {
+          "page": 3,
+          "table_lines": 9,
+          "candidate_rows": 3
+        }
+      ],
+      "page_count": 3,
+      "records": 19,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-07",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202607.pdf",
+      "source_hash": "aac2828266f024328fcd4f56ebdc449ce3bce66333fa612e374ea9c05183469b",
+      "captured_at": "2026-09-19T13:49:03.020348Z",
+      "source_bytes": 211199,
+      "archive_file": "crime-2026-07.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 23,
+          "candidate_rows": 7
+        },
+        {
+          "page": 2,
+          "table_lines": 32,
+          "candidate_rows": 10
+        }
+      ],
+      "page_count": 2,
+      "records": 17,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-08",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202608.pdf",
+      "source_hash": "8e8e4a98b286312f3e7ca7672f4b7e1ceeba23b130674f0fcee6bd1fc0e87ae7",
+      "captured_at": "2026-09-19T13:49:03.678154Z",
+      "source_bytes": 709954,
+      "archive_file": "crime-2026-08.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 24,
+          "candidate_rows": 8
+        },
+        {
+          "page": 2,
+          "table_lines": 25,
+          "candidate_rows": 11
+        },
+        {
+          "page": 3,
+          "table_lines": 31,
+          "candidate_rows": 10
+        },
+        {
+          "page": 4,
+          "table_lines": 33,
+          "candidate_rows": 10
+        },
+        {
+          "page": 5,
+          "table_lines": 28,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 28,
+          "candidate_rows": 9
+        },
+        {
+          "page": 7,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 8,
+          "table_lines": 32,
+          "candidate_rows": 10
+        },
+        {
+          "page": 9,
+          "table_lines": 29,
+          "candidate_rows": 9
+        },
+        {
+          "page": 10,
+          "table_lines": 17,
+          "candidate_rows": 7
+        }
+      ],
+      "page_count": 10,
+      "records": 94,
+      "gap_count": 0
+    },
+    {
+      "month": "2026-09",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+      "source_hash": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+      "captured_at": "2026-09-19T13:49:04.751853Z",
+      "source_bytes": 761711,
+      "archive_file": "crime-2026-09.pdf.gz",
+      "pages": [
+        {
+          "page": 1,
+          "table_lines": 25,
+          "candidate_rows": 9
+        },
+        {
+          "page": 2,
+          "table_lines": 29,
+          "candidate_rows": 11
+        },
+        {
+          "page": 3,
+          "table_lines": 27,
+          "candidate_rows": 10
+        },
+        {
+          "page": 4,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 5,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 6,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 7,
+          "table_lines": 29,
+          "candidate_rows": 10
+        },
+        {
+          "page": 8,
+          "table_lines": 31,
+          "candidate_rows": 9
+        },
+        {
+          "page": 9,
+          "table_lines": 30,
+          "candidate_rows": 10
+        },
+        {
+          "page": 10,
+          "table_lines": 31,
+          "candidate_rows": 11
+        },
+        {
+          "page": 11,
+          "table_lines": 32,
+          "candidate_rows": 9
+        },
+        {
+          "page": 12,
+          "table_lines": 28,
+          "candidate_rows": 8
+        },
+        {
+          "page": 13,
+          "table_lines": 29,
+          "candidate_rows": 7
+        },
+        {
+          "page": 14,
+          "table_lines": 29,
+          "candidate_rows": 10
+        }
+      ],
+      "page_count": 14,
+      "records": 134,
+      "gap_count": 0
+    }
+  ],
+  "gaps": [
+    {
+      "page": 1,
+      "source_pages": [
+        1
+      ],
+      "cells": [
+        "2026-8058",
+        "05/02/2026",
+        "Petit Larceny- Building",
+        "201 Ag Quand Lane\n(Slusher Hall- Wing)",
+        "05/01/2026",
+        "",
+        ""
+      ],
+      "kind": "missing_cells",
+      "missing": [
+        "occurrence_times",
+        "disposition"
+      ],
+      "month": "2026-05",
+      "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf"
+    }
+  ],
+  "limitations": [
+    "This is reported public-log context, not a live alert feed, conviction record, prediction, or safety guarantee.",
+    "Publication can lag reporting and fields can be withheld; no empty or absent record establishes that no crime occurred.",
+    "One row may list multiple offenses or multiplicities; row counts are not counts of offenses, victims, or unique events.",
+    "All published dispositions are retained, including unfounded reports and status history.",
+    "Log definitions differ from the annual Clery statistical report; do not combine their counts.",
+    "No coordinates or inferred geocoding are added. Public location wording is retained.",
+    "Blacksburg is the index publication section, not a geometric filter: published rows can describe off-campus or study-abroad locations."
+  ],
+  "source_index_hash": "881ff05c1e27f38192db20c0cd34a397005aa798f4a75ba4c986f534065fa580"
+}

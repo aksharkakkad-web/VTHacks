@@ -1,0 +1,1042 @@
+[
+  {
+    "phone_id": "117",
+    "location": "EMRG-War Memorial Gym (Front)",
+    "longitude": -80.42108661696791,
+    "latitude": 37.22689910491553,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "118",
+    "location": "EMRG-Duck Pond Lot Lower",
+    "longitude": -80.42892191316295,
+    "latitude": 37.22332257250981,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "120",
+    "location": "EMRG-Chicken Hill lot upper",
+    "longitude": -80.41692385239314,
+    "latitude": 37.21671880895841,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "121",
+    "location": "EMRG-Overflow Lot (Golf course side bike path)",
+    "longitude": -80.43129620974847,
+    "latitude": 37.22373359627836,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "122",
+    "location": "EMRG-Special Purpose Housing Building G",
+    "longitude": -80.43683346124872,
+    "latitude": 37.224724471457186,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "123",
+    "location": "EMRG-Saunders/Price",
+    "longitude": -80.42418593721058,
+    "latitude": 37.2251662489281,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "125",
+    "location": "EMRG-Plantation Rd. Foxridge side of tunnel",
+    "longitude": -80.4389495374581,
+    "latitude": 37.21564585506729,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "126",
+    "location": "EMRG-Cassell Coliseum Service Entrance Rear",
+    "longitude": -80.41941540352852,
+    "latitude": 37.22101095580776,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "127",
+    "location": "EMRG-Duck Pond Lot Upper",
+    "longitude": -80.42924255093203,
+    "latitude": 37.222441224556114,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "128",
+    "location": "EMRG-Bishop-Favrao",
+    "longitude": -80.42549045063012,
+    "latitude": 37.22981967396787,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "129",
+    "location": "EMRG-Chicken Hill lot beside Tech Center Drive",
+    "longitude": -80.41880845204948,
+    "latitude": 37.216686782138034,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "130",
+    "location": "EMRG-I-Lot Lower Gate (Grove End)",
+    "longitude": -80.4283142271369,
+    "latitude": 37.222263266517345,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "131",
+    "location": "EMRG-Mall between Bookstore and Library",
+    "longitude": -80.41864391712166,
+    "latitude": 37.22852270963535,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "132",
+    "location": "EMRG-I-Lot Gate between Vet Med and South End",
+    "longitude": -80.42677080014565,
+    "latitude": 37.218971419642834,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "133",
+    "location": "EMRG-Huckleberry Trail Seismograph",
+    "longitude": -80.42096876256468,
+    "latitude": 37.21108662433367,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "134",
+    "location": "EMRG-I-Lot Middle (light pole)",
+    "longitude": -80.42912329615245,
+    "latitude": 37.22078614275405,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "135",
+    "location": "EMRG-Duckpond Solitide End near bridge",
+    "longitude": -80.42686398328688,
+    "latitude": 37.22564346291373,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "136",
+    "location": "EMRG-Between Dietrick and West Pritchard",
+    "longitude": -80.42037424239957,
+    "latitude": 37.224263630288156,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "137",
+    "location": "EMRG-Owens  Quad (volleyball court)",
+    "longitude": -80.41950816068172,
+    "latitude": 37.22670245472626,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "138",
+    "location": "EMRG-Plantation Rd. Smithfield side of tunnel",
+    "longitude": -80.43486467515771,
+    "latitude": 37.21704267463116,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "139",
+    "location": "EMRG-I-Lot Guard Shack",
+    "longitude": -80.4268372539616,
+    "latitude": 37.22025954540319,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "140",
+    "location": "EMRG-Skelton Conf Ctr (Service Entrance)",
+    "longitude": -80.42846564352541,
+    "latitude": 37.22951277810727,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "141",
+    "location": "EMRG-Special Purpose Housing Building D",
+    "longitude": -80.43839354829245,
+    "latitude": 37.22642987015965,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "142",
+    "location": "EMRG-Media Annex",
+    "longitude": -80.41603813704526,
+    "latitude": 37.22898457161809,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "143",
+    "location": "EMRG-Plantation and Smithfield",
+    "longitude": -80.43156682308816,
+    "latitude": 37.22019253351437,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "144",
+    "location": "EMRG-Cassell Coliseum main entrance",
+    "longitude": -80.41969621490003,
+    "latitude": 37.222875761037386,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "145",
+    "location": "EMRG-Lower Quad  Volleyball Court",
+    "longitude": -80.41703888003318,
+    "latitude": 37.22622662277851,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "146",
+    "location": "EMRG-Pamplin/Derring",
+    "longitude": -80.4251607575607,
+    "latitude": 37.228611100645146,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "147",
+    "location": "EMRG-I-Lot Upper",
+    "longitude": -80.42853847422354,
+    "latitude": 37.219978415224844,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "148",
+    "location": "EMRG-Oshag/Lee",
+    "longitude": -80.41830843347098,
+    "latitude": 37.22500162230791,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "149",
+    "location": "EMRG-Squires Mall  Torg Bridge end",
+    "longitude": -80.41888471569835,
+    "latitude": 37.22957305117031,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "150",
+    "location": "EMRG-I-Lot Gate between I-lot and Bioinf",
+    "longitude": -80.42748809839902,
+    "latitude": 37.220927552233974,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "151",
+    "location": "EMRG-Grad Life Donaldson Brown  Front",
+    "longitude": -80.41710320694004,
+    "latitude": 37.22855471705873,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "152",
+    "location": "EMRG-Inn North Parking (Bus Entrance)",
+    "longitude": -80.43162192729773,
+    "latitude": 37.23040812292976,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "153",
+    "location": "EMRG-Stadium Woods/Cranwell Ctr",
+    "longitude": -80.41567735979078,
+    "latitude": 37.2219737369169,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "154",
+    "location": "EMRG-Williams/Robeson",
+    "longitude": -80.42475401475883,
+    "latitude": 37.22795845770274,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "155",
+    "location": "EMRG-Lane Stadium SW Entrance",
+    "longitude": -80.41886326945293,
+    "latitude": 37.218712282290774,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "156",
+    "location": "EMRG-Judging Pavilion",
+    "longitude": -80.44026890915765,
+    "latitude": 37.21790604348593,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "157",
+    "location": "EMRG-South AJ Courtyard",
+    "longitude": -80.42154862066286,
+    "latitude": 37.22307942404771,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "158",
+    "location": "EMRG-Lane Stadium East Walking Path",
+    "longitude": -80.41655512092325,
+    "latitude": 37.220105492246056,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "159",
+    "location": "EMRG-Lane Stadium South",
+    "longitude": -80.41760952274662,
+    "latitude": 37.218710444964906,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "160",
+    "location": "EMRG-McBryde Hall",
+    "longitude": -80.42164626670404,
+    "latitude": 37.23099124028851,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "161",
+    "location": "EMRG-Wallace Rear",
+    "longitude": -80.42560555775013,
+    "latitude": 37.22279160408188,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "163",
+    "location": "EMRG-Chicken Hill Lot middle",
+    "longitude": -80.41796487967667,
+    "latitude": 37.21708870011031,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "164",
+    "location": "EMRG-McComas",
+    "longitude": -80.42161857468531,
+    "latitude": 37.22154307341069,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "165",
+    "location": "EMRG-Special Purpose Housing Building P",
+    "longitude": -80.4394485748036,
+    "latitude": 37.225056033450294,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "166",
+    "location": "EMRG-Lane Stadium Lot beside Southgate Drive",
+    "longitude": -80.41810175503949,
+    "latitude": 37.217650754630824,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "167",
+    "location": "EMRG-Behind Slusher and Campbell",
+    "longitude": -80.42181087690071,
+    "latitude": 37.22548406633544,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "168",
+    "location": "EMRG-Engle/Cheatham",
+    "longitude": -80.42313526016473,
+    "latitude": 37.22375885366413,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "169",
+    "location": "EMRG-Moss",
+    "longitude": -80.41701072259232,
+    "latitude": 37.231348785505325,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "170",
+    "location": "EMRG-Cranwell Ctr Parking Lot",
+    "longitude": -80.41609997148116,
+    "latitude": 37.22361856488896,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "171",
+    "location": "EMRG-Burruss Loading Dock",
+    "longitude": -80.423819133203,
+    "latitude": 37.22961878082206,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "172",
+    "location": "EMRG-Vet Med Phase 2 Front",
+    "longitude": -80.42659439042112,
+    "latitude": 37.21803736325998,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "173",
+    "location": "EMRG-Duck Pond  Gazebo",
+    "longitude": -80.42889692511672,
+    "latitude": 37.224892225363064,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "174",
+    "location": "EMRG-ICTAS Building on Durham side",
+    "longitude": -80.4230998441484,
+    "latitude": 37.23173175334686,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "175",
+    "location": "EMRG-Patton/Norris",
+    "longitude": -80.42274615298496,
+    "latitude": 37.22948007348542,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "177",
+    "location": "EMRG-Basketball Practice Facility",
+    "longitude": -80.4183599916906,
+    "latitude": 37.223577149023725,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "178",
+    "location": "EMRG-B-Lot Garage 1st Floor E",
+    "longitude": -80.42556233553758,
+    "latitude": 37.2312006347222,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "179",
+    "location": "EMRG-B-Lot Garage 1st Floor S",
+    "longitude": -80.4262946120152,
+    "latitude": 37.23063740247001,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "180",
+    "location": "EMRG-B-Lot Garage 4th Floor S",
+    "longitude": -80.4262946120152,
+    "latitude": 37.23063740247001,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "181",
+    "location": "EMRG-B-Lot Garage 2nd Floor N",
+    "longitude": -80.42627153362432,
+    "latitude": 37.23179428654188,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "182",
+    "location": "EMRG-B-Lot Garage 4th Floor W",
+    "longitude": -80.42700491919517,
+    "latitude": 37.231236813559015,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "183",
+    "location": "EMRG-B-Lot Garage 2nd Floor W",
+    "longitude": -80.42700491919517,
+    "latitude": 37.231236813559015,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "184",
+    "location": "EMRG-B-Lot Garage 5th Floor N",
+    "longitude": -80.42627153362432,
+    "latitude": 37.23179428654188,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "185",
+    "location": "EMRG-B-Lot Garage 2nd Floor S",
+    "longitude": -80.4262946120152,
+    "latitude": 37.23063740247001,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "186",
+    "location": "EMRG-B-Lot Garage 5th Floor E",
+    "longitude": -80.42556233553758,
+    "latitude": 37.2312006347222,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "187",
+    "location": "EMRG-B-Lot Garage 2nd Floor E",
+    "longitude": -80.42556233553758,
+    "latitude": 37.2312006347222,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "188",
+    "location": "EMRG-B-Lot Garage 3rd Floor N",
+    "longitude": -80.42627153362432,
+    "latitude": 37.23179428654188,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "189",
+    "location": "EMRG-B-Lot Garage 3rd Floor E",
+    "longitude": -80.42556233553758,
+    "latitude": 37.2312006347222,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "190",
+    "location": "EMRG-B-Lot Garage 3rd Floor S",
+    "longitude": -80.4262946120152,
+    "latitude": 37.23063740247001,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "191",
+    "location": "EMRG-B-Lot Garage 3rd Floor W",
+    "longitude": -80.42700491919517,
+    "latitude": 37.231236813559015,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "192",
+    "location": "EMRG-B-Lot Garage 4th Floor N",
+    "longitude": -80.42627153362432,
+    "latitude": 37.23179428654188,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "193",
+    "location": "EMRG-B-Lot Garage 4th Floor E",
+    "longitude": -80.42556233553758,
+    "latitude": 37.2312006347222,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "194",
+    "location": "EMRG-B-Lot Garage 5th Floor S",
+    "longitude": -80.4262946120152,
+    "latitude": 37.23063740247001,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "195",
+    "location": "EMRG-B-Lot Garage 5th Floor W",
+    "longitude": -80.42700491919517,
+    "latitude": 37.231236813559015,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "196",
+    "location": "EMRG-Huckleberry Trail (3) Plantation Road side",
+    "longitude": -80.43532100115445,
+    "latitude": 37.21561932531146,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "197",
+    "location": "EMRG-Upper Chicken Lot North",
+    "longitude": -80.41516289117078,
+    "latitude": 37.21699097188995,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "198",
+    "location": "EMRG-Rec Fields",
+    "longitude": -80.41805854599488,
+    "latitude": 37.214082026783494,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "199",
+    "location": "EMRG-Upper Chicken Lot Mid",
+    "longitude": -80.41611512696805,
+    "latitude": 37.21689240369582,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "200",
+    "location": "EMRG-Upper Chicken Lot South",
+    "longitude": -80.41522408260563,
+    "latitude": 37.21609612432966,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "201",
+    "location": "EMRG-Huckleberry Trail (2) Southgate Road side",
+    "longitude": -80.43312329710719,
+    "latitude": 37.21356909187229,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "204",
+    "location": "EMRG-Visitors and Undergraduate Admissions Center",
+    "longitude": -80.43459633872877,
+    "latitude": 37.230885757959804,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "205",
+    "location": "EMRG-Duck Pond Mid.",
+    "longitude": -80.42783931896278,
+    "latitude": 37.22532054428939,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "206",
+    "location": "EMRG-Football Locker Room",
+    "longitude": -80.41748730876604,
+    "latitude": 37.22272781731727,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "208",
+    "location": "EMRG-Slusher Wing Service Gate",
+    "longitude": -80.4205242383003,
+    "latitude": 37.22568117104926,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "209",
+    "location": "EMRG- Walkway Davidson/Hahn South",
+    "longitude": -80.42588429515892,
+    "latitude": 37.22711035519195,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "210",
+    "location": "EMRG--NECOURTYARD",
+    "longitude": -80.42027573149089,
+    "latitude": 37.23300277148656,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "211",
+    "location": "EMRG-NEGARAGE 1st Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "212",
+    "location": "EMRG-NEGARAGE 2nd Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "213",
+    "location": "EMRG-NEGARAGE 3rd Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "214",
+    "location": "EMRG-NEGARAGE 4th Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "215",
+    "location": "EMRG-NEGARAGE 5th Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "216",
+    "location": "EMRG-NEGARAGE 6th Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "217",
+    "location": "EMRG-NEGARAGE 7th Floor Northwest Stairway Entrance",
+    "longitude": -80.42087354231926,
+    "latitude": 37.23382998439216,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "218",
+    "location": "EMRG-NEGARAGE 1st Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "219",
+    "location": "EMRG-NEGARAGE 2nd Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "220",
+    "location": "EMRG-NEGARAGE 3rd Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "221",
+    "location": "EMRG-NEGARAGE 4th Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "222",
+    "location": "EMRG-NEGARAGE 5th Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "223",
+    "location": "EMRG-NEGARAGE 6th Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "224",
+    "location": "EMRG-NEGARAGE 7th Floor Elevator Entrance",
+    "longitude": -80.42025952788737,
+    "latitude": 37.233290194668065,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "225",
+    "location": "EMRG- Beamer-Lawson Indoor Practice Facility",
+    "longitude": -80.41727226026745,
+    "latitude": 37.22109897187899,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "226",
+    "location": "EMRG-Upper Quad between Pearson Hall East/ Lane",
+    "longitude": -80.4190325400214,
+    "latitude": 37.23089540852954,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "227",
+    "location": "EMRG-Venture Out",
+    "longitude": -80.41897824404768,
+    "latitude": 37.21549885384951,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "228",
+    "location": "EMRG-Between Pearson Hall West/Lane Hall",
+    "longitude": -80.41989105821156,
+    "latitude": 37.23030183802526,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "229",
+    "location": "EMRG-Baseball Stadium at English Field",
+    "longitude": -80.42480468069147,
+    "latitude": 37.21850850716288,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "230",
+    "location": "EMRG-Rector Field House near Softball Stadium",
+    "longitude": -80.4204514846295,
+    "latitude": 37.21940760774104,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "517",
+    "location": "EMRG-Smoot Parking Lot 1",
+    "longitude": -80.41694590294784,
+    "latitude": 37.20938359538533,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "518",
+    "location": "EMRG-Smoot Parking Lot 2",
+    "longitude": -80.4178687586197,
+    "latitude": 37.2101884041371,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "519",
+    "location": "EMRG-Applied Reproduction Facility (behind Vet Med)",
+    "longitude": -80.42931865170115,
+    "latitude": 37.21750688016277,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "520",
+    "location": "EMRG-CID on Wall Street side",
+    "longitude": -80.41645255464881,
+    "latitude": 37.22711484957221,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "920",
+    "location": "EMRG-Holden on Randolph Side",
+    "longitude": -80.42258871863736,
+    "latitude": 37.23049728824046,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1320",
+    "location": "EMRG- CID/GLC/Kent Street ",
+    "longitude": -80.41719223740759,
+    "latitude": 37.22785096921685,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1321",
+    "location": "EMRG-Data Decision Sciences North",
+    "longitude": -80.42736037318782,
+    "latitude": 37.232056996569895,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1322",
+    "location": "EMRG-Data Decision Sciences NW",
+    "longitude": -80.42779656917904,
+    "latitude": 37.23158536145288,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1323",
+    "location": "EMRG-Data Decision Sciences SW",
+    "longitude": -80.4274554165035,
+    "latitude": 37.23124831264599,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1324",
+    "location": "EMRG-Data Decision Sciences East",
+    "longitude": -80.4263950083824,
+    "latitude": 37.231939352687654,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1325",
+    "location": "EMRG-Upper Quad North MjWlms side",
+    "longitude": -80.42111101418146,
+    "latitude": 37.23125325904845,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1326",
+    "location": "EMRG-Corps Leadership Military Sci",
+    "longitude": -80.42032903076162,
+    "latitude": 37.23213869152078,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1327",
+    "location": "EMRG-Transit Center Bay 9",
+    "longitude": -80.42392376714051,
+    "latitude": 37.2319646598555,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1330",
+    "location": "EMRG-Transit Center Bay 13",
+    "longitude": -80.4262131738353,
+    "latitude": 37.23032934118449,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1331",
+    "location": "EMRG-Transit Center Bay 10",
+    "longitude": -80.42750518402865,
+    "latitude": 37.229374914567536,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1332",
+    "location": "EMRG-USLB W Campus Dr",
+    "longitude": -80.42753294599241,
+    "latitude": 37.230086840892454,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1333",
+    "location": "EMRG-HITT Hall Perry St",
+    "longitude": -80.42618410148786,
+    "latitude": 37.22968054841344,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1334",
+    "location": "EMRG-HITT Hall W Campus Dr",
+    "longitude": -80.42671759624534,
+    "latitude": 37.22915177339158,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1336",
+    "location": "EMRG-Transit Center Bay 15",
+    "longitude": -80.42660219173581,
+    "latitude": 37.230833091152135,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1337",
+    "location": "EMRG-Transit Center Bay 17",
+    "longitude": -80.42716738615187,
+    "latitude": 37.231120005864554,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1338",
+    "location": "EMRG-Transit Center",
+    "longitude": -80.42572962792467,
+    "latitude": 37.2304838284654,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1339",
+    "location": "EMRG-Transit Center Bay 3",
+    "longitude": -80.42506028210136,
+    "latitude": 37.23190100448122,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  },
+  {
+    "phone_id": "1340",
+    "location": "EMRG-Etgen Dairy Pavilion Columbarium",
+    "longitude": -80.42317273094261,
+    "latitude": 37.21546483939057,
+    "operational_status": "unknown",
+    "source_id": "vt-emergency-phones"
+  }
+]
