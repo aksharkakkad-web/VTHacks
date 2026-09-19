@@ -3,7 +3,7 @@ import type { Point, ProviderDescriptor } from "../../agents/contract";
 import type { VerifiedIdentity } from "../../integrations/ans/directory";
 
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
-export type Contact = { name: string; phone: string; consent: boolean; shareLocation: boolean };
+export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
 export type TripRecord = {
   trip: Trip; owner: string; context: TripContext;
   private?: { origin: Point; home: Point; contact?: Contact };

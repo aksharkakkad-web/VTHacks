@@ -10,7 +10,7 @@ async function call(path, body = {}, status = 200, method = "POST", useCookie = 
   const data = await response.json(); assert.equal(response.status, status, JSON.stringify(data)); return data;
 }
 async function create() {
-  return call("/api/trips", { preferences: { trustedContact: { name: "Maya", phone: "+15555550100", consent: true, shareLocation: true } } }, 201);
+  return call("/api/trips", { preferences: { trustedContact: { name: "Maya", telegramChatId: "123456789", consent: true, shareLocation: true } } }, 201);
 }
 async function start(trip) {
   let result;
@@ -46,4 +46,4 @@ assert.equal(events.filter((e) => e.code === "DEMO_ALERT").length, 1);
 await call(`/api/trips/${second.id}/events`, { event: "provider.cancelled" }, 503);
 await call("/api/demo/reset");
 console.log("PASS: real provider HTTP → recommendation → confirmation → trust gate → booking → autonomous replacement → arrival; overdue demo alert once; session and callback protection.");
-console.log(`Evidence: ${liveAns ? "live ANS resolution and DNS/badge/TLS verification" : "local demo identity trust"}; ${decisionEngine === "databricks" ? "Databricks evaluation" : "explicit local decision-policy fallback"}. Transportation and SMS remain simulated.`);
+console.log(`Evidence: ${liveAns ? "live ANS resolution and DNS/badge/TLS verification" : "local demo identity trust"}; ${decisionEngine === "databricks" ? "Databricks evaluation" : "explicit local decision-policy fallback"}. Transportation and Telegram alerts remain simulated.`);

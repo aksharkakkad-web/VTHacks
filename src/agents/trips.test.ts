@@ -30,7 +30,7 @@ function setup(recommend?: Dependencies["recommend"]) {
   });
   return { agent, store, released, control, sends: () => sends, advance: (ms: number) => { now += ms; } };
 }
-const input = { origin: { lat: 37.229, lng: -80.414 }, preferences: { home: { lat: 37.221, lng: -80.420 }, maxBudget: 10, walkingPreference: "minimize", trustedContact: { name: "Maya", phone: "+15555550100", consent: true, shareLocation: true } } };
+const input = { origin: { lat: 37.229, lng: -80.414 }, preferences: { home: { lat: 37.221, lng: -80.420 }, maxBudget: 10, walkingPreference: "minimize", trustedContact: { name: "Maya", telegramChatId: "123456789", consent: true, shareLocation: true } } };
 test("teammate decision policy integrates with confirmation and autonomous replacement", async () => {
   const s = setup(decisionRecommendation(runDecision));
   const trip = await start(s);
@@ -115,7 +115,7 @@ test("overdue alert has consent, is exactly-once under overlapping monitor ticks
   assert.equal(s.sends(), 1);
   const overdue = await s.agent.read(trip.id, "owner");
   assert.equal(overdue.state, "OVERDUE");
-  assert.equal(overdue.alertSent, false, "a simulated notification is not a real SMS");
+  assert.equal(overdue.alertSent, false, "a simulated notification is not a real Telegram message");
 });
 test("out-of-order, malformed, emergency, stale and future location input is rejected", async () => {
   const s = setup(); const trip = await s.agent.create("owner", input);

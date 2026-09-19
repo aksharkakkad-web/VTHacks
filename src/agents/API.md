@@ -18,14 +18,15 @@ node src/agents/smoke.mjs
 ```
 
 The smoke test drives HTTP routes, not just functions. Providers are separate HTTP
-servers on loopback 4311–4313. Availability, costs, movement, cancellations, and SMS
+servers on loopback 4311–4313. Availability, costs, movement, cancellations, and alerts
 are simulated. The trip runtime now calls Akshar's `evaluateTrip` adapter. Missing
 or unavailable workspace credentials produce `LOCAL_POLICY_FALLBACK`; successful
 validated SQL produces `DATABRICKS_EVALUATION`. `SIMULATED_TRANSPORT` labels fixture
 quotes independently of the evaluation engine. Display the recommendation explanation
 and these source/fallback distinctions. Local identity trust is marked `LOCAL_DEMO_TRUST`; `providerVerified`
 stays **false** until live ANS verification succeeds. `alertSent` stays **false** for
-a simulated alert. Never show those as a live ANS badge or a delivered SMS.
+a simulated alert. Never show those as a live ANS badge or a read Telegram message.
+Set `BEACON_NOTIFICATION_MODE=simulated` when running the routine smoke test.
 
 ## Browser calls
 
@@ -50,7 +51,7 @@ a simulated alert. Never show those as a live ANS badge or a delivered SMS.
     "walkingPreference": "minimize",
     "transferPreference": "minimize",
     "trustedContact": {
-      "name": "Maya", "phone": "+15555550100",
+      "name": "Maya", "telegramChatId": "123456789",
       "consent": true, "shareLocation": true
     }
   },
@@ -58,7 +59,10 @@ a simulated alert. Never show those as a live ANS badge or a delivered SMS.
 }
 ```
 
-The phone above is a reserved fictional demo value, never a real recipient.
+The chat ID above is a test fixture, not an approved live recipient. Use it only with
+simulated notifications. Real contacts must start the configured bot and have their
+private chat ID explicitly connected in server configuration. Phone-number contacts
+are no longer accepted. Existing trips with legacy contacts must be recreated.
 Outside explicit demo mode, origin/home/budget must be supplied. Temporary constraints
 also accept `max_budget`, `minimize_walking`, `minimize_transfers`, and `exhausted`.
 Emergency flags (`immediate_danger`, `medical_emergency`, `serious_injury`) return
@@ -104,10 +108,14 @@ is erased immediately and cancellation by request ID is retried until it succeed
 Quotes retain each provider's expiry for confirmation and booking. ETA uses
 the selected plan; `BEACON_GRACE_MINUTES` defaults to five (configurable demo assumption).
 Notifications require explicit contact consent; location is included only with separate
-`shareLocation` consent. `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and
-`TWILIO_FROM_NUMBER` enable real SMS outside demo mode. The outbox claim is persisted
+`shareLocation` consent. `TELEGRAM_BOT_TOKEN`, `TELEGRAM_ALLOWED_CHAT_IDS`, and
+`BEACON_NOTIFICATION_MODE=telegram` enable real Telegram alerts. Notification mode is
+independent of `DEMO_MODE`; real messages from demo trips are labeled `[Beacon demo test]`.
+Only approved private chats are accepted; group/channel targets and usernames are rejected.
+The outbox claim is persisted
 before sending; ambiguous sends are flagged, not blindly retried. Accepted does not
-prove delivered. Beacon is not emergency dispatch.
+prove read or acted on. Beacon is not emergency dispatch. The transport disables
+paid broadcasts and link previews. See `TELEGRAM.md` for setup.
 
 The Databricks handoff passes budget, walking/transfer preferences, excluded provider
 IDs, expiry, and explicit simulated-source labels. It never receives coordinates,
@@ -143,12 +151,11 @@ object keyed by service ID, with `{baseUrl,token}` entries. Live calls receive a
 only after ANS identity verification and an exact identity/endpoint match. See
 `src/agents/DEPLOYMENT.md` for hosted demo-provider setup.
 
-- Replace the explicit demo decision seam in `student/decision.ts` with Akshar's
-  `decisionEngine.recommend(plans, context)` after its real contract lands.
+- Akshar's `evaluateTrip` is connected. Configure approved hosted Databricks credentials
+  to replace the explicit local fallback with live SQL in this deployment.
 - Live ANS registration, deployed handoff/replacement, negative identity checks, and shared
   hosted storage are verified; see `IMPLEMENTATION.md` for the evidence and simulation boundaries.
 - Hosted scheduling is connected; its real overdue/arrival verification is recorded in
-  `IMPLEMENTATION.md`. Alert delivery is still simulated until the Twilio gate below passes.
-- Upgrade the Twilio trial and verify a custom Beacon alert with an approved recipient.
-  One trial-template message was accepted, but this does not prove custom alert delivery.
+  `IMPLEMENTATION.md`. Live Telegram acceptance must be verified separately from simulations.
+- Connect Telegram private contacts and verify one authorized custom alert.
 - Run the deployed mobile demo with Rishit's UI; this PR does not implement UI.

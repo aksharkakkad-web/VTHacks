@@ -62,7 +62,7 @@ Do not upload `.env.local`, identity private keys, or the local state directory 
 | `BEACON_PROVIDER_CREDENTIALS` | JSON `{ "<registration>:campus_ride": {"baseUrl":"https://<domain>/api/demo/providers/campus_ride","token":"<provider token>"}, ... }` |
 | `BEACON_MONITOR_TOKEN` | Authenticated `POST /api/trips/monitor` worker credential |
 
-Keep `DEMO_MODE=true` while using demo controls and simulated SMS. The decision adapter
+Keep `DEMO_MODE=true` while using demo transportation controls. The decision adapter
 and ANS can use live services independently. Ranking now calls Akshar's server-only
 `evaluateTrip` adapter; set `DATABRICKS_HOST`, `DATABRICKS_TOKEN`, and
 `DATABRICKS_WAREHOUSE_ID` to enable SQL. Without them, `LOCAL_POLICY_FALLBACK` is explicit.
@@ -71,10 +71,13 @@ in either mode. `DATABRICKS_AUDIT_TABLE` optionally enables the teammate's sanit
 This checkout currently has no Databricks access token or authenticated CLI profile;
 the teammate's separate workspace evidence does not prove hosted credentials here.
 
-The current Twilio trial allows only preset messages. It cannot send Beacon's custom
-alert text or location link. Staying on Free keeps SMS simulated; enabling custom SMS
-requires an upgraded account, an eligible owned sender and a verified end-to-end test.
-Adding credentials or an ANS key alone never changes these modes.
+Telegram is the only notification transport. Set `TELEGRAM_BOT_TOKEN` and
+`TELEGRAM_ALLOWED_CHAT_IDS` on the server, and choose `BEACON_NOTIFICATION_MODE=telegram`
+to send real messages. Routine tests use `BEACON_NOTIFICATION_MODE=simulated`.
+Bot recipients must first start the bot and be explicitly approved. Real messages
+from demo trips are labeled `[Beacon demo test]`; paid broadcasts are disabled.
+See `TELEGRAM.md`. Twilio code and deployment settings are retired; no paid upgrade
+or phone-number purchase is needed for this transport.
 
 ## Deployment and registration sequence
 
@@ -103,7 +106,8 @@ Adding credentials or an ANS key alone never changes these modes.
 For the demo-mode trip smoke with real ANS, set `BEACON_SMOKE_URL` to the deployment
 origin and `BEACON_SMOKE_LIVE_ANS=true`, then run `node src/agents/smoke.mjs`.
 The script requires verified identities for both ride selections and rejects a local-demo
-trust event. Ranking, transportation behavior, and SMS remain simulated in this test.
+trust event. Transportation behavior and Telegram alerts remain simulated in this test;
+ranking uses the explicitly labeled local policy unless hosted Databricks is configured.
 
 Vercel certificate rotation changes the served fingerprint. Update the registered server
 certificate through the supported ANS certificate workflow when it rotates; do not disable

@@ -280,12 +280,12 @@ export class StudentAgent {
     const location = contact.shareLocation && r.trip.lastKnownLocation ? ` Last known location: ${r.trip.lastKnownLocation.lat}, ${r.trip.lastKnownLocation.lng} (${r.trip.lastKnownLocation.recordedAt}).` : "";
     r.notification = { state: "sending" };
     // Persist the outbox claim before the external send. An ambiguous/crashed send
-    // is not automatically retried, since SMS providers cannot promise exactly once.
+    // is not automatically retried, since Telegram cannot promise exactly once.
     await this.deps.store.checkpoint(r);
     try {
       const message = await this.deps.notify(contact, `Beacon trip is overdue. Last trip status: ${r.lastStatusBeforeOverdue}. Please check in.${location}`, r.trip.id);
       r.notification = { state: message.simulated ? "simulated" : "sent", id: message.id }; r.trip.alertSent = !message.simulated;
-      this.log(r, "OVERDUE", message.simulated ? "DEMO_ALERT" : "ALERT_SENT", message.simulated ? "Demo alert recorded; no SMS was sent" : "Trusted-contact alert accepted by SMS service");
-    } catch { r.notification = { state: "uncertain" }; this.log(r, "OVERDUE", "ALERT_UNCERTAIN", "SMS acceptance could not be confirmed; check your contact directly"); }
+      this.log(r, "OVERDUE", message.simulated ? "DEMO_ALERT" : "ALERT_SENT", message.simulated ? "Demo alert recorded; no Telegram message was sent" : "Trusted-contact alert accepted by Telegram");
+    } catch { r.notification = { state: "uncertain" }; this.log(r, "OVERDUE", "ALERT_UNCERTAIN", "Telegram acceptance could not be confirmed; check your contact directly"); }
   }
 }

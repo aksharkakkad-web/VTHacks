@@ -179,3 +179,24 @@ supported corridor/itinerary rather than fabricated walking estimates.
 
 The user has now requested Telegram instead of Twilio. That transport replacement
 will be a separate change; no Twilio paid upgrade or number purchase was performed.
+
+## Telegram replacement (2026-09-19)
+
+The user explicitly replaced Twilio with Telegram. Active code now has one Telegram
+notification adapter and no SMS fallback. The contact input is `telegramChatId` instead
+of `phone`; shared output types are unchanged. Telegram live mode is independent of
+transportation demo mode, and real messages from demos are labeled as tests. Consent,
+separate location consent, persisted outbox claims, duplicate prevention and arrival
+cleanup remain in place. Private recipients must be explicitly allowed by the operator.
+
+The bot token authenticated and one intended private `/start` chat was identified.
+Telegram settings are saved in ignored local files and production environment settings.
+All three Twilio settings were removed from Vercel and local environment files; the
+Twilio account itself was not upgraded, charged, or deleted. Historical SMS references
+above describe previous evidence, not the active implementation.
+
+54 backend tests and repository pre-PR checks passed. A production-build HTTP smoke
+used real Redis/live ANS/hosted simulated providers, with Telegram notifications explicitly
+simulated. Separate review found no material issues and independently checked outbox
+ordering, duplicate suppression and location consent. Live Telegram acceptance still
+requires the user's authorized one-message test after deploying this change.
