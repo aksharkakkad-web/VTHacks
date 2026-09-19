@@ -1,0 +1,18 @@
+{
+  "status": "DRAFT_PROPOSED_UNAPPROVED",
+  "source": "Official Blacksburg Transit GTFS stops, data/campus/transit-full/stops.json; public reference points, not entrances",
+  "departures": [
+    {"id":"downtown-main-roanoke","name":"Main/Roanoke Sbnd","stop_id":"1600","coordinate":[-80.414330238958,37.2296990293085]},
+    {"id":"downtown-roanoke-church","name":"Roanoke/Church Ebnd","stop_id":"1500","coordinate":[-80.4127222545578,37.230159028182]},
+    {"id":"downtown-roanoke-wharton","name":"Roanoke/Wharton Ebnd","stop_id":"1501","coordinate":[-80.411105,37.231247]},
+    {"id":"downtown-roanoke-rutledge","name":"Roanoke/Rutledge Ebnd","stop_id":"1502","coordinate":[-80.4102640098491,37.2318126101382]},
+    {"id":"downtown-main-collegiate","name":"Main/Collegiate Ct Sbnd","stop_id":"1422","coordinate":[-80.419524337025,37.2343084057753]}
+  ],
+  "destinations": [
+    {"id":"residence-pritchard","name":"Pritchard Hall","stop_id":"1146","coordinate":[-80.4193514415122,37.2232565981448]},
+    {"id":"residence-harper","name":"Harper Hall","stop_id":"1126","coordinate":[-80.4234779133486,37.2223336829146]},
+    {"id":"campus-english-field","name":"English Field","stop_id":"1154","coordinate":[-80.4250590480069,37.2183690731299]},
+    {"id":"campus-food-science","name":"Food Science Bldg","stop_id":"1122","coordinate":[-80.4243806535406,37.2206413949012]},
+    {"id":"campus-wright-house","name":"Wright House","stop_id":"1115","coordinate":[-80.425753,37.226754]}
+  ]
+}
