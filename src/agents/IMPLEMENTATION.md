@@ -46,7 +46,7 @@ and branch protection; never bypass a required review.
 
 The starting commit is `df29f8c`. No provider, trip API, ANS, or Databricks implementation
 exists there. ANS credentials are now saved locally and a user-owned domain is available;
-provider registration and full deployed trip integration remain pending. The phase plan requires
+full deployed trip integration remains pending. The phase plan requires
 overdue monitoring even though the PRD labels it P1; implement the stronger phase gate.
 Use the shared `SELECTED` state for awaiting confirmation; do not add a new shared state.
 Default monitoring grace will be configurable (five minutes for the local demo), explicitly
@@ -65,7 +65,7 @@ replacement recovery after an outage or interrupted checkpoint.
 The production-build HTTP smoke on the reconciliation branch exercises session ownership,
 confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
-build, lint and typecheck pass. Shared checkpoints A/B are ready for integration. Live ANS,
+build, lint and typecheck pass. Shared checkpoints A/B are ready for integration.
 Databricks, custom Beacon SMS, hosted scheduling, and deployed UI verification remain open.
 
 ## Hosted provider and registration slice
@@ -79,12 +79,19 @@ and booking tokens are scoped to a verified service ID and exact endpoint.
 The live ANS resolution API resolved Webmesh on 2026-09-19. Full verification correctly
 rejected its TLS fingerprint: the live certificate differed from the certificate still
 listed in its ANS badge. This is a negative interoperability result, not a successful
-Beacon identity verification. A local CSR for the user's domain and a registration
-payload are prepared in Git-ignored storage. The first registration attempt was rejected
-with HTTP 422 because ANS disallows duplicate protocols across endpoints. A subsequent
-registry lookup found no registration for the domain. The catalog now uses one HTTP-API
-endpoint and namespaced per-service functions; registration and DNS verification remain
-open until the corrected submission succeeds.
+Beacon identity verification. The subsequent Beacon registration succeeded using a local
+identity CSR, the actual Vercel TLS certificate, and one HTTP-API endpoint with namespaced
+per-service functions. GoDaddy rejected the earlier three-endpoint form because protocols
+must be unique. Required TXT records were published through Vercel; domain validation
+and DNS verification completed, and registration `f4e9c454-3e63-453b-b823-d15a6ff87311`
+is ACTIVE. Private keys and request/response evidence remain in Git-ignored storage.
+
+The application directory now uses the official SDK's `/v1/agents` search and its
+`agents[]` / `status` response shape. The separate console search surface rejected
+`HTTP-API`. A live application-code probe discovered all three services and verified
+each against ANS resolution, the published DNS badge, trusted transparency evidence,
+and the actual HTTPS leaf fingerprint. This proves live identity checks; end-to-end
+deployed booking is recorded separately after the configured deployment is tested.
 
 ## Verified Upstash setup (2026-09-19)
 

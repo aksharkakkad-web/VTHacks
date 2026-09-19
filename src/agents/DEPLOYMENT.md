@@ -58,7 +58,7 @@ Do not upload `.env.local`, identity private keys, or the local state directory 
 | `BEACON_ANS_AGENT_ID` | Registration ID returned by GoDaddy after registration |
 | `ANS_API_KEY=KEY:SECRET`, `ANS_BASE_URL=https://api.godaddy.com` | GoDaddy server-side credentials |
 | `BEACON_ANS_MODE=live` | Explicitly select real ANS even in demo mode |
-| `BEACON_ANS_QUERY` | Registry search query for the deployed provider registration |
+| `BEACON_ANS_QUERY` | Partial display-name filter for the SDK's `/v1/agents` search, e.g. `Beacon Demo Providers` |
 | `BEACON_PROVIDER_CREDENTIALS` | JSON `{ "<registration>:campus_ride": {"baseUrl":"https://<domain>/api/demo/providers/campus_ride","token":"<provider token>"}, ... }` |
 | `BEACON_MONITOR_TOKEN` | Authenticated `POST /api/trips/monitor` worker credential |
 
@@ -89,6 +89,11 @@ events remain explicitly labeled as demo. Adding an ANS key alone does not enabl
    endpoint certificate before allowing precise synthetic demo coordinates.
 7. Run the accepted booking, cancellation/replacement, arrival, and negative-identity
    flows. Do not mark the live checkpoint complete until these deployed calls pass.
+
+For the demo-mode trip smoke with real ANS, set `BEACON_SMOKE_URL` to the deployment
+origin and `BEACON_SMOKE_LIVE_ANS=true`, then run `node src/agents/smoke.mjs`.
+The script requires verified identities for both ride selections and rejects a local-demo
+trust event. Ranking, transportation behavior, and SMS remain simulated in this test.
 
 Vercel certificate rotation changes the served fingerprint. Update the registered server
 certificate through the supported ANS certificate workflow when it rotates; do not disable

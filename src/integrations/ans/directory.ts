@@ -21,12 +21,12 @@ export function validateResolution(value: unknown, provider: AgentIdentity, api:
   return name;
 }
 export function parseDiscovered(value: unknown): ProviderDescriptor[] {
-  const result = object(value); if (!Array.isArray(result.items)) throw new Error("Invalid ANS search response");
+  const result = object(value); if (!Array.isArray(result.agents)) throw new Error("Invalid ANS search response");
   const providers: ProviderDescriptor[] = [];
-  for (const unknownItem of result.items) {
+  for (const unknownItem of result.agents) {
     try {
       const item = object(unknownItem);
-      if (object(item.lifecycle).status !== "ACTIVE" || !Array.isArray(item.endpoints)) continue;
+      if (item.status !== "ACTIVE" || !Array.isArray(item.endpoints)) continue;
       if (item.expiresAt !== undefined && !(Date.parse(String(item.expiresAt)) > Date.now())) continue;
       for (const rawEndpoint of item.endpoints) {
         const endpoint = object(rawEndpoint);
@@ -89,8 +89,10 @@ export class GoDaddyDirectory implements AgentDirectory {
     this.transparency = this.api.includes("ote-") ? "https://transparency.ans.ote-godaddy.com" : "https://transparency.ans.godaddy.com";
   }
   async discover() {
-    const query = new URLSearchParams({ query: this.options.query ?? "transportation Blacksburg", protocol: "HTTP-API" });
-    return parseDiscovered((await publicJson(`${this.api}/v1/ans/registered-agents?${query}`, { headers: this.headers() })).value);
+    // Match the official SDK's SearchAgents API. The separate console search
+    // surface does not accept HTTP-API and has a different response envelope.
+    const query = new URLSearchParams({ agentDisplayName: this.options.query ?? "Beacon", protocol: "HTTP-API", status: "ACTIVE", limit: "100" });
+    return parseDiscovered((await publicJson(`${this.api}/v1/agents?${query}`, { headers: this.headers() })).value);
   }
   async verify(provider: AgentIdentity) {
     if (provider.source !== "ans" || !provider.ansId || providerUrl(provider.baseUrl).hostname !== provider.agentHost) throw new Error("Invalid ANS provider");
