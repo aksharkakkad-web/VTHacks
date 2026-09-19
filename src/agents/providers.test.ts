@@ -7,6 +7,7 @@ import { normalizeQuote, coarseQuote, type ProviderDescriptor } from "./contract
 import { HttpProvider } from "./http-provider";
 import { DemoProvider, providerHandler } from "./demo-provider";
 import { collectCandidates } from "./discovery";
+import { scopedProviderToken } from "./provider-credentials";
 
 const request = { originZone: "Downtown Blacksburg", destinationZone: "VT residential campus", maxBudget: 10, minimizeWalking: true, minimizeTransfers: true };
 const provider: ProviderDescriptor = { id: "campus_ride", name: "Campus Ride", mode: "campus_ride", baseUrl: "http://127.0.0.1", agentHost: "localhost", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip"], source: "demo" };
@@ -77,4 +78,15 @@ test("public quotes never receive provider credentials", async (t) => {
   const live = { ...provider, source: "ans" as const, baseUrl: "https://provider.example", agentHost: "provider.example" };
   await new HttpProvider(live, { token: "fixture-secret" }).quote(request);
   assert.deepEqual(headers, [{}]);
+});
+
+test("live provider credentials require verified identity and an exact configured endpoint", () => {
+  const live = { ...provider, source: "ans" as const, baseUrl: "https://operator.example/api/demo/providers/campus_ride", agentHost: "operator.example" };
+  const identity = { providerId: live.id, host: live.agentHost, baseUrl: live.baseUrl, source: "ans" as const, validUntil: Date.now() + 60_000, serverFingerprint: "SHA256:" + "ab".repeat(32) };
+  const configuration = JSON.stringify({ [live.id]: { baseUrl: live.baseUrl, token: "fixture-specific-token" } });
+  assert.equal(scopedProviderToken(live, identity, configuration), "fixture-specific-token");
+  assert.equal(scopedProviderToken(live, undefined, configuration), undefined);
+  assert.equal(scopedProviderToken({ ...live, baseUrl: "https://attacker.example" }, identity, configuration), undefined);
+  assert.equal(scopedProviderToken(live, { ...identity, providerId: "other" }, configuration), undefined);
+  assert.equal(scopedProviderToken(live, { ...identity, source: "local-demo" }, configuration), undefined);
 });

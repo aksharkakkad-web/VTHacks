@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { StudentAgent } from "../../agents/student/service";
 import { demoRecommendation } from "../../agents/student/decision";
 import { HttpProvider } from "../../agents/http-provider";
+import { scopedProviderToken } from "../../agents/provider-credentials";
 import { demoDescriptors } from "../../agents/demo-provider";
 import { GoDaddyDirectory, LocalDemoDirectory } from "../../integrations/ans/directory";
 import { notificationSender } from "../../integrations/notifications/sms";
@@ -21,7 +22,7 @@ export function getRuntime(): Runtime {
   const agent = new StudentAgent({ store, directory, demo,
     // The shared demo token belongs only to our configured loopback providers.
     // ANS discovery must never cause that credential to be sent to a third party.
-    provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : undefined }),
+    provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : scopedProviderToken(descriptor, identity, process.env.BEACON_PROVIDER_CREDENTIALS) }),
     recommend: async (plans, context) => { if (!demo) throw new Error("Databricks decision adapter is not connected yet"); return demoRecommendation(plans, context); },
     notify: notificationSender({ demo, accountSid: process.env.TWILIO_ACCOUNT_SID, authToken: process.env.TWILIO_AUTH_TOKEN, from: process.env.TWILIO_FROM_NUMBER }),
     graceMinutes: Number(process.env.BEACON_GRACE_MINUTES ?? 5),

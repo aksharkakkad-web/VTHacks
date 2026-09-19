@@ -45,7 +45,8 @@ and branch protection; never bypass a required review.
 ## Current setup facts
 
 The starting commit is `df29f8c`. No provider, trip API, ANS, or Databricks implementation
-exists there. ANS credentials/domain are not yet provisioned. The phase plan requires
+exists there. ANS credentials are now saved locally and a user-owned domain is available;
+provider registration and hosted deployment remain pending. The phase plan requires
 overdue monitoring even though the PRD labels it P1; implement the stronger phase gate.
 Use the shared `SELECTED` state for awaiting confirmation; do not add a new shared state.
 Default monitoring grace will be configurable (five minutes for the local demo), explicitly
@@ -58,8 +59,24 @@ for identity verification or Beacon's authorization policy.
 
 ## Verified local checkpoint (2026-09-19)
 
-15 behavioral tests and the real HTTP smoke pass. The smoke exercises session ownership,
+28 behavioral tests pass. The production-build HTTP smoke from the preceding trip API
+slice exercises session ownership,
 confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
 build, lint and typecheck pass. Shared checkpoints A/B are ready for integration. Live ANS,
 Databricks, SMS, hosted persistence/scheduling, and deployed UI verification remain open.
+
+## Hosted provider and registration slice
+
+Three opt-in Next.js provider routes now implement the same wire contract and use
+Redis for idempotent bookings and durable cancellation tombstones. ANS discovery
+keeps separate service IDs for endpoints advertised by one registered operator;
+this does not represent separate verified businesses. Public quotes remain unauthenticated,
+and booking tokens are scoped to a verified service ID and exact endpoint.
+
+The live ANS resolution API resolved Webmesh on 2026-09-19. Full verification correctly
+rejected its TLS fingerprint: the live certificate differed from the certificate still
+listed in its ANS badge. This is a negative interoperability result, not a successful
+Beacon identity verification. A local CSR for the user's domain and a registration
+payload are prepared in Git-ignored storage; neither registration nor DNS publication
+has been performed. Vercel CLI account authorization is awaiting the user's approval.

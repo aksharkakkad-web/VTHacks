@@ -1,0 +1,7 @@
+.git
+.env*
+.vercel/ans
+*.pem
+*.key
+node_modules
+.next

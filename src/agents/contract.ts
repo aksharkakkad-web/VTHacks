@@ -15,6 +15,7 @@ export type ProviderTripStatus = "accepted" | "waiting" | "cancelled" | "in_trip
 export type ProviderTrip = { id: string; status: ProviderTripStatus };
 /** Adapter metadata is stripped before publishing the frozen CandidatePlan shape. */
 export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number };
+export function providerServiceId(ansId: string, mode: ProviderDescriptor["mode"]) { return `${ansId}:${mode}`; }
 export interface ProviderAgent {
   descriptor: ProviderDescriptor;
   quote(request: QuoteRequest): Promise<ProviderQuote>;

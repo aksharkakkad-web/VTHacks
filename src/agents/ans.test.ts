@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
-import { parseDiscovered, validateBadge } from "../integrations/ans/directory";
+import { parseDiscovered, validateBadge, validateResolution } from "../integrations/ans/directory";
 import { authorize } from "../lib/authorization/policy";
 import { demoDescriptors } from "./demo-provider";
 
@@ -33,4 +33,20 @@ test("discovery validates capabilities, protocol, lifecycle and host instead of 
   assert.equal(parseDiscovered({ items: [{ ...item, lifecycle: { status: "REVOKED" } }] }).length, 0);
   assert.equal(parseDiscovered({ items: [{ ...item, endpoints: [{ ...item.endpoints[0], protocol: "A2A" }] }] }).length, 0);
   assert.equal(parseDiscovered({ items: [{ ...item, agentHost: "other.example" }] }).length, 0);
+});
+
+test("one registered operator can advertise separately callable provider services", () => {
+  const endpoints = ["campus_ride", "independent_ride"].map((mode) => ({ agentUrl: `https://operator.example/api/demo/providers/${mode}`, protocol: "HTTP-API", functions: [{ id: "quote_trip", tags: [mode] }, { id: "request_trip" }, { id: "trip_status" }, { id: "cancel_trip" }] }));
+  const services = parseDiscovered({ items: [{ agentId: "registered-operator", agentHost: "operator.example", agentDisplayName: "Beacon Providers", lifecycle: { status: "ACTIVE" }, endpoints }] });
+  assert.equal(services.length, 2);
+  assert.notEqual(services[0].id, services[1].id);
+  assert.equal(services[0].ansId, services[1].ansId, "service identity is distinct from the registered operator identity");
+});
+
+test("resolution binds the selected host to the same registry record", () => {
+  const api = "https://api.godaddy.com";
+  const resolution = { ansName: "ans://v1.0.0.campusride.geta36.app", links: [{ rel: "agent-details", href: `${api}/v1/agents/${provider.ansId}` }] };
+  assert.equal(validateResolution(resolution, provider, api), resolution.ansName);
+  assert.throws(() => validateResolution({ ...resolution, links: [{ rel: "agent-details", href: `${api}/v1/agents/other-id` }] }, provider, api));
+  assert.throws(() => validateResolution({ ...resolution, ansName: "ans://v1.0.0.attacker.example" }, provider, api));
 });

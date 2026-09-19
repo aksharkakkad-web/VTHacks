@@ -1,5 +1,5 @@
 import { resolveTxt } from "node:dns/promises";
-import { object, text, type ProviderDescriptor } from "../../agents/contract";
+import { object, providerServiceId, text, type ProviderDescriptor } from "../../agents/contract";
 import { providerUrl } from "../../agents/http-provider";
 import { publicJson } from "./transport";
 
@@ -10,6 +10,14 @@ export type VerifiedIdentity = {
 export interface AgentDirectory {
   discover(): Promise<ProviderDescriptor[]>;
   verify(provider: ProviderDescriptor): Promise<VerifiedIdentity>;
+}
+type AgentIdentity = Pick<ProviderDescriptor, "id" | "agentHost" | "baseUrl" | "source" | "ansId">;
+export function validateResolution(value: unknown, provider: AgentIdentity, api: string): string {
+  const result = object(value); const name = text(result.ansName, "ANS name", 512);
+  if (!name.startsWith("ans://v") || !name.endsWith(`.${provider.agentHost}`) || !provider.ansId || !Array.isArray(result.links) || !result.links.some((link) => {
+    const item = object(link); return item.rel === "agent-details" && item.href === `${api}/v1/agents/${encodeURIComponent(provider.ansId!)}`;
+  })) throw new Error("ANS resolution does not match the discovered provider");
+  return name;
 }
 export function parseDiscovered(value: unknown): ProviderDescriptor[] {
   const result = object(value); if (!Array.isArray(result.items)) throw new Error("Invalid ANS search response");
@@ -29,8 +37,10 @@ export function parseDiscovered(value: unknown): ProviderDescriptor[] {
         const baseUrl = text(endpoint.agentUrl, "agent URL", 2000);
         const agentHost = text(item.agentHost, "agent host", 253).toLowerCase();
         if (providerUrl(baseUrl).hostname !== agentHost) continue;
-        const id = text(item.agentId, "agent id");
-        if (!providers.some((p) => p.id === id)) providers.push({ id, ansId: id, name: text(item.agentDisplayName, "provider name"), mode, baseUrl, agentHost, functions, source: "ans" });
+        const ansId = text(item.agentId, "agent id"); const id = providerServiceId(ansId, mode);
+        // ANS identifies the operator/host. Each advertised mobility endpoint is
+        // a separately callable service, not a claim of a separately verified owner.
+        if (!providers.some((p) => p.id === id)) providers.push({ id, ansId, name: `${text(item.agentDisplayName, "provider name")} / ${mode.replaceAll("_", " ")}`, mode, baseUrl, agentHost, functions, source: "ans" });
       }
     } catch { /* Malformed or unsupported search entries are not callable providers. */ }
   }
@@ -38,7 +48,7 @@ export function parseDiscovered(value: unknown): ProviderDescriptor[] {
 }
 
 /** The SDK's DNS + HTTPS badge + TLS fingerprint path; not an offline SCITT verifier. */
-export function validateBadge(value: unknown, provider: ProviderDescriptor, observedFingerprint: string, now = Date.now()): VerifiedIdentity {
+export function validateBadge(value: unknown, provider: AgentIdentity, observedFingerprint: string, now = Date.now()): VerifiedIdentity {
   const badge = object(value);
   if (!["ACTIVE", "WARNING"].includes(String(badge.status))) throw new Error("ANS identity is not active");
   const event = object(object(object(badge.payload).producer).event);
@@ -67,8 +77,9 @@ export class GoDaddyDirectory implements AgentDirectory {
     const query = new URLSearchParams({ query: this.options.query ?? "transportation Blacksburg", protocol: "HTTP-API" });
     return parseDiscovered((await publicJson(`${this.api}/v1/ans/registered-agents?${query}`, { headers: this.headers() })).value);
   }
-  async verify(provider: ProviderDescriptor) {
+  async verify(provider: AgentIdentity) {
     if (provider.source !== "ans" || !provider.ansId || providerUrl(provider.baseUrl).hostname !== provider.agentHost) throw new Error("Invalid ANS provider");
+    const resolvedName = validateResolution((await publicJson(`${this.api}/v1/agents/resolution`, { method: "POST", body: { agentHost: provider.agentHost, version: "*" }, headers: this.headers() })).value, provider, this.api);
     // DNS discovery must name the same registry ID as capability discovery.
     const badgeUrl = `${this.transparency}/v1/agents/${encodeURIComponent(provider.ansId)}`;
     const records = await resolveTxt(`_ans-badge.${provider.agentHost}`);
@@ -78,6 +89,7 @@ export class GoDaddyDirectory implements AgentDirectory {
     });
     if (!found) throw new Error("ANS DNS binding is missing or mismatched");
     const badge = (await publicJson(badgeUrl)).value;
+    if (object(object(object(object(badge).payload).producer).event).ansName !== resolvedName) throw new Error("Registry resolution and transparency evidence disagree");
     // Request only public metadata during the TLS proof, never private trip data.
     const probe = await publicJson(`${provider.baseUrl.replace(/\/$/, "")}/.well-known/agent-card.json`);
     return { ...validateBadge(badge, provider, probe.fingerprint), badgeUrl };

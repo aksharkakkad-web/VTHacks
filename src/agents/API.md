@@ -105,8 +105,10 @@ one process and survives server restart, but OS temporary cleanup may remove it.
 ## Remaining integration gates
 
 `BEACON_PROVIDER_TOKEN` is restricted to local demo providers. Public quote calls
-never carry it. Live ANS providers do not receive a shared bearer token; any future
-authenticated provider integration must use credentials scoped to that identity.
+never carry credentials. `BEACON_PROVIDER_CREDENTIALS` is an optional server-only JSON
+object keyed by service ID, with `{baseUrl,token}` entries. Live calls receive a token
+only after ANS identity verification and an exact identity/endpoint match. See
+`src/agents/DEPLOYMENT.md` for hosted demo-provider setup.
 
 - Replace the explicit demo decision seam in `student/decision.ts` with Akshar's
   `decisionEngine.recommend(plans, context)` after its real contract lands.
