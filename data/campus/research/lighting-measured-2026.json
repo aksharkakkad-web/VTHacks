@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "status": "HISTORICAL_REFERENCE",
+  "classification": "historical_field_measurement",
+  "operational_lighting_verified_now": false,
+  "author": "Seyedeh Aida Hassaniziabari",
+  "title": "Identifying Lighting Conditions at Bikeway–Road Intersections for Cyclist Safety in Blacksburg, Virginia",
+  "published_date": "2026-08-14",
+  "retrieved_at": "2026-09-19T18:03:25Z",
+  "capture_time_note": "Research session timestamp; not observation time.",
+  "source_url": "https://vtechworks.lib.vt.edu/bitstreams/cced4b56-86ac-4b53-8fad-ab04deb80f0f/download",
+  "source_pages_1_based": [
+    29,
+    69,
+    70,
+    71,
+    72,
+    73
+  ],
+  "measurement_count": 72,
+  "intersection_count": 36,
+  "located_intersections": 28,
+  "records": [
+    {
+      "intersection_id": 1,
+      "road_class": "Local",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.6,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 2.5,
+      "coordinate": [
+        -80.40185055,
+        37.22441257
+      ]
+    },
+    {
+      "intersection_id": 2,
+      "road_class": "Local",
+      "light_type": "PLOT",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 7.5,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 9.5,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 3,
+      "road_class": "Local",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.4,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.4,
+      "coordinate": [
+        -80.39909946,
+        37.21417075
+      ]
+    },
+    {
+      "intersection_id": 4,
+      "road_class": "Local",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 8.4,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 8.9,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 5,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.39801862,
+        37.22677019
+      ]
+    },
+    {
+      "intersection_id": 6,
+      "road_class": "Local",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 4.8,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 9.4,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 7,
+      "road_class": "Local",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.3,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.4568457,
+        37.24565165
+      ]
+    },
+    {
+      "intersection_id": 8,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.41563679,
+        37.25880658
+      ]
+    },
+    {
+      "intersection_id": 9,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.4,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.39960794,
+        37.26415938
+      ]
+    },
+    {
+      "intersection_id": 10,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.40661908,
+        37.25719274
+      ]
+    },
+    {
+      "intersection_id": 11,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.3,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.40696997,
+        37.25610668
+      ]
+    },
+    {
+      "intersection_id": 12,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.1,
+      "coordinate": [
+        -80.40827907,
+        37.25590284
+      ]
+    },
+    {
+      "intersection_id": 13,
+      "road_class": "Local",
+      "light_type": "PLOT",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.3,
+      "coordinate": [
+        -80.40105399,
+        37.26321178
+      ]
+    },
+    {
+      "intersection_id": 14,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.1,
+      "coordinate": [
+        -80.4042729,
+        37.26786954
+      ]
+    },
+    {
+      "intersection_id": 15,
+      "road_class": "Local",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.2,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.3,
+      "coordinate": [
+        -80.46539349,
+        37.20871899
+      ]
+    },
+    {
+      "intersection_id": 16,
+      "road_class": "Collector",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 1.8,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.3,
+      "coordinate": [
+        -80.40667992,
+        37.22101231
+      ]
+    },
+    {
+      "intersection_id": 17,
+      "road_class": "Collector",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.40553054,
+        37.26085713
+      ]
+    },
+    {
+      "intersection_id": 18,
+      "road_class": "Collector",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 1.5,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 1.3,
+      "coordinate": [
+        -80.4388475,
+        37.23525114
+      ]
+    },
+    {
+      "intersection_id": 19,
+      "road_class": "Collector",
+      "light_type": "NVL",
+      "round_1_status": "NS",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.1,
+      "coordinate": [
+        -80.40379333,
+        37.26316814
+      ]
+    },
+    {
+      "intersection_id": 20,
+      "road_class": "Collector",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.8,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.4,
+      "coordinate": [
+        -80.40016806,
+        37.26658511
+      ]
+    },
+    {
+      "intersection_id": 21,
+      "road_class": "Collector",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.46056856,
+        37.23720791
+      ]
+    },
+    {
+      "intersection_id": 22,
+      "road_class": "Collector",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.47317252,
+        37.23816093
+      ]
+    },
+    {
+      "intersection_id": 23,
+      "road_class": "Collector",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 2.1,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 2.9,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 24,
+      "road_class": "Collector",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.4,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.5,
+      "coordinate": [
+        -80.40791397,
+        37.25925854
+      ]
+    },
+    {
+      "intersection_id": 25,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 2.2,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 4.2,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 26,
+      "road_class": "Arterial",
+      "light_type": "SMAL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 1.6,
+      "round_2_status": "NSW",
+      "round_2_min_vertical_lux": 0.5,
+      "coordinate": [
+        -80.39938519,
+        37.20927053
+      ]
+    },
+    {
+      "intersection_id": 27,
+      "road_class": "Arterial",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.42351583,
+        37.25460883
+      ]
+    },
+    {
+      "intersection_id": 28,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 1.6,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 2.8,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 29,
+      "road_class": "Arterial",
+      "light_type": "SMAL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 2,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.6,
+      "coordinate": [
+        -80.42152694,
+        37.24509675
+      ]
+    },
+    {
+      "intersection_id": 30,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 2.6,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 6,
+      "coordinate": null
+    },
+    {
+      "intersection_id": 31,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 3.8,
+      "round_2_status": "NSW",
+      "round_2_min_vertical_lux": 0.8,
+      "coordinate": [
+        -80.42070992,
+        37.23725522
+      ]
+    },
+    {
+      "intersection_id": 32,
+      "road_class": "Arterial",
+      "light_type": "PLOT",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.1,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.2,
+      "coordinate": [
+        -80.39957975,
+        37.2412531
+      ]
+    },
+    {
+      "intersection_id": 33,
+      "road_class": "Arterial",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.1,
+      "coordinate": [
+        -80.41631428,
+        37.26022408
+      ]
+    },
+    {
+      "intersection_id": 34,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 0.6,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 0.5,
+      "coordinate": [
+        -80.41016128,
+        37.22840369
+      ]
+    },
+    {
+      "intersection_id": 35,
+      "road_class": "Arterial",
+      "light_type": "NVL",
+      "round_1_status": "NLP",
+      "round_1_min_vertical_lux": 0,
+      "round_2_status": "NLP",
+      "round_2_min_vertical_lux": 0.1,
+      "coordinate": [
+        -80.41631408,
+        37.26022497
+      ]
+    },
+    {
+      "intersection_id": 36,
+      "road_class": "Arterial",
+      "light_type": "OSL",
+      "round_1_status": "AW",
+      "round_1_min_vertical_lux": 6,
+      "round_2_status": "AW",
+      "round_2_min_vertical_lux": 8.5,
+      "coordinate": null
+    }
+  ],
+  "collection_windows": [
+    {
+      "round": 1,
+      "local_dates": "2026-01-20/2026-01-21",
+      "reported_local_times": "22:40–01:46",
+      "moon": "low"
+    },
+    {
+      "round": 2,
+      "local_dates": "2026-02-28/2026-03-01",
+      "reported_local_times": "22:15–00:15",
+      "moon": "high"
+    }
+  ],
+  "units": {
+    "minimum_vertical_illuminance": "lux",
+    "measurement_height_meters": 1.5,
+    "coordinate": "longitude,latitude as reported; CRS not explicitly verified"
+  },
+  "code_legend": {
+    "AW": "all lights working at observation",
+    "NLP": "no lights present at observation",
+    "NSW": "some lights not working at observation",
+    "NS": "observer not sure",
+    "OSL": "overhead streetlight on pole",
+    "PLOT": "nearby parking lot lighting",
+    "NVL": "no visible lighting",
+    "SMAL": "signal mast arm light"
+  },
+  "limitations": [
+    "Measurements date from January–March 2026, not the August publication date or tonight.",
+    "Only 28 underlit/recheck sites have coordinates in Appendix B; the other 8 retain null coordinates.",
+    "These are sampled bikeway–road intersections, not complete pedestrian segments or the proposed pilot area.",
+    "Do not infer current outages, whole-route illumination, personal crime risk or an approved engineering threshold from these rows.",
+    "Factual extraction from an attributed university thesis. No full copyrighted PDF is redistributed. Historical context only; no automatic route matching or operational verification."
+  ],
+  "source_hash": "89a4df7d421cfda97a08adb217bded6616e886563001f59fdfcd7c8b9e2eb84b",
+  "captured_at": "2026-09-19T18:03:25Z"
+}

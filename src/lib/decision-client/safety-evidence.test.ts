@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from 'node:fs';
 import { datasets, loadDataset, routeConditions, type Dataset } from "../campus-evidence/catalog";
 import { buildSafetyEvidence, type SafetyEvidenceInput } from "./safety-evidence";
 
@@ -9,6 +10,14 @@ const now = Math.max(derivedAt ? Date.parse(derivedAt) : 0, ...Object.values(sna
 const evaluatedAt = new Date(now).toISOString();
 const conditions = routeConditions("eggleston-pritchard", now);
 const baseline: SafetyEvidenceInput = { corridorId: "eggleston-pritchard", evaluatedAt, routeConditions: conditions, expectedRouteVersion: conditions.route!.source_version, campusDatasets: snapshots };
+test('historical measurements reach the evidence view but never establish present route lighting', () => {
+  const measured = JSON.parse(readFileSync('data/campus/research/lighting-measured-2026.json', 'utf8'));
+  const result = buildSafetyEvidence({ ...baseline, evaluatedAt: measured.captured_at, historicalLighting: measured });
+  assert.equal(result.historicalLighting?.measurements, 72);
+  assert.equal(result.historicalLighting?.operationalLightingVerified, false);
+  assert.equal(result.coverage.measuredLightingFraction, null);
+  assert.equal(result.routeExposureScore, null);
+});
 function withDataset(name: typeof datasets[number], dataset: Dataset, overrides: Partial<SafetyEvidenceInput> = {}) {
   return { ...baseline, campusDatasets: { ...snapshots, [name]: dataset }, ...overrides };
 }
@@ -31,6 +40,9 @@ test("actual imported datasets retain counts, sources and honest unknown measure
   assert.equal(result.incidents.coverage, "partial_historical");
   assert.equal(result.lighting.mapObjectCount, snapshots.lighting.records.length);
   assert.equal(result.lighting.status, "community_unverified");
+  assert.equal(result.walkingAlternativeReadiness?.availabilityImpact, 'none');
+  assert.equal(result.walkingAlternativeReadiness?.lighting.state, 'unknown');
+  assert.equal(result.walkingAlternativeReadiness?.pickup.status, 'not_applicable');
   assert.equal(result.lighting.attribution, "© OpenStreetMap contributors");
   assert.equal(result.activity.historicalSiteCount, snapshots.activity.records.length);
   assert.equal(result.activity.status, "historical_2015");

@@ -2,9 +2,10 @@ import type { CandidatePlan } from "../../types/provider";
 import { evaluateCandidates, prepareDecision, scorePlan, type DecisionContext, type DecisionResult, type PlanSignals } from "../../lib/decision-client/decision";
 import { DatabricksError, executeStatement, qualifiedTable, type DatabricksConfig, type StatementResult } from "./statement";
 import { buildEvaluationSql, evaluationParameters } from "./sql";
+import type { NetworkAdmission } from '../../lib/decision-client/network-offers';
 
 export type DecisionWorkspace = DatabricksConfig & { routeContextTable?: string; auditTable?: string };
-type Options = { workspace?: DecisionWorkspace; fetch?: typeof fetch; timeoutMs?: number; pollIntervalMs?: number };
+type Options = { workspace?: DecisionWorkspace; fetch?: typeof fetch; timeoutMs?: number; pollIntervalMs?: number; admission?: NetworkAdmission };
 const invalid = (): never => { throw new DatabricksError("UNTRUSTED_DECISION_RESULT"); };
 const obj = (value: unknown): Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : invalid();
 
@@ -85,15 +86,25 @@ async function persistAudit(result: DecisionResult, workspace: DecisionWorkspace
 export async function runDecision(candidates: CandidatePlan[], input: DecisionContext, signals: Record<string, PlanSignals> = {}, options: Options = {}): Promise<DecisionResult> {
   const started = Date.now();
   const prepared = prepareDecision(candidates, input, signals);
+  const admission = options.admission;
+  if (admission && (Object.keys(admission.rejected).length + candidates.length > 16
+    || Object.entries(admission.rejected).some(([id, reasons]) => !/^network:[a-f0-9]{40}$/.test(id)
+      || candidates.some(p => p.planId === id) || !Array.isArray(reasons) || reasons.length > 16
+      || reasons.some(r => !/^[A-Z_]{1,80}$/.test(r)))
+    || !Array.isArray(admission.warnings) || admission.warnings.length > 16 || admission.warnings.some(w => !/^[A-Z_]{1,80}$/.test(w)))) throw new Error('Invalid network admission evidence');
+  const includeAdmission = (result: DecisionResult): DecisionResult => {
+    if (admission) { result.rejected = { ...admission.rejected, ...result.rejected }; result.warnings = [...new Set([...result.warnings, ...admission.warnings])]; }
+    return result;
+  };
   const local = evaluateCandidates(candidates, prepared.context, signals);
-  if (local.status === "EMERGENCY" || !prepared.plans.length) return { ...local, engine: "boundary" };
+  if (local.status === "EMERGENCY" || !prepared.plans.length) return includeAdmission({ ...local, engine: "boundary" });
   const fallback = (reason: string): DecisionResult => {
     const updated = evaluateCandidates(candidates, { ...prepared.context, evaluatedAt: new Date(Date.parse(prepared.context.evaluatedAt) + Date.now() - started).toISOString() }, signals);
     updated.engine = "local_fallback";
     updated.fallbackReason = reason;
     updated.warnings.push("Advanced campus context temporarily unavailable; local policy used.");
     if (updated.status === "RECOMMENDED") updated.recommendation.reasonCodes.push("FALLBACK_USED");
-    return updated;
+    return includeAdmission(updated);
   };
   if (!options.workspace) return fallback("WORKSPACE_NOT_CONFIGURED");
   const expiredDuringEvaluation = () => {
@@ -107,7 +118,7 @@ export async function runDecision(candidates: CandidatePlan[], input: DecisionCo
   let result: DecisionResult;
   try {
     const response = await executeStatement(options.workspace, { statement: buildEvaluationSql(options.workspace.routeContextTable), parameters: evaluationParameters(prepared), timeoutMs: options.timeoutMs ?? 10000 }, { fetch: options.fetch, pollIntervalMs: options.pollIntervalMs });
-    result = validateEvaluationResult(response, candidates, prepared.context, signals);
+    result = includeAdmission(validateEvaluationResult(response, candidates, prepared.context, signals));
     // A slow query must not resurrect an expired offer. Mahin must also recheck before booking.
     if (expiredDuringEvaluation()) return fallback("QUOTE_EXPIRED_DURING_EVALUATION");
     if (!options.workspace.routeContextTable) result.warnings.push("CAMPUS_CONTEXT_NOT_CONFIGURED");

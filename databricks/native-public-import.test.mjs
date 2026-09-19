@@ -14,6 +14,10 @@ test('native import retains all accepted source records and completion identity'
   assert.equal(data.schema, '`workspace`.`beacon`');
   assert.equal(data.tables.public_evidence_records.filter(r => r.dataset === 'crime').length, 719);
   assert.equal(data.tables.public_evidence_records.filter(r => r.dataset === 'lighting').length, 1179);
+  const measured = data.tables.public_evidence_records.filter(r => r.dataset === 'lighting-measured-history');
+  assert.equal(measured.length, 36);
+  assert.equal(measured[0].provenance_status, 'recorded');
+  assert.equal(JSON.parse(measured[0].payload_json).round_1_min_vertical_lux, 0.6);
   assert.equal(data.tables.public_research_imports[0].import_id, plan.importId);
   assert.equal(data.tables.public_evidence_records.length, plan.summary.native_record_count);
   const crime = data.tables.public_evidence_records.find(r => r.dataset === 'crime');

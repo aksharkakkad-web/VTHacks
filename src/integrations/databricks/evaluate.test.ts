@@ -216,3 +216,41 @@ test("SQL must order the winner first, not just return plausible scores", () => 
   const reversed = calculated(); reversed.rows.reverse();
   assert.throws(() => validateEvaluationResult(reversed, plans, context, signals), /UNTRUSTED/);
 });
+
+test("network admission rejections survive local, boundary and SQL audit paths", async () => {
+  const id = `network:${'a'.repeat(40)}`;
+  const admission = { rejected: { [id]: ['PRICE_EXCEEDS_REMAINING_BUDGET'] }, warnings: ['UNVERIFIED_JOURNEY_COVERAGE'] };
+  const local = await runDecision(plans, context, signals, { admission });
+  assert.deepEqual(local.rejected[id], admission.rejected[id]);
+  const boundary = await runDecision([], context, {}, { admission });
+  assert.deepEqual(boundary.rejected[id], admission.rejected[id]);
+  let calls = 0;
+  const live = await runDecision(plans, context, signals, {
+    admission, workspace: { ...workspace, auditTable: 'workspace.beacon.decision_events' },
+    fetch: fakeFetch((_url, init) => {
+      if (++calls === 1) return mockResponse(succeeded());
+      const payload = JSON.parse(String(init?.body));
+      const audit = JSON.parse(payload.parameters.find((p: { name: string }) => p.name === 'result_json').value);
+      assert.deepEqual(audit.rejected[id], admission.rejected[id]);
+      assert.ok(audit.warnings.includes('UNVERIFIED_JOURNEY_COVERAGE'));
+      return mockResponse({ statement_id: 'audit', status: { state: 'SUCCEEDED' } });
+    }),
+  });
+  assert.equal(live.auditPersisted, true);
+  assert.deepEqual(live.rejected[id], admission.rejected[id]);
+});
+
+test("network admission rejects raw identifiers, free text and oversized metadata before SQL", async () => {
+  let calls = 0;
+  const invalidAdmissions: import('../../lib/decision-client/network-offers').NetworkAdmission[] = [
+    { rejected: { 'student-name': ['BAD'] }, warnings: [] },
+    { rejected: { [`network:${'a'.repeat(40)}`]: ['sensitive free text'] }, warnings: [] },
+    { rejected: {}, warnings: Array(17).fill('TOO_MANY') },
+  ];
+  for (const admission of invalidAdmissions) {
+    await assert.rejects(runDecision(plans, context, signals, { admission, workspace,
+      fetch: fakeFetch(() => { calls++; return mockResponse(succeeded()); }),
+    }), /Invalid network admission evidence/);
+  }
+  assert.equal(calls, 0);
+});
