@@ -59,14 +59,14 @@ for identity verification or Beacon's authorization policy.
 
 ## Verified local checkpoint (2026-09-19)
 
-38 behavioral tests pass, including lost-response reconciliation, delayed-request
+40 behavioral tests pass, including Redis environment selection, lost-response reconciliation, delayed-request
 cancellation, uncertain-booking arrival cleanup, preserved overdue deadlines, and
 replacement recovery after an outage or interrupted checkpoint.
 The production-build HTTP smoke on the reconciliation branch exercises session ownership,
 confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
 build, lint and typecheck pass. Shared checkpoints A/B are ready for integration. Live ANS,
-Databricks, SMS, hosted persistence/scheduling, and deployed UI verification remain open.
+Databricks, SMS, deployed persistence/scheduling, and deployed UI verification remain open.
 
 ## Hosted provider and registration slice
 
@@ -81,4 +81,18 @@ rejected its TLS fingerprint: the live certificate differed from the certificate
 listed in its ANS badge. This is a negative interoperability result, not a successful
 Beacon identity verification. A local CSR for the user's domain and a registration
 payload are prepared in Git-ignored storage; neither registration nor DNS publication
-has been performed. Vercel CLI account authorization is awaiting the user's approval.
+has been performed. Vercel CLI account authorization is complete.
+
+## Verified Upstash setup (2026-09-19)
+
+The Vercel `beacon` project is linked to the user's Upstash Free database for production,
+preview, and development. The integration supplies `KV_REST_API_URL` and
+`KV_REST_API_TOKEN`; both trip and provider stores accept this pair, while preserving
+explicit direct Upstash configuration as an alternative. Credentials remain outside Git.
+
+A live Redis probe passed PING, cross-instance trip reads, exclusive update leases,
+TTL preservation, provider cleanup, and cancellation tombstones that block replay.
+The synthetic probe records were removed. The production Next.js HTTP smoke also passed
+against this live Redis database with local simulated providers: booking, replacement,
+arrival cleanup, session guards, and one simulated overdue alert. This proves the database
+and store operations; it does not yet prove a deployed trip flow or a hosted monitor scheduler.

@@ -45,7 +45,8 @@ Do not upload `.env.local`, identity private keys, or the local state directory 
 | `BEACON_HOSTED_PROVIDERS=true` | Enable the simulated public provider routes |
 | `BEACON_PROVIDER_ORIGIN=https://<domain>` | Canonical provider origin, with no trailing slash |
 | `BEACON_HOSTED_PROVIDER_TOKEN` | Random booking/status/cancellation credential |
-| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Shared trip and provider persistence |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Shared trip and provider persistence; supplied by the Vercel Upstash integration |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Optional direct Upstash configuration; takes precedence as a complete pair |
 | `BEACON_ANS_AGENT_ID` | Registration ID returned by GoDaddy after registration |
 | `ANS_API_KEY=KEY:SECRET`, `ANS_BASE_URL=https://api.godaddy.com` | GoDaddy server-side credentials |
 | `BEACON_ANS_MODE=live` | Explicitly select real ANS even in demo mode |

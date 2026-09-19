@@ -9,15 +9,16 @@ import { GoDaddyDirectory, LocalDemoDirectory } from "../../integrations/ans/dir
 import { notificationSender } from "../../integrations/notifications/sms";
 import { FileTripStore } from "./store";
 import { RedisTripStore } from "./redis-store";
+import { redisConfiguration } from "./redis-config";
 
 type Runtime = { agent: StudentAgent; timer?: ReturnType<typeof setInterval>; };
 const globalRuntime = globalThis as typeof globalThis & { beaconRuntime?: Runtime };
 export function getRuntime(): Runtime {
   if (globalRuntime.beaconRuntime) return globalRuntime.beaconRuntime;
   const demo = process.env.DEMO_MODE === "true";
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL; const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (process.env.VERCEL && (!redisUrl || !redisToken)) throw new Error("A shared Redis trip store is required on Vercel");
-  const store = redisUrl && redisToken ? new RedisTripStore(redisUrl, redisToken) : new FileTripStore(process.env.BEACON_STATE_DIR ?? join(tmpdir(), "beacon-trips-local"));
+  const redis = redisConfiguration();
+  if (process.env.VERCEL && !redis) throw new Error("A shared Redis trip store is required on Vercel");
+  const store = redis ? new RedisTripStore(redis.url, redis.token) : new FileTripStore(process.env.BEACON_STATE_DIR ?? join(tmpdir(), "beacon-trips-local"));
   const directory = demo && process.env.BEACON_ANS_MODE !== "live" ? new LocalDemoDirectory(demoDescriptors, true) : new GoDaddyDirectory({ apiBase: process.env.ANS_BASE_URL, apiKey: process.env.ANS_API_KEY, query: process.env.BEACON_ANS_QUERY });
   const agent = new StudentAgent({ store, directory, demo,
     // The shared demo token belongs only to our configured loopback providers.

@@ -105,7 +105,8 @@ Notifications require explicit contact consent; location is included only with s
 before sending; ambiguous sends are flagged, not blindly retried. Accepted does not
 prove delivered. Beacon is not emergency dispatch.
 
-Vercel needs `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` and a scheduler
+Vercel needs the marketplace's `KV_REST_API_URL` + `KV_REST_API_TOKEN` (or a complete
+`UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` pair) and a scheduler
 calling `POST /api/trips/monitor` with `Authorization: Bearer <BEACON_MONITOR_TOKEN>`.
 No browser interval or in-memory serverless timer is represented as reliable monitoring.
 Without a shared store, hosted trip operations fail closed. Locally, `BEACON_STATE_DIR`
