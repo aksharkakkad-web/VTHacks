@@ -33,7 +33,7 @@ export class StudentAgent {
     return this.deps.store.update(id, async (r) => {
       if (r.booking?.providerId !== providerId || r.booking.id !== bookingId) throw new TripError("STALE_PROVIDER_EVENT", "Event does not belong to the active booking");
       requireState(r, [...activeStates]);
-      if (event === "provider.cancelled") await this.recover(r);
+      if (event === "provider.cancelled") await this.recover(r, true);
       else if (event === "provider.in_trip") this.log(r, "IN_TRIP", "PROVIDER_IN_TRIP", "Trip in progress");
       else if (event === "provider.completed") await this.arrive(r);
       else throw new TripError("INVALID_EVENT", "Unsupported provider event", 400);
@@ -55,7 +55,7 @@ export class StudentAgent {
       owns(record, owner);
       if (action === "discover") { requireState(record, ["OBJECTIVE_RECEIVED", "COLLECTING_QUOTES"]); await this.discover(record); }
       if (action === "evaluate") { requireState(record, ["COLLECTING_QUOTES", "SELECTED"]); if (record.confirmed) throw new TripError("ALREADY_CONFIRMED", "Plan is already confirmed"); await this.evaluate(record); }
-      if (action === "confirm") { requireState(record, ["SELECTED"]); if (record.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Refresh the recommendation before confirming"); record.confirmed = true; this.log(record, "SELECTED", "USER_CONFIRMED", "Plan confirmed"); }
+      if (action === "confirm") { requireState(record, ["SELECTED"]); if (this.selectedDeadline(record) <= this.now()) throw new TripError("QUOTE_EXPIRED", "Refresh the recommendation before confirming"); record.confirmed = true; this.log(record, "SELECTED", "USER_CONFIRMED", "Plan confirmed"); }
       if (action === "verify") { requireState(record, ["SELECTED"]); await this.verify(record); }
       if (action === "request") {
         if (record.booking && (activeStates as readonly string[]).includes(record.trip.state)) return record.trip;
@@ -70,13 +70,14 @@ export class StudentAgent {
   }
   private log(r: TripRecord, state: TripRecord["trip"]["state"], code: string, message: string) { transition(r, state, code, message, this.now()); }
   private selectedProvider(r: TripRecord) { const p = r.providers.find((p) => p.id === r.trip.selectedPlan?.providerId); if (!p) throw new TripError("PROVIDER_MISSING", "Selected provider is unavailable"); return p; }
+  private selectedDeadline(r: TripRecord) { return Math.min(r.quoteDeadline, r.quoteExpirations?.[r.trip.selectedPlan?.planId ?? ""] ?? Infinity); }
   private async discover(r: TripRecord) {
     this.log(r, "DISCOVERING", "DISCOVERY_STARTED", "Finding transportation providers");
     try { r.providers = await this.deps.directory.discover(); }
     catch { this.log(r, "FAILED", "DISCOVERY_FAILED", "Provider discovery is unavailable; no location was shared"); throw new TripError("DISCOVERY_FAILED", "Provider discovery unavailable", 503); }
     this.log(r, "COLLECTING_QUOTES", "COARSE_QUOTES", "Requesting quotes using approximate zones only");
-    const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded));
-    r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000;
+    const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded), 22, this.now());
+    r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000; r.quoteExpirations = result.quoteExpirations;
     if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
   }
   private async evaluate(r: TripRecord) {
@@ -87,7 +88,7 @@ export class StudentAgent {
     catch { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
     const plan = r.trip.candidates.find((p) => p.planId === recommendation.selectedPlanId && p.available && p.cost <= r.context.maxBudget && !r.excluded.includes(p.providerId ?? ""));
     if (!plan || !Array.isArray(recommendation.reasonCodes) || !recommendation.reasonCodes.every((c) => typeof c === "string") || typeof recommendation.explanation !== "string" || !Number.isFinite(Date.parse(recommendation.evaluatedAt))) { this.log(r, "FAILED", "INVALID_RECOMMENDATION", "No valid plan fits the approved constraints"); throw new TripError("INVALID_RECOMMENDATION", "Decision engine returned an invalid plan", 502); }
-    r.trip.recommendation = recommendation; r.trip.selectedPlan = plan; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = false; delete r.identity;
+    r.trip.recommendation = recommendation; r.trip.selectedPlan = plan; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length); delete r.identity;
     this.log(r, "SELECTED", "PLAN_SELECTED", `${plan.providerName} recommended; awaiting confirmation`);
   }
   private async verify(r: TripRecord) {
@@ -104,17 +105,22 @@ export class StudentAgent {
   }
   private async coordinate(r: TripRecord) {
     if (!r.confirmed || !r.private || !r.trip.selectedPlan) throw new TripError("CONFIRMATION_REQUIRED", "Confirm a plan before requesting a trip");
-    if (r.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quote expired before coordination");
+    if (this.selectedDeadline(r) <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quote expired before coordination");
     const plan = r.trip.selectedPlan;
     if (plan.mode === "walk" || plan.mode === "transit") { this.startMonitoring(r); this.log(r, "NAVIGATING", "NAVIGATION_STARTED", "Navigation started; no precise data shared with a provider"); return; }
     const provider = this.selectedProvider(r);
     if (!authorize(provider, r.identity, r.confirmed, this.deps.demo, this.now()).preciseLocation) throw new TripError("VERIFICATION_REQUIRED", "A current verified and authorized provider is required", 403);
     this.log(r, "COORDINATING", "POLICY_ALLOWED", "Precise pickup and destination permitted for this provider");
     r.trip.sensitiveDataReleased = true;
+    r.pendingBooking = { providerId: provider.id, requestId: `${r.trip.id}-${r.replanCount}` };
+    // A lost response does not mean the provider rejected or erased this request.
+    await this.deps.store.checkpoint(r);
     try {
-      const result = await this.deps.provider(provider, r.identity).requestTrip({ tripId: `${r.trip.id}-${r.replanCount}`, pickup: r.private.origin, destination: r.private.home });
+      const latest = r.trip.lastKnownLocation;
+      const pickup = latest && Date.parse(latest.recordedAt) >= this.now() - 120_000 ? { lat: latest.lat, lng: latest.lng } : r.private.origin;
+      const result = await this.deps.provider(provider, r.identity).requestTrip({ tripId: r.pendingBooking.requestId, pickup, destination: r.private.home });
       if (!["accepted", "waiting"].includes(result.status)) throw new Error("Provider rejected trip");
-      r.booking = { providerId: provider.id, id: result.id }; this.startMonitoring(r);
+      r.booking = { providerId: provider.id, id: result.id }; delete r.pendingBooking; this.startMonitoring(r);
       this.log(r, "WAITING_FOR_PICKUP", "PROVIDER_ACCEPTED", `${plan.providerName} accepted your trip`);
     } catch {
       // A timeout may mean the provider accepted. Keep the idempotency key and require
@@ -128,13 +134,16 @@ export class StudentAgent {
     r.trip.expectedArrivalAt = new Date(eta).toISOString();
     r.trip.alertDeadlineAt = new Date(eta + (this.deps.graceMinutes ?? 5) * 60_000).toISOString();
   }
-  private async recover(r: TripRecord) {
+  private async recover(r: TripRecord, cancellationConfirmed = false) {
     if (!r.booking) throw new TripError("NO_BOOKING", "No provider booking to replace");
     const failed = this.selectedProvider(r);
-    await this.deps.provider(failed, r.identity).cancelTrip(r.booking.id);
+    if (cancellationConfirmed) this.queueCleanup(r);
+    else await this.deps.provider(failed, r.identity).cancelTrip(r.booking.id);
     r.excluded.push(failed.id); delete r.booking; delete r.identity;
-    r.trip.providerVerified = false; r.trip.sensitiveDataReleased = false; r.replanCount++;
+    r.trip.providerVerified = false; r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length); r.replanCount++;
     this.log(r, "PROVIDER_FAILED", "PROVIDER_CANCELLED", "Your provider cancelled; finding a replacement");
+    await this.deps.store.checkpoint(r);
+    await this.flushCleanup(r);
     if (r.replanCount > 3) { this.log(r, "FAILED", "RECOVERY_LIMIT", "No replacement is available within your constraints"); return; }
     this.log(r, "REPLANNING", "REPLAN_STARTED", "Replanning within your approved budget and preferences");
     await this.discover(r); await this.evaluate(r); await this.verify(r); await this.coordinate(r);
@@ -147,24 +156,48 @@ export class StudentAgent {
     if (r.private && distanceMeters(location, r.private.home) <= 75) await this.arrive(r);
   }
   private async arrive(r: TripRecord) {
-    if (r.booking) {
-      try { await this.deps.provider(this.selectedProvider(r), r.identity).cancelTrip(r.booking.id); }
-      catch { this.log(r, r.trip.state, "ACCESS_REVOCATION_PENDING", "Arrival recorded; provider cleanup needs retry"); }
-    }
+    this.queueCleanup(r);
     delete r.private; delete r.identity; delete r.booking; delete r.trip.lastKnownLocation; delete r.trip.alertDeadlineAt;
-    r.trip.sensitiveDataReleased = false; r.trip.providerVerified = false;
-    this.log(r, "ARRIVED", "TRIP_COMPLETED", "Home reached; location sharing ended");
+    r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length); r.trip.providerVerified = false;
+    this.log(r, "ARRIVED", "TRIP_COMPLETED", r.cleanup?.length ? "Home reached; provider cleanup pending" : "Home reached; location sharing ended");
+    // Persist the minimal revocation task before calling an external service.
+    // It contains identifiers and TLS evidence, never home/contact/location data.
+    await this.deps.store.checkpoint(r);
+    await this.flushCleanup(r);
+  }
+  private queueCleanup(r: TripRecord) {
+    if (!r.booking) return;
+    const cleanup = r.cleanup ??= [];
+    if (!cleanup.some((job) => job.provider.id === r.booking!.providerId && job.bookingId === r.booking!.id)) cleanup.push({ provider: this.selectedProvider(r), identity: r.identity, bookingId: r.booking.id, attempts: 0, retryAt: this.now() });
+  }
+  private async flushCleanup(r: TripRecord) {
+    if (!r.cleanup?.length) return;
+    for (const job of [...(r.cleanup ?? [])]) {
+      if (job.retryAt > this.now()) continue;
+      try {
+        await this.deps.provider(job.provider, job.identity).cancelTrip(job.bookingId);
+        r.cleanup = r.cleanup!.filter((pending) => pending !== job);
+      } catch {
+        job.attempts++; job.retryAt = this.now() + Math.min(60_000, 10_000 * 2 ** Math.min(job.attempts - 1, 3));
+        if (job.attempts === 1) this.log(r, r.trip.state, "ACCESS_REVOCATION_PENDING", "Provider cleanup pending; retry scheduled");
+      }
+    }
+    if (!r.cleanup?.length && !r.booking && !r.pendingBooking) {
+      delete r.cleanup; r.trip.sensitiveDataReleased = false;
+      if (r.trip.state === "ARRIVED") r.trip.statusMessage = "Home reached; location sharing ended";
+    }
   }
   async monitor() {
     for (const id of await this.deps.store.list()) {
       await this.deps.store.update(id, async (r) => {
+        await this.flushCleanup(r);
         if (!(activeStates as readonly string[]).includes(r.trip.state)) return;
-        if (r.booking && r.trip.state !== "OVERDUE") {
+        if (r.booking) {
           try {
             const result = await this.deps.provider(this.selectedProvider(r), r.identity).getStatus(r.booking.id);
-            if (result.status === "cancelled") { await this.recover(r); return; }
+            if (result.status === "cancelled") { await this.recover(r, true); return; }
             if (result.status === "completed") { await this.arrive(r); return; }
-            if (result.status === "in_trip" && r.trip.state !== "IN_TRIP") this.log(r, "IN_TRIP", "PROVIDER_IN_TRIP", "Trip in progress");
+            if (result.status === "in_trip" && r.trip.state !== "IN_TRIP" && r.trip.state !== "OVERDUE") this.log(r, "IN_TRIP", "PROVIDER_IN_TRIP", "Trip in progress");
           } catch { /* Provider status outage must not disable the overdue deadline. */ }
         }
         await this.checkDeadline(r);

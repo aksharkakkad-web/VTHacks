@@ -9,7 +9,10 @@ export type TripRecord = {
   private?: { origin: Point; home: Point; contact?: Contact };
   originZone: string; destinationZone: string; providers: ProviderDescriptor[];
   excluded: string[]; confirmed: boolean; quoteDeadline: number;
+  quoteExpirations?: Record<string, number>;
   identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
+  pendingBooking?: { providerId: string; requestId: string };
+  cleanup?: { provider: ProviderDescriptor; identity?: VerifiedIdentity; bookingId: string; attempts: number; retryAt: number }[];
   replanCount: number; lastStatusBeforeOverdue?: TripState;
   notification?: { state: "sending" | "sent" | "simulated" | "failed" | "uncertain"; id?: string };
   events: { at: string; state: TripState; code: string; message: string }[];

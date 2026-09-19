@@ -13,9 +13,11 @@ export type Point = { lat: number; lng: number };
 export type TripRequest = { tripId: string; pickup: Point; destination: Point };
 export type ProviderTripStatus = "accepted" | "waiting" | "cancelled" | "in_trip" | "completed";
 export type ProviderTrip = { id: string; status: ProviderTripStatus };
+/** Adapter metadata is stripped before publishing the frozen CandidatePlan shape. */
+export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number };
 export interface ProviderAgent {
   descriptor: ProviderDescriptor;
-  quote(request: QuoteRequest): Promise<CandidatePlan>;
+  quote(request: QuoteRequest): Promise<ProviderQuote>;
   requestTrip(request: TripRequest): Promise<ProviderTrip>;
   getStatus(id: string): Promise<ProviderTrip>;
   cancelTrip(id: string): Promise<void>;
@@ -41,7 +43,7 @@ export function point(value: unknown): Point {
 export function coarseQuote(request: QuoteRequest & Record<string, unknown>) {
   return { origin_zone: text(request.originZone, "origin zone"), destination_zone: text(request.destinationZone, "destination zone"), constraints: { max_budget: number(request.maxBudget, "budget"), minimize_walking: request.minimizeWalking === true, minimize_transfers: request.minimizeTransfers === true } };
 }
-export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now = Date.now()): CandidatePlan {
+export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now = Date.now()): ProviderQuote {
   const q = object(value);
   if (q.provider_id !== provider.id || typeof q.available !== "boolean") throw new Error("Invalid provider identity or availability");
   if (q.expires_at !== undefined && (typeof q.expires_at !== "string" || !Number.isFinite(Date.parse(q.expires_at)) || Date.parse(q.expires_at) <= now)) throw new Error("Expired provider quote");
@@ -50,6 +52,7 @@ export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now
   const travelMinutes = number(q.travel_time_minutes, "travel", 1440);
   const walkingMinutes = number(q.walking_minutes, "walking", 1440);
   return {
+    quoteExpiresAt: Math.min(now + 120_000, q.expires_at === undefined ? Infinity : Date.parse(q.expires_at as string)),
     planId: `${provider.id}-${now}`, providerId: provider.id, providerName: provider.name,
     mode: provider.mode, available: q.available, cost, waitMinutes, travelMinutes, walkingMinutes,
     totalMinutes: waitMinutes + travelMinutes + walkingMinutes,

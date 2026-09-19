@@ -53,7 +53,7 @@ test("provider HTTP lifecycle is real, idempotent, and releases data on cancella
 });
 
 test("discovery isolates provider failure and excludes failed providers and over-budget quotes", async () => {
-  const okay = { descriptor: provider, quote: async () => normalizeQuote(raw, provider, 1000) };
+  const okay = { descriptor: provider, quote: async () => normalizeQuote(raw, provider) };
   const broken = { descriptor: { ...provider, id: "broken" }, quote: async () => { throw new Error("offline"); } };
   const results = await collectCandidates([okay, broken], request, new Set());
   assert.equal(results.candidates.length, 2);

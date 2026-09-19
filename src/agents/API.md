@@ -81,7 +81,13 @@ or `provider.completed`; stale/mismatched bookings are rejected.
 ## Monitoring and deployment
 
 Local Node runs a ten-second monitor while the server is running. Arrival removes
-private origin/home/contact/current-location state and disables the deadline. ETA uses
+private origin/home/contact/current-location state and disables the deadline. Failed
+provider cleanup leaves a durable task with only booking identifiers and TLS evidence;
+the monitor retries it, including after arrival. Until cleanup succeeds, the status
+reports cleanup pending. Overdue trips continue processing provider completion and
+cancellation. Confirmed cancellation replans even if cleanup is temporarily unavailable.
+Replacement pickup uses the latest location when it is at most two minutes old.
+Quotes retain each provider's expiry for confirmation and booking. ETA uses
 the selected plan; `BEACON_GRACE_MINUTES` defaults to five (configurable demo assumption).
 Notifications require explicit contact consent; location is included only with separate
 `shareLocation` consent. `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and
@@ -97,6 +103,10 @@ overrides the private file store in the OS temporary directory. The local store 
 one process and survives server restart, but OS temporary cleanup may remove it.
 
 ## Remaining integration gates
+
+`BEACON_PROVIDER_TOKEN` is restricted to local demo providers. Public quote calls
+never carry it. Live ANS providers do not receive a shared bearer token; any future
+authenticated provider integration must use credentials scoped to that identity.
 
 - Replace the explicit demo decision seam in `student/decision.ts` with Akshar's
   `decisionEngine.recommend(plans, context)` after its real contract lands.
