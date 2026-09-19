@@ -193,6 +193,12 @@ test("booking grants allow the same bounded retry and encode only explicit claim
   assert.equal(Object.hasOwn(decoded, "destination"), false);
 });
 
+test("booking verification rejects authenticated coordinates and every unexpected claim", () => {
+  for (const extra of [{ pickup: payload.pickup }, { destination: payload.destination }, { riderEmail: "private@example.test" }, { unrelated: true }]) {
+    assert.throws(() => verifyBookingGrant(signed({ ...claims, ...extra }), key, expected, now), /Invalid booking claim fields/);
+  }
+});
+
 test("booking grants reject signature changes, wrong keys and cross-attempt reuse", () => {
   const token = issueBookingGrant(claims, key);
   assert.throws(() => verifyBookingGrant(token, `${key}-other`, expected, now), /Invalid/);

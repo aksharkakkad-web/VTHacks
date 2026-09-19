@@ -70,6 +70,9 @@ export function verifyBookingGrant(token: string, key: string, expected: { audie
   let value: unknown;
   try { value = JSON.parse(body.toString("utf8")); } catch { invalid("booking claims encoding"); }
   const claims = parseClaims(value, now);
+  // Issuance strips extras before encoding; verification must reject them because
+  // a signed token containing coordinates would still expose the original body.
+  if (Object.keys(value as Record<string, unknown>).some(field => !Object.hasOwn(claims, field))) invalid("booking claim fields");
   if (!expected || claims.audience !== expected.audience || claims.requestId !== expected.requestId || claims.quoteId !== expected.quoteId || claims.payloadHash !== expected.payloadHash || claims.amountMinor !== expected.amountMinor) invalid("booking grant binding");
   return claims;
 }
