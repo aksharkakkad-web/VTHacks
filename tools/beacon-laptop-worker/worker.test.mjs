@@ -54,6 +54,7 @@ test('explanation requires bounded fact references and rejects extra output', ()
   const v={snapshotId:'s',selectedPlanId:'p',sentences:[{text:'Wait indoors only if access is confirmed.',factIds:['f1']}]};
   assert.deepEqual(validateOutput('student-explanation',v),v);
   assert.throws(()=>validateOutput('student-explanation',{...v,secret:'x'}));
+  assert.throws(()=>validateOutput('student-explanation',{...v,sentences:[{text:'Combined facts.',factIds:['f1','f2']}]}));
   assert.throws(()=>schemaFor('unknown'));
 });
 

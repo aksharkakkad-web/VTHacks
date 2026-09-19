@@ -15,6 +15,11 @@ export function parseProviderDetails(value:unknown):ProviderDetails{
 export function observeProvider(result:{status:string;details?:ProviderDetails},source:RideObservation['source'],now:number,simulated:boolean,previous?:RideObservation):RideObservation{
  const details=result.details??{},updated=details.updatedAt?Date.parse(details.updatedAt):null;
  if(updated!==null&&(updated>now+30000||previous?.providerUpdatedAt&&updated<=Date.parse(previous.providerUpdatedAt)))return previous??{stage:'unknown',providerStatus:result.status,pickupEtaSeconds:null,meetingInstructions:null,driver:null,vehicle:null,providerUpdatedAt:null,receivedAt:new Date(now).toISOString(),source,simulated};
- const stage=details.stage??(['searching','assigned','approaching','arrived','in_trip','completed','cancelled'].includes(result.status)?result.status as RideStage:'unknown');
- return{stage,providerStatus:result.status,pickupEtaSeconds:details.pickupEtaSeconds??null,meetingInstructions:details.meetingInstructions??null,driver:details.driver??null,vehicle:details.vehicle??null,providerUpdatedAt:details.updatedAt??null,receivedAt:new Date(now).toISOString(),source,simulated};
+ // The UI's cancelled stage covers terminal unfulfilled rides; preserve the
+ // original declined lifecycle in providerStatus for settlement and recovery.
+ const lifecycle=result.status==='declined'?'cancelled':['in_trip','completed','cancelled'].includes(result.status)?result.status as RideStage:null;
+ const stage=lifecycle??details.stage??(['searching','assigned','approaching','arrived'].includes(result.status)?result.status as RideStage:'unknown');
+ const order:Record<RideStage,number>={unknown:-1,searching:0,assigned:1,approaching:2,arrived:3,in_trip:4,completed:5,cancelled:5};
+ if(previous&&(['completed','cancelled'].includes(previous.stage)&&stage!==previous.stage||order[stage]<order[previous.stage]))return previous;
+ return{stage,providerStatus:result.status,pickupEtaSeconds:['in_trip','completed','cancelled'].includes(stage)?null:details.pickupEtaSeconds??null,meetingInstructions:details.meetingInstructions??previous?.meetingInstructions??null,driver:details.driver??previous?.driver??null,vehicle:details.vehicle??previous?.vehicle??null,providerUpdatedAt:details.updatedAt??previous?.providerUpdatedAt??null,receivedAt:new Date(now).toISOString(),source,simulated};
 }

@@ -10,7 +10,7 @@ function fixture() {
   let arrived = false;
   let quoteExpiresAt = now + 60_000;
   let evaluations = 0;
-  let bookings = 0;
+  const bookings = 0;
   const adapter: PlanningTripAdapter = {
     snapshot: async (_tripId, owner) => {
       if (owner !== "owner") throw Object.assign(new Error("Trip not found"), { code: "TRIP_NOT_FOUND" });
@@ -125,4 +125,19 @@ test("an unclaimed expired intent releases the active owner run as unavailable",
   f.advance(90_001);
   assert.deepEqual(await f.planner.tick(),{advanced:true});
   assert.equal((await f.planner.view("owner","trip-1")).phase,"unavailable");
+});
+
+test("polling an expired plan never starts another model job", async () => {
+  const f = fixture(); await f.pair(); await f.planner.start("owner", "trip-1");
+  await completeCurrent(f.queue, { objective: "get_home", priorities: [], evidenceRequests: [], clarification: null });
+  await f.planner.tick();
+  const before = await f.queue.readRun("trip-1");
+  f.expire();
+  for (let i = 0; i < 3; i++) {
+    const view = await f.planner.view("owner", "trip-1");
+    assert.equal(view.phase, "unavailable");
+    assert.equal(view.messageCode, "PLANNER_STALE_SNAPSHOT");
+  }
+  assert.equal((await f.queue.readRun("trip-1"))?.id, before?.id);
+  assert.equal(f.counts().evaluations, 1);
 });

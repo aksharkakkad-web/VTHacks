@@ -1,5 +1,13 @@
 # Complete-journey data handoff — September 19, 2026
 
+> Integration update: the data interface below is now wired to the Student Agent
+> on `codex/uber-backend-integration`. See [JOURNEY_COORDINATOR.md](JOURNEY_COORDINATOR.md)
+> for the implemented owner API and live `journey.nextStep`, and
+> [BACKEND_COMPLETION_PLAN.md](BACKEND_COMPLETION_PLAN.md) for current verification.
+> Earlier statements below that coordination remains Mahin's task describe the
+> original data handoff; Akshar now owns that integration. External access gates
+> and the evidence limitations still apply.
+
 This additive server interface implements Beacon's data-side journey generation and decision work. It does not replace Mahin's coordinator, booking protocol or existing Trip API. Rishit renders its ordered legs through Mahin's authenticated API. The existing `CandidatePlan`, `Recommendation`, `Trip`, API paths and `beacon-v2` policy are unchanged.
 
 **Completion boundary:** implementation and local verification are available; a complete live journey is blocked by approved walking-routing configuration. Refreshed cloud imports, any job changes and journey audit writes require separate explicit approval. Existing Databricks resources were verified read-only. No new service, cloud mutation, deployment, push or merge was performed.

@@ -9,6 +9,7 @@ import type { NetworkOffer } from "../../agents/provider-manifest";
 import type { ProviderOutcome } from "../decision-client/provider-outcomes";
 import type { SimulatedPayment } from "../payments/simulated";
 import type { ArrivalEvidence, JourneySnapshot, RideObservation } from '../journey/contracts';
+import type { JourneyResult } from '../decision-client/journey-types';
 
 export type NetworkAttempt = {
   requestId: string; providerId: string; quoteId: string; observationId: string;
@@ -16,10 +17,12 @@ export type NetworkAttempt = {
   requestedAt: string; acceptedAt?: string; finalizedAt?: string; outcome?: "completed" | "canceled" | "declined";
 };
 
-export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
+export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; cannotWalk?: boolean; maxWalkingMinutes?: number; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
 export type TripRecord = {
   journeyContract?: 'beacon-journey-v1'; journey?: JourneySnapshot; journeyRevision?: number; journeyConfirmedRevision?: number;
+  completeJourney?: JourneyResult; completeJourneyOrigin?: Point; journeyLegIndex?: number; journeyLocationAccuracy?: number;
+  excludedJourneyServices?: { operatorId: string; serviceId: string }[];
   rideObservation?: RideObservation; arrivalEvidence?: ArrivalEvidence; arrivalStatus?: string;
   trip: Trip; owner: string; context: TripContext;
   private?: { origin: Point; home: Point; contact?: Contact };

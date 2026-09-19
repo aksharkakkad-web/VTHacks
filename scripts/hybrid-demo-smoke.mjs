@@ -39,8 +39,11 @@ try{
  worker=new Worker(backend,planner);
  await call(`/api/trips/${trip.id}/planning`,{},202);
  const first=await ready(trip.id);
+ if(!fixture)assert.equal(first.planning.explanationSource,'llm_grounded','Real-model acceptance requires a validated grounded explanation, not only fallback');
  const activity=await call(`/api/trips/${trip.id}/activity`);
- for(const op of ['planner.intent','provider.quote','context.query','decision.evaluate','planner.explain'])assert.ok(activity.events.some(e=>e.operation===op),`Missing real boundary ${op}`);
+ // Context lookup is a bounded model choice; the fixture deliberately requests it.
+ for(const op of ['planner.intent','provider.quote',...(fixture?['context.query']:[]),'decision.evaluate','planner.explain'])assert.ok(activity.events.some(e=>e.operation===op),`Missing real boundary ${op}`);
+ const contextObserved=activity.events.some(e=>e.operation==='context.query');
  assert.ok(activity.events.some(e=>e.operation==='planner.intent'&&e.phase==='response'));
  const old=await call(`/api/trips/${trip.id}/journey`);
  assert.equal((await approve(trip.id)).state,'WAITING_FOR_PICKUP');
@@ -53,12 +56,22 @@ try{
  // A new snapshot needs its own explanation; no stale result is reused.
  await call(`/api/trips/${trip.id}/planning`,{},202);await ready(trip.id);
  assert.equal((await approve(trip.id)).state,'WAITING_FOR_PICKUP');
- const arrived=await call(`/api/trips/${trip.id}/arrive`,{});assert.equal(arrived.state,'ARRIVED');assert.equal(arrived.sensitiveDataReleased,false);
+ // Location-driven home arrival, not a manual check-in or a driver completion.
+ const home={lat:37.221,lng:-80.420};
+ const uncertain=await call(`/api/trips/${trip.id}/location`,{...home,accuracyMeters:100,recordedAt:new Date().toISOString()});
+ assert.notEqual(uncertain.state,'ARRIVED');
+ let arrived;
+ for(let sample=0;sample<3;sample++){
+  await new Promise(resolve=>setTimeout(resolve,sample===0?10:15010));
+  arrived=await call(`/api/trips/${trip.id}/location`,{...home,accuracyMeters:10,recordedAt:new Date().toISOString()});
+  if(sample<2)assert.notEqual(arrived.state,'ARRIVED');
+ }
+ assert.equal(arrived.state,'ARRIVED');assert.equal(arrived.sensitiveDataReleased,false);
  await worker.stop();
  const offline=await create();await call(`/api/trips/${offline.id}/planning`,{},202);
  await new Promise(resolve=>setTimeout(resolve,36000));
  assert.equal((await call(`/api/trips/${offline.id}/evidence`)).planning.worker,'offline');
- console.log(JSON.stringify({status:'passed',modelInference:fixture?'fixture_only':'codex_subscription',model:planner.model,explanationSource:first.planning.explanationSource,transport:'simulated',payment:'simulated',identity:'local_demo_or_verified_as_recorded',notifications:'no_contact_supplied',checks:['paired_owner','anonymous_denied','real_HTTP_quotes','context_boundary','decision','stale_consent_rejected','cancellation_reconciliation','fresh_confirmation','arrival','worker_disconnect']}));
+ console.log(JSON.stringify({status:'passed',modelInference:fixture?'fixture_only':'codex_subscription',model:planner.model,explanationSource:first.planning.explanationSource,contextLookup:contextObserved?'observed':'not_requested',transport:'simulated',payment:'simulated',identity:'local_demo_or_verified_as_recorded',notifications:'no_contact_supplied',checks:['paired_owner','anonymous_denied','real_HTTP_quotes',...(contextObserved?['context_boundary']:[]),'decision','stale_consent_rejected','cancellation_reconciliation','fresh_confirmation','accurate_location_dwell_arrival','worker_disconnect']}));
 }finally{
  await worker?.stop();
  if(cookie)await call('/api/demo/reset',{}).catch(()=>{});

@@ -38,3 +38,16 @@ test('expiry is enforced on injected routes', async () => {
   const route = await createWalkingRouter(env,fetchFixture(fixture()))(from,to,at);
   assert.throws(() => validateWalkingRoute(route,from,to,route.validUntil),{code:'invalid_route'});
 });
+
+test('shared explicit Google activation preserves attribution and walking warnings', async () => {
+  const payload = { routes: [{ ...fixture().routes[0], warnings: ['Walking paths may be incomplete.'] }] };
+  const route = await createWalkingRouter({ BEACON_GOOGLE_ROUTES_ENABLED: 'true', GOOGLE_ROUTES_API_KEY: 'fixture-key' }, fetchFixture(payload))(from,to,at);
+  assert.equal(route.attribution, 'Google Maps');
+  assert.deepEqual(route.warnings, ['Walking paths may be incomplete.']);
+});
+
+test('explicit Google disable overrides legacy selection without a network call', async () => {
+  let calls = 0;
+  await assert.rejects(createWalkingRouter({ ...env, BEACON_GOOGLE_ROUTES_ENABLED: 'false' }, async () => { calls++; return Response.json(fixture()); })(from,to,at), { code: 'configuration_missing' });
+  assert.equal(calls, 0);
+});

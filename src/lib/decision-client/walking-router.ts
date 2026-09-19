@@ -8,6 +8,7 @@ export type WalkingRoute = {
   distanceMeters: number; durationSeconds: number;
   instructions: { text: string; distanceMeters: number; durationSeconds: number }[];
   provider: string; capturedAt: string; validUntil: string;
+  attribution?: 'Google Maps'; warnings?: string[];
 };
 export type WalkingRouter = (from: Point, to: Point, at: string) => Promise<WalkingRoute>;
 export class WalkingRoutingError extends Error {
@@ -70,14 +71,15 @@ export function createWalkingRouter(env: Record<string, string | undefined>, fet
   return async (from, to, at) => {
     if (!withinWalkingDemoArea(from) || !withinWalkingDemoArea(to)) throw new WalkingRoutingError('unsupported_area', 'Walking endpoints must be inside the supported Blacksburg demo area.');
     if (!Number.isFinite(Date.parse(at)) || !/T.*(?:Z|[+-]\d\d:\d\d)$/.test(at)) throw new WalkingRoutingError('invalid_request', 'Walking evaluation time must include a timezone.');
-    if (env.BEACON_WALKING_ROUTER !== 'google_routes' || !env.GOOGLE_ROUTES_API_KEY?.trim()) throw new WalkingRoutingError('configuration_missing', 'Configure an authorized Google Routes account with BEACON_WALKING_ROUTER=google_routes and server-only GOOGLE_ROUTES_API_KEY.');
+    const enabled = env.BEACON_GOOGLE_ROUTES_ENABLED === 'true' || (env.BEACON_GOOGLE_ROUTES_ENABLED === undefined && env.BEACON_WALKING_ROUTER === 'google_routes');
+    if (!enabled || !env.GOOGLE_ROUTES_API_KEY?.trim()) throw new WalkingRoutingError('configuration_missing', 'Configure an authorized Google Routes account with BEACON_GOOGLE_ROUTES_ENABLED=true and server-only GOOGLE_ROUTES_API_KEY.');
     from = { ...from }; to = { ...to };
     let payload: Record<string, unknown>;
     try {
       const response = await fetcher('https://routes.googleapis.com/directions/v2:computeRoutes', {
         method: 'POST', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(8000),
         headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': env.GOOGLE_ROUTES_API_KEY,
-          'X-Goog-FieldMask': 'routes.distanceMeters,routes.duration,routes.polyline.geoJsonLinestring,routes.legs.steps.distanceMeters,routes.legs.steps.staticDuration,routes.legs.steps.navigationInstruction.instructions,routes.legs.steps.polyline.geoJsonLinestring' },
+          'X-Goog-FieldMask': 'routes.distanceMeters,routes.duration,routes.warnings,routes.polyline.geoJsonLinestring,routes.legs.steps.distanceMeters,routes.legs.steps.staticDuration,routes.legs.steps.navigationInstruction.instructions,routes.legs.steps.polyline.geoJsonLinestring' },
         body: JSON.stringify({ origin: { location: { latLng: { latitude: from.lat, longitude: from.lng } } }, destination: { location: { latLng: { latitude: to.lat, longitude: to.lng } } }, travelMode: 'WALK', polylineQuality: 'HIGH_QUALITY', polylineEncoding: 'GEO_JSON_LINESTRING', computeAlternativeRoutes: false, languageCode: 'en-US', units: 'METRIC' }),
       });
       if (!response.ok) throw new Error('provider rejected request');
@@ -104,7 +106,10 @@ export function createWalkingRouter(env: Record<string, string | undefined>, fet
       return { text, distanceMeters: metric(s.distanceMeters ?? 0, 20_000), durationSeconds: seconds(s.staticDuration ?? '0s') };
     });
     close(previous, point(geometry.coordinates.at(-1)!), 2);
+    const warnings = raw.warnings ?? [];
+    if (!Array.isArray(warnings) || warnings.length > 30 || warnings.some(w => typeof w !== 'string' || w.length > 2000)) return invalid();
     const route: WalkingRoute = { routeId: `google-walk-${createHash('sha256').update(JSON.stringify({ geometry, from, to, at })).digest('hex').slice(0, 24)}`, from, to, geometry, distanceMeters: metric(raw.distanceMeters, 20_000), durationSeconds: seconds(raw.duration), instructions, provider: 'google_routes', capturedAt: new Date(at).toISOString(), validUntil: new Date(Date.parse(at) + 300_000).toISOString() };
+    route.attribution = 'Google Maps'; route.warnings = warnings as string[];
     return validateWalkingRoute(route, from, to, at);
   };
 }

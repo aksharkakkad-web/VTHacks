@@ -6,7 +6,7 @@ const array = (items,maxItems) => ({type:'array',items,maxItems});
 const schemas = {
   'student-intent': object({objective:{const:'get_home',type:'string'},priorities:array({type:'string',enum:priorities},4),evidenceRequests:array(object({topic:{type:'string',enum:topics}}),8),clarification:{type:['string','null'],maxLength:160}}),
   'research-intent': object({topics:array({type:'string',enum:topics},8)}),
-  'student-explanation': object({snapshotId:string(128),selectedPlanId:string(256),sentences:array(object({text:string(),factIds:array(string(128),6)}),4)}),
+  'student-explanation': object({snapshotId:string(128),selectedPlanId:string(256),sentences:array(object({text:string(),factIds:array(string(128),1)}),4)}),
 };
 export function schemaFor(role) { if (!Object.hasOwn(schemas,role)) throw new Error('INVALID_OUTPUT'); return schemas[role]; }
 export function validateSchema(value,schema) {

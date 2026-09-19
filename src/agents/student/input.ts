@@ -16,7 +16,12 @@ export function parseTripInput(value: unknown, demo: boolean, now: number) {
   if (corridorId && !matchesPublicCorridor(corridorId, origin, home)) throw new TripError("CORRIDOR_ENDPOINT_MISMATCH", "This public walking route does not match the trip endpoints", 400);
   const savedBudget = number(prefs.maxBudget ?? (demo ? 10 : undefined), "budget");
   const maxBudget = temporary.max_budget === undefined ? savedBudget : number(temporary.max_budget, "budget");
+  const cannotWalk = temporary.cannot_walk ?? prefs.cannotWalk;
+  const maxWalkingMinutes = temporary.max_walking_minutes ?? prefs.maxWalkingMinutes;
+  if (cannotWalk !== undefined && typeof cannotWalk !== 'boolean') throw new TripError('INVALID_WALKING_PREFERENCE', 'Walking ability must be explicit', 400);
   const context: TripContext = { maxBudget, minimizeWalking: temporary.minimize_walking === true || prefs.walkingPreference === "minimize" || (demo && prefs.walkingPreference === undefined), minimizeTransfers: temporary.minimize_transfers === true || prefs.transferPreference === "minimize", hasBeenDrinking: temporary.has_been_drinking === true, exhausted: temporary.exhausted === true, currentTime: new Date(now).toISOString() };
+  if (cannotWalk !== undefined) context.cannotWalk = cannotWalk;
+  if (maxWalkingMinutes !== undefined) context.maxWalkingMinutes = number(maxWalkingMinutes, 'maximum walking minutes', 1440);
   let contact: Contact | undefined;
   if (prefs.trustedContact !== undefined) {
     const c = object(prefs.trustedContact);
@@ -24,5 +29,7 @@ export function parseTripInput(value: unknown, demo: boolean, now: number) {
   }
   // Arbitrary exact addresses are never reused as coarse provider context.
   const originZone = corridorId ? "VT academic campus" : "Downtown Blacksburg"; const destinationZone = "VT residential campus";
-  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(corridorId ? { corridorId } : {}), ...(input.journeyContract==='beacon-journey-v1'?{journeyContract:'beacon-journey-v1' as const}:{}) };
+  // Hard mobility limits must never be silently ignored by the legacy evaluator.
+  const completeJourney = input.journeyContract === 'beacon-journey-v1' || cannotWalk !== undefined || maxWalkingMinutes !== undefined;
+  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(corridorId ? { corridorId } : {}), ...(completeJourney?{journeyContract:'beacon-journey-v1' as const}:{}) };
 }

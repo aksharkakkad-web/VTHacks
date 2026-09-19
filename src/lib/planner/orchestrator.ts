@@ -31,6 +31,9 @@ export class HybridPlanner {
  async start(owner:string,tripId:string){
   const snapshot=await this.trips.snapshot(tripId,owner);
   if(snapshot.terminal)throw new Error("TRIP_TERMINAL");
+  await this.queue.requirePair(owner);
+  const existing=await this.queue.readRun(tripId);
+  if(existing&&existing.owner===owner&&(existing.snapshotId!==snapshot.snapshotId||(existing.selectionExpiresAt??Infinity)<=this.now()||(snapshot.expiresAt??Infinity)<=this.now()))await this.queue.invalidate(tripId);
   const result=await this.queue.startRun(owner,tripId,snapshot.snapshotId,snapshot.input),run=await this.queue.readRun(tripId),job=run&&await this.queue.readJob(run.jobId);
   if(job)await this.activity?.emit(tripId,{runId:result.runId,requestId:job.jobId,eventId:`${job.jobId}-request`,sender:"student",recipient:"planner",operation:"planner.intent",phase:"request",execution:"not_called",safeData:{}});
   return result;
@@ -89,13 +92,10 @@ export class HybridPlanner {
  }
 
  async view(owner:string,tripId:string):Promise<PlanningView>{
-  const current=await this.trips.snapshot(tripId,owner);let run=await this.queue.readRun(tripId);const worker=await this.queue.worker();
+  const current=await this.trips.snapshot(tripId,owner);const run=await this.queue.readRun(tripId);const worker=await this.queue.worker();
   if(!run||run.owner!==owner)return{version:"beacon-planning-v1",runId:"none",phase:"unavailable",worker:worker.state,modelSource:"none",explanationSource:"none",snapshotId:null,messageCode:"PLANNER_NOT_STARTED"};
-  const stale=current.terminal||current.snapshotId!==run.snapshotId||(run.phase==="ready"&&(run.selectionExpiresAt??Infinity)<=this.now());
-  if(stale&&!current.terminal){
-   await this.queue.invalidate(tripId);
-   try{await this.start(owner,tripId);run=await this.queue.readRun(tripId);if(run)return{version:"beacon-planning-v1",runId:run.id,phase:run.phase,worker:worker.state,modelSource:"none",explanationSource:"none",snapshotId:run.snapshotId,messageCode:run.messageCode};}catch{/* Paired access or a worker may need recovery; stale prose stays hidden. */}
-  }
+  // Polling is read-only: changed/expired selections need an explicit planning action.
+  const stale=current.terminal||current.snapshotId!==run.snapshotId||(run.selectionExpiresAt??Infinity)<=this.now()||(current.expiresAt??Infinity)<=this.now();
   return{version:"beacon-planning-v1",runId:run.id,phase:stale?"unavailable":run.phase,worker:worker.state,modelSource:run.model?"codex_subscription":"none",explanationSource:stale?"none":run.explanationSource,snapshotId:stale?null:run.snapshotId,messageCode:stale?"PLANNER_STALE_SNAPSHOT":run.messageCode,...(!stale&&run.model?{model:run.model}:{}),...(!stale&&run.explanation?{explanation:run.explanation}:{})};
  }
 }
