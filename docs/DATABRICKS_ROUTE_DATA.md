@@ -1,5 +1,7 @@
 # Public campus walking-route evidence
 
+**Latest wider-pilot result:** The separate [draft Town/VT coverage matrix](DATABRICKS_PILOT_COVERAGE.md) checks 25 forward and 25 reverse directions: 10 have connected sourced geometry, 40 explicitly return unsupported. Zones are unapproved and the matrix is not runtime-enabled or field-verified. It does not replace these two named campus corridors. Construction/weather were refreshed locally around 17:06 UTC and these routes rebuilt; cloud/local source versions must agree before managed use. Never treat a stale construction snapshot as current. See [current integration gates](DATABRICKS_EXPANDED_PILOT_STATUS.md).
+
 Updated September 19, 2026: the checked-in paths now conservatively avoid currently dated published construction areas, using a separately captured official source. The paths remain connected edges in the original official GIS network near named public campus buildings. They are not entrance-to-entrance navigation, field-verified open paths, verified accessible routes, or measured crime-risk estimates.
 
 ## Captured coverage

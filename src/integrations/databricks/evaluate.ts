@@ -62,7 +62,8 @@ export function sanitizedDecision(result: DecisionResult) {
   return {
     status: result.status, policyVersion: result.policyVersion, engine: result.engine,
     selectedPlanId: result.status === "RECOMMENDED" ? result.recommendation.selectedPlanId : null,
-    ranked: result.ranked.map((p) => ({ planId: p.planId, scoreUnits: p.scoreUnits, cost: p.cost, walkingMinutes: p.walkingMinutes, source: p.source, contextVersion: p.evidence?.contextVersion ?? null })),
+    warnings: result.warnings,
+    ranked: result.ranked.map((p) => ({ planId: p.planId, scoreUnits: p.scoreUnits, components: p.components, cost: p.cost, walkingMinutes: p.walkingMinutes, totalMinutes: p.totalMinutes, transfers: p.transfers, source: p.source, dataVersion: p.evidence?.dataVersion ?? null, contextVersion: p.evidence?.contextVersion ?? null, collectedAt: p.evidence?.collectedAt ?? null, validUntil: p.evidence?.validUntil ?? null, reasons: p.reasons })),
     rejected: result.rejected,
   };
 }

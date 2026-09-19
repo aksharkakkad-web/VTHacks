@@ -1,6 +1,6 @@
 # Beacon: 90-second Databricks story
 
-**Status:** Live Databricks ranking, managed GTFS and mapped-path reads, grounded native AI briefing, persisted audits, spatial/H3 queries and native data refresh are implemented and tested as recorded in [execution evidence](DATABRICKS_LIVE_EVIDENCE.md). A five-dataset/six-widget native dashboard draft was read back through the API. Visual widget inspection is not verified because the console blocks automated browser control. Provider offers remain simulated; historical timetable runs remain labeled replay.
+**Status:** Earlier live Databricks ranking, managed GTFS/mapped-path reads, grounded native AI, persisted audits and native refresh are recorded in [execution evidence](DATABRICKS_LIVE_EVIDENCE.md). The [new expanded pilot](DATABRICKS_EXPANDED_PILOT_STATUS.md) is local and incomplete, not deployed. A five-dataset/six-widget dashboard draft was read back through the API; the latest browser visit requires sign-in, so widgets are not visually accepted. Provider offers remain simulated; historical timetable runs remain labeled replay. Do not promise broad downtown routing or verified lighting/pickup availability.
 
 ## Start here: the intelligence demonstration
 
@@ -9,7 +9,7 @@ node databricks/run.mjs intelligence --live --enable-ai
 node databricks/run.mjs demo --live
 ```
 
-The first command reads the real Eggleston→Pritchard path from Databricks (604m, one geometrically nearby mapped phone, lighting unknown). With a $10 budget and reduced-walking preference, a **simulated** $7 ride wins; with $0, the free mapped walk wins. The native model curates a briefing using verified cost, walking and evidence facts. Show `engine: databricks_ai`, the SQL/model statement IDs and mandatory coverage warnings—not a claim that AI knows which street is crime-free. These CLI commands prove the backend, not completed UI integration.
+The first command attempts a managed Eggleston→Pritchard path read. The latest local construction-avoiding path is 626.55m with two geometrically nearby mapped phones; lighting and device operation are unknown. Refresh/import matching versions before claiming a current cloud path; otherwise preserve the explicit fallback/staleness label. Compare a $10 budget with $0 and explain the actual returned winner—time-sensitive context can change which option wins, so do not script a guaranteed ride winner. When native AI succeeds it curates only verified fact IDs; show its engine, SQL/model statement IDs and mandatory coverage warnings. These commands exercise the backend, not completed UI integration. Commands that persist audits or upload data require explicit approval.
 
 ## The story
 

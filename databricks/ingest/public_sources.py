@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 
-from refresh_campus import weather_context
+from refresh_campus import weather_context, forecast_horizon
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'data' / 'campus' / 'research'
@@ -273,7 +273,8 @@ def load_weather():
     periods = [{'start_at': p['startTime'], 'end_at': p['endTime'], 'temperature': p['temperature'],
                 'temperature_unit': p['temperatureUnit'], 'precipitation_probability': p['probabilityOfPrecipitation']['value'],
                 'short_forecast': p['shortForecast'], 'wind_speed': p['windSpeed'], 'is_daytime': p['isDaytime']}
-               for p in forecast['properties']['periods'][:72]]
+               for p in forecast['properties']['periods']]
+    periods = forecast_horizon(periods, datetime.now(timezone.utc))
     alert_rows = [{'alert_id': f['id'], 'event': f['properties']['event'], 'severity': f['properties']['severity'],
                    'onset': f['properties'].get('onset'), 'expires': f['properties']['expires'],
                    'headline': f['properties'].get('headline')} for f in alerts['features']]

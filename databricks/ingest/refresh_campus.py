@@ -245,6 +245,26 @@ def weather_context(periods, alerts, captured_at, source_url, source_hash, forec
     return rows
 
 
+def forecast_horizon(periods, captured_at, hours=72):
+    """Retain a contiguous forecast covering the next 72 hours, not 72 old rows."""
+    horizon = captured_at + timedelta(hours=hours)
+    selected, covered_until = [], captured_at
+    for period in periods:
+        start = datetime.fromisoformat(period["start_at"])
+        end = datetime.fromisoformat(period["end_at"])
+        if start.tzinfo is None or end.tzinfo is None or end <= start:
+            raise ValueError("Invalid forecast interval")
+        if end <= captured_at:
+            continue
+        if start > covered_until or (selected and start < covered_until):
+            raise ValueError("Forecast horizon has a gap or overlapping periods")
+        selected.append(period)
+        covered_until = end
+        if covered_until >= horizon:
+            return selected
+    raise ValueError("NWS forecast does not cover the next 72 hours")
+
+
 def load_weather():
     points = json.loads(fetch(NWS_URL))
     hourly_url = points["properties"]["forecastHourly"]
@@ -256,7 +276,8 @@ def load_weather():
     periods = [{"start_at": p["startTime"], "end_at": p["endTime"], "temperature": p["temperature"],
                 "temperature_unit": p["temperatureUnit"], "precipitation_probability": p["probabilityOfPrecipitation"]["value"],
                 "short_forecast": p["shortForecast"], "wind_speed": p["windSpeed"], "is_daytime": p["isDaytime"],
-                "source_id": "nws-hourly"} for p in forecast["properties"]["periods"][:72]]
+                "source_id": "nws-hourly"} for p in forecast["properties"]["periods"]]
+    periods = forecast_horizon(periods, now)
     alert_rows = [{"alert_id": f["id"], "event": f["properties"]["event"], "severity": f["properties"]["severity"],
                    "onset": f["properties"].get("onset"), "expires": f["properties"]["expires"],
                    "headline": f["properties"].get("headline"), "source_id": "nws-alerts"} for f in alerts["features"]]

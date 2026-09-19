@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-19T17:08:35Z",
+  "owner": "Virginia Tech Student Affairs / University Libraries / campus GIS",
+  "capture_method": "Manual review of rendered official date-specific hours and official building-reference GIS attributes",
+  "service_date": "2026-09-19",
+  "timezone": "America/New_York",
+  "refresh_policy": "Recheck date-specific hours and exceptions before each demo; operational availability and pickup permissions require separate confirmation.",
+  "access_rights": "Public official pages; attribution retained. No assertion of a licensed operational availability API.",
+  "building_source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+  "records": [
+    {
+      "site_id": "squires",
+      "name": "Squires Student Center",
+      "building_object_id": 36457,
+      "reference_point": [-80.41793863, 37.22960669],
+      "indoor": true,
+      "hours_source_url": "https://apps.students.vt.edu/schours/",
+      "opens_at": "2026-09-19T09:00:00-04:00",
+      "closes_at": "2026-09-19T23:00:00-04:00",
+      "hours_kind": "published_schedule",
+      "nighttime_access_confirmed": null,
+      "provider_pickup_permitted": null,
+      "exception_status": "No additional exception displayed for this date; unannounced changes unknown"
+    },
+    {
+      "site_id": "newman-library",
+      "name": "Newman Library",
+      "building_object_id": 36451,
+      "reference_point": [-80.41916034, 37.2287881],
+      "indoor": true,
+      "hours_source_url": "https://lib.vt.edu/about-us/hours.html",
+      "opens_at": "2026-09-19T09:00:00-04:00",
+      "closes_at": "2026-09-19T22:00:00-04:00",
+      "hours_kind": "published_schedule",
+      "nighttime_access_confirmed": null,
+      "provider_pickup_permitted": null,
+      "exception_status": "Published September 14–20 table; university holiday closures apply; immediate door status unknown"
+    },
+    {
+      "site_id": "graduate-life-center",
+      "name": "Graduate Life Center at Donaldson Brown",
+      "building_object_id": 36445,
+      "reference_point": [-80.4175766, 37.22828939],
+      "indoor": true,
+      "hours_source_url": "https://apps.students.vt.edu/schours/",
+      "exception_source_url": "https://graduatelifecenter.vt.edu/",
+      "opens_at": "2026-09-19T10:00:00-04:00",
+      "closes_at": "2026-09-19T22:00:00-04:00",
+      "hours_kind": "published_schedule",
+      "nighttime_access_confirmed": null,
+      "provider_pickup_permitted": null,
+      "exception_status": "GLC site says closed on home football game days; applicability not verified, so access remains unknown"
+    }
+  ],
+  "limitations": [
+    "Three researched buildings are not three provider-approved pickup points or confirmed open shelters.",
+    "Coordinates are official building reference points, not verified entrances or curb pickup locations.",
+    "Do not infer card access, admission for an impaired student, seating, supervision, or overnight availability.",
+    "No route to a pickup point or outdoor waiting estimate is established by this file alone."
+  ]
+}

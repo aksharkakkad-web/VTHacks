@@ -1,5 +1,15 @@
 # Databricks track — execution evidence
 
+## Version 5: local expansion and read-only warehouse measurement (September 19, 17:00–17:12 UTC)
+
+The [expanded-pilot report](DATABRICKS_EXPANDED_PILOT_STATUS.md) is the current completion boundary. Full GTFS capture, wider pedestrian coverage, waiting/lighting helpers and native-import preparation are local additions, **not a cloud deployment**. No new import/job/audit write occurred in this increment. The successful native runs below belong to the prior version.
+
+Actual 20-run read-only measurement is recorded in `data/campus/latency-readonly.json`, including individual statement IDs. The warehouse began STOPPED; the separate warmup took 13,728 ms (`01f1b44b-d887-1bdb-9b2b-9186fdac15b7`). Median measured decision was 2,104.5 ms, slowest 10,003 ms; 19 used Databricks and one timed out to labeled local fallback. Audits, provider discovery, map/AI and HTTP/UI were excluded. The full audited end-to-end under-10-second target therefore **has not passed**. A 20-run sample is not a production reliability estimate.
+
+Dashboard visual QA remains pending: the current browser visit redirected to Databricks sign-in. API widget readback is not visual verification. Local fresh construction/weather and routes have not been uploaded, so managed version mismatch must remain visible. Public-source quantities, source hashes and capture times are in the linked full-transit/pilot manifests and current report.
+
+Fresh local verification: 92 track, 74 agent, 73 ingestion, six refresh-job and 17 public-import/native-public-import/latency tests passed; `./scripts/pre-pr.sh` passed lint, four checkpoint tests, typecheck and production build. Ingestion used bundled workspace Python because the shell-default interpreter lacks the existing PDF parser. The full-transit generator has a separate local test/review record; no real Spark/SQL execution is implied by these tests.
+
 ## Version 4: expanded evidence and local backend integration (September 19, 15:08–15:34 UTC)
 
 This candidate builds on Mahin's PR #14 at `dcaeedd`. The original checkout is preserved; the integration is local on `codex/integrated-data-finish`. It has **not** been deployed or merged. Older acceptance below remains historical evidence, not a description of current dataset sizes or integration status.

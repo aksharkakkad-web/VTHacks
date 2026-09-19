@@ -40,7 +40,7 @@ export type ScoreComponents = {
 };
 export type RankedPlan = {
   planId: string; score: number; scoreUnits: number; cost: number;
-  walkingMinutes: number; totalMinutes: number; transfers: number;
+  walkingMinutes: number; totalMinutes: number; transfers: number | null;
   source: SignalSource | "unknown"; reasons: string[]; components: ScoreComponents;
   evidence: PlanSignals | null;
 };
@@ -62,7 +62,7 @@ export type DecisionResult = Metadata & (
 export type NormalizedPlan = {
   planId: string; providerId: string | null; mode: CandidatePlan["mode"];
   costCents: number; waitSeconds: number; travelSeconds: number; walkingSeconds: number;
-  totalSeconds: number; transfers: number; reliabilityBasisPoints: number;
+  totalSeconds: number; transfers: number | null; reliabilityBasisPoints: number;
   reliabilityKnown: boolean; baseRejections: string[]; facts: PlanSignals | null;
 };
 export type PreparedDecision = {
@@ -122,7 +122,7 @@ export function prepareDecision(candidates: CandidatePlan[], input: DecisionCont
     const observedFresh = facts?.reliabilityObservedAt && Number.isFinite(date(facts.reliabilityObservedAt)) && date(facts.reliabilityObservedAt) <= now && now - date(facts.reliabilityObservedAt) <= 86400000;
     const reliability = observedFresh ? facts?.observedReliability : facts?.source === "simulated" ? plan.reliability : undefined;
     const reliabilityKnown = finite(reliability, 1);
-    plans.push({ planId: plan.planId, providerId: plan.providerId, mode: plan.mode, costCents: cents(plan.cost), waitSeconds: seconds(plan.waitMinutes), travelSeconds: seconds(plan.travelMinutes), walkingSeconds: seconds(plan.walkingMinutes), totalSeconds: seconds(plan.totalMinutes), transfers: plan.transfers ?? 0, reliabilityBasisPoints: reliabilityKnown ? Math.round(reliability * 10000) : 5000, reliabilityKnown, baseRejections: [...new Set(reasons)], facts });
+    plans.push({ planId: plan.planId, providerId: plan.providerId, mode: plan.mode, costCents: cents(plan.cost), waitSeconds: seconds(plan.waitMinutes), travelSeconds: seconds(plan.travelMinutes), walkingSeconds: seconds(plan.walkingMinutes), totalSeconds: seconds(plan.totalMinutes), transfers: facts?.transfersKnown === false ? null : plan.transfers ?? null, reliabilityBasisPoints: reliabilityKnown ? Math.round(reliability * 10000) : 5000, reliabilityKnown, baseRejections: [...new Set(reasons)], facts });
   }
   return { context, plans, rejected, walkingWeight: input.priority === "less_exposed" ? 6 : input.minimizeWalking ? 4 : 1, transferWeight: input.minimizeTransfers ? 8 : 4 };
 }
@@ -134,7 +134,8 @@ export function scorePlan(plan: NormalizedPlan, prepared: PreparedDecision): { s
     waitAndTravel: 100 * (plan.waitSeconds + plan.travelSeconds),
     walking: 100 * prepared.walkingWeight * rainFactor * plan.walkingSeconds,
     cost: 120 * plan.costCents,
-    transfers: 6000 * prepared.transferWeight * plan.transfers,
+    // Legacy policy compatibility, not an observed zero. See TRANSFERS_UNKNOWN.
+    transfers: 6000 * prepared.transferWeight * (plan.transfers ?? 0),
     reliability: plan.mode === "walk" ? 0 : 12 * (10000 - plan.reliabilityBasisPoints),
     unlitWalking: advanced && plan.facts?.lighting === "verified_unlit" ? 300 * plan.walkingSeconds : 0,
   };
@@ -155,6 +156,10 @@ export function evaluateCandidates(candidates: CandidatePlan[], input: DecisionC
     if (facts?.weather === "severe" && plan.mode === "walk") why.push("SEVERE_WEATHER");
     if (why.length) { rejected[plan.planId] = why; continue; }
     const reasons = ["WITHIN_BUDGET"];
+    if (plan.transfers === null) {
+      reasons.push("TRANSFERS_UNKNOWN");
+      if (!metadata.warnings.includes("LEGACY_POLICY_OMITS_UNKNOWN_TRANSFER_COST")) metadata.warnings.push("LEGACY_POLICY_OMITS_UNKNOWN_TRANSFER_COST");
+    }
     if (facts?.weather === "rain" && context.policyVersion === "beacon-v2") reasons.push("RAIN_INCREASES_WALKING_COST");
     if (facts?.activeOfficialAlert) { reasons.push("OFFICIAL_ALERT_REVIEW"); metadata.warnings.push(`Official alert relevant to ${plan.planId}; review source before travel.`); }
     if (facts?.historicalReports) reasons.push("HISTORICAL_REPORTS_CONTEXT_ONLY");
@@ -175,7 +180,7 @@ export function evaluateCandidates(candidates: CandidatePlan[], input: DecisionC
   const original = candidates.find((p) => p.planId === best.planId)!;
   const reasonCodes = [...best.reasons, context.priority === "lowest_cost" ? "LOWEST_COST" : "LOWEST_POLICY_SCORE"];
   if (runnerUp && best.walkingMinutes < runnerUp.walkingMinutes) reasonCodes.push("LESS_WALKING_THAN_RUNNER_UP");
-  if (runnerUp && best.transfers < runnerUp.transfers) reasonCodes.push("FEWER_TRANSFERS_THAN_RUNNER_UP");
+  if (runnerUp && best.transfers !== null && runnerUp.transfers !== null && best.transfers < runnerUp.transfers) reasonCodes.push("FEWER_TRANSFERS_THAN_RUNNER_UP");
   if (context.excludedProviderIds?.length) reasonCodes.push("REPLANNED_AFTER_PROVIDER_FAILURE");
   if (best.source === "scheduled") reasonCodes.push("SCHEDULED_TRANSIT");
   const explanation = `${original.providerName} costs $${best.cost.toFixed(2)} and involves ${Number(best.walkingMinutes.toFixed(2))} minute${best.walkingMinutes === 1 ? "" : "s"} of walking. ${context.priority === "lowest_cost" ? "It is the lowest-cost available choice within your limits." : "It has the best overall score for your settings."}`;

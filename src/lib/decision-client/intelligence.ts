@@ -12,6 +12,10 @@ export function buildEvidenceBrief(decision:DecisionResult,context:DecisionConte
   facts.push({id:"selected",text:selected ? `Recommended option costs ${money(selected.cost)}, takes ${minutes(selected.totalMinutes)} minutes overall and includes ${minutes(selected.walkingMinutes)} minutes of walking.` : decision.status === "EMERGENCY" ? "Use the emergency-help flow; no ride has been selected or contacted." : "No option meets the current constraints. No ride has been selected.",sourceKind:"verified_calculation"});
   facts.push({id:"limitations",text:"This is not a safety guarantee. Lighting, current campus crime alerts, path closures and phone working condition may be unknown. Historical reports do not predict danger.",sourceKind:"coverage_limit"});
   const requiredFactIds = ["selected","limitations"];
+  if (decision.ranked.some(plan => plan.transfers === null)) {
+    facts.push({ id: "transfer_unknown", text: "Bus or vehicle changes are unknown for at least one option. The legacy policy omits that unknown cost; this is not evidence of zero changes or a complete trip-burden comparison.", sourceKind: "coverage_limit" });
+    requiredFactIds.push("transfer_unknown");
+  }
   if (selected) {
     facts.push({id:"source",text:`Selected option evidence is ${selected.source}; decision engine is ${decision.engine}. Scheduled means timetable, not live vehicle tracking.`,sourceKind:"provenance"});
     requiredFactIds.push("source");

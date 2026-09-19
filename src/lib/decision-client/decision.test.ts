@@ -117,3 +117,23 @@ test("raising cost cannot improve the option's score; emergency never chooses a 
   assert.ok(second.ranked[0].scoreUnits > first.ranked[0].scoreUnits);
   assert.equal(evaluateCandidates(candidates, { ...context, emergency: true }, signals).status, "EMERGENCY");
 });
+
+test("unknown transfers are not returned as observed zero or advertised as fewer changes", () => {
+  const known = { ...candidates[1], transfers: 1 };
+  const result = evaluateCandidates([candidates[0], known], context, signals);
+  assert.equal(result.status, "RECOMMENDED");
+  if (result.status !== "RECOMMENDED") return;
+  assert.equal(result.ranked[0].transfers, null);
+  assert.ok(result.ranked[0].reasons.includes("TRANSFERS_UNKNOWN"));
+  assert.ok(!result.recommendation.reasonCodes.includes("FEWER_TRANSFERS_THAN_RUNNER_UP"));
+  assert.ok(result.warnings.includes("LEGACY_POLICY_OMITS_UNKNOWN_TRANSFER_COST"));
+});
+
+test("explicit zero transfers remains comparable and is never relabeled unknown", () => {
+  const result = evaluateCandidates([{ ...candidates[0], transfers: 0 }, { ...candidates[1], transfers: 1 }], context, signals);
+  assert.equal(result.status, "RECOMMENDED");
+  if (result.status !== "RECOMMENDED") return;
+  assert.equal(result.ranked[0].transfers, 0);
+  assert.ok(result.recommendation.reasonCodes.includes("FEWER_TRANSFERS_THAN_RUNNER_UP"));
+  assert.ok(!result.ranked[0].reasons.includes("TRANSFERS_UNKNOWN"));
+});

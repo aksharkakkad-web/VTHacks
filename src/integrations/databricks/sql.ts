@@ -42,7 +42,7 @@ WITH context_input AS (
   SELECT *, CAST(
     100 * (waitSeconds + travelSeconds)
     + 100 * ctx.walkingWeight * walkingSeconds * CASE WHEN ctx.policyVersion = 'beacon-v2' AND actual_weather = 'rain' THEN 1.5 ELSE 1 END
-    + 120 * costCents + 6000 * ctx.transferWeight * transfers
+    + 120 * costCents + 6000 * ctx.transferWeight * coalesce(transfers, 0)
     + CASE WHEN mode = 'walk' THEN 0 ELSE 12 * (10000 - reliabilityBasisPoints) END
     + CASE WHEN ctx.policyVersion = 'beacon-v2' AND actual_lighting = 'verified_unlit' THEN 300 * walkingSeconds ELSE 0 END
     AS BIGINT) score_units,

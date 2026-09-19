@@ -24,6 +24,16 @@ function succeeded(result = calculated()) {
 }
 const fakeFetch = (handler: (url: string, init?: RequestInit) => Response | Promise<Response>): typeof fetch => (async (url, init) => handler(String(url), init)) as typeof fetch;
 
+test("SQL input and sanitized audit preserve unknown transfer counts and score components", () => {
+  const params = evaluationParameters(prepareDecision(plans, context, signals));
+  const rows = JSON.parse(params.find(p => p.name === "candidates_json")!.value);
+  assert.equal(rows[0].transfers, null);
+  const audit = sanitizedDecision(evaluateCandidates(plans, context, signals));
+  const row = audit.ranked[0] as unknown as Record<string, unknown>;
+  assert.equal(row.transfers, null);
+  assert.deepEqual(row.components, { waitAndTravel: 19, walking: 4, cost: 0, transfers: 0, reliability: 0.4, unlitWalking: 0 });
+});
+
 test("missing workspace is explicit local fallback, not simulated live success", async () => {
   const result = await runDecision(plans, context, signals);
   assert.equal(result.engine, "local_fallback");

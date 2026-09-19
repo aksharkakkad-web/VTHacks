@@ -1,5 +1,9 @@
 # Databricks data: what is real
 
+## Latest local pilot expansion (17:00–17:12 UTC)
+
+See the [current inventory and team contract](DATABRICKS_EXPANDED_PILOT_STATUS.md). New local sources are the [complete official BT archive](DATABRICKS_FULL_TRANSIT.md) (297 stops, 24 routes, 3,658 trips, 74,301 stop-times, 181 exceptions, 10,456 trip/date records over 14 dates), [draft Town/VT network](DATABRICKS_PILOT_COVERAGE.md) (10/50 directions connected), 73 NWS hourly periods covering at least 72 hours, and three published-hours waiting-place records with **unknown access/pickup permission**. New source manifests live beside these datasets. None establishes operational lighting. The 60 weather-context rows in the latest local research capture supersede the older 66-row local snapshot; the managed cloud import below remains historical and was not rewritten in this increment. Full-feed native import preparation is [local only](DATABRICKS_FULL_TRANSIT_NATIVE.md).
+
 This track includes reproducible official public snapshots and explicitly labeled community/historical evidence, not a live crime tracker or route-safety guarantee. Source URLs, hashes, capture timestamps, coverage and limitations are in `data/campus/source-manifest.json` and `data/campus/research/` provenance files. Student locations, names, contacts and provider credentials are not in these files.
 
 ## Current integrated expansion — September 19, 2026

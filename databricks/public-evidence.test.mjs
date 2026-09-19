@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
@@ -34,7 +34,13 @@ test('preview covers actual crime, weather hourly/alerts, provenance and quarant
   const byPath = Object.fromEntries(plan.summary.documents.map(doc => [doc.path, doc]));
   assert.equal(byPath['crime-records-2026.json'].collections[''], 719);
   assert.equal(byPath['crime-manifest-2026.json'].collections['/gaps'], 1);
-  assert.equal(byPath['weather.json'].collections['/hourly'], 72);
+  const weather = JSON.parse(readFileSync(join(root, 'data/campus/research/weather.json'), 'utf8'));
+  assert.equal(byPath['weather.json'].collections['/hourly'], weather.hourly.length);
+  assert.ok(Date.parse(weather.hourly[0].start_at) <= Date.parse(weather.captured_at));
+  assert.ok(Date.parse(weather.hourly.at(-1).end_at) - Date.parse(weather.captured_at) >= 72 * 3600000);
+  for (let i = 1; i < weather.hourly.length; i++) {
+    assert.equal(Date.parse(weather.hourly[i].start_at), Date.parse(weather.hourly[i - 1].end_at));
+  }
   assert.equal(byPath['weather.json'].collections['/alerts'], 0);
   assert.equal(byPath['lighting/observations.json'].collections[''], 1179);
   assert.ok(plan.itemRows.some(row => row.document_path === 'weather.json' && row.json_pointer === '/alerts' && row.classification === 'empty_collection'));

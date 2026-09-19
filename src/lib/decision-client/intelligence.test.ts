@@ -40,6 +40,12 @@ test("rendered AI brief always includes limitations and source labels even if mo
   assert.ok(rendered.every(x=>brief.facts.some(y=>y.id===x.id && y.text===x.text)));
 });
 
+test("model cannot hide missing transfer evidence behind a confident explanation", () => {
+  const brief = buildEvidenceBrief(decision(), context);
+  const rendered = renderBrief(brief, ["selected"]);
+  assert.ok(rendered.some(f => f.id === "transfer_unknown" && f.text.includes("unknown")));
+});
+
 test("no feasible option and emergency do not invent a winner", () => {
   const none = evaluateCandidates(plans,{...context,maxWalkingMinutes:0});
   const brief = buildEvidenceBrief(none,context);

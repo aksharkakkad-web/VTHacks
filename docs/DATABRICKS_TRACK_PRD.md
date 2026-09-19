@@ -1,6 +1,10 @@
 # Beacon — Databricks track PRD and build contract
 
-**Owner:** Akshar · **Version:** 4 · **Date:** September 19, 2026
+**Owner:** Akshar · **Version:** 5 (expanded-pilot addendum; not completed) · **Date:** September 19, 2026
+
+### Version 5: current local expansion
+
+The [expanded-pilot status and exact team handoff](DATABRICKS_EXPANDED_PILOT_STATUS.md) supersede current-status claims below. The complete BT feed and 14-day service expansion, draft 50-direction pedestrian coverage matrix, lighting/waiting evidence helpers, unknown-transfer labels and latency tooling are implemented locally. The native full-feed import is a deployment candidate only. The wider pilot is **not deployed or finished**: 10/50 draft directions have sourced connectivity, operational lighting/pickup access remains unknown, and expanded ranking/shared interfaces need agreement. Version 4 below remains the runtime integration baseline; `beacon-v2` weights are unchanged. See the [implementation plan](DATABRICKS_PILOT_PLAN.md).
 
 **Baseline inspected:** `main` at `d8f513a` (Mahin's demo provider agents merged).
 

@@ -1,5 +1,7 @@
 # Databricks intelligence completion — September 19
 
+**Historical plan:** This describes the earlier bounded intelligence implementation. The later [expanded-pilot plan](DATABRICKS_PILOT_PLAN.md) and [current status](DATABRICKS_EXPANDED_PILOT_STATUS.md) supersede it for the new 5×5-area request. Earlier completion does not mean that wider pilot, teammate UI integration or deployment is complete.
+
 Akshar approved completing the remaining safety/cost intelligence, data refresh and grounded AI in this track. Build on `cdb4ff6`; preserve teammates' API/UI/shared contracts. This plan supersedes the old restriction against an explanatory LLM, not the ban on invented safety predictions.
 
 ## Global constraints

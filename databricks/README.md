@@ -2,6 +2,8 @@
 
 This folder owns campus data, the explainable choice, and Databricks evidence. It does not book rides or replace Mahin's orchestration / Rishit's interface.
 
+**Current local expansion:** Read the [verified pilot status and integration gates](../docs/DATABRICKS_EXPANDED_PILOT_STATUS.md) before demo/deployment. The [complete BT importer](../docs/DATABRICKS_FULL_TRANSIT.md), [draft 50-direction coverage check](../docs/DATABRICKS_PILOT_COVERAGE.md), [local native-import candidate](../docs/DATABRICKS_FULL_TRANSIT_NATIVE.md) and read-only `latency.mjs` are additive tools; the wider network and full-feed query are not yet wired into the runtime. Refresh closures/weather and rebuild routes together before a later demo; never treat a source-version mismatch as a verified managed route. Cloud writes require approval.
+
 ## Run it
 
 From the repository root (Node 22+, existing `npm install`):
