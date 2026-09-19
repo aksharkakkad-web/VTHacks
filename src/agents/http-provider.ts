@@ -1,5 +1,5 @@
-import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
+import { publicJson } from "../integrations/ans/transport";
 import { coarseQuote, normalizeQuote, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
 
 export function privateAddress(ip: string) {
@@ -15,14 +15,14 @@ export function providerUrl(value: string, demo = false): URL {
 export class HttpProvider implements ProviderAgent {
   readonly descriptor: ProviderDescriptor;
   private readonly base: URL;
-  constructor(descriptor: ProviderDescriptor, private readonly options: { allowLocalDemo?: boolean; timeoutMs?: number; token?: string } = {}) {
+  constructor(descriptor: ProviderDescriptor, private readonly options: { allowLocalDemo?: boolean; timeoutMs?: number; token?: string; pin?: string } = {}) {
     this.descriptor = descriptor;
     this.base = providerUrl(descriptor.baseUrl, descriptor.source === "demo" && options.allowLocalDemo);
   }
   private async call(path: string, method = "GET", body?: unknown): Promise<unknown> {
     if (this.descriptor.source !== "demo") {
-      const addresses = await lookup(this.base.hostname, { all: true });
-      if (!addresses.length || addresses.some((a) => privateAddress(a.address))) throw new Error("Private provider address blocked");
+      if (path !== "/agent/quote" && !this.options.pin) throw new Error("Sensitive provider calls require an ANS certificate pin");
+      return (await publicJson(`${this.base.href.replace(/\/$/, "")}${path}`, { method, body, pin: this.options.pin, timeoutMs: this.options.timeoutMs, headers: this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {} })).value;
     }
     const response = await fetch(`${this.base.href.replace(/\/$/, "")}${path}`, {
       method, redirect: "error", signal: AbortSignal.timeout(this.options.timeoutMs ?? 4000),
