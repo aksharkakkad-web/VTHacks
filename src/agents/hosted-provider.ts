@@ -1,8 +1,8 @@
 import { createHash, timingSafeEqual } from "node:crypto";
-import { object, point, text, type ProviderDescriptor, type ProviderTrip, type TripRequest } from "./contract";
-import { DemoProvider } from "./demo-provider";
+import { text, object, type ProviderDescriptor } from "./contract";
+import { DemoProvider, type DemoBooking } from "./demo-provider";
 import { TripError } from "../lib/trip-state/model";
-export type StoredBooking = { result: ProviderTrip; sensitive?: TripRequest };
+export type StoredBooking = DemoBooking;
 export interface BookingStore {
   create(key: string, booking: StoredBooking): Promise<void>;
   read(key: string): Promise<StoredBooking | undefined>;
@@ -18,9 +18,9 @@ async function input(request: Request) {
   return object(JSON.parse(Buffer.concat(chunks).toString() || "{}"));
 }
 function json(value: unknown, status = 200) { return Response.json(value, { status, headers: { "Cache-Control": "no-store" } }); }
-export function hostedProvider(options: { descriptor: ProviderDescriptor; token?: string; store?: BookingStore }) {
+export function hostedProvider(options: { descriptor: ProviderDescriptor; token?: string; store?: BookingStore; cancellationFeeMinor?: number; decline?: boolean }) {
   const { descriptor, token, store } = options;
-  const publicProvider = new DemoProvider(descriptor);
+  const publicProvider = new DemoProvider(descriptor, { token, cancellationFeeMinor: options.cancellationFeeMinor, decline: options.decline });
   const key = (id: string) => `${descriptor.id}:${id}`;
   const requestBookingId = (id: string) => createHash("sha256").update(JSON.stringify([descriptor.id, id])).digest("hex");
   return async (request: Request, path: string): Promise<Response> => {
@@ -33,12 +33,13 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
       if (request.method === "POST" && path === "/agent/request-trip") {
         if (!descriptor.functions.includes("request_trip")) throw new TripError("UNSUPPORTED", "This provider does not accept bookings", 400);
         const data = await input(request);
-        const sensitive: TripRequest = { tripId: text(data.trip_id, "trip id"), pickup: point(data.pickup), destination: point(data.destination) };
+        const prepared = publicProvider.prepareBooking(data);
         // Deterministic per-provider id plus SET NX makes retries across serverless
         // instances one booking. Cancellation retains a tombstone until the TTL.
-        const id = requestBookingId(sensitive.tripId);
-        await store.create(key(id), { result: { id, status: "waiting" }, sensitive });
+        const id = requestBookingId(prepared.sensitive!.tripId);
+        await store.create(key(id), publicProvider.newBooking(id, prepared));
         const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
+        if (booking.fingerprint && booking.fingerprint !== prepared.fingerprint) throw new TripError("IDEMPOTENCY_CONFLICT", "Request ID already has different booking terms", 409);
         return json(booking.result);
       }
       if (request.method === "GET" && path.startsWith("/agent/trip-status/")) {
@@ -55,13 +56,17 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
         const id = requestBookingId(requestId);
         // Install a cancellation tombstone even if the original request has not
         // arrived yet, then atomically erase any already-created private record.
-        await store.create(key(id), { result: { id, status: "cancelled" } });
-        await store.revoke(key(id)); return json({ id, status: "cancelled" });
+        await store.create(key(id), publicProvider.cancellationTombstone(id));
+        await store.revoke(key(id));
+        const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
+        return json(booking.result);
       }
       if (request.method === "POST" && path === "/agent/cancel-trip") {
         const id = text((await input(request)).trip_id, "booking id");
         if (!await store.read(key(id))) throw new TripError("NOT_FOUND", "Booking not found", 404);
-        await store.revoke(key(id)); return json({ id, status: "cancelled" });
+        await store.revoke(key(id));
+        const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
+        return json(booking.result);
       }
       throw new TripError("NOT_FOUND", "Provider operation not found", 404);
     } catch (error) {
@@ -83,6 +88,22 @@ export class RedisBookingStore implements BookingStore {
   async create(key: string, booking: StoredBooking) { await this.command("SET", `beacon:provider:${key}`, JSON.stringify(booking), "NX", "EX", 86400); }
   async read(key: string): Promise<StoredBooking | undefined> { const value = await this.command("GET", `beacon:provider:${key}`); return typeof value === "string" ? JSON.parse(value) : undefined; }
   async revoke(key: string) {
-    await this.command("EVAL", "local raw=redis.call('GET',KEYS[1]);if not raw then return 0 end;local b=cjson.decode(raw);b.sensitive=nil;b.result.status='cancelled';redis.call('SET',KEYS[1],cjson.encode(b),'KEEPTTL');return 1", 1, `beacon:provider:${key}`);
+    // Settlement and erasure share one atomic operation, including when another
+    // handler is concurrently reconciling or retrying the same request.
+    const lua = `local raw=redis.call('GET',KEYS[1]);if not raw then return 0 end;
+local b=cjson.decode(raw);b.sensitive=nil;local s=b.result.status;
+if s~='completed' and s~='declined' and s~='cancelled' then
+ b.result.status='cancelled';local p=b.result.payment;local fee=b.cancellationFeeMinor or 0;
+ if p then
+  if p.state=='authorized' then
+   if fee==0 then p.state='voided';p.retainedMinor=0
+   else p.state='captured';p.amountMinor=fee;p.retainedMinor=fee end
+  elseif p.state=='captured' then
+   p.retainedMinor=fee;if fee==0 then p.state='refunded' end
+  end
+ end
+end;
+redis.call('SET',KEYS[1],cjson.encode(b),'KEEPTTL');return 1`;
+    await this.command("EVAL", lua, 1, `beacon:provider:${key}`);
   }
 }

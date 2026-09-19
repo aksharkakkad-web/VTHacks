@@ -71,7 +71,15 @@ export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now
 }
 export function parseProviderTrip(value: unknown): ProviderTrip {
   const t = object(value);
-  const statuses: unknown[] = ["accepted", "waiting", "cancelled", "in_trip", "completed"];
+  const statuses: unknown[] = ["accepted", "waiting", "cancelled", "in_trip", "completed", "declined"];
   if (!statuses.includes(t.status)) throw new Error("Invalid provider status");
-  return { id: text(t.id, "provider trip id"), status: t.status as ProviderTripStatus };
+  let payment: SimulatedPayment | undefined;
+  if (t.payment !== undefined) {
+    const p = object(t.payment);
+    const amountMinor = number(p.amountMinor, "payment amount", 1_000_000);
+    const retainedMinor = number(p.retainedMinor, "payment retention", amountMinor);
+    if (p.mode !== "simulated" || p.currency !== "USD" || !["authorized", "voided", "captured", "refunded", "unknown"].includes(String(p.state)) || !Number.isSafeInteger(amountMinor) || !Number.isSafeInteger(retainedMinor) || (["authorized", "voided", "refunded"].includes(String(p.state)) && retainedMinor !== 0)) throw new Error("Invalid provider payment");
+    payment = { mode: "simulated", currency: "USD", amountMinor, retainedMinor, state: p.state as SimulatedPayment["state"] };
+  }
+  return { id: text(t.id, "provider trip id"), status: t.status as ProviderTripStatus, ...(payment ? { payment } : {}) };
 }
