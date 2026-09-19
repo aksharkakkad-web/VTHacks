@@ -1,0 +1,11 @@
+{
+  "url": "http://localhost:3001",
+  "checks": [
+    "Production service worker installs; offline navigation shows reconnect fallback; no trip/API data cached",
+    "Blocked browser storage still permits setup and home with honest session-only notice"
+  ],
+  "cached": [
+    "/offline.html",
+    "/safecircle-icon.svg"
+  ]
+}

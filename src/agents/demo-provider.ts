@@ -21,7 +21,7 @@ export class DemoProvider {
       const q = object(data); const c = object(q.constraints);
       text(q.origin_zone, "origin zone"); text(q.destination_zone, "destination zone"); number(c.max_budget, "budget");
       const [cost, wait, travel, walking] = fixtures[this.descriptor.mode];
-      return { provider_id: this.descriptor.id, provider_name: this.descriptor.name, available: true, cost, pickup_eta_minutes: wait, travel_time_minutes: travel, walking_minutes: walking, expires_at: new Date(Date.now() + 120_000).toISOString(), reliability: this.descriptor.mode === "campus_ride" ? 0.98 : 0.94, simulated: true };
+      return { provider_id: this.descriptor.id, provider_name: this.descriptor.name, available: true, cost, pickup_eta_minutes: wait, travel_time_minutes: travel, walking_minutes: walking, transfers: 0, expires_at: new Date(Date.now() + 120_000).toISOString(), reliability: this.descriptor.mode === "campus_ride" ? 0.98 : 0.94, simulated: true };
     }
     if (method === "POST" && path === "/agent/request-trip") {
       if (!this.descriptor.functions.includes("request_trip")) throw new Error("Provider does not accept bookings");
