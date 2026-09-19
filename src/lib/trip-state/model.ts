@@ -8,6 +8,7 @@ import type { TripDecisionEvidence } from "../../agents/student/databricks";
 import type { NetworkOffer } from "../../agents/provider-manifest";
 import type { ProviderOutcome } from "../decision-client/provider-outcomes";
 import type { SimulatedPayment } from "../payments/simulated";
+import type { ArrivalEvidence, JourneySnapshot, RideObservation } from '../journey/contracts';
 
 export type NetworkAttempt = {
   requestId: string; providerId: string; quoteId: string; observationId: string;
@@ -18,6 +19,8 @@ export type NetworkAttempt = {
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
 export type TripRecord = {
+  journeyContract?: 'beacon-journey-v1'; journey?: JourneySnapshot; journeyRevision?: number; journeyConfirmedRevision?: number;
+  rideObservation?: RideObservation; arrivalEvidence?: ArrivalEvidence; arrivalStatus?: string;
   trip: Trip; owner: string; context: TripContext;
   private?: { origin: Point; home: Point; contact?: Contact };
   originZone: string; destinationZone: string; providers: ProviderDescriptor[];

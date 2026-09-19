@@ -13,6 +13,8 @@ import { RedisTripStore } from "./redis-store";
 import { redisConfiguration } from "./redis-config";
 import { ingestProviderOutcome } from "../../integrations/databricks/provider-outcomes";
 import { campusWeather } from "../campus-evidence/catalog";
+import { queryRouteContext } from "../../agents/context/runtime";
+import { getActivityRuntime } from "../agent-activity/runtime";
 
 type Runtime = { agent: StudentAgent; timer?: ReturnType<typeof setInterval>; };
 const globalRuntime = globalThis as typeof globalThis & { beaconRuntime?: Runtime };
@@ -27,6 +29,8 @@ export function getRuntime(): Runtime {
   const directory = demo && process.env.BEACON_ANS_MODE !== "live" ? new LocalDemoDirectory(demoDescriptors, true) : new GoDaddyDirectory({ apiBase: process.env.ANS_BASE_URL, apiKey: process.env.ANS_API_KEY, query: process.env.BEACON_ANS_QUERY });
   const sendNotification = telegramSender({ simulated: notificationMode === "simulated", botToken: process.env.TELEGRAM_BOT_TOKEN, allowedChatIds: process.env.TELEGRAM_ALLOWED_CHAT_IDS });
   const agent = new StudentAgent({ store, directory, demo,
+    activity: getActivityRuntime(),
+    contextReader: queryRouteContext,
     // The shared demo token belongs only to our configured loopback providers.
     // ANS discovery must never cause that credential to be sent to a third party.
     provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : scopedProviderToken(descriptor, identity, process.env.BEACON_PROVIDER_CREDENTIALS) }),

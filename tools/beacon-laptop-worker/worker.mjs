@@ -20,7 +20,7 @@ export class Backend {
   async post(action, payload) {
     if (!['claim', 'heartbeat', 'complete', 'tick', 'pairing'].includes(action)) throw new Error('ACTION_INVALID');
     const response = await this.fetcher(new URL(`/api/internal/planner/${action}`, this.base), {
-      method: 'POST', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(10000),
+      method: 'POST', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(action === 'tick' ? 60000 : 10000),
       headers: { Authorization: `Bearer ${this.token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
     if (!response.ok) throw new Error(response.status === 409 ? 'STALE_LEASE' : response.status === 401 ? 'WORKER_UNAUTHORIZED' : 'BACKEND_UNAVAILABLE');

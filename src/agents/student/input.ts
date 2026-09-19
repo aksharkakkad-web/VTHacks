@@ -5,6 +5,7 @@ import { isPublicCorridor, matchesPublicCorridor, publicCorridorEndpoints } from
 
 export function parseTripInput(value: unknown, demo: boolean, now: number) {
   const input = object(value); const prefs = object(input.preferences ?? {});
+  if(input.journeyContract!==undefined&&input.journeyContract!=='beacon-journey-v1')throw new TripError('INVALID_JOURNEY_CONTRACT','Unsupported journey contract',400);
   const temporary = object(input.temporary_context ?? {});
   if (temporary.immediate_danger === true || temporary.medical_emergency === true || temporary.serious_injury === true) throw new TripError("EMERGENCY_HELP_REQUIRED", "Use emergency help immediately; Beacon does not dispatch emergency services.", 422);
   const corridorId = input.corridorId;
@@ -23,5 +24,5 @@ export function parseTripInput(value: unknown, demo: boolean, now: number) {
   }
   // Arbitrary exact addresses are never reused as coarse provider context.
   const originZone = corridorId ? "VT academic campus" : "Downtown Blacksburg"; const destinationZone = "VT residential campus";
-  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(corridorId ? { corridorId } : {}) };
+  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(corridorId ? { corridorId } : {}), ...(input.journeyContract==='beacon-journey-v1'?{journeyContract:'beacon-journey-v1' as const}:{}) };
 }
