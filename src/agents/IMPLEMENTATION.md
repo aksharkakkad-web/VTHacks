@@ -3,24 +3,28 @@
 Owner: Mahin. Source: the build-locked PRD and phase plan in `docs/`.
 No shared type, UI, or Databricks ranking changes are planned.
 
+The current deployment, requirement audit, and open integration gates are in
+[MVP-READINESS.md](MVP-READINESS.md). The dated sections below retain the history
+of earlier checks, including the superseded SMS setup.
+
 ## Delivery slices
 
 - [x] Provider contract: validated coarse quotes, three independently callable HTTP providers,
   walking candidate, timeout isolation, deterministic demo fixtures, provider status/cancellation.
   Files: `src/agents/{contract,http-provider,demo-provider,discovery}.ts`, provider tests.
-- [ ] ANS: registry discovery/resolution, verification evidence, fail-closed authorization,
+- [x] ANS: registry discovery/resolution, verification evidence, fail-closed authorization,
   explicit local-demo trust, registration setup/runbook and live interoperability probe.
   Files: `src/integrations/ans/**`, `src/lib/authorization/**`.
-- [ ] Student Agent: persisted trip state, confirmation, verified coordination, idempotency,
+- [x] Student Agent: persisted trip state, confirmation, verified coordination, idempotency,
   bounded recovery with fresh candidates and Akshar's decision adapter, audit events.
   Files: `src/agents/student/**`, `src/lib/trip-state/**`.
-- [ ] HTTP integration: frozen trip/demo paths returning the shared `Trip` contract;
+- [x] HTTP integration: frozen trip/demo paths returning the shared `Trip` contract;
   authenticated trip ownership and provider callbacks, validated JSON, error responses.
   Files: `src/app/api/trips/**`, `src/app/api/demo/**`.
-- [ ] Monitoring: current location only, home geofence, expected arrival plus configurable
+- [x] Monitoring: current location only, home geofence, expected arrival plus configurable
   grace, server polling, consent-aware notification outbox, no alert after arrival, no duplicates.
   Files: `src/lib/trip-state/**`, `src/integrations/notifications/**`.
-- [ ] Integration: current-main fetch/rebase, real HTTP demo, all regression checks, clear
+- [x] Backend integration: current-main/teammate review, real HTTP demo, regression checks, clear
   real-versus-demo report, PRs with exact commands and remaining external setup steps.
 
 ## Test and version-control procedure
@@ -42,7 +46,7 @@ and branch protection; never bypass a required review.
 - Live ANS registration/discovery/verification is proven separately from pretrusted demo mode.
 - All published contracts stay compatible with current UI/decision-engine work.
 
-## Current setup facts
+## Starting setup facts (historical)
 
 The starting commit is `df29f8c`. No provider, trip API, ANS, or Databricks implementation
 exists there. ANS credentials are now saved locally and a user-owned domain is available;

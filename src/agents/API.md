@@ -27,6 +27,15 @@ and these source/fallback distinctions. Local identity trust is marked `LOCAL_DE
 stays **false** until live ANS verification succeeds. `alertSent` stays **false** for
 a simulated alert. Never show those as a live ANS badge or a read Telegram message.
 Set `BEACON_NOTIFICATION_MODE=simulated` when running the routine smoke test.
+For a deployment that already has real Telegram enabled, run the smoke with
+`BEACON_SMOKE_NO_CONTACT=true` instead: both synthetic trips omit the contact,
+overdue is checked without sending, and the session's fixtures are reset in a
+`finally` block. It does not test actual Telegram acceptance.
+
+```sh
+BEACON_SMOKE_URL=https://<existing-beacon-host> \
+BEACON_SMOKE_LIVE_ANS=true BEACON_SMOKE_NO_CONTACT=true node src/agents/smoke.mjs
+```
 
 ## Browser calls
 
@@ -156,6 +165,7 @@ only after ANS identity verification and an exact identity/endpoint match. See
 - Live ANS registration, deployed handoff/replacement, negative identity checks, and shared
   hosted storage are verified; see `IMPLEMENTATION.md` for the evidence and simulation boundaries.
 - Hosted scheduling is connected; its real overdue/arrival verification is recorded in
-  `IMPLEMENTATION.md`. Live Telegram acceptance must be verified separately from simulations.
-- Connect Telegram private contacts and verify one authorized custom alert.
+  `IMPLEMENTATION.md`. The existing private Telegram contact also passed one separately
+  authorized custom-alert acceptance test. Routine regressions must use simulated
+  notifications or the no-contact mode above; API acceptance does not prove a message was read.
 - Run the deployed mobile demo with Rishit's UI; this PR does not implement UI.
