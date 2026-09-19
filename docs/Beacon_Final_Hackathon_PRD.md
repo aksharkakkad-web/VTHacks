@@ -1,5 +1,7 @@
 # Beacon — Final Hackathon PRD
 
+> **Latest approved product direction (September 19):** [Provider-agent pivot: what changes](superpowers/specs/2026-09-19-beacon-provider-network-pivot-design.md) and [updates for Mahin, Rishit and Akshar](superpowers/plans/2026-09-19-beacon-provider-network-pivot.md). Beacon coordinates compatible developer/provider agents; those agents own booking through permitted integrations. Unified account/payment is the target experience, with transport/payment explicitly simulated for the first pivot demo. New shared contracts require alignment before implementation; this does not relax the consent, identity or location gates below.
+
 **Status:** Build-locked, pivot-aware<br>
 **Version:** 1.1 — journey coordination framing<br>
 **Build window:** ~30 hours<br>
