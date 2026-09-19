@@ -1,5 +1,11 @@
 # Beacon product direction
 
+**Latest approved pivot:** read [what changes](Beacon_Pivot_What_Changes.md) and
+[team updates to do](Beacon_Pivot_Updates_To_Do.md). Beacon coordinates a compatible
+developer-provider network; those providers own their authorized booking integrations.
+One Beacon payment experience is a future capability requiring explicit settlement
+and authorization support. The privacy and honest-evidence requirements below remain.
+
 This records the user's September 19 direction for all three tracks. It takes
 precedence over conflicting earlier product claims. It does not change the shared
 TypeScript types, API paths, decision policy, or agreed demo values.
