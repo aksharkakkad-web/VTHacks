@@ -1,5 +1,7 @@
 # Beacon — START HERE
 
+> **September 19 provider-network pivot:** Read [what changes](superpowers/specs/2026-09-19-beacon-provider-network-pivot-design.md) and [updates for Mahin, Rishit and Akshar](superpowers/plans/2026-09-19-beacon-provider-network-pivot.md) before new work. They define the approved product direction and proposed next contracts; the kickoff checklist below is historical, not a current implementation-status report.
+
 > 24-hour sprint update: begin independent track work now using the shared types and mocks. Complete account access, demo sign-off, and remaining checklist items in parallel; use checkpoints A–G in the phase plan to integrate. The checklist below remains a risk tracker, not a reason to idle all three tracks.
 
 **Read this together before anyone splits off.**

@@ -1,5 +1,7 @@
 # Beacon team contract — proposed kickoff baseline
 
+> **Latest direction:** [Provider-agent pivot: what changes](superpowers/specs/2026-09-19-beacon-provider-network-pivot-design.md), with [owner tasks and proposed contract changes](superpowers/plans/2026-09-19-beacon-provider-network-pivot.md). Product direction is approved; new wire fields still need shared alignment. Checked-in types remain authoritative until that change lands. The route/status descriptions below are the historical kickoff proposal; use [the agent API handoff](../src/agents/API.md) and [integrated data handoff](DATABRICKS_APP_HANDOFF.md) for implemented behavior.
+
 This is the implementation baseline prepared from `Beacon_START_HERE.md` and the build-locked PRD. For the 24-hour sprint, start the three tracks with mocks while confirming shared contracts and demo decisions in parallel. Treat sponsor access checks as open until each owner verifies them.
 
 ## Stack and boundaries
