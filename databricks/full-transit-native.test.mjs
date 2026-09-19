@@ -33,34 +33,50 @@ test('rejects altered source archive and broken normalized reference', () => {
   const rows = JSON.parse(readFileSync(join(dir, 'stop_times.json')));
   rows[0].stop_id = 'missing-stop';
   writeFileSync(join(dir, 'stop_times.json'), JSON.stringify(rows));
-  assert.throws(() => buildFullTransitNative({ directory: dir }), /reference/i);
+  assert.throws(() => buildFullTransitNative({ directory: dir }), /source archive/i);
+});
+
+test('rejects same-count valid stop-time edit against authenticated ZIP', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'transit-native-time-edit-'));
+  cpSync(source, dir, { recursive: true });
+  const rows = JSON.parse(readFileSync(join(dir, 'stop_times.json')));
+  rows[0].departure_time = '17:21:00';
+  writeFileSync(join(dir, 'stop_times.json'), JSON.stringify(rows));
+  assert.throws(() => buildFullTransitNative({ directory: dir }), /source archive/i);
+});
+
+test('rejects same-count valid service epoch edit against authenticated ZIP', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'transit-native-epoch-edit-'));
+  cpSync(source, dir, { recursive: true });
+  const rows = JSON.parse(readFileSync(join(dir, 'service_trips.json')));
+  rows[0].service_start_at = '2026-09-19T05:00:00Z';
+  writeFileSync(join(dir, 'service_trips.json'), JSON.stringify(rows));
+  assert.throws(() => buildFullTransitNative({ directory: dir }), /source archive/i);
 });
 
 test('small controlled fixture keeps only its selected trip and typed seconds', () => {
   const dir = mkdtempSync(join(tmpdir(), 'transit-native-small-'));
-  cpSync(source, dir, { recursive: true });
-  const read = name => JSON.parse(readFileSync(join(dir, `${name}.json`), 'utf8'));
-  const trip = read('trips')[0];
-  const times = read('stop_times').filter(row => row.trip_id === trip.trip_id);
-  const stopIds = new Set(times.map(row => row.stop_id));
-  const serviceTrip = read('service_trips').find(row => row.trip_id === trip.trip_id);
-  const tables = {
-    agency: read('agency'), stops: read('stops').filter(row => stopIds.has(row.stop_id)),
-    routes: read('routes').filter(row => row.route_id === trip.route_id), trips: [trip],
-    stop_times: times, calendar: read('calendar'),
-    calendar_dates: read('calendar_dates').filter(row => row.service_id === trip.service_id),
-    feed_info: read('feed_info'), service_trips: [serviceTrip],
-  };
-  const manifest = read('manifest');
-  manifest.counts = Object.fromEntries(Object.entries(tables).map(([name, rows]) => [name, rows.length]));
-  writeFileSync(join(dir, 'manifest.json'), JSON.stringify(manifest));
-  for (const [name, rows] of Object.entries(tables)) writeFileSync(join(dir, `${name}.json`), JSON.stringify(rows));
+  const fixtureCode = `import json,sys
+from pathlib import Path
+sys.path.insert(0,sys.argv[2])
+from test_full_transit import fixture
+from full_transit import import_archive,TABLES
+p=Path(sys.argv[1]); raw=fixture(); data=import_archive(raw,'2026-09-19',14)
+(p/'source.zip').write_bytes(raw)
+for name in (*TABLES,'service_trips'):
+ (p/(name+'.json')).write_text(json.dumps(data[name]))
+manifest={'sha256':data['source_sha256'],'counts':{name:len(data[name]) for name in (*TABLES,'service_trips')},'service_start':'2026-09-19','service_end':'2026-10-02','service_days':14,'agency_timezone':data['agency_timezone'],'captured_at':'2026-09-19T17:00:00Z','source_kind':'scheduled','source_url':'https://example.test/fixture.zip'}
+(p/'manifest.json').write_text(json.dumps(manifest))
+`;
+  const ingest = new URL('./ingest/', import.meta.url).pathname;
+  const setup = spawnSync('python3', ['-c', fixtureCode, dir, ingest], { encoding: 'utf8' });
+  assert.equal(setup.status, 0, setup.stderr);
   const plan = buildFullTransitNative({ directory: dir });
   const bundle = unpack(plan.notebook);
   assert.equal(bundle.tables.transit_trips.length, 1);
-  assert.equal(bundle.tables.transit_stop_times.length, times.length);
-  assert.equal(bundle.tables.transit_stop_times[0].trip_id, trip.trip_id);
-  assert.equal(bundle.tables.transit_stop_times[0].arrival_seconds, 62400);
+  assert.equal(bundle.tables.transit_stop_times.length, 4);
+  assert.equal(bundle.tables.transit_stop_times[0].trip_id, 'T');
+  assert.equal(bundle.tables.transit_stop_times[0].arrival_seconds, 87000);
 });
 
 test('failed row merge cannot write completion marker', () => {

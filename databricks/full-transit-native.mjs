@@ -5,9 +5,11 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { parseArgs } from 'node:util';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const base = fileURLToPath(new URL('../data/campus/transit-full/', import.meta.url));
+const importer = fileURLToPath(new URL('./ingest/', import.meta.url));
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const names = ['agency', 'stops', 'routes', 'trips', 'stop_times', 'calendar', 'calendar_dates', 'feed_info', 'service_trips'];
 const schemas = Object.freeze({
@@ -52,6 +54,28 @@ export function buildFullTransitNative({ directory = base } = {}) {
   for (const name of names) {
     if (!Array.isArray(input[name]) || input[name].length !== manifest.counts?.[name] || input[name].length > 100000) fail(`${name}: count or limit mismatch`);
   }
+  // Re-derive the normalized capture from the authenticated archive using the
+  // same importer that produced it. Counts and references alone cannot bind
+  // schedule values or service epochs to the source version.
+  const verify = `import json,sys
+from pathlib import Path
+from datetime import date,timedelta
+sys.path.insert(0,sys.argv[2])
+from full_transit import import_archive,TABLES
+p=Path(sys.argv[1])
+m=json.loads((p/'manifest.json').read_text())
+expected=import_archive((p/'source.zip').read_bytes(),m['service_start'],m['service_days'])
+assert expected['source_sha256']==m['sha256']
+assert expected['agency_timezone']==m['agency_timezone']
+assert expected['service_start']==m['service_start']
+assert (date.fromisoformat(m['service_start'])+timedelta(days=m['service_days']-1)).isoformat()==m['service_end']
+for name in (*TABLES,'service_trips'):
+    actual=json.loads((p/(name+'.json')).read_text())
+    assert actual==expected[name],name
+    assert len(actual)==m['counts'][name],name
+`;
+  const verified = spawnSync('python3', ['-c', verify, directory, importer], { encoding: 'utf8', timeout: 120000, maxBuffer: 1024 * 1024 });
+  if (verified.error || verified.status !== 0) fail(`Normalized feed does not match source archive${verified.stderr?.match(/AssertionError: (\w+)/)?.[1] ? `: ${verified.stderr.match(/AssertionError: (\w+)/)[1]}` : ''}`);
   const stopIds = unique(input.stops, 'stop_id', 'stops');
   const routeIds = unique(input.routes, 'route_id', 'routes');
   const tripIds = unique(input.trips, 'trip_id', 'trips');
