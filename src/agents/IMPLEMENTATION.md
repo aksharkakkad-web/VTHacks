@@ -46,7 +46,7 @@ and branch protection; never bypass a required review.
 
 The starting commit is `df29f8c`. No provider, trip API, ANS, or Databricks implementation
 exists there. ANS credentials are now saved locally and a user-owned domain is available;
-full UI/Databricks/monitor/SMS integration remains pending. The phase plan requires
+full UI/Databricks/SMS integration remains pending. The phase plan requires
 overdue monitoring even though the PRD labels it P1; implement the stronger phase gate.
 Use the shared `SELECTED` state for awaiting confirmation; do not add a new shared state.
 Default monitoring grace will be configurable (five minutes for the local demo), explicitly
@@ -67,7 +67,7 @@ confirmation, local pretrust, Campus Ride booking, automatic Independent Ride re
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
 build, lint and typecheck pass. Mahin's checkpoints A/B/D/F are ready for integration;
 D/F use live ANS and HTTP handoff with the explicit demo decision seam.
-Databricks, custom Beacon SMS, hosted scheduling, and deployed UI verification remain open.
+Databricks, custom Beacon SMS, and deployed UI verification remain open.
 
 ## Hosted provider and registration slice
 
@@ -101,7 +101,7 @@ one simulated overdue alert, session guards, callback rejection, and reset. Both
 selections emitted `ANS_VERIFIED`; neither used local-demo trust. An older local server
 sharing Redis was stopped after its monitor conflicted with the first smoke's final reset;
 the complete rerun then passed. Recommendation scoring, rides, and SMS remain simulated.
-The hosted scheduler, custom Beacon SMS, Databricks integration, and Rishit's deployed UI
+Custom Beacon SMS, Databricks integration, and Rishit's deployed UI
 remain open; checkpoints C/E/G are not marked ready.
 
 ## Verified Upstash setup (2026-09-19)
@@ -116,7 +116,8 @@ TTL preservation, provider cleanup, and cancellation tombstones that block repla
 The synthetic probe records were removed. The production Next.js HTTP smoke also passed
 against this live Redis database with local simulated providers: booking, replacement,
 arrival cleanup, session guards, and one simulated overdue alert. This proves the database
-and store operations; it does not yet prove a deployed trip flow or a hosted monitor scheduler.
+and store operations. Subsequent deployed-trip and hosted-scheduler evidence is recorded
+in the other verification sections of this document.
 
 ## Verified hosted setup and Twilio boundary (2026-09-19)
 
@@ -133,3 +134,26 @@ overdue alert body. Full alert acceptance requires an upgraded account and eligi
 No paid upgrade or phone-number purchase was made. With `DEMO_MODE=true`, Beacon's alert
 events still remain simulated even when Twilio credentials are configured.
 See [Twilio's trial restrictions](https://www.twilio.com/docs/usage/trials#pre-defined-content).
+
+## Verified hosted monitoring (2026-09-19)
+
+The existing Vercel/Upstash installation now includes `beacon-monitor`, a QStash Free
+resource in US East. Schedule `beacon-trip-monitor-v1` is active and invokes the authenticated
+production monitor every two minutes. The endpoint returned 401 without its credential
+and 200 with it. This uses real hosted scheduling; no local server or mobile timer is needed.
+
+Two synthetic trips were started through the deployed API with live ANS-verified bookings.
+Their test deadlines were accelerated in Redis to `2026-09-19T06:19:47.939Z`; one trip
+was marked arrived before that deadline. No manual monitor call or demo expiry action was
+used after fixture setup. The scheduled invocation at 06:20 UTC moved the other trip to
+OVERDUE at `06:20:00.683Z` and recorded its single simulated alert at `06:20:00.687Z`.
+The next scheduled invocation at 06:22 UTC also reported SUCCESS; the alert count remained
+one. The arrived trip retained ARRIVED, had no alert, and had no private location/contact state.
+The probe then ended the overdue trip, verified cleanup, and removed only its two synthetic
+trip records. Private operator evidence is retained locally in ignored `.vercel/monitor/`.
+
+This closes the hosted scheduling gap, including operation without browser activity.
+It does not close checkpoint E's real SMS requirement: `DEMO_MODE=true` still records
+simulated notifications. The remaining live integration gates are custom Beacon SMS,
+Akshar's Databricks adapter, and Rishit's deployed mobile flow. QStash remains on Free;
+the cadence and delivery limits are documented in `DEPLOYMENT.md`.

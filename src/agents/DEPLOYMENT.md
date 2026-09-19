@@ -103,10 +103,32 @@ of the registration schema: https://github.com/agentnameservice/ans-sdk-go.
 ## Hosted monitoring
 
 Vercel Hobby cron runs at most daily, which cannot meet a trip-monitoring deadline.
-Use an external authenticated worker/scheduler, or an approved plan supporting minute
-schedules. Nothing in this branch provisions a paid plan or silently starts a trial.
-The existing monitor route accepts POST plus its bearer token. Verify invocations while
-the mobile tab is closed before claiming hosted monitoring works.
+Beacon now uses the existing Upstash/Vercel integration's **Free QStash** resource
+`beacon-monitor` in US East. Schedule `beacon-trip-monitor-v1` calls the production
+`POST /api/trips/monitor` endpoint every two minutes with the existing bearer credential.
+It does not depend on the mobile browser, this Mac, or an in-memory Vercel timer.
+
+The schedule uses a 30-second request timeout and zero immediate retries; failed work
+is retried on the next scheduled invocation using the backend's durable state. At this
+frequency it schedules 720 deliveries per day, below the current Free plan's 1,000
+daily messages. No paid plan, Prod Pack, or paid upgrade was enabled. Allow up to one
+poll interval plus delivery/processing time after a deadline; this is not an exact-time
+dispatch guarantee. Existing outbox claims prevent repeat notification attempts.
+
+QStash receives an empty JSON body and the monitor credential, with the Authorization
+header configured for redaction in QStash logs. It does not receive trip coordinates or contact data.
+Its integration variables are server-side and scoped to production. The monitor route
+continues to reject requests without its bearer credential. `DEMO_MODE=true` still
+means notifications are simulated even though the scheduling and ANS calls are real.
+
+Manage the resource in Vercel's Upstash integration or the linked Upstash dashboard.
+To inspect delivery, use QStash's schedule details and logs filtered by
+`beacon-trip-monitor-v1`. Pause or delete that schedule when this demo is retired.
+Changing the monitor token also requires updating the forwarded Authorization header.
+The local Node monitor shares the same database when configured with these Redis
+credentials; stop local test servers before a hosted-monitor isolation test.
 
 References: [Vercel cron limits](https://vercel.com/docs/cron-jobs/usage-and-pricing),
-[GoDaddy ANS registration](https://developer.godaddy.com/en/docs/references/rest/ans/registration).
+[GoDaddy ANS registration](https://developer.godaddy.com/en/docs/references/rest/ans/registration),
+[QStash scheduling](https://upstash.com/docs/qstash/api-reference/schedules/create-a-schedule),
+[QStash plan limits](https://upstash.com/pricing/qstash).

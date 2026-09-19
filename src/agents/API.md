@@ -108,6 +108,8 @@ prove delivered. Beacon is not emergency dispatch.
 Vercel needs the marketplace's `KV_REST_API_URL` + `KV_REST_API_TOKEN` (or a complete
 `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` pair) and a scheduler
 calling `POST /api/trips/monitor` with `Authorization: Bearer <BEACON_MONITOR_TOKEN>`.
+The deployed Beacon environment uses the Free QStash `beacon-trip-monitor-v1` schedule
+every two minutes; see `DEPLOYMENT.md` for its configuration and operational limits.
 No browser interval or in-memory serverless timer is represented as reliable monitoring.
 Without a shared store, hosted trip operations fail closed. Locally, `BEACON_STATE_DIR`
 overrides the private file store in the OS temporary directory. The local store supports
@@ -125,7 +127,8 @@ only after ANS identity verification and an exact identity/endpoint match. See
   `decisionEngine.recommend(plans, context)` after its real contract lands.
 - Live ANS registration, deployed handoff/replacement, negative identity checks, and shared
   hosted storage are verified; see `IMPLEMENTATION.md` for the evidence and simulation boundaries.
-- Connect a server-side scheduler before claiming automatic Vercel monitoring.
+- Hosted scheduling is connected; its real overdue/arrival verification is recorded in
+  `IMPLEMENTATION.md`. Alert delivery is still simulated until the Twilio gate below passes.
 - Upgrade the Twilio trial and verify a custom Beacon alert with an approved recipient.
   One trial-template message was accepted, but this does not prove custom alert delivery.
 - Run the deployed mobile demo with Rishit's UI; this PR does not implement UI.
