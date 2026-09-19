@@ -60,7 +60,7 @@ export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now
     planId: `${provider.id}-${now}`, providerId: provider.id, providerName: provider.name,
     mode: provider.mode, available: q.available, cost, waitMinutes, travelMinutes, walkingMinutes,
     totalMinutes: waitMinutes + travelMinutes + walkingMinutes,
-    transfers: q.transfers === undefined ? 0 : number(q.transfers, "transfers", 10),
+    ...(q.transfers === undefined ? {} : { transfers: number(q.transfers, "transfers", 10) }),
     ...(q.reliability === undefined ? {} : { reliability: number(q.reliability, "reliability", 1) }),
     requiresProviderVerification: true,
   };

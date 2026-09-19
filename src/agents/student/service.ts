@@ -103,7 +103,7 @@ export class StudentAgent {
     const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded), 22, this.now());
     r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000; r.quoteExpirations = result.quoteExpirations; r.simulatedPlanIds = result.simulatedPlanIds;
     if (result.omittedProviderCount) this.log(r, "COLLECTING_QUOTES", "PROVIDER_LIMIT", `${result.omittedProviderCount} additional providers omitted from this bounded search`);
-    if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
+    if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} provider option(s) could not be used`);
   }
   private async evaluate(r: TripRecord) {
     const expired = (): never => this.expireSelection(r);

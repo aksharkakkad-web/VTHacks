@@ -3,9 +3,9 @@ import { test } from "node:test";
 import * as transport from "../integrations/ans/transport";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { normalizeQuote, coarseQuote, type ProviderDescriptor } from "./contract";
+import { normalizeQuote, coarseQuote, object, type ProviderDescriptor } from "./contract";
 import { HttpProvider } from "./http-provider";
-import { DemoProvider, providerHandler } from "./demo-provider";
+import { DemoProvider, demoDescriptors, providerHandler } from "./demo-provider";
 import { collectCandidates } from "./discovery";
 import { scopedProviderToken } from "./provider-credentials";
 
@@ -24,6 +24,25 @@ test("normalizes real provider wire format into the frozen CandidatePlan", () =>
   assert.equal(plan.mode, "campus_ride");
   assert.equal(plan.requiresProviderVerification, true);
   assert.equal(plan.providerId, provider.id);
+});
+
+test("a missing transfer count stays unknown through quote collection", async () => {
+  const quote = normalizeQuote(raw, provider, 1000);
+  const collected = await collectCandidates([{ descriptor: provider, quote: async () => quote }], request, new Set(), 22, 1000);
+  const option = collected.candidates.find(plan => plan.providerId === provider.id);
+  assert.ok(option);
+  assert.equal(Object.hasOwn(option, "transfers"), false);
+  assert.equal(Object.hasOwn(option, "reliability"), false);
+  assert.equal(normalizeQuote({ ...raw, transfers: 0 }, provider, 1000).transfers, 0);
+  assert.equal(normalizeQuote({ ...raw, transfers: 2 }, provider, 1000).transfers, 2);
+});
+
+test("simulated providers explicitly declare the demo's zero-transfer fixture", () => {
+  for (const descriptor of demoDescriptors) {
+    const quote = object(new DemoProvider(descriptor).handle("POST", "/agent/quote", coarseQuote(request)));
+    assert.equal(quote.simulated, true);
+    assert.equal(quote.transfers, 0);
+  }
 });
 
 test("rejects untrusted malformed, stale, mismatched and impossible quotes", () => {
