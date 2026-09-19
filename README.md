@@ -20,7 +20,7 @@ Before a PR, run `./scripts/pre-pr.sh`. It runs lint, typecheck, and production 
 
 Read [the kickoff guide](docs/Beacon_START_HERE.md) together, then review [the prepared team contract and open checks](docs/TEAM_CONTRACT.md). The product/UX track is Rishit, provider-agent/ANS/trip orchestration is Mahin, and Databricks/data/recommendation is Akshar. The [phase plan](docs/Beacon_Phase_Based_Parallel_Build_Plan.md) sequences their work and integration checkpoints. The [PRD](docs/Beacon_Final_Hackathon_PRD.md) is the product/security source of truth; [Git workflow](docs/Beacon_Git_PR_Merge_Workflow.md) covers ownership and small PRs.
 
-Do not mark the team ready to split until each person can run the repo, acknowledges the shared contracts/demo scenario, and verifies their sponsor or PWA prerequisites. Local setup alone cannot prove Databricks or ANS access.
+For this 24-hour sprint, the three tracks can start now against the shared types and mocks. Agree on the proposed demo values quickly; verify Databricks, ANS, and PWA prerequisites in parallel rather than delaying all coding. Meet at the phase plan's integration checkpoints, and do not claim a real sponsor integration until it is demonstrated.
 
 ## Repository layout
 
@@ -41,4 +41,4 @@ The empty track directories will be created by their owners as implementation be
 
 ## GitHub setup remaining
 
-The local `origin` points to `https://github.com/aksharkakkad-web/VTHacks.git`. The remote was empty at kickoff. An owner must approve and perform the initial push, then protect `main`, verify Actions on a test PR, and add Mahin/Rishit's real GitHub handles to `.github/CODEOWNERS` if desired. No push or GitHub setting changes are part of local setup.
+The local `origin` points to `https://github.com/aksharkakkad-web/VTHacks.git`. The initial push, test PR, CI, and overlap-warning run have succeeded. GitHub `main` protection is not enabled yet; add Mahin/Rishit's real GitHub handles to `.github/CODEOWNERS` if desired. Agents should run the local scripts themselves and use the checkpoint plan for integration.

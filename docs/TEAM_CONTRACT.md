@@ -1,6 +1,6 @@
 # Beacon team contract — proposed kickoff baseline
 
-This is the implementation baseline prepared from `Beacon_START_HERE.md` and the build-locked PRD. The three teammates must acknowledge the shared contracts and demo decisions before independent feature work. Treat sponsor access checks as open until each owner verifies them.
+This is the implementation baseline prepared from `Beacon_START_HERE.md` and the build-locked PRD. For the 24-hour sprint, start the three tracks with mocks while confirming shared contracts and demo decisions in parallel. Treat sponsor access checks as open until each owner verifies them.
 
 ## Stack and boundaries
 
@@ -50,4 +50,5 @@ All methods below are `POST`. These are contracts for future implementation, **n
 - [ ] Akshar verifies Databricks access and a `SELECT 1` query.
 - [ ] Mahin verifies ANS documentation/credentials and starts provider registration.
 - [ ] Rishit verifies map token/geolocation and chooses product visual references.
-- [ ] GitHub `main` protection, CI, and a test PR are verified after the initial push.
+- [x] Initial push, CI, and a test PR are verified.
+- [ ] GitHub `main` protection is enabled.

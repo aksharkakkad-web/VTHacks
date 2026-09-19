@@ -1,6 +1,6 @@
 # Beacon — One-Time Repository Setup
 
-> Local foundation status: repository initialization, Next.js scaffold, shared types, scripts, and CI files are done. Use `README.md` for current commands. The initial push, GitHub settings, test PR, teammate handles, and sponsor access checks remain pending. The example setup commands below are historical guidance, not steps to repeat in this populated folder.
+> Local foundation status: repository initialization, Next.js scaffold, shared types, scripts, initial push, test PR, and CI are done. Use `README.md` for current commands. Branch protection, teammate handles, and sponsor access checks remain pending. The example setup commands below are historical guidance, not steps to repeat in this populated folder.
 
 **One teammate runs this setup. Everyone else joins after it is complete.**
 

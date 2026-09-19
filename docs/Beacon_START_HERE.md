@@ -1,5 +1,7 @@
 # Beacon — START HERE
 
+> 24-hour sprint update: begin independent track work now using the shared types and mocks. Complete account access, demo sign-off, and remaining checklist items in parallel; use checkpoints A–G in the phase plan to integrate. The checklist below remains a risk tracker, not a reason to idle all three tracks.
+
 **Read this together before anyone splits off.**
 
 This document is only for kickoff/setup.<br>
