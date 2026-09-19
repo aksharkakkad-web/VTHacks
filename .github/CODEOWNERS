@@ -1,0 +1,7 @@
+# Replace or add the other teammates' GitHub handles after they confirm them.
+# Until then, the known repository owner reviews shared and track changes.
+* @aksharkakkad-web
+/.github/ @aksharkakkad-web
+/src/types/ @aksharkakkad-web
+/package.json @aksharkakkad-web
+/.env.example @aksharkakkad-web

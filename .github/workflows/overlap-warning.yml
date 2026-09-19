@@ -1,0 +1,20 @@
+name: Overlap warning
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  warn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare open PR files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_PR: ${{ github.event.pull_request.number }}
+        run: ./scripts/check-overlap.sh "$CURRENT_PR"
