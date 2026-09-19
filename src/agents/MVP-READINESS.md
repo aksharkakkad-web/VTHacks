@@ -3,7 +3,10 @@
 Mahin's deployed coordination path passed three consecutive API runs with live
 ANS verification and the explicitly labeled local decision fallback. This is
 backend checkpoint G evidence. It does not mark the deployed mobile UI, a live
-Databricks decision, or actual transportation as verified.
+hosted Databricks decision, or actual transportation as verified. A subsequent
+local HTTP run passed with actual Databricks decisions and live ANS, closing
+Mahin's checkpoint C piece. See `DATABRICKS-VERIFICATION.md` for the evidence and
+the remaining hosted-authentication boundary.
 
 ## Deployed version
 
@@ -56,12 +59,14 @@ restriction; the same suite passed with that access enabled, without code change
 
 ## Remaining team integration
 
-1. **Live Databricks in this deployment (checkpoint C):** add approved server-only
-   `DATABRICKS_HOST`, `DATABRICKS_WAREHOUSE_ID`, and `DATABRICKS_TOKEN`, then verify
-   an actual hosted trip emits `DATABRICKS_EVALUATION`. Akshar's separately recorded
-   workspace tests are not evidence that this deployment has those credentials.
-   The additive research uploader is prepared but no warehouse upload was executed
-   from this checkout. See `docs/PUBLIC_EVIDENCE_DATABRICKS.md`.
+1. **Live Databricks in this deployment:** the local Student Agent now passed a
+   complete HTTP trip with actual Databricks decisions and live ANS. Production
+   still needs approved server authentication, managed-table settings, and an
+   actual hosted trip emitting `DATABRICKS_EVALUATION`. The supplied local token
+   expires September 19 at 16:41:29 UTC; it was not copied to Vercel. The current
+   adapter does not yet renew OAuth tokens from client ID/secret credentials.
+   See `DATABRICKS-VERIFICATION.md` and `docs/PUBLIC_EVIDENCE_DATABRICKS.md` for
+   local trip and warehouse-import verification.
 2. **Mobile presentation and navigation (Rishit):** wire the documented trip calls
    and evidence view, show fallback/source labels, display provider names rather
    than backend domains, and run the phone/second-device demo. The API regression
@@ -70,7 +75,9 @@ restriction; the same suite passed with that access enabled, without code change
    letter on this branch becomes a shared board signal only after merge to `main`
    and successful CI; no approval or merge was bypassed.
 
-Mahin's A/B/D/E/F/G readiness is recorded; C remains open. Telegram replaces SMS
+Mahin's A/B/C/D/E/F/G readiness is recorded on this branch; C was checked through
+the local HTTP runtime, while hosted Databricks authentication remains open.
+Telegram replaces SMS
 per the user's instruction. New private Telegram recipients still require their
 own bot start, explicit contact consent, and server allowlisting.
 
