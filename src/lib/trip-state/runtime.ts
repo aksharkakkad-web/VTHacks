@@ -19,7 +19,9 @@ export function getRuntime(): Runtime {
   const store = redisUrl && redisToken ? new RedisTripStore(redisUrl, redisToken) : new FileTripStore(process.env.BEACON_STATE_DIR ?? join(tmpdir(), "beacon-trips-local"));
   const directory = demo && process.env.BEACON_ANS_MODE !== "live" ? new LocalDemoDirectory(demoDescriptors, true) : new GoDaddyDirectory({ apiBase: process.env.ANS_BASE_URL, apiKey: process.env.ANS_API_KEY, query: process.env.BEACON_ANS_QUERY });
   const agent = new StudentAgent({ store, directory, demo,
-    provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: process.env.BEACON_PROVIDER_TOKEN }),
+    // The shared demo token belongs only to our configured loopback providers.
+    // ANS discovery must never cause that credential to be sent to a third party.
+    provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : undefined }),
     recommend: async (plans, context) => { if (!demo) throw new Error("Databricks decision adapter is not connected yet"); return demoRecommendation(plans, context); },
     notify: notificationSender({ demo, accountSid: process.env.TWILIO_ACCOUNT_SID, authToken: process.env.TWILIO_AUTH_TOKEN, from: process.env.TWILIO_FROM_NUMBER }),
     graceMinutes: Number(process.env.BEACON_GRACE_MINUTES ?? 5),

@@ -1,5 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
+import * as transport from "../integrations/ans/transport";
 import { createServer } from "node:http";
 import { once } from "node:events";
 import { normalizeQuote, coarseQuote, type ProviderDescriptor } from "./contract";
@@ -66,4 +67,14 @@ test("untrusted HTTP and private provider endpoints are blocked outside explicit
   for (const baseUrl of ["http://example.com", "http://127.0.0.1", "https://127.0.0.1", "https://localhost", "https://user:password@example.com", "https://example.com:8443"]) {
     assert.throws(() => new HttpProvider({ ...provider, source: "ans", baseUrl }));
   }
+});
+
+test("public quotes never receive provider credentials", async (t) => {
+  const headers: unknown[] = [];
+  t.mock.method(transport, "publicJson", async (_url: string, options: { headers?: unknown }) => {
+    headers.push(options.headers); return { value: raw };
+  });
+  const live = { ...provider, source: "ans" as const, baseUrl: "https://provider.example", agentHost: "provider.example" };
+  await new HttpProvider(live, { token: "fixture-secret" }).quote(request);
+  assert.deepEqual(headers, [{}]);
 });

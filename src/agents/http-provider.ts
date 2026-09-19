@@ -20,13 +20,16 @@ export class HttpProvider implements ProviderAgent {
     this.base = providerUrl(descriptor.baseUrl, descriptor.source === "demo" && options.allowLocalDemo);
   }
   private async call(path: string, method = "GET", body?: unknown): Promise<unknown> {
+    // Quote discovery is public and precedes identity verification. It must never
+    // carry a credential, even when this client also supports authenticated booking.
+    const authorization: Record<string, string> = path !== "/agent/quote" && this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {};
     if (this.descriptor.source !== "demo") {
       if (path !== "/agent/quote" && !this.options.pin) throw new Error("Sensitive provider calls require an ANS certificate pin");
-      return (await publicJson(`${this.base.href.replace(/\/$/, "")}${path}`, { method, body, pin: this.options.pin, timeoutMs: this.options.timeoutMs, headers: this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {} })).value;
+      return (await publicJson(`${this.base.href.replace(/\/$/, "")}${path}`, { method, body, pin: this.options.pin, timeoutMs: this.options.timeoutMs, headers: authorization })).value;
     }
     const response = await fetch(`${this.base.href.replace(/\/$/, "")}${path}`, {
       method, redirect: "error", signal: AbortSignal.timeout(this.options.timeoutMs ?? 4000),
-      headers: { "Content-Type": "application/json", ...(this.options.token ? { Authorization: `Bearer ${this.options.token}` } : {}) },
+      headers: { "Content-Type": "application/json", ...authorization },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
     if (!response.ok) throw new Error(`Provider request failed (${response.status})`);
