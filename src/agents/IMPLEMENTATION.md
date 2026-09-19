@@ -5,7 +5,7 @@ No shared type, UI, or Databricks ranking changes are planned.
 
 ## Delivery slices
 
-- [ ] Provider contract: validated coarse quotes, three independently callable HTTP providers,
+- [x] Provider contract: validated coarse quotes, three independently callable HTTP providers,
   walking candidate, timeout isolation, deterministic demo fixtures, provider status/cancellation.
   Files: `src/agents/{contract,http-provider,demo-provider,discovery}.ts`, provider tests.
 - [ ] ANS: registry discovery/resolution, verification evidence, fail-closed authorization,
@@ -55,3 +55,11 @@ References inspected: Databricks AI Dev Kit, agentnameservice/ans-registry,
 agentnameservice/ans, agentnameservice/ans-sdk-go, agentnameservice/agent-trust-discovery,
 and the live Webmesh AI catalog. Trust Index scores are advisory; they cannot substitute
 for identity verification or Beacon's authorization policy.
+
+## Verified local checkpoint (2026-09-19)
+
+15 behavioral tests and the real HTTP smoke pass. The smoke exercises session ownership,
+confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
+geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
+build, lint and typecheck pass. Shared checkpoints A/B are ready for integration. Live ANS,
+Databricks, SMS, hosted persistence/scheduling, and deployed UI verification remain open.

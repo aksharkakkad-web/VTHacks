@@ -1,0 +1,190 @@
+import { randomUUID } from "node:crypto";
+import type { CandidatePlan } from "../../types/provider";
+import type { Recommendation } from "../../types/recommendation";
+import type { ProviderAgent, ProviderDescriptor } from "../contract";
+import { object, point } from "../contract";
+import type { AgentDirectory, VerifiedIdentity } from "../../integrations/ans/directory";
+import { authorize } from "../../lib/authorization/policy";
+import { owns, requireState, transition, TripError, type TripRecord, type TripContext, type Contact } from "../../lib/trip-state/model";
+import type { TripStore } from "../../lib/trip-state/store";
+import { distanceMeters } from "../../lib/trip-state/geofence";
+import { collectCandidates } from "../discovery";
+import { parseTripInput } from "./input";
+
+export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline";
+export type Dependencies = {
+  store: TripStore; directory: AgentDirectory; demo: boolean; clock?: () => number; graceMinutes?: number;
+  provider: (descriptor: ProviderDescriptor, identity?: VerifiedIdentity) => ProviderAgent;
+  recommend: (plans: CandidatePlan[], context: TripContext) => Promise<Recommendation>;
+  notify: (contact: Contact, message: string, key: string) => Promise<{ id: string; simulated: boolean }>;
+};
+const activeStates = ["NAVIGATING", "WAITING_FOR_PICKUP", "IN_TRIP", "OVERDUE"] as const;
+export class StudentAgent {
+  private readonly now: () => number;
+  constructor(private readonly deps: Dependencies) { this.now = deps.clock ?? Date.now; }
+  async create(owner: string, input: unknown) {
+    const record: TripRecord = { trip: { id: randomUUID(), state: "OBJECTIVE_RECEIVED", candidates: [], providerVerified: false, sensitiveDataReleased: false, alertSent: false, statusMessage: "Finding a way home" }, owner, ...parseTripInput(input, this.deps.demo, this.now()), providers: [], excluded: [], confirmed: false, quoteDeadline: 0, replanCount: 0, events: [] };
+    transition(record, "OBJECTIVE_RECEIVED", "OBJECTIVE_RECEIVED", "Trip objective received", this.now());
+    await this.deps.store.create(record); return record.trip;
+  }
+  async read(id: string, owner: string) { const record = await this.deps.store.read(id); owns(record, owner); return record.trip; }
+  async events(id: string, owner: string) { const record = await this.deps.store.read(id); owns(record, owner); return record.events; }
+  async providerEvent(id: string, providerId: string, bookingId: string, event: string) {
+    return this.deps.store.update(id, async (r) => {
+      if (r.booking?.providerId !== providerId || r.booking.id !== bookingId) throw new TripError("STALE_PROVIDER_EVENT", "Event does not belong to the active booking");
+      requireState(r, [...activeStates]);
+      if (event === "provider.cancelled") await this.recover(r);
+      else if (event === "provider.in_trip") this.log(r, "IN_TRIP", "PROVIDER_IN_TRIP", "Trip in progress");
+      else if (event === "provider.completed") await this.arrive(r);
+      else throw new TripError("INVALID_EVENT", "Unsupported provider event", 400);
+      return r.trip;
+    });
+  }
+  async reset(owner: string) {
+    if (!this.deps.demo) throw new TripError("DEMO_DISABLED", "Demo controls are disabled", 404);
+    for (const id of await this.deps.store.list()) {
+      await this.deps.store.update(id, async (r) => {
+        if (r.owner !== owner) return;
+        if (r.private) await this.arrive(r);
+        this.log(r, "FAILED", "DEMO_RESET", "Demo trip reset");
+      });
+    }
+  }
+  async act(id: string, owner: string, action: Action, input: unknown = {}) {
+    return this.deps.store.update(id, async (record) => {
+      owns(record, owner);
+      if (action === "discover") { requireState(record, ["OBJECTIVE_RECEIVED", "COLLECTING_QUOTES"]); await this.discover(record); }
+      if (action === "evaluate") { requireState(record, ["COLLECTING_QUOTES", "SELECTED"]); if (record.confirmed) throw new TripError("ALREADY_CONFIRMED", "Plan is already confirmed"); await this.evaluate(record); }
+      if (action === "confirm") { requireState(record, ["SELECTED"]); if (record.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Refresh the recommendation before confirming"); record.confirmed = true; this.log(record, "SELECTED", "USER_CONFIRMED", "Plan confirmed"); }
+      if (action === "verify") { requireState(record, ["SELECTED"]); await this.verify(record); }
+      if (action === "request") {
+        if (record.booking && (activeStates as readonly string[]).includes(record.trip.state)) return record.trip;
+        requireState(record, ["SELECTED", "VERIFYING_PROVIDER"]); await this.coordinate(record);
+      }
+      if (action === "location") await this.location(record, input);
+      if (action === "arrive") { requireState(record, [...activeStates, "ARRIVED"]); if (record.trip.state !== "ARRIVED") await this.arrive(record); }
+      if (action === "cancel-provider") { if (!this.deps.demo) throw new TripError("DEMO_DISABLED", "Demo controls are disabled", 404); requireState(record, ["WAITING_FOR_PICKUP", "IN_TRIP"]); await this.recover(record); }
+      if (action === "expire-deadline") { if (!this.deps.demo) throw new TripError("DEMO_DISABLED", "Demo controls are disabled", 404); requireState(record, [...activeStates]); record.trip.alertDeadlineAt = new Date(this.now() - 1).toISOString(); await this.checkDeadline(record); }
+      return structuredClone(record.trip);
+    });
+  }
+  private log(r: TripRecord, state: TripRecord["trip"]["state"], code: string, message: string) { transition(r, state, code, message, this.now()); }
+  private selectedProvider(r: TripRecord) { const p = r.providers.find((p) => p.id === r.trip.selectedPlan?.providerId); if (!p) throw new TripError("PROVIDER_MISSING", "Selected provider is unavailable"); return p; }
+  private async discover(r: TripRecord) {
+    this.log(r, "DISCOVERING", "DISCOVERY_STARTED", "Finding transportation providers");
+    try { r.providers = await this.deps.directory.discover(); }
+    catch { this.log(r, "FAILED", "DISCOVERY_FAILED", "Provider discovery is unavailable; no location was shared"); throw new TripError("DISCOVERY_FAILED", "Provider discovery unavailable", 503); }
+    this.log(r, "COLLECTING_QUOTES", "COARSE_QUOTES", "Requesting quotes using approximate zones only");
+    const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded));
+    r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000;
+    if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
+  }
+  private async evaluate(r: TripRecord) {
+    if (r.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quotes expired; refresh providers");
+    this.log(r, "EVALUATING", "EVALUATION_STARTED", "Evaluating transportation options");
+    let recommendation: Recommendation;
+    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }); }
+    catch { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
+    const plan = r.trip.candidates.find((p) => p.planId === recommendation.selectedPlanId && p.available && p.cost <= r.context.maxBudget && !r.excluded.includes(p.providerId ?? ""));
+    if (!plan || !Array.isArray(recommendation.reasonCodes) || !recommendation.reasonCodes.every((c) => typeof c === "string") || typeof recommendation.explanation !== "string" || !Number.isFinite(Date.parse(recommendation.evaluatedAt))) { this.log(r, "FAILED", "INVALID_RECOMMENDATION", "No valid plan fits the approved constraints"); throw new TripError("INVALID_RECOMMENDATION", "Decision engine returned an invalid plan", 502); }
+    r.trip.recommendation = recommendation; r.trip.selectedPlan = plan; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = false; delete r.identity;
+    this.log(r, "SELECTED", "PLAN_SELECTED", `${plan.providerName} recommended; awaiting confirmation`);
+  }
+  private async verify(r: TripRecord) {
+    if (!r.confirmed) throw new TripError("CONFIRMATION_REQUIRED", "Confirm the plan before provider verification");
+    const plan = r.trip.selectedPlan; if (!plan) throw new TripError("PLAN_REQUIRED", "Select a plan first");
+    if (plan.mode === "walk" || plan.mode === "transit") return;
+    this.log(r, "VERIFYING_PROVIDER", "VERIFY_STARTED", "Checking provider identity and permissions");
+    try {
+      const provider = this.selectedProvider(r); r.identity = await this.deps.directory.verify(provider);
+      if (!authorize(provider, r.identity, r.confirmed, this.deps.demo, this.now()).preciseLocation) throw new Error("Policy denied");
+      r.trip.providerVerified = r.identity.source === "ans";
+      this.log(r, "VERIFYING_PROVIDER", r.trip.providerVerified ? "ANS_VERIFIED" : "LOCAL_DEMO_TRUST", r.trip.providerVerified ? "Provider identity verified through ANS" : "Local demo provider pretrusted; live ANS not used");
+    } catch { delete r.identity; r.trip.providerVerified = false; this.log(r, "SELECTED", "VERIFICATION_DENIED", "Provider verification failed; precise location withheld"); throw new TripError("VERIFICATION_DENIED", "Provider verification or authorization failed", 403); }
+  }
+  private async coordinate(r: TripRecord) {
+    if (!r.confirmed || !r.private || !r.trip.selectedPlan) throw new TripError("CONFIRMATION_REQUIRED", "Confirm a plan before requesting a trip");
+    if (r.quoteDeadline <= this.now()) throw new TripError("QUOTE_EXPIRED", "Quote expired before coordination");
+    const plan = r.trip.selectedPlan;
+    if (plan.mode === "walk" || plan.mode === "transit") { this.startMonitoring(r); this.log(r, "NAVIGATING", "NAVIGATION_STARTED", "Navigation started; no precise data shared with a provider"); return; }
+    const provider = this.selectedProvider(r);
+    if (!authorize(provider, r.identity, r.confirmed, this.deps.demo, this.now()).preciseLocation) throw new TripError("VERIFICATION_REQUIRED", "A current verified and authorized provider is required", 403);
+    this.log(r, "COORDINATING", "POLICY_ALLOWED", "Precise pickup and destination permitted for this provider");
+    r.trip.sensitiveDataReleased = true;
+    try {
+      const result = await this.deps.provider(provider, r.identity).requestTrip({ tripId: `${r.trip.id}-${r.replanCount}`, pickup: r.private.origin, destination: r.private.home });
+      if (!["accepted", "waiting"].includes(result.status)) throw new Error("Provider rejected trip");
+      r.booking = { providerId: provider.id, id: result.id }; this.startMonitoring(r);
+      this.log(r, "WAITING_FOR_PICKUP", "PROVIDER_ACCEPTED", `${plan.providerName} accepted your trip`);
+    } catch {
+      // A timeout may mean the provider accepted. Keep the idempotency key and require
+      // status reconciliation rather than silently booking another provider.
+      this.log(r, "FAILED", "BOOKING_UNCERTAIN", "Provider response unavailable; booking status needs checking");
+      throw new TripError("BOOKING_UNCERTAIN", "Provider response unavailable; do not create a duplicate booking", 502);
+    }
+  }
+  private startMonitoring(r: TripRecord) {
+    const eta = this.now() + r.trip.selectedPlan!.totalMinutes * 60_000;
+    r.trip.expectedArrivalAt = new Date(eta).toISOString();
+    r.trip.alertDeadlineAt = new Date(eta + (this.deps.graceMinutes ?? 5) * 60_000).toISOString();
+  }
+  private async recover(r: TripRecord) {
+    if (!r.booking) throw new TripError("NO_BOOKING", "No provider booking to replace");
+    const failed = this.selectedProvider(r);
+    await this.deps.provider(failed, r.identity).cancelTrip(r.booking.id);
+    r.excluded.push(failed.id); delete r.booking; delete r.identity;
+    r.trip.providerVerified = false; r.trip.sensitiveDataReleased = false; r.replanCount++;
+    this.log(r, "PROVIDER_FAILED", "PROVIDER_CANCELLED", "Your provider cancelled; finding a replacement");
+    if (r.replanCount > 3) { this.log(r, "FAILED", "RECOVERY_LIMIT", "No replacement is available within your constraints"); return; }
+    this.log(r, "REPLANNING", "REPLAN_STARTED", "Replanning within your approved budget and preferences");
+    await this.discover(r); await this.evaluate(r); await this.verify(r); await this.coordinate(r);
+  }
+  private async location(r: TripRecord, input: unknown) {
+    requireState(r, [...activeStates]); const raw = object(input); const location = point(raw);
+    const recorded = Date.parse(String(raw.recordedAt ?? new Date(this.now()).toISOString()));
+    if (!Number.isFinite(recorded) || recorded > this.now() + 30_000 || recorded < this.now() - 120_000 || (r.trip.lastKnownLocation && recorded <= Date.parse(r.trip.lastKnownLocation.recordedAt))) throw new TripError("INVALID_LOCATION_TIME", "Location timestamp is stale or out of order", 400);
+    r.trip.lastKnownLocation = { ...location, recordedAt: new Date(recorded).toISOString() };
+    if (r.private && distanceMeters(location, r.private.home) <= 75) await this.arrive(r);
+  }
+  private async arrive(r: TripRecord) {
+    if (r.booking) {
+      try { await this.deps.provider(this.selectedProvider(r), r.identity).cancelTrip(r.booking.id); }
+      catch { this.log(r, r.trip.state, "ACCESS_REVOCATION_PENDING", "Arrival recorded; provider cleanup needs retry"); }
+    }
+    delete r.private; delete r.identity; delete r.booking; delete r.trip.lastKnownLocation; delete r.trip.alertDeadlineAt;
+    r.trip.sensitiveDataReleased = false; r.trip.providerVerified = false;
+    this.log(r, "ARRIVED", "TRIP_COMPLETED", "Home reached; location sharing ended");
+  }
+  async monitor() {
+    for (const id of await this.deps.store.list()) {
+      await this.deps.store.update(id, async (r) => {
+        if (!(activeStates as readonly string[]).includes(r.trip.state)) return;
+        if (r.booking && r.trip.state !== "OVERDUE") {
+          try {
+            const result = await this.deps.provider(this.selectedProvider(r), r.identity).getStatus(r.booking.id);
+            if (result.status === "cancelled") { await this.recover(r); return; }
+            if (result.status === "completed") { await this.arrive(r); return; }
+            if (result.status === "in_trip" && r.trip.state !== "IN_TRIP") this.log(r, "IN_TRIP", "PROVIDER_IN_TRIP", "Trip in progress");
+          } catch { /* Provider status outage must not disable the overdue deadline. */ }
+        }
+        await this.checkDeadline(r);
+      }).catch(() => { /* A corrupt/unavailable record must not stop other monitors. */ });
+    }
+  }
+  private async checkDeadline(r: TripRecord) {
+    if (!r.trip.alertDeadlineAt || Date.parse(r.trip.alertDeadlineAt) > this.now() || r.trip.state === "ARRIVED") return;
+    if (r.trip.state !== "OVERDUE") { r.lastStatusBeforeOverdue = r.trip.state; this.log(r, "OVERDUE", "TRIP_OVERDUE", "Trip is overdue; please check in"); }
+    const contact = r.private?.contact;
+    if (!contact?.consent || r.notification) return;
+    const location = contact.shareLocation && r.trip.lastKnownLocation ? ` Last known location: ${r.trip.lastKnownLocation.lat}, ${r.trip.lastKnownLocation.lng} (${r.trip.lastKnownLocation.recordedAt}).` : "";
+    r.notification = { state: "sending" };
+    // Persist the outbox claim before the external send. An ambiguous/crashed send
+    // is not automatically retried, since SMS providers cannot promise exactly once.
+    await this.deps.store.checkpoint(r);
+    try {
+      const message = await this.deps.notify(contact, `Beacon trip is overdue. Last trip status: ${r.lastStatusBeforeOverdue}. Please check in.${location}`, r.trip.id);
+      r.notification = { state: message.simulated ? "simulated" : "sent", id: message.id }; r.trip.alertSent = !message.simulated;
+      this.log(r, "OVERDUE", message.simulated ? "DEMO_ALERT" : "ALERT_SENT", message.simulated ? "Demo alert recorded; no SMS was sent" : "Trusted-contact alert accepted by SMS service");
+    } catch { r.notification = { state: "uncertain" }; this.log(r, "OVERDUE", "ALERT_UNCERTAIN", "SMS acceptance could not be confirmed; check your contact directly"); }
+  }
+}
