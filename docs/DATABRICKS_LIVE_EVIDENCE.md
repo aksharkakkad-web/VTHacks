@@ -8,7 +8,7 @@ Actual 20-run read-only measurement is recorded in `data/campus/latency-readonly
 
 Dashboard visual QA remains pending: the current browser visit redirected to Databricks sign-in. API widget readback is not visual verification. Local fresh construction/weather and routes have not been uploaded, so managed version mismatch must remain visible. Public-source quantities, source hashes and capture times are in the linked full-transit/pilot manifests and current report.
 
-Fresh local verification: 92 track, 74 agent, 73 ingestion, six refresh-job and 17 public-import/native-public-import/latency tests passed; `./scripts/pre-pr.sh` passed lint, four checkpoint tests, typecheck and production build. Ingestion used bundled workspace Python because the shell-default interpreter lacks the existing PDF parser. The full-transit generator has a separate local test/review record; no real Spark/SQL execution is implied by these tests.
+Fresh local verification: 92 track, 74 agent, 73 ingestion, six refresh-job, 17 public-import/native-public-import/latency and six full-transit native-generator tests passed; `./scripts/pre-pr.sh` passed lint, four checkpoint tests, typecheck and production build. Ingestion used bundled workspace Python because the shell-default interpreter lacks the existing PDF parser. Independent review and fixes are recorded in the current report; no real Spark/SQL execution is implied by these local tests.
 
 ## Version 4: expanded evidence and local backend integration (September 19, 15:08–15:34 UTC)
 
