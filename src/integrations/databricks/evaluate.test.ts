@@ -49,6 +49,14 @@ test("managed route context changes the score with traceable evidence", () => {
   assert.equal(result.ranked[0].evidence?.historicalReports?.count, 2);
 });
 
+test("unknown managed closure and alert values remain unknown, not confirmed false",()=>{
+  const response=calculated();
+  response.rows[0][3]=JSON.stringify({corridorId:"demo-campus",contextVersion:"unknowns",walkingPathClosed:null,activeOfficialAlert:null});
+  const result=validateEvaluationResult(response,plans,context,signals);
+  assert.equal(result.ranked[0].evidence?.walkingPathClosed,undefined);
+  assert.equal(result.ranked[0].evidence?.activeOfficialAlert,undefined);
+});
+
 test("mismatched score, duplicate plan, unknown plan, and wrong context are rejected", async () => {
   for (const mutate of [
     (r: StatementResult) => { r.rows[0][1] = "0"; },
@@ -70,6 +78,10 @@ test("SQL uses parameters, managed tables are validated, audit strips unapproved
   assert.ok(sql.includes(":candidates_json"));
   assert.ok(sql.includes("score_units"));
   assert.ok(sql.includes("SELECT rc.* FROM"), "Campus CTE must not export a duplicate ctx column");
+  assert.ok(sql.includes("source_id = 'nws-hourly'"));
+  assert.ok(sql.includes("source_id = 'nws-alerts'"));
+  assert.ok(sql.includes("startswith(rc.context_version"), "Superseded alert intervals cannot remain eligible");
+  assert.ok(sql.includes("rc.valid_from <="));
   assert.throws(() => buildEvaluationSql("workspace.beacon.route_context; DROP SCHEMA beacon"));
   const params = evaluationParameters(prepareDecision(plans, context, signals));
   assert.ok(!JSON.stringify(params).includes("Campus Ride"));

@@ -9,6 +9,7 @@ export async function loadScheduledTransit(
 ) {
   // Validate the request even when there are no rows.
   selectScheduledTransit([], request);
+  const manifestTable=workspace.transitTable.split('.').slice(0,2).join('.')+'.source_manifest';
   const result = await executeStatement(workspace, {
     statement: `SELECT corridor_id, trip_id, route_id, route_name, CAST(service_date AS STRING) service_date,
       CAST(unix_millis(departure_at) AS STRING) departure_at,
@@ -17,6 +18,7 @@ export async function loadScheduledTransit(
       FROM ${qualifiedTable(workspace.transitTable)}
       WHERE corridor_id = :corridor AND departure_at > CAST(:at AS TIMESTAMP)
         AND departure_at <= timestampadd(MINUTE, :horizon, CAST(:at AS TIMESTAMP))
+        AND right(source_version, 12) = (SELECT substring(sha256, 1, 12) FROM ${qualifiedTable(manifestTable)} WHERE source_id = 'bt-gtfs' LIMIT 1)
       ORDER BY arrival_at, trip_id LIMIT 32`,
     parameters: [
       { name:"corridor", value:request.corridorId, type:"STRING" },

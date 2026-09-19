@@ -3,10 +3,46 @@ import json
 import unittest
 from datetime import date, datetime
 
-from refresh_campus import OUT, expand_departures, gtfs_seconds, service_active
+from refresh_campus import OUT, expand_departures, gtfs_seconds, service_active, weather_context
 
 
 class ScheduleTests(unittest.TestCase):
+    def test_weather_hour_windows_and_severe_alert(self):
+        from datetime import timezone
+        now = datetime(2026, 9, 19, 12, 10, tzinfo=timezone.utc)
+        periods = [{"start_at": f"2026-09-19T{hour:02d}:00:00Z", "end_at": f"2026-09-19T{hour+1:02d}:00:00Z",
+                    "short_forecast": "Sunny", "precipitation_probability": 0} for hour in range(12, 20)]
+        alerts = [{"severity": "Severe", "onset": "2026-09-19T13:00:00Z", "expires": "2026-09-19T14:00:00Z"}]
+        rows = weather_context(periods, alerts, now, "https://api.weather.gov/forecast", "abc", now)
+        one = [r for r in rows if r["corridor_id"] == "newman-pritchard"]
+        self.assertEqual(len(one), 8)
+        self.assertEqual(one[0]["weather"], "clear")
+        self.assertEqual(one[1]["weather"], "severe")
+        self.assertTrue(one[1]["active_official_alert"])
+        self.assertEqual(one[-1]["valid_until"], "2026-09-19T20:00:00Z")
+        self.assertEqual(one[1]["valid_from"], "2026-09-19T13:00:00Z")
+        self.assertEqual(one[1]["updated_at"], "2026-09-19T12:10:00Z")
+        with self.assertRaisesRegex(ValueError, "stale"):
+            weather_context(periods, alerts, now, "https://api.weather.gov/forecast", "abc",
+                            datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc))
+
+    def test_partial_hour_severe_alert_splits_validity(self):
+        from datetime import timezone
+        now = datetime(2026, 9, 19, 12, 0, tzinfo=timezone.utc)
+        periods = [{"start_at": "2026-09-19T12:00:00Z", "end_at": "2026-09-19T13:00:00Z",
+                    "short_forecast": "Sunny", "precipitation_probability": 0}]
+        alerts = [{"severity": "Severe", "onset": "2026-09-19T12:30:00Z", "expires": "2026-09-19T12:45:00Z"}]
+        rows = weather_context(periods, alerts, now, "https://api.weather.gov/forecast", "forecastsha", now,
+                               "alertsha")
+        one = [r for r in rows if r["corridor_id"] == "newman-pritchard"]
+        self.assertEqual([(r["valid_from"], r["valid_until"], r["weather"]) for r in one], [
+            ("2026-09-19T12:00:00Z", "2026-09-19T12:30:00Z", "clear"),
+            ("2026-09-19T12:30:00Z", "2026-09-19T12:45:00Z", "severe"),
+            ("2026-09-19T12:45:00Z", "2026-09-19T13:00:00Z", "clear")])
+        later = weather_context(periods, [], now.replace(minute=5), "https://api.weather.gov/forecast",
+                                "forecastsha", now, "newalertsha")
+        self.assertNotEqual(one[1]["context_version"], later[0]["context_version"])
+        self.assertTrue(one[1]["context_version"].startswith("nws-forecastsha-alertsha-"))
     def test_overnight_gtfs_time(self):
         self.assertEqual(gtfs_seconds("25:10:00"), 90600)
         with self.assertRaises(ValueError):
@@ -27,6 +63,16 @@ class ScheduleTests(unittest.TestCase):
         result = expand_departures(snapshot, [date(2026, 9, 19)])
         self.assertEqual(result[0]["departure_at"], "2026-09-20T05:10:00Z")
         self.assertEqual(result[0]["travel_minutes"], 10)
+
+    def test_real_feed_hash_versions_departures(self):
+        snapshot = {"agency_timezone": "America/New_York", "calendar": [],
+                    "calendar_dates": [{"service_id": "A", "date": "20260919", "exception_type": "1"}],
+                    "route": {"route_long_name": "Test"}, "feed_info": {"feed_version": "v42"},
+                    "source_sha256": "abcdef123456" + "0" * 52,
+                    "patterns": [{"trip_id": "T", "route_id": "CAS", "service_id": "A",
+                                  "departure_time": "25:10:00", "arrival_time": "25:20:00"}]}
+        rows = expand_departures(snapshot, [date(2026, 9, 19)])
+        self.assertEqual(rows[0]["source_version"], "v42:abcdef123456")
 
 
 class RealSnapshotTests(unittest.TestCase):

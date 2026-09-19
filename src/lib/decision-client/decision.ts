@@ -3,7 +3,7 @@ import type { Recommendation } from "../../types/recommendation";
 
 export type DecisionPriority = "balanced" | "lowest_cost" | "less_exposed";
 export type PolicyVersion = "beacon-v1" | "beacon-v2";
-export type SignalSource = "simulated" | "scheduled" | "live";
+export type SignalSource = "simulated" | "scheduled" | "live" | "mapped";
 export type PlanSignals = {
   source: SignalSource;
   collectedAt?: string;
@@ -105,7 +105,8 @@ export function prepareDecision(candidates: CandidatePlan[], input: DecisionCont
     if (!reasons.length && Math.abs(seconds(plan.totalMinutes) - seconds(plan.waitMinutes) - seconds(plan.travelMinutes) - seconds(plan.walkingMinutes)) > 1) reasons.push("INVALID_TOTAL");
     if (reasons.length) { rejected[plan.planId] = reasons; continue; }
     const facts = signals[plan.planId] ?? null;
-    if (facts && (!["simulated", "scheduled", "live"].includes(facts.source) || (facts.corridorId !== undefined && !isId(facts.corridorId)))) reasons.push("INVALID_EVIDENCE");
+    if (facts && (!["simulated", "scheduled", "live", "mapped"].includes(facts.source) || (facts.corridorId !== undefined && !isId(facts.corridorId)))) reasons.push("INVALID_EVIDENCE");
+    if (facts?.source === "mapped" && (plan.mode !== "walk" || !facts.dataVersion || !facts.validUntil)) reasons.push("INVALID_MAP_EVIDENCE");
     if (facts?.weather !== undefined && !["clear", "rain", "severe", "unknown"].includes(facts.weather)) reasons.push("INVALID_EVIDENCE");
     if (facts?.lighting !== undefined && !["verified_lit", "verified_unlit", "unknown"].includes(facts.lighting)) reasons.push("INVALID_EVIDENCE");
     if (!plan.available || facts?.serviceAvailable === false) reasons.push("UNAVAILABLE");

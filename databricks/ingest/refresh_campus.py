@@ -97,7 +97,8 @@ def expand_departures(snapshot, service_dates):
                                "arrival_at": iso(start + timedelta(seconds=arrival)),
                                "travel_minutes": round((arrival - departure) / 60, 6),
                                "from_stop_id": trip.get("from_stop_id", "1100"), "to_stop_id": "1146", "source_id": "bt-gtfs",
-                               "source_version": snapshot["feed_info"]["feed_version"]})
+                               "source_version": snapshot["feed_info"]["feed_version"] +
+                               (":" + snapshot["source_sha256"][:12] if snapshot.get("source_sha256") else "")})
     return sorted(departures, key=lambda r: (r["departure_at"], r["trip_id"]))
 
 
@@ -199,6 +200,51 @@ def load_crime():
                     "Incomplete selected sample. Includes an unfounded report, kept explicitly labeled. No route-risk score or active threat inference.")
 
 
+def weather_context(periods, alerts, captured_at, source_url, source_hash, forecast_updated_at, alerts_hash="fixture"):
+    """Time-selectable forecast rows, bounded to 24 hours from the successful fetch."""
+    if forecast_updated_at > captured_at + timedelta(minutes=5) or forecast_updated_at <= captured_at - timedelta(hours=24):
+        raise ValueError("NWS forecast issue time is future or stale")
+    horizon = min(captured_at + timedelta(hours=24), forecast_updated_at + timedelta(hours=24))
+    rows = []
+    for period in periods:
+        start = datetime.fromisoformat(period["start_at"])
+        end = min(datetime.fromisoformat(period["end_at"]), horizon)
+        if end <= captured_at or start >= horizon or end <= start:
+            continue
+        effective = max(captured_at, start)
+        severe_windows = []
+        for alert in alerts:
+            if alert.get("severity", "").lower() not in ("severe", "extreme"):
+                continue
+            # A missing onset on an active alert means only "known at capture",
+            # never an invented earlier start.
+            onset = datetime.fromisoformat(alert["onset"]) if alert.get("onset") else captured_at
+            expires = datetime.fromisoformat(alert["expires"])
+            if onset < end and expires > effective:
+                severe_windows.append((max(onset, effective), min(expires, end)))
+        summary = period["short_forecast"].lower()
+        baseline = "unknown"
+        if re.search(r"rain|showers|thunderstorm", summary) and (period["precipitation_probability"] or 0) >= 40:
+            baseline = "rain"
+        elif re.fullmatch(r"(mostly |partly )?(clear|sunny|cloudy)", summary):
+            baseline = "clear"
+        boundaries = sorted({effective, end, *(edge for window in severe_windows for edge in window)})
+        for left, right in zip(boundaries, boundaries[1:]):
+            severe = any(onset <= left and right <= expires for onset, expires in severe_windows)
+            for corridor in ("newman-pritchard", "eggleston-pritchard", "downtown-pritchard"):
+                rows.append({"corridor_id": corridor,
+                             "context_version": f"nws-{source_hash[:12]}-{alerts_hash[:12]}-{iso(left)}",
+                             "updated_at": iso(forecast_updated_at), "valid_from": iso(left), "valid_until": iso(right),
+                             "weather": "severe" if severe else baseline,
+                             "lighting": "unknown", "walking_path_closed": None,
+                             "active_official_alert": True if severe else None,
+                             "historical_report_count": None, "history_lookback_days": None,
+                             "source_url": source_url})
+    if not rows:
+        raise ValueError("NWS forecast contains no currently valid periods")
+    return rows
+
+
 def load_weather():
     points = json.loads(fetch(NWS_URL))
     hourly_url = points["properties"]["forecastHourly"]
@@ -214,19 +260,9 @@ def load_weather():
     alert_rows = [{"alert_id": f["id"], "event": f["properties"]["event"], "severity": f["properties"]["severity"],
                    "onset": f["properties"].get("onset"), "expires": f["properties"]["expires"],
                    "headline": f["properties"].get("headline"), "source_id": "nws-alerts"} for f in alerts["features"]]
-    current = next((p for p in periods if datetime.fromisoformat(p["start_at"]) <= now < datetime.fromisoformat(p["end_at"])), None)
-    weather = "unknown"
-    if current:
-        summary = current["short_forecast"].lower()
-        if re.search(r"rain|showers|thunderstorm", summary) and (current["precipitation_probability"] or 0) >= 40:
-            weather = "rain"
-        elif re.fullmatch(r"(mostly |partly )?(clear|sunny|cloudy)", summary):
-            weather = "clear"
-    context = [{"corridor_id": corridor, "context_version": "nws-" + hashlib.sha256(raw).hexdigest()[:12],
-                "updated_at": forecast["properties"]["updateTime"], "valid_until": current["end_at"] if current else iso(now),
-                "weather": weather, "lighting": "unknown", "walking_path_closed": None,
-                "active_official_alert": None, "historical_report_count": None, "history_lookback_days": None,
-                "source_url": hourly_url} for corridor in ("newman-pritchard", "eggleston-pritchard", "downtown-pritchard")]
+    context = weather_context(periods, alert_rows, now, hourly_url, hashlib.sha256(raw).hexdigest(),
+                              datetime.fromisoformat(forecast["properties"]["updateTime"]),
+                              hashlib.sha256(alerts_raw).hexdigest())
     write_json("weather-hourly.json", periods)
     write_json("weather-alerts.json", alert_rows)
     write_json("route-context.json", context)

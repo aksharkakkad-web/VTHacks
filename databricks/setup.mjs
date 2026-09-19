@@ -17,7 +17,8 @@ const imports = {
   'incident-reports': ['incident_reports', 'report_id', 'report_id STRING,reported_date DATE,offense STRING,location STRING,occurrence_start STRING,occurrence_end STRING,disposition STRING,source_id STRING,source_url STRING,source_page INT,extraction_method STRING,coverage_note STRING'],
   'emergency-phones': ['emergency_phones', 'phone_id', 'phone_id STRING,location STRING,longitude DOUBLE,latitude DOUBLE,operational_status STRING,source_id STRING'],
   'transit-departures': ['transit_departures', 'corridor_id,trip_id,service_date', 'corridor_id STRING,trip_id STRING,route_id STRING,route_name STRING,service_date DATE,departure_at TIMESTAMP,arrival_at TIMESTAMP,travel_minutes DOUBLE,from_stop_id STRING,to_stop_id STRING,source_id STRING,source_version STRING'],
-  'route-context': ['route_context', 'corridor_id,context_version', 'corridor_id STRING,context_version STRING,updated_at TIMESTAMP,valid_until TIMESTAMP,weather STRING,lighting STRING,walking_path_closed BOOLEAN,active_official_alert BOOLEAN,historical_report_count BIGINT,history_lookback_days INT,source_url STRING'],
+  'route-context': ['route_context', 'corridor_id,context_version', 'corridor_id STRING,context_version STRING,updated_at TIMESTAMP,valid_until TIMESTAMP,valid_from TIMESTAMP,weather STRING,lighting STRING,walking_path_closed BOOLEAN,active_official_alert BOOLEAN,historical_report_count BIGINT,history_lookback_days INT,source_url STRING'],
+  'route-evidence': ['route_evidence', 'corridor_id', 'corridor_id STRING,source_version STRING,captured_at TIMESTAMP,payload_json STRING'],
 };
 export function importStatements(env = process.env) {
   const schema = schemaName(env);
@@ -42,7 +43,7 @@ export function importStatements(env = process.env) {
     if (!spec) continue;
     if (!Array.isArray(rows)) throw new Error(`${file} must contain an array.`);
     const [table, keys, fields] = spec;
-    const normalized = rows.map(row => Object.fromEntries(Object.entries(row).map(([key, value]) => [key, Array.isArray(value) || (value && typeof value === 'object') ? JSON.stringify(value) : value])));
+    const normalized = dataset === 'route-evidence' ? rows.map(row=>({corridor_id:row.corridor_id,source_version:row.source_version,captured_at:row.captured_at,payload_json:JSON.stringify(row)})) : rows.map(row => Object.fromEntries(Object.entries(row).map(([key, value]) => [key, Array.isArray(value) || (value && typeof value === 'object') ? JSON.stringify(value) : value])));
     // Small bounded batches keep INLINE statement payloads predictable.
     for (const [index, batch] of batches(normalized).entries()) {
       statements.push({ name:`${table}:${index}`, statement: `MERGE INTO ${schema}.${table} t USING (SELECT r.* FROM (SELECT explode(from_json(:rows, 'ARRAY<STRUCT<${fields}>>')) r)) s ON ${keys.split(',').map(k => `t.${k}=s.${k}`).join(' AND ')} WHEN MATCHED THEN UPDATE SET * WHEN NOT MATCHED THEN INSERT *`, parameters:[{ name:'rows', value:JSON.stringify(batch) }] });

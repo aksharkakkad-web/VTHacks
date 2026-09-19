@@ -27,6 +27,7 @@ function credentials() {
   env.DATABRICKS_ROUTE_CONTEXT_TABLE ||= unquoted + '.route_context';
   env.DATABRICKS_AUDIT_TABLE ||= unquoted + '.decision_events';
   env.DATABRICKS_TRANSIT_TABLE ||= unquoted + '.transit_departures';
+  env.DATABRICKS_ROUTE_EVIDENCE_TABLE ||= unquoted + '.route_evidence';
   return { host: env.DATABRICKS_HOST, token: env.DATABRICKS_TOKEN, warehouseId: env.DATABRICKS_WAREHOUSE_ID };
 }
 
@@ -37,6 +38,7 @@ try {
   node databricks/run.mjs test            Compile and run track tests
   node databricks/run.mjs demo            Local choice, cancellation, budget, no-option demo
   node databricks/run.mjs demo --live     Same demo, require actual Databricks results
+  node databricks/run.mjs intelligence --live --enable-ai  Route-aware, grounded AI briefing
   node databricks/run.mjs setup           Preview tables/import sizes, no cloud writes
   node databricks/run.mjs setup --apply   Create Beacon tables + MERGE public snapshots
   node databricks/run.mjs sql <file.sql>  Run one repository SQL showcase query
@@ -66,6 +68,12 @@ Optional AI queries require --enable-ai; this may consume AI quota. No paid upgr
         const result = await executeStatement(config, { statement, timeoutMs:60_000 });
         console.log(`Schema ${i + 1}/${definitions.length}: ${result.statementId}`);
       }
+      // Additive upgrade for an existing pre-hourly-context workspace; repeatable, no data reset.
+      const columns = await executeStatement(config, {statement:`DESCRIBE TABLE ${schemaName()}.route_context`,timeoutMs:60_000});
+      if (!columns.rows.some(row=>row[0]==='valid_from')) {
+        await executeStatement(config, {statement:`ALTER TABLE ${schemaName()}.route_context ADD COLUMNS (valid_from TIMESTAMP)`,timeoutMs:60_000});
+        console.log('Added route-context forecast validity start.');
+      }
       for (const item of imports) {
         const result = await executeStatement(config, { statement:item.statement, parameters:item.parameters, timeoutMs:60_000 });
         console.log(`Imported ${item.name}: ${result.statementId}`);
@@ -76,6 +84,11 @@ Optional AI queries require --enable-ai; this may consume AI quota. No paid upgr
     if (args.includes('--live')) credentials();
     const { runDemo } = await import('./demo.mjs');
     await runDemo(compileTrack(), args.includes('--live'));
+  } else if (command === 'intelligence') {
+    if(args.includes('--enable-ai') && !args.includes('--live')) throw new Error('AI requires --live and the selected workspace.');
+    if(args.includes('--live')) credentials();
+    const {runIntelligenceDemo}=await import('./intelligence-demo.mjs');
+    await runIntelligenceDemo(compileTrack(),args.includes('--live'),args.includes('--enable-ai'));
   } else if (command === 'sql') {
     const file = resolve(root, args[0] || '');
     const permitted = join(root, 'databricks/sql/showcase/');

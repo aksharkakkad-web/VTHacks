@@ -1,6 +1,6 @@
 # Beacon — Databricks track PRD and build contract
 
-**Owner:** Akshar · **Version:** 2 · **Date:** September 19, 2026
+**Owner:** Akshar · **Version:** 3 · **Date:** September 19, 2026
 
 **Baseline inspected:** `main` at `d8f513a` (Mahin's demo provider agents merged).
 
@@ -8,18 +8,27 @@ This is the build contract for Beacon's logic/data track, extending the [product
 
 ## Current implementation status and scope decisions
 
-Local evaluator, Databricks REST adapter, parameterized SQL, context join, sanitized audit, public-data importer, scheduled-transit lookup, native dashboard, and focused tests are implemented. OAuth is connected to Akshar's Free Edition workspace. The seven-case live run passes, including persisted audits, real managed weather context, and a real managed GTFS schedule lookup. Native spatial/H3 and three-record `ai_extract` queries also succeeded. Statement IDs and limitations are in [live evidence](DATABRICKS_LIVE_EVIDENCE.md). The dashboard is a saved draft; visual widget verification and the team's UI/API integration remain separate.
+The decision/data backend now includes personalized deterministic ranking, managed transit lookup, real connected campus walking paths, nearby mapped emergency resources, historical context, refreshed weather, sanitized audits, and an optional native Databricks AI briefing. `evaluateTripIntelligence` and `getMappedWalkingOption` are additive server exports; teammates' APIs and UI remain untouched. A bounded native refresh job and an expanded dashboard draft are provided. Actual cloud runs, statement IDs and limitations are in [live evidence](DATABRICKS_LIVE_EVIDENCE.md); do not equate implemented code with verified team integration.
+
+### Version 3 completion contract
+
+- **Data:** two supported walking corridors from 1,970 official VT pathway features; 130 mapped phones; official GTFS and $0 fare; next-day hourly weather/alert windows; 12 selected historical reports. Route matching uses connected geometry, phone proximity and exact named endpoint places—not invented crime scores. Downtown walking is explicitly unsupported.
+- **Personalization:** budget and walking limits are hard constraints; explicit price/walking/transfer preferences change ranking; canceled providers and expired quotes are excluded. Severe forecast weather excludes walking-only options; known closures exclude affected walking. Unknown conditions stay unknown.
+- **AI:** existing native `databricks-meta-llama-3-3-70b-instruct` via `ai_query` selects/orders verified fact IDs: actual cost, time, alternative tradeoffs, source-backed context. It cannot change the winner, invent prose, override permissions or omit mandatory source/coverage warnings. Invalid output or timeout uses a labeled template fallback. AI is optional (12-second normal bound, 60-second cold-start demo bound).
+- **Freshness:** native serverless refresh writes public weather/transit/phones/fare evidence, not student data. It uses forecast issue time, exact alert intervals and current source hashes, so old canceled alerts/removed bus trips cannot silently resurface. The finite hackathon schedule and notebook cutoff prevent indefinite refresh. Static route/incident snapshots remain explicitly dated.
+- **Acceptance:** unit/importer/job tests, repository lint/typecheck/build, live SQL/audit tests, live managed-route + budget-change + model briefing, and a successful native job. Results—not promises—are in the evidence document.
+- **Not part of backend completion:** teammates wiring APIs/screens, real provider participation/bookings, arbitrary-address routing, comprehensive crime feeds, measured lighting/phone operation, learned reliability, or automatic audit deletion. No claim that these are implemented. Audit deletion requires separate approval; sponsor registration remains a team action.
 
 Exact commands/contracts: [Databricks runbook](../databricks/README.md). Verified source coverage: [data contract](DATABRICKS_DATA.md). Judge sequence: [judge guide](DATABRICKS_JUDGE_DEMO.md).
 
-Akshar's later scope decisions supersede the initial transit-only proposal: prioritize cost and crime-related context; add actual weather, public emergency-resource locations, and a limited historical incident sample. No slope routing, invented lighting, or learned crime prediction. Native AI extraction stays optional and outside ranking. Sections below retain the design baseline except where these implemented contracts explicitly replace it:
+Akshar's later scope decisions supersede the initial transit-only proposal and template-only explanation restriction: prioritize cost and evidence-based safety context, add mapped walking alternatives and grounded native AI curation. No slope routing, invented lighting, or learned crime prediction. Native AI stays outside ranking. Sections below retain the design baseline except where these implemented contracts explicitly replace it:
 
 - `maxBudget` is dollars, normalized internally to cents; invalid requests throw (not an `INVALID_INPUT` result).
 - `beacon-v2` is default. Baseline scoring plus rain walking multiplier 1.5 and verified-unlit penalty 3/minute; `beacon-v1` omits those penalties. Walking weights are 1/4/6; transfer weights 4/8, not the previously proposed 10.
 - Priority is `balanced`, `lowest_cost`, or `less_exposed` (means less walking, not measured crime safety). Cost-first emits `LOWEST_COST`; others emit `LOWEST_POLICY_SCORE`.
 - `local` is the pure reference function; server outage results are `local_fallback`. No current UI/API changes are implied by this work.
 - Real direct corridors are Newman Library → Pritchard and East Eggleston → Pritchard. No verified direct downtown itinerary is claimed. Friday Newman service does not imply Sunday service; Eggleston supports the weekend in the captured feed.
-- Actual managed schema: public_snapshots, source_manifest, incident_reports, emergency_phones, transit_departures, route_context, decision_events. No fake provider history is seeded.
+- Actual managed schema: public_snapshots, source_manifest, incident_reports, emergency_phones, transit_departures, route_context, route_evidence, decision_events. No fake provider history is seeded.
 - Executable runtime policy/query live in `src/lib/decision-client/decision.ts` and `src/integrations/databricks/sql.ts`; importer is `databricks/ingest/refresh_campus.py`; fixture assertions are `databricks/demo.mjs`. Proposed artifact names later in this baseline are not additional required files.
 - Baseline requirements not yet implemented: automatic audit retention cleanup, UI/API integration, and an independently observed provider-reliability pipeline. They are not claimed complete.
 
@@ -82,13 +91,13 @@ All five are the target demo. If real-data access blocks item 4, finish the work
 | Data storage | Small Unity Catalog managed Delta tables plus versioned source snapshots | Enough provenance and repeatability without building a giant platform |
 | App integration | Server-only REST Statement Execution API | No browser credentials; no extra model-serving service |
 | Personalization | Explicit preferences and constraints | Predictable choices, not inferred diagnoses or hidden profiling |
-| Explanations | Templates derived from actual calculations | Cannot invent a reason that the scoring did not use |
+| Explanations | Exact calculated/source-backed facts, optionally curated by native AI | AI chooses fact IDs, never the winner or new claims |
 | Campus dataset | Official scheduled transit first | Directly useful to the product and realistic within this hackathon |
 | Account/cost | Existing sponsor workspace if available; otherwise evaluate Free Edition | No paid upgrade or new paid service assumed |
 
-Do **not** build an LLM that chooses the winner, a vector database, RAG, model training, a second trip-orchestration system, or a generalized multi-campus route planner for this demo. Python/model serving would add setup without improving this small deterministic problem. Databricks' value here is governed data plus repeatable decision computation; we do not need to use every feature to demonstrate it well.
+Do **not** build an LLM that chooses the winner, a vector database, RAG, model training, a second trip-orchestration system, or a generalized multi-campus route planner for this demo. The existing native model endpoint handles evidence curation; no custom serving deployment or training is needed. Python is used for source ingestion and the native refresh notebook, not a second application server.
 
-**Showcase:** budget/preference what-if SQL, public phone map/proximity/H3 queries, source freshness, and recent decision evidence. Weather and historical incident snapshots are in scope; native `ai_extract` is an optional three-row public-data experiment. No learned crime model or safety guarantee.
+**Showcase:** real mapped walking alternatives, personalized price/walking comparisons, grounded `ai_query` briefing, budget/preference what-if SQL, phone map/proximity/H3, source freshness, native refresh, and recent decision evidence. Native `ai_extract` remains an optional three-row public-data experiment. No learned crime model or safety guarantee.
 
 ## 5. Architecture and ownership
 
@@ -137,7 +146,7 @@ Keep the existing `CandidatePlan` and successful `Recommendation` shapes. Add me
 
 **Context:** random `evaluationId`; monotonically increasing `objectiveVersion` for this trip; server-captured evaluation time; budget in cents; `minimizeWalking`; `minimizeTransfers`; optional hard `maxWalkingMinutes`; excluded provider IDs; coarse corridor ID; explicit emergency flag; optional derived reduced-walking preference. No exact coordinates, student identity, contact details, or raw sensitive free text.
 
-**Per-plan evidence:** `collectedAt`, `validUntil`, source kind (`simulated`, `scheduled`, or `live`), source/data version, whether service availability is established, transfer-count provenance, and optional matching transit trip/stop identifiers. Missing evidence is not silently treated as live data. Mahin owns preserving the quote evidence; Akshar validates and uses it.
+**Per-plan evidence:** `collectedAt`, `validUntil`, source kind (`simulated`, `scheduled`, `mapped`, or `live`), source/data version, whether service availability is established, transfer-count provenance, and optional matching transit trip/stop identifiers. `mapped` is only a dated walking estimate, not live navigation. Missing evidence is not silently treated as live data. Mahin owns preserving the quote evidence; Akshar validates and uses it.
 
 **Result states:**
 

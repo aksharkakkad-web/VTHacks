@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS __SCHEMA__.transit_departures (
 -- COMMAND --
 CREATE TABLE IF NOT EXISTS __SCHEMA__.route_context (
   corridor_id STRING, context_version STRING, updated_at TIMESTAMP,
-  valid_until TIMESTAMP, weather STRING, lighting STRING,
+  valid_until TIMESTAMP, valid_from TIMESTAMP, weather STRING, lighting STRING,
   walking_path_closed BOOLEAN, active_official_alert BOOLEAN,
   historical_report_count BIGINT, history_lookback_days INT, source_url STRING
 ) USING DELTA COMMENT 'Current evidence only; null and unknown never mean safe or clear';
@@ -45,3 +45,7 @@ CREATE TABLE IF NOT EXISTS __SCHEMA__.decision_events (
   evaluation_id STRING, objective_version BIGINT, evaluated_at TIMESTAMP,
   policy_version STRING, engine STRING, result_json STRING, statement_id STRING
 ) USING DELTA COMMENT 'Sanitized decision evidence; no precise pickup, person, contact, or user free text';
+-- COMMAND --
+CREATE TABLE IF NOT EXISTS __SCHEMA__.route_evidence (
+  corridor_id STRING, source_version STRING, captured_at TIMESTAMP, payload_json STRING
+) USING DELTA COMMENT 'Public named-campus walking geometry and attributed evidence; not user GPS or a crime-risk model';
