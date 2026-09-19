@@ -16,6 +16,8 @@ Use the root Next.js App Router application, TypeScript, Tailwind CSS, shadcn/ui
 
 Coding agents should run the routine commands themselves: from a clean checkout, use `./scripts/start-task.sh feat short-task-name`, implement on that branch, and run `./scripts/pre-pr.sh` before reporting the work. Use mocks at the track boundaries so Akshar (Databricks), Mahin (agents/ANS/trip state), and Rishit (PWA) can work independently. At each phase-plan integration checkpoint, reconcile all three tracks against the same contracts and end-to-end demo. Do not ask teammates to run routine scripts for you, but do not push, open a PR, merge, deploy, or change GitHub settings without Akshar's explicit approval.
 
+For checkpoints A–G, follow `docs/CHECKPOINTS.md`. After checking your track's piece, add its letter to only your `checkpoints/<person>.json` in the same PR. The shared GitHub board announces readiness after that change reaches `main` and CI passes. Keep working while other tracks finish; meet for a short integration sync when the board says all three are ready.
+
 ## 24-hour hackathon priority
 
 Akshar's priority is speed to a working, repeatable end-to-end demo. Start the three tracks now with mocks at unfinished boundaries; verify sponsor access in parallel. Build the smallest useful slice, push approved small changes early, and meet briefly at checkpoints A–G in the phase plan. Defer polish, data depth, and non-blocking edge cases. Do not turn this into extra process or ask Akshar to run routine commands. Still protect secrets, the verified-and-authorized precise-location gate, and the core demo path; never present a simulation as a live integration.
