@@ -1,6 +1,7 @@
 import { resolveTxt } from "node:dns/promises";
 import { object, providerServiceId, text, type ProviderDescriptor } from "../../agents/contract";
 import { providerUrl } from "../../agents/http-provider";
+import { mobilityFunctions, mobilityModes, mobilityProfile } from "../../agents/operator-profile";
 import { publicJson } from "./transport";
 
 export type VerifiedIdentity = {
@@ -32,15 +33,29 @@ export function parseDiscovered(value: unknown): ProviderDescriptor[] {
         if (endpoint.protocol !== "HTTP-API" || !Array.isArray(endpoint.functions)) continue;
         const functions = endpoint.functions.map((f) => text(object(f).id, "function"));
         const tags = endpoint.functions.flatMap((f) => { const t = object(f).tags; return Array.isArray(t) ? t : []; });
-        const mode = (["campus_ride", "independent_ride", "transit"] as const).find((m) => tags.includes(m));
-        if (!mode || !functions.includes("quote_trip")) continue;
         const baseUrl = text(endpoint.agentUrl, "agent URL", 2000);
         const agentHost = text(item.agentHost, "agent host", 253).toLowerCase();
         if (providerUrl(baseUrl).hostname !== agentHost) continue;
-        const ansId = text(item.agentId, "agent id"); const id = providerServiceId(ansId, mode);
-        // ANS identifies the operator/host. Each advertised mobility endpoint is
-        // a separately callable service, not a claim of a separately verified owner.
-        if (!providers.some((p) => p.id === id)) providers.push({ id, ansId, name: `${text(item.agentDisplayName, "provider name")} / ${mode.replaceAll("_", " ")}`, mode, baseUrl, agentHost, functions, source: "ans" });
+        const services: Pick<ProviderDescriptor, "mode" | "baseUrl" | "functions">[] = [];
+        if (tags.includes(mobilityProfile)) {
+          // ANS accepts only one endpoint per protocol. Our explicit profile maps
+          // namespaced capabilities to fixed child paths without a second URL lookup.
+          for (const mode of mobilityModes) {
+            const scoped = endpoint.functions.map(object).filter((f) => Array.isArray(f.tags) && f.tags.includes(mobilityProfile) && f.tags.includes(mode));
+            const capabilities = mobilityFunctions.filter((name) => scoped.some((f) => f.id === `${mode}.${name}`));
+            if (capabilities.includes("quote_trip")) services.push({ mode, baseUrl: `${baseUrl.replace(/\/$/, "")}/${mode}`, functions: capabilities });
+          }
+        } else {
+          const modes = mobilityModes.filter((mode) => tags.includes(mode));
+          if (modes.length === 1 && functions.includes("quote_trip")) services.push({ mode: modes[0], baseUrl, functions });
+        }
+        const ansId = text(item.agentId, "agent id");
+        for (const service of services) {
+          const id = providerServiceId(ansId, service.mode);
+          // One registered operator can expose several services; this is not a
+          // claim that each simulated service has an independently verified owner.
+          if (!providers.some((p) => p.id === id)) providers.push({ id, ansId, name: `${text(item.agentDisplayName, "provider name")} / ${service.mode.replaceAll("_", " ")}`, ...service, agentHost, source: "ans" });
+        }
       }
     } catch { /* Malformed or unsupported search entries are not callable providers. */ }
   }

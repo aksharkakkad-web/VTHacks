@@ -17,10 +17,18 @@ the optional `reconcile_trip` capability with `/agent/request-status/:requestId`
 
 Transit supports public quote/metadata only. The two ride providers accept authenticated
 bookings. These are **simulated transportation services** even when their HTTPS and ANS
-identity checks are live. All three may be advertised as endpoints of one registered
-operator on one custom domain; service IDs are `<ANS registration id>:<mode>`. That is
+identity checks are live. ANS accepts only one endpoint per protocol under an identity.
+Register `/api/demo/providers` as the single HTTP-API endpoint; its public GET response
+is also its metadata document. Service IDs are `<ANS registration id>:<mode>`. That is
 one verified operator with multiple callable services, not three independently verified
 businesses. Separate operators can advertise the same wire contract under their own identities.
+
+The `beacon-mobility-v1` tag identifies Beacon's application profile, not an ANS protocol.
+Each function is namespaced, for example `campus_ride.quote_trip`, and tagged with its
+matching mode. Discovery maps recognized modes to fixed child paths below the registered
+endpoint and keeps each service's capabilities separate. The generated catalog includes
+only quotes for transit, and quotes/booking/status/cancellation/reconciliation for rides.
+Other single-service HTTP-API agents can still advertise ordinary `quote_trip` functions.
 
 Booking state uses shared Redis. Requests with the same provider and trip request ID
 produce one booking across instances. Cancellation erases precise coordinates and leaves
@@ -69,8 +77,8 @@ events remain explicitly labeled as demo. Adding an ANS key alone does not enabl
    and URI SAN `ans://v1.0.0.<domain>`. Keep its private key local, mode 0600, ignored by Git.
    Fetch the actual served TLS leaf certificate plus intermediates after domain attachment.
 4. Submit `POST /v1/agents/register` with display name, host, version, identity CSR,
-   `serverCertificatePEM`, `serverCertificateChainPEM`, and the three HTTP-API endpoint
-   descriptors. This is the SDK's BYOC flow: Vercel serves its own managed certificate.
+   `serverCertificatePEM`, `serverCertificateChainPEM`, and the one HTTP-API endpoint
+   descriptor returned by the catalog. This is the SDK's BYOC flow: Vercel serves its own managed certificate.
    Declare that the transportation behavior is simulated. Never submit the private key.
 5. Publish only the returned ownership/discovery DNS records in Vercel DNS. Trigger
    the returned ACME verification step and then `verify-dns`; inspect registration status

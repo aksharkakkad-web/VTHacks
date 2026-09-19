@@ -35,12 +35,30 @@ test("discovery validates capabilities, protocol, lifecycle and host instead of 
   assert.equal(parseDiscovered({ items: [{ ...item, agentHost: "other.example" }] }).length, 0);
 });
 
-test("one registered operator can advertise separately callable provider services", () => {
-  const endpoints = ["campus_ride", "independent_ride"].map((mode) => ({ agentUrl: `https://operator.example/api/demo/providers/${mode}`, protocol: "HTTP-API", functions: [{ id: "quote_trip", tags: [mode] }, { id: "request_trip" }, { id: "trip_status" }, { id: "cancel_trip" }] }));
+test("one registered HTTP endpoint exposes distinct services with scoped capabilities", () => {
+  const endpoints = [{ agentUrl: "https://operator.example/api/demo/providers", protocol: "HTTP-API", functions: [
+    { id: "campus_ride.quote_trip", tags: ["beacon-mobility-v1", "campus_ride"] },
+    { id: "campus_ride.request_trip", tags: ["beacon-mobility-v1", "campus_ride"] },
+    { id: "independent_ride.quote_trip", tags: ["beacon-mobility-v1", "independent_ride"] },
+  ] }];
   const services = parseDiscovered({ items: [{ agentId: "registered-operator", agentHost: "operator.example", agentDisplayName: "Beacon Providers", lifecycle: { status: "ACTIVE" }, endpoints }] });
   assert.equal(services.length, 2);
   assert.notEqual(services[0].id, services[1].id);
   assert.equal(services[0].ansId, services[1].ansId, "service identity is distinct from the registered operator identity");
+  assert.equal(services[0].baseUrl, "https://operator.example/api/demo/providers/campus_ride");
+  assert.equal(services[1].baseUrl, "https://operator.example/api/demo/providers/independent_ride");
+  assert.ok(services[0].functions.includes("request_trip"));
+  assert.ok(!services[1].functions.includes("request_trip"), "another service's capability cannot authorize this service");
+});
+
+test("operator discovery requires the explicit profile, matching mode, and registered host", () => {
+  const endpoint = { agentUrl: "https://operator.example/api/demo/providers", protocol: "HTTP-API", functions: [{ id: "campus_ride.quote_trip", tags: ["beacon-mobility-v1", "campus_ride"] }] };
+  const item = { agentId: "id", agentHost: "operator.example", agentDisplayName: "Beacon", lifecycle: { status: "ACTIVE" }, endpoints: [endpoint] };
+  assert.equal(parseDiscovered({ items: [item] }).length, 1);
+  assert.equal(parseDiscovered({ items: [{ ...item, agentHost: "different.example" }] }).length, 0);
+  for (const tags of [["campus_ride"], ["beacon-mobility-v1", "independent_ride"]]) {
+    assert.equal(parseDiscovered({ items: [{ ...item, endpoints: [{ ...endpoint, functions: [{ id: "campus_ride.quote_trip", tags }] }] }] }).length, 0);
+  }
 });
 
 test("resolution binds the selected host to the same registry record", () => {
