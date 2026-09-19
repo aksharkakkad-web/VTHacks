@@ -12,6 +12,7 @@ import { collectCandidates } from "../discovery";
 import { parseTripInput } from "./input";
 import type { DecisionHandoff } from "./databricks";
 import { isCurrentWeather, withinCampusForecast, type WeatherEvidence } from "../../lib/campus-evidence/evidence";
+import { matchesPublicCorridor, type PublicCorridor, type PublicTripOptions } from "../../lib/decision-client/trip-options";
 
 export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline";
 export type Dependencies = {
@@ -20,6 +21,7 @@ export type Dependencies = {
   recommend: (plans: CandidatePlan[], context: TripContext, handoff: DecisionHandoff) => Promise<Recommendation>;
   notify: (contact: Contact, message: string, key: string) => Promise<{ id: string; simulated: boolean }>;
   campusWeather?: (now: number) => WeatherEvidence;
+  publicTripOptions?: (corridorId: PublicCorridor, demo: boolean, evaluatedAt: string) => Promise<PublicTripOptions>;
 };
 const activeStates = ["NAVIGATING", "WAITING_FOR_PICKUP", "IN_TRIP", "OVERDUE"] as const;
 export class StudentAgent {
@@ -37,6 +39,9 @@ export class StudentAgent {
     const current = isCurrentWeather(r.weatherEvidence, this.now());
     return { weather: current ? r.weatherEvidence! : { status: "unknown", condition: "unknown" },
       appliedToPlanIds: current ? r.weatherPlanIds ?? [] : [], catalog: "/api/demo/campus-data",
+      ...(r.corridorId ? { corridorId: r.corridorId } : {}),
+      ...(r.optionEvidence ? { options: r.optionEvidence } : {}),
+      ...(r.decisionEvidence ? { intelligence: r.decisionEvidence, selectionCurrent: !!r.trip.selectedPlan && !["FAILED", "ARRIVED", "COLLECTING_QUOTES"].includes(r.trip.state) && this.selectedDeadline(r) > this.now(), evidenceEvaluatedAt: r.decisionEvidence.decision.evaluatedAt } : {}),
       limitations: ["Area forecast, not observed conditions on each path.", "No current foot-traffic measurement, verified route lighting or crime-risk score is available."] };
   }
   async providerEvent(id: string, providerId: string, bookingId: string, event: string) {
@@ -83,7 +88,8 @@ export class StudentAgent {
   private selectedProvider(r: TripRecord) { const p = r.providers.find((p) => p.id === r.trip.selectedPlan?.providerId); if (!p) throw new TripError("PROVIDER_MISSING", "Selected provider is unavailable"); return p; }
   private planDeadline(r: TripRecord, planId: string) {
     const weatherLimit = r.weatherPlanIds?.includes(planId) && r.weatherEvidence?.validUntil ? Date.parse(r.weatherEvidence.validUntil) : Infinity;
-    return Math.min(r.quoteDeadline, r.quoteExpirations?.[planId] ?? Infinity, weatherLimit);
+    const signalLimit = r.planSignals?.[planId]?.validUntil;
+    return Math.min(r.quoteDeadline, r.quoteExpirations?.[planId] ?? Infinity, weatherLimit, signalLimit ? Date.parse(signalLimit) : Infinity);
   }
   private selectedDeadline(r: TripRecord) { return this.planDeadline(r, r.trip.selectedPlan?.planId ?? ""); }
   private expireSelection(r: TripRecord): never {
@@ -102,6 +108,27 @@ export class StudentAgent {
     this.log(r, "COLLECTING_QUOTES", "COARSE_QUOTES", "Requesting quotes using approximate zones only");
     const result = await collectCandidates(r.providers.map((p) => this.deps.provider(p)), { originZone: r.originZone, destinationZone: r.destinationZone, ...r.context }, new Set(r.excluded), 22, this.now());
     r.trip.candidates = result.candidates; r.quoteDeadline = this.now() + 120_000; r.quoteExpirations = result.quoteExpirations; r.simulatedPlanIds = result.simulatedPlanIds;
+    delete r.decisionEvidence; delete r.optionEvidence; r.planSignals = {};
+    if (r.corridorId) {
+      // Remove the fixed walk for a named real route even when route data fails.
+      r.trip.candidates = r.trip.candidates.filter(p => p.mode !== "walk");
+      const latest = r.trip.lastKnownLocation;
+      const origin = latest && Date.parse(latest.recordedAt) >= this.now() - 120_000 ? latest : r.private?.origin;
+      if (origin && r.private && matchesPublicCorridor(r.corridorId, origin, r.private.home) && this.deps.publicTripOptions) {
+        try {
+          const { candidates, signals, ...evidence } = await this.deps.publicTripOptions(r.corridorId, this.deps.demo, new Date(this.now()).toISOString());
+          const publicOptions = candidates.filter(p => !r.excluded.includes(p.providerId ?? ""));
+          // Reserve capacity for mapped/timetable options without changing the provider search contract.
+          const omitted = Math.max(0, r.trip.candidates.length + publicOptions.length - 16);
+          r.trip.candidates = [...r.trip.candidates.slice(0, 16 - publicOptions.length), ...publicOptions];
+          if (omitted) this.log(r, "COLLECTING_QUOTES", "PROVIDER_LIMIT", `${omitted} provider offer(s) omitted to include public route options within the 16-plan limit`);
+          r.planSignals = signals; r.optionEvidence = evidence;
+          for (const plan of publicOptions) if (signals[plan.planId]?.validUntil) r.quoteExpirations[plan.planId] = Date.parse(signals[plan.planId].validUntil!);
+          this.log(r, "COLLECTING_QUOTES", "PUBLIC_OPTIONS_ADDED", "Checked mapped walking and scheduled transit for the selected public campus route");
+        } catch { this.log(r, "COLLECTING_QUOTES", "PUBLIC_OPTIONS_UNAVAILABLE", "Public route options unavailable; provider offers remain separately labeled"); }
+      } else this.log(r, "COLLECTING_QUOTES", "PUBLIC_ROUTE_NOT_APPLICABLE", "The saved public route does not apply to the current pickup; no mapped path was attached");
+      r.simulatedPlanIds = r.simulatedPlanIds.filter(id => r.trip.candidates.some(p => p.planId === id));
+    }
     if (result.omittedProviderCount) this.log(r, "COLLECTING_QUOTES", "PROVIDER_LIMIT", `${result.omittedProviderCount} additional providers omitted from this bounded search`);
     if (result.failures.length) this.log(r, "COLLECTING_QUOTES", "PROVIDER_UNAVAILABLE", `${result.failures.length} unavailable provider(s) excluded`);
   }
@@ -118,7 +145,12 @@ export class StudentAgent {
     }
     this.log(r, "EVALUATING", "EVALUATION_STARTED", "Evaluating transportation options");
     let recommendation: Recommendation;
-    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }, { quoteDeadline: r.quoteDeadline, quoteExpirations: r.quoteExpirations ?? {}, simulatedPlanIds: r.simulatedPlanIds ?? [], excludedProviderIds: [...r.excluded], weatherEvidence: r.weatherEvidence }); }
+    delete r.decisionEvidence;
+    try { recommendation = await this.deps.recommend(r.trip.candidates, { ...r.context, currentTime: new Date(this.now()).toISOString() }, { quoteDeadline: r.quoteDeadline, quoteExpirations: r.quoteExpirations ?? {}, simulatedPlanIds: r.simulatedPlanIds ?? [], excludedProviderIds: [...r.excluded], weatherEvidence: r.weatherEvidence, planSignals: r.planSignals, corridorId: r.optionEvidence?.walkingAlternative ? r.corridorId : undefined, walkingAlternative: r.optionEvidence?.walkingAlternative, onEvidence: evidence => {
+      r.decisionEvidence = evidence;
+      // Managed weather and explanation latency can shorten evidence validity too.
+      for (const plan of evidence.decision.ranked) if (plan.evidence?.validUntil) (r.planSignals ??= {})[plan.planId] = plan.evidence;
+    } }); }
     catch (error) { this.log(r, "FAILED", "EVALUATION_FAILED", "No recommendation is available"); if (error instanceof TripError) throw error; throw new TripError("EVALUATION_FAILED", "Recommendation unavailable", 503); }
     const plan = r.trip.candidates.find((p) => p.planId === recommendation.selectedPlanId && p.available && p.cost <= r.context.maxBudget && !r.excluded.includes(p.providerId ?? ""));
     if (!plan || !Array.isArray(recommendation.reasonCodes) || !recommendation.reasonCodes.every((c) => typeof c === "string") || typeof recommendation.explanation !== "string" || !Number.isFinite(Date.parse(recommendation.evaluatedAt))) { this.log(r, "FAILED", "INVALID_RECOMMENDATION", "No valid plan fits the approved constraints"); throw new TripError("INVALID_RECOMMENDATION", "Decision engine returned an invalid plan", 502); }

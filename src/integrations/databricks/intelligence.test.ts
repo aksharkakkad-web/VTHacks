@@ -19,7 +19,9 @@ test("managed route query binds corridor, validates snapshot and rejects mismatc
 });
 test("walking estimate uses source geometry only, discloses offsets and rejects unsupported/stale routes",()=>{
   const route=getRouteEvidence("eggleston-pritchard",snapshot)!;
-  const at=route.captured_at;
+  // A derived detour exists only after its construction snapshot was evaluated;
+  // the underlying GIS capture remains older and must not act as a replay clock.
+  const at=new Date(Math.max(Date.parse(route.captured_at),route.construction_avoidance?Date.parse(route.construction_avoidance.evaluated_at):0)+1).toISOString();
   const option=walkingOption(route,at);
   assert.ok(option);
   assert.equal(option.candidate.cost,0);

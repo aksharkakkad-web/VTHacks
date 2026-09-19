@@ -38,6 +38,8 @@ The runner obtains a token from the chosen OAuth profile without printing or wri
 
 ## Team integration
 
+The integrated backend wires `evaluateTripIntelligence` into Mahin's Student Agent and accepts optional named campus corridors. Use the [current API/map handoff](../docs/DATABRICKS_APP_HANDOFF.md) and [native public import runbook](NATIVE_PUBLIC_IMPORT.md). The lower-level examples below remain valid entry points, not additional work Mahin must redo.
+
 Mahin's **server code** imports:
 
 ```ts
@@ -60,7 +62,7 @@ const result = await evaluateTrip(candidates, {
 
 Catch invalid-request errors at the API boundary. Only `RECOMMENDED` has a `recommendation`; `NO_FEASIBLE_PLAN` and `EMERGENCY` have no winner. Preserve `engine`, `warnings`, source labels, and objective version in the response to Rishit. Do not fabricate a `selectedPlanId` for the old success-only type.
 
-Before using a result, Mahin must check its objective version still matches, refresh expired quotes, and enforce provider verification + permission before sharing precise pickup. This evaluator never authorizes or requests a ride. Shared `src/types/**` and trip API routes are unchanged.
+Before using a result, the backend checks its objective version still matches, refreshes expired quotes, and enforces provider verification + permission before sharing precise pickup. This evaluator never authorizes or requests a ride. Shared `src/types/**` and trip API route files are unchanged; named-corridor input and evidence response fields are additive in the backend implementation.
 
 Scheduled lookup may throw on Databricks failure; catch it and omit that option, or explicitly use the pure `selectScheduledTransit` function with a service-date-valid public snapshot. Do not present a fallback schedule as live vehicle tracking.
 
@@ -91,7 +93,7 @@ Handle a failed route lookup like failed transit lookup: omit that option, never
 
 The model is native `databricks-meta-llama-3-3-70b-instruct` through parameterized `ai_query`. It selects valid fact IDs only. Exact text/citations are rendered locally; source/unknown warnings are mandatory. AI cannot change eligibility, price or the selected plan. Output is `databricks_ai`, `template`, or `template_fallback`; default AI deadline is 12 seconds. Quote expiry is rechecked after the model wait, with fresh evaluation and a template explanation if necessary. No student identifiers, exact GPS, credentials, provider prose or raw user text enter its prompt.
 
-Set the **server-only** `DATABRICKS_ROUTE_EVIDENCE_TABLE` from [env.example](env.example). `run.mjs` supplies its default. `DATABRICKS_ENABLE_AI=true` enables curation by default for this additive export; explicit `enableAi` overrides it. Existing `evaluateTrip` remains model-free. No shared API response or UI has been silently changed.
+Set the **server-only** `DATABRICKS_ROUTE_EVIDENCE_TABLE` from [env.example](env.example). `run.mjs` supplies its default. `DATABRICKS_ENABLE_AI=true` enables curation for this export; explicit `enableAi` overrides it. Existing `evaluateTrip` remains model-free. The integrated evidence response is documented in the handoff; no UI was implemented here.
 
 For the verified cloud demo (60-second cold-model bound):
 
@@ -103,9 +105,9 @@ This requires real Databricks ranking, audit persistence, managed route reads an
 
 ## Data and scoring
 
-- **Real snapshots:** initial 295 scheduled departures across two direct campus corridors (native refresh expands a rolling six service dates), 130 phone locations, 12 selected historical incident rows, weather, official $0 bus fare, and two connected walking routes derived from 1,970 official campus pathway features. See [data contract](../docs/DATABRICKS_DATA.md) and [route coverage](../docs/DATABRICKS_ROUTE_DATA.md).
-- **Unknown:** outdoor lighting, actual phone operation, comprehensive crime coverage, verified path closures, live ride/transit arrival estimates, observed provider reliability. Missing evidence never means safe.
-- **Native Databricks:** eight managed Delta tables, parameterized SQL eligibility/ranking, versioned context join, sanitized audit, spatial/H3 queries, five-dataset/six-widget dashboard draft, bounded native refresh job, and optional grounded `ai_query` briefing.
+- **Real snapshots:** current local timetable448 departures, 130 phone locations, expanded719 crime-log rows, 1,179 community lighting objects, four historical pedestrian summaries, 14 published construction areas, 65 mapped emergency items, 20 notice-page records, weather, $0 bus fare and two connected routes from1,970 official campus pathway features. See [data contract](../docs/DATABRICKS_DATA.md) and [route coverage](../docs/DATABRICKS_ROUTE_DATA.md). Community/historical data is labeled, not promoted to live verified conditions.
+- **Unknown:** measured/operating lighting, phone operation, comprehensive crime coverage, route-wide clearance, live ride/transit arrivals and observed provider reliability. Fresh official construction intersections can exclude walking; absence of an intersection is not proof of safety.
+- **Native Databricks:** 13 managed Delta tables including expanded public archives and initially empty outcomes, parameterized SQL ranking/context/audits, spatial/H3 queries, dashboard draft, bounded native refresh/import jobs and optional grounded `ai_query` briefing.
 - **Separate optional experiment:** three-row `ai_extract` public-document extraction. Disabled unless explicitly requested with `--enable-ai`; never changes a winner. Workspace feature/AI quota must be checked first.
 
 `beacon-v2` is the default: waiting + travel + weighted walking + 2 weighted minutes per dollar + transfer penalty + uncertain-reliability penalty; rain multiplies walking by 1.5, verified-unlit walking adds 3/minute. These are transparent demo heuristics, not crime predictions. `beacon-v1` retains the baseline score without rain/unlit penalties. `leastWalkingPlanId` means exactly that, not “safest.” Historical incidents are contextual only.

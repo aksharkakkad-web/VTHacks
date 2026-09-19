@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "dataset": "closures",
-  "captured_at": "2026-09-19T13:47:46.181981Z",
+  "captured_at": "2026-09-19T15:08:06.156856Z",
   "records": [
     {
       "id": "areas:17472",
@@ -1736,7 +1736,7 @@
     {
       "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
       "sha256": "61048f6990cc9cf4d1c2c8c53355ac4ec20c74ea80ec5372a2b0ab26e56b6f9d",
-      "captured_at": "2026-09-19T13:47:45.516018Z",
+      "captured_at": "2026-09-19T15:08:05.497499Z",
       "row_count": 14,
       "coverage": "facilities/Construction_Closures/FeatureServer/0",
       "limitations": "Published current closure layers only; missing features do not prove every path is open. Apply source dates and snapshot freshness. Road delays do not establish a pedestrian closure.",
@@ -1745,7 +1745,7 @@
     {
       "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Road_Closures_new/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Clabel%2Cclosurestartdate%2Cclosureenddate%2Cclosuredelay%2Caddl_cmmts&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
       "sha256": "ed778c73ea51338d6576fb5992b189f2b94d9f3d5e199f46c1af520d6b0b3e6c",
-      "captured_at": "2026-09-19T13:47:46.181963Z",
+      "captured_at": "2026-09-19T15:08:06.156830Z",
       "row_count": 0,
       "coverage": "facilities/Road_Closures_new/FeatureServer/0",
       "limitations": "Published current closure layers only; missing features do not prove every path is open. Apply source dates and snapshot freshness. Road delays do not establish a pedestrian closure.",

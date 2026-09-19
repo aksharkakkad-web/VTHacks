@@ -1,5 +1,38 @@
 # Databricks track — execution evidence
 
+## Version 4: expanded evidence and local backend integration (September 19, 15:08–15:34 UTC)
+
+This candidate builds on Mahin's PR #14 at `dcaeedd`. The original checkout is preserved; the integration is local on `codex/integrated-data-finish`. It has **not** been deployed or merged. Older acceptance below remains historical evidence, not a description of current dataset sizes or integration status.
+
+### Native managed data actually loaded
+
+- Public serverless import run `1068888673678627`, task `481140875156226`: **SUCCESS**. Notebook `/Shared/Beacon/import-public-52d3e28dcdd51a72`.
+- Completed import ID `88c483ad49b430d4e77e0c35b59243e3727477803ff74a283e548f5bc20719b9`: 386 reconstructable JSON snapshot parts, 3,519 item parts, 2,067 typed records and one completion marker. The first slower SQL-batch attempt timed out; it is not counted as successful acceptance. The native run supersedes it without deleting older partial versions.
+- Counts from actual SQL: crime719, lighting1,179, activity4, construction14, emergency equipment65, notices20 and weather66. Count statement `01f1b43e-b183-1b13-8d8e-8f045f35ef85`; archive/completion check `01f1b43e-b23c-161a-90f0-7b891dcfe806`.
+- `provider_outcomes` exists and has no fabricated history: `campus_ride` reliability is `unknown`, sample size0, checked by `01f1b43e-b2be-134c-8f57-020e447267c6`. The ingestion contract is unit-tested; no pretend production observation was inserted for proof.
+- Managed weather/context and448 timetable departures were refreshed. New connected construction-avoidance maps were uploaded: Newman1,077.34m/four nearby phones, Eggleston626.55m/two phones. Both add22.29m and preserve original endpoints/network capture. Route import statements `01f1b43e-75df-19da-a2f6-a1769586fd33` and `01f1b43e-7807-15ed-97be-17c045ab505e`.
+
+### Real SQL and local HTTP acceptance
+
+`node databricks/run.mjs evidence --live --profile beacon` passed: completed bundle counts, initially unknown reliability, actual managed route, actual ranking and persisted audit, $0-budget selection, unsupported-downtown evidence. Ranking statement `01f1b43e-b42f-1471-8917-9afc82ee7ad2`; $0 statement `01f1b43e-b89e-1404-9c2e-e9e987fa8839`. At this clock the short mapped walk won; no ride was forced for presentation. Safety output remained `routeExposureScore:null`, with partial historical coverage and no route-wide clearance.
+
+A production-built **local** Next server, isolated local trip storage and three local HTTP demo providers exercised real Databricks without live ANS, Redis, QStash or Telegram credentials:
+
+- `BEACON_SMOKE_DECISION_ENGINE=databricks node src/agents/smoke.mjs`: passed discovery→evaluation→confirmation→trust gate→simulated booking→automatic cancellation replacement→arrival; overdue simulated alert occurred once; ownership and callback protection passed. This is real HTTP/SQL execution, not real transportation or a sent Telegram message.
+- `node databricks/integrated-smoke.mjs`: passed named Eggleston route discovery, managed map version, audited real-SQL choice of the free626.55m walk, owner-only evidence, confirmation→navigation→arrival, no provider coordinate release, and invalidation of the completed selection. SQL `01f1b43f-552c-137c-b6ad-5073f604d53a`; managed route `01f1b43f-540e-1dd1-909c-1aa0bc7e9d6d`. Public synthetic endpoints were used; nobody actually walked the route.
+
+Research adapter real retrieval at15:25:44–45 UTC returned two official NWS pages with source-generated timestamps and SHA-256 hashes, no gaps. Output was metadata-only with `rankingEligible:false`; retrieval does not establish a new hazard. This workspace's exposed models did not include the Gemini/OpenAI GPT-5 models documented for native web search, so no search model/service was enabled. The previously verified native fact-ID briefing remains optional and separate from ranking.
+
+### Checks and remaining boundary
+
+- 82 Databricks track tests,74 agent tests,60 Python source/import/route tests,6 native-refresh tests and15 public-import tests passed. The public-import15 include three new native Spark generator checks.
+- Repository pre-PR lint, four checkpoint tests, typecheck and production build passed. Tests were updated for the actual detour clock/distance/phone count; synthetic closure tests retain independent artificial geometry. Final delivery rechecks are recorded in Git/task output.
+- **Late cloud repeat, around15:47 UTC:** `demo --live` and `intelligence --live --enable-ai` timed out; one sequential `demo --live` retry also timed out. The live-required scripts correctly failed instead of labeling fallback as cloud success. Query history shows provisioning delay on the first requests (`01f1b441-5184-1437-baf5-37cd90cc2186`, `01f1b441-50e7-191a-b8e1-0f22f9a429f2`) and a later evaluation canceled at9,718ms (`01f1b441-7420-17c9-9a94-74df04f59fd9`); the warehouse reports healthy/running. Earlier successful statements above remain valid evidence, but reliable cold-start cloud latency is not established. No compute upgrade or timeout loosening was made. A final judge rehearsal must check the running warehouse; the app retains its explicit local fallback.
+- Construction avoidance is current only until **2026-09-19T16:08:05.497499Z** (12:08 Eastern); before a later demo use the [refresh runbook](../databricks/NATIVE_PUBLIC_IMPORT.md). Missing/stale evidence removes the detour option rather than silently renewing it. This does not certify physical safety or complete closure coverage.
+- Rishit's PR #16 is available and CI-green but uses frontend simulation and an illustrative map. It still needs API/evidence wiring and visual acceptance. Mahin's PR #15 reports deployed ANS/storage/monitoring acceptance but missing hosted Databricks credentials; our local SQL proof does not cure that deployment configuration gap. Those PRs have not been merged into this candidate.
+
+The data/backend wiring is tested locally; the complete deployed student-facing product is **not** claimed done. Measured lighting, current foot traffic, comprehensive crime coverage, observed provider reliability and real provider bookings remain unavailable.
+
 ## Version 3: completed intelligence backend (September 19, 07:04–07:07 UTC)
 
 Fresh acceptance after all material code fixes:

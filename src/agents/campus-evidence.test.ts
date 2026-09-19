@@ -83,7 +83,9 @@ test("a failed crime document remains a visible gap without suppressing valid mo
 test("source-bound mapped routes are rejected for official intersecting closures", () => {
   const evidence = corridorEvidence("eggleston-pritchard", now);
   assert.ok(evidence.route);
-  const route = { ...evidence.route, captured_at: new Date(now).toISOString() };
+  // This test injects a synthetic closure at its own fixture clock; it does not
+  // replay the independently timestamped construction-detour calculation.
+  const route = { ...evidence.route, captured_at: new Date(now).toISOString(), construction_avoidance: undefined };
   const read = () => ({ ...evidence, route, geometryStatus: "supported", closures: { status: "current_snapshot" as const, blocked: true as const, matchingAreas: [{ id: "test-closure", geometry: polygon }], validUntil: new Date(now + 1000).toISOString() } });
   const option = walkingOption(route, new Date(now).toISOString());
   assert.ok(option);

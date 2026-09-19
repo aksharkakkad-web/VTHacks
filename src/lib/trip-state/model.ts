@@ -2,6 +2,9 @@ import type { Trip, TripState } from "../../types/trip";
 import type { Point, ProviderDescriptor } from "../../agents/contract";
 import type { VerifiedIdentity } from "../../integrations/ans/directory";
 import type { WeatherEvidence } from "../campus-evidence/evidence";
+import type { PlanSignals } from "../decision-client/decision";
+import type { PublicCorridor, TripOptionEvidence } from "../decision-client/trip-options";
+import type { TripDecisionEvidence } from "../../agents/student/databricks";
 
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
@@ -14,6 +17,10 @@ export type TripRecord = {
   simulatedPlanIds?: string[];
   weatherEvidence?: WeatherEvidence;
   weatherPlanIds?: string[];
+  corridorId?: PublicCorridor;
+  planSignals?: Record<string, PlanSignals>;
+  optionEvidence?: TripOptionEvidence;
+  decisionEvidence?: TripDecisionEvidence;
   identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
   pendingBooking?: { providerId: string; requestId: string; attempts?: number; retryAt?: number };
   pendingReplacement?: { attempts: number; retryAt: number };

@@ -15,6 +15,17 @@ export type RouteEvidence = {
   nearby_phones: { phone_id: string; location: string; distance_meters: number; source_url: string; operational_status: "unknown" }[];
   historical_reports: { report_id: string; location: string; reported_date: string; offense: string; disposition: string; source_url: string; match_method: "exact_named_endpoint_place" }[];
   limitations: string[];
+  construction_avoidance?: {
+    algorithm_version: "official-network-construction-avoidance-v1";
+    status: "applied" | "unavailable";
+    evaluated_at: string;
+    valid_until: string | null;
+    source_snapshot_captured_at: string | null;
+    source_snapshot_version: string | null;
+    excluded_area_ids: string[];
+    sources: { url: string; sha256: string; captured_at: string; coverage: string }[];
+    reason: string | null;
+  };
 };
 
 function record(value: unknown): Record<string, unknown> {
@@ -41,6 +52,27 @@ export function parseRouteEvidence(snapshot: unknown): RouteEvidence[] {
     ids.add(r.corridor_id);
     requireValue(text(r.source_version) && text(r.captured_at) && Number.isFinite(Date.parse(r.captured_at)) && url(r.source_url));
     requireValue(text(r.origin) && text(r.destination));
+    if (r.construction_avoidance !== undefined) {
+      const avoidance = record(r.construction_avoidance);
+      const timestamp = (value: unknown) => text(value) && Number.isFinite(Date.parse(value));
+      requireValue(avoidance.algorithm_version === "official-network-construction-avoidance-v1" && typeof avoidance.status === "string" && ["applied", "unavailable"].includes(avoidance.status) && timestamp(avoidance.evaluated_at));
+      requireValue(avoidance.source_snapshot_captured_at === null || timestamp(avoidance.source_snapshot_captured_at));
+      requireValue(avoidance.source_snapshot_version === null || (typeof avoidance.source_snapshot_version === "string" && /^[a-f0-9]{64}$/.test(avoidance.source_snapshot_version)));
+      requireValue(Array.isArray(avoidance.excluded_area_ids) && avoidance.excluded_area_ids.length <= 10000 && avoidance.excluded_area_ids.every(text) && new Set(avoidance.excluded_area_ids).size === avoidance.excluded_area_ids.length);
+      requireValue(Array.isArray(avoidance.sources) && avoidance.sources.length <= 20);
+      for (const source of avoidance.sources) {
+        const s = record(source);
+        requireValue(url(s.url) && new URL(String(s.url)).hostname === "arcgis-central.gis.vt.edu" && typeof s.sha256 === "string" && /^[a-f0-9]{64}$/.test(s.sha256) && timestamp(s.captured_at) && text(s.coverage));
+      }
+      if (avoidance.status === "applied") {
+        requireValue(timestamp(avoidance.valid_until) && timestamp(avoidance.source_snapshot_captured_at) && avoidance.source_snapshot_version !== null && avoidance.sources.length > 0 && avoidance.reason === null);
+        const evaluated = Date.parse(String(avoidance.evaluated_at)), until = Date.parse(String(avoidance.valid_until));
+        requireValue(until > evaluated && [avoidance.source_snapshot_captured_at, ...avoidance.sources.map(s => record(s).captured_at)].every(value => {
+          const captured = Date.parse(String(value));
+          return captured <= evaluated && until <= captured + 3600000;
+        }));
+      } else requireValue(r.status === "unsupported" && avoidance.valid_until === null && text(avoidance.reason));
+    }
     requireValue(Array.isArray(r.limitations) && r.limitations.length > 0 && r.limitations.length <= 32 && r.limitations.every(text));
     requireValue(number(lighting.known_meters,10000) && number(lighting.lit_meters,10000) && number(lighting.unlit_meters,10000));
     requireValue(Math.abs(lighting.known_meters - lighting.lit_meters - lighting.unlit_meters) < .05);

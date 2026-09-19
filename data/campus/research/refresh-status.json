@@ -1,7 +1,8 @@
 {
-  "attempted_at": "2026-09-19T13:51:52.855368Z",
+  "attempted_at": "2026-09-19T15:08:07.131007Z",
   "datasets_attempted": [
-    "notices"
+    "closures",
+    "weather"
   ],
   "failures": []
 }

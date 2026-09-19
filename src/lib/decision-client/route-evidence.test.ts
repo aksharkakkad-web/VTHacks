@@ -28,6 +28,26 @@ test("historical reports require explicit coarse match and retain disposition", 
 test("captured official route evidence conforms to the runtime contract", () => {
   const rows = parseRouteEvidence(JSON.parse(readFileSync(join(process.cwd(), "data/campus/route-evidence.json"), "utf8")));
   assert.deepEqual(rows.map(r => r.status), ["supported","supported","unsupported"]);
-  assert.equal(rows[0].nearby_phones.length, 3);
+  assert.equal(rows[0].nearby_phones.length, 4);
+  assert.equal(rows[1].nearby_phones.length, 2);
   assert.equal(rows[1].historical_reports.length, 1);
+});
+
+test("construction avoidance carries bounded provenance and cannot claim an unavailable path is supported", () => {
+  const avoidance = {
+    algorithm_version: "official-network-construction-avoidance-v1", status: "applied", evaluated_at: "2026-09-19T15:15:00Z", valid_until: "2026-09-19T16:00:00Z",
+    source_snapshot_captured_at: "2026-09-19T15:00:00Z", source_snapshot_version: "a".repeat(64), excluded_area_ids: ["areas:20306"],
+    sources: [{url:"https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query",sha256:"b".repeat(64),captured_at:"2026-09-19T15:00:00Z",coverage:"published construction areas"}], reason: null,
+  };
+  assert.equal(parseRouteEvidence([{...row,construction_avoidance:avoidance}])[0].construction_avoidance?.valid_until, avoidance.valid_until);
+  for (const bad of [
+    {...avoidance,valid_until:"2026-09-19T16:01:00Z"}, {...avoidance,valid_until:"2026-09-19T15:14:00Z"},
+    {...avoidance,source_snapshot_captured_at:"2026-09-19T15:20:00Z"}, {...avoidance,sources:[]},
+    {...avoidance,excluded_area_ids:["areas:20306","areas:20306"]}, {...avoidance,source_snapshot_version:"invented"},
+    {...avoidance,sources:[{...avoidance.sources[0],url:"https://untrusted.example/closures"}]},
+    {...avoidance,status:"unavailable",valid_until:null,reason:"CONSTRUCTION_EVIDENCE_UNAVAILABLE"},
+  ]) assert.throws(() => parseRouteEvidence([{...row,construction_avoidance:bad}]));
+  const unsupported = {...row,status:"unsupported",geometry:null,distance_meters:null,endpoint_offsets_meters:null,lighting:{...row.lighting,unknown_meters:null},
+    construction_avoidance:{...avoidance,status:"unavailable",valid_until:null,reason:"CONSTRUCTION_EVIDENCE_UNAVAILABLE"}};
+  assert.equal(parseRouteEvidence([unsupported])[0].construction_avoidance?.status,"unavailable");
 });

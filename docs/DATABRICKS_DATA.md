@@ -1,8 +1,26 @@
 # Databricks data: what is real
 
-This track includes small, reproducible **official public snapshots**, not a live crime tracker or a route-safety guarantee. Source URLs, SHA-256 hashes, capture timestamps, coverage, and limitations are in `data/campus/source-manifest.json`. Student locations, names, contacts, and provider credentials are not in these files.
+This track includes reproducible official public snapshots and explicitly labeled community/historical evidence, not a live crime tracker or route-safety guarantee. Source URLs, hashes, capture timestamps, coverage and limitations are in `data/campus/source-manifest.json` and `data/campus/research/` provenance files. Student locations, names, contacts and provider credentials are not in these files.
 
-## Included data
+## Current integrated expansion — September 19, 2026
+
+Mahin's PR #14 expansion is retained intact and available through `/api/demo/campus-data`. The following supplements the original sample below; it does not convert it into complete incident coverage:
+
+| Evidence | Captured data | Decision use |
+| --- | --- | --- |
+| 2026 VT crime logs | 719 accepted rows, 717 distinct IDs; nine PDFs/79 pages, one incomplete quarantined row | Historical exact-place context; not a route crime rate |
+| OSM lighting | 1,179 objects:54 mapped lamps and1,125 lighting-tagged ways | Community context only; operating/brightness measurements unknown |
+| Pedestrian study | Four historical summaries from2015 | Historical context, not current crowds |
+| VT construction | 14 published areas with source geometry/dates | Conservative path avoidance and fresh mapped intersection blocks |
+| Emergency resources | 65 AED/Stop-the-Bleed items, in addition to130 mapped phones | Public map context, not verified operation/access |
+| Official notices | 20 source-page metadata records; retrieval gaps preserved | Source links only until facts are structured/validated |
+| Current weather/transit | 66 NWS context records in the expanded import;448 local scheduled departures | Dated forecast and timetable windows, never live vehicles |
+
+The native archive has2,067 typed evidence records plus reconstructable public JSON/provenance. [Native import and refresh instructions](../databricks/NATIVE_PUBLIC_IMPORT.md). The legacy12-report sample remains for backwards-compatible demonstrations; the safety sidecar uses the expanded crime dataset. Current detours are Newman1,077.34m/four nearby phones and Eggleston626.55m/two nearby phones, adding22.29m each to avoid published construction areas. Construction-derived geometry expires with its source and must be refreshed before a later demo.
+
+Available evidence still cannot justify a numerical route-safety score: `routeExposureScore` remains null. No crowd measurement, operating-light verification or complete crime coverage is invented. [Safety evidence contract](DATABRICKS_SAFETY_EVIDENCE.md).
+
+## Original snapshot baseline (historical counts)
 
 Initial successful capture: **September 19, 2026, 05:55 UTC**. Counts are from that snapshot, not promises that upstream data stays unchanged.
 
@@ -40,7 +58,7 @@ The importer uses real downstream stop order, rejects no-pickup/no-drop-off stop
 - The sample preserves an explicitly **unfounded** report instead of presenting it as a confirmed crime. “Active” is investigation status, not a current threat.
 - Reports retain public case IDs, coarse named locations, offense categories, dates, disposition and source page. They contain no victim names or personal details. No street-level geocoding, hidden severity weight, per-person profile or neighborhood danger rating is generated.
 - `historical_report_count` in route context is **null**, because this sample is not a complete, route-matched lookback. A dashboard may show “selected reports,” but must not imply a population-level rate.
-- No verified path-lighting dataset was found. `lighting` is `unknown`. No closure feed was validated: `walking_path_closed` is null. `active_official_alert=true` is used only for overlapping severe/extreme **NWS weather alerts**, with weather provenance; null does not assert no alert. Current campus crime alerts remain unknown.
+- Measured path lighting remains unknown; newer OSM tags are community evidence only. The expanded official construction feed now supports fresh path intersections and conservative avoidance, not route-wide clearance. `active_official_alert=true` is used only for overlapping severe/extreme **NWS weather alerts**, with weather provenance; null does not assert no alert. Current campus crime alerts remain unknown.
 - Public emergency-phone coordinates are useful map context, not proof that a device works or that a path is safe. `route_data.py` separately provides connected campus pathway geometry for two named routes. Slope analysis and automatic citywide routing are not implemented.
 
 ## Refresh and checks

@@ -1,97 +1,13 @@
 {
   "schema_version": 1,
   "dataset": "weather",
-  "captured_at": "2026-09-19T13:48:05.157537Z",
+  "captured_at": "2026-09-19T15:08:07.129509Z",
   "records": [
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T13:48:05.136566Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T15:08:07.128216Z",
       "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T13:48:05.136566Z",
-      "valid_until": "2026-09-19T14:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T13:48:05.136566Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T13:48:05.136566Z",
-      "valid_until": "2026-09-19T14:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T13:48:05.136566Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T13:48:05.136566Z",
-      "valid_until": "2026-09-19T14:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T14:00:00Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T14:00:00Z",
-      "valid_until": "2026-09-19T15:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T14:00:00Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T14:00:00Z",
-      "valid_until": "2026-09-19T15:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T14:00:00Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T14:00:00Z",
-      "valid_until": "2026-09-19T15:00:00Z",
-      "weather": "clear",
-      "lighting": "unknown",
-      "walking_path_closed": null,
-      "active_official_alert": null,
-      "historical_report_count": null,
-      "history_lookback_days": null,
-      "source_url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly"
-    },
-    {
-      "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T15:00:00Z",
-      "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T15:00:00Z",
+      "valid_from": "2026-09-19T15:08:07.128216Z",
       "valid_until": "2026-09-19T16:00:00Z",
       "weather": "clear",
       "lighting": "unknown",
@@ -103,9 +19,9 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T15:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T15:08:07.128216Z",
       "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T15:00:00Z",
+      "valid_from": "2026-09-19T15:08:07.128216Z",
       "valid_until": "2026-09-19T16:00:00Z",
       "weather": "clear",
       "lighting": "unknown",
@@ -117,9 +33,9 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T15:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T15:08:07.128216Z",
       "updated_at": "2026-09-19T12:00:36Z",
-      "valid_from": "2026-09-19T15:00:00Z",
+      "valid_from": "2026-09-19T15:08:07.128216Z",
       "valid_until": "2026-09-19T16:00:00Z",
       "weather": "clear",
       "lighting": "unknown",
@@ -131,7 +47,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T16:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T16:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T16:00:00Z",
       "valid_until": "2026-09-19T17:00:00Z",
@@ -145,7 +61,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T16:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T16:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T16:00:00Z",
       "valid_until": "2026-09-19T17:00:00Z",
@@ -159,7 +75,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T16:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T16:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T16:00:00Z",
       "valid_until": "2026-09-19T17:00:00Z",
@@ -173,7 +89,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T17:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T17:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T17:00:00Z",
       "valid_until": "2026-09-19T18:00:00Z",
@@ -187,7 +103,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T17:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T17:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T17:00:00Z",
       "valid_until": "2026-09-19T18:00:00Z",
@@ -201,7 +117,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T17:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T17:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T17:00:00Z",
       "valid_until": "2026-09-19T18:00:00Z",
@@ -215,7 +131,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T18:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T18:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T18:00:00Z",
       "valid_until": "2026-09-19T19:00:00Z",
@@ -229,7 +145,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T18:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T18:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T18:00:00Z",
       "valid_until": "2026-09-19T19:00:00Z",
@@ -243,7 +159,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T18:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T18:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T18:00:00Z",
       "valid_until": "2026-09-19T19:00:00Z",
@@ -257,7 +173,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T19:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T19:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T19:00:00Z",
       "valid_until": "2026-09-19T20:00:00Z",
@@ -271,7 +187,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T19:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T19:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T19:00:00Z",
       "valid_until": "2026-09-19T20:00:00Z",
@@ -285,7 +201,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T19:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T19:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T19:00:00Z",
       "valid_until": "2026-09-19T20:00:00Z",
@@ -299,7 +215,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T20:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T20:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T20:00:00Z",
       "valid_until": "2026-09-19T21:00:00Z",
@@ -313,7 +229,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T20:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T20:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T20:00:00Z",
       "valid_until": "2026-09-19T21:00:00Z",
@@ -327,7 +243,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T20:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T20:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T20:00:00Z",
       "valid_until": "2026-09-19T21:00:00Z",
@@ -341,7 +257,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T21:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T21:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T21:00:00Z",
       "valid_until": "2026-09-19T22:00:00Z",
@@ -355,7 +271,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T21:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T21:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T21:00:00Z",
       "valid_until": "2026-09-19T22:00:00Z",
@@ -369,7 +285,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T21:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T21:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T21:00:00Z",
       "valid_until": "2026-09-19T22:00:00Z",
@@ -383,7 +299,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T22:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T22:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T22:00:00Z",
       "valid_until": "2026-09-19T23:00:00Z",
@@ -397,7 +313,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T22:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T22:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T22:00:00Z",
       "valid_until": "2026-09-19T23:00:00Z",
@@ -411,7 +327,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T22:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T22:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T22:00:00Z",
       "valid_until": "2026-09-19T23:00:00Z",
@@ -425,7 +341,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T23:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T23:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T23:00:00Z",
       "valid_until": "2026-09-20T00:00:00Z",
@@ -439,7 +355,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T23:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T23:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T23:00:00Z",
       "valid_until": "2026-09-20T00:00:00Z",
@@ -453,7 +369,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-19T23:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-19T23:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-19T23:00:00Z",
       "valid_until": "2026-09-20T00:00:00Z",
@@ -467,7 +383,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T00:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T00:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T00:00:00Z",
       "valid_until": "2026-09-20T01:00:00Z",
@@ -481,7 +397,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T00:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T00:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T00:00:00Z",
       "valid_until": "2026-09-20T01:00:00Z",
@@ -495,7 +411,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T00:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T00:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T00:00:00Z",
       "valid_until": "2026-09-20T01:00:00Z",
@@ -509,7 +425,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T01:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T01:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T01:00:00Z",
       "valid_until": "2026-09-20T02:00:00Z",
@@ -523,7 +439,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T01:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T01:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T01:00:00Z",
       "valid_until": "2026-09-20T02:00:00Z",
@@ -537,7 +453,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T01:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T01:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T01:00:00Z",
       "valid_until": "2026-09-20T02:00:00Z",
@@ -551,7 +467,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T02:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T02:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T02:00:00Z",
       "valid_until": "2026-09-20T03:00:00Z",
@@ -565,7 +481,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T02:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T02:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T02:00:00Z",
       "valid_until": "2026-09-20T03:00:00Z",
@@ -579,7 +495,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T02:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T02:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T02:00:00Z",
       "valid_until": "2026-09-20T03:00:00Z",
@@ -593,7 +509,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T03:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T03:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T03:00:00Z",
       "valid_until": "2026-09-20T04:00:00Z",
@@ -607,7 +523,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T03:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T03:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T03:00:00Z",
       "valid_until": "2026-09-20T04:00:00Z",
@@ -621,7 +537,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T03:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T03:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T03:00:00Z",
       "valid_until": "2026-09-20T04:00:00Z",
@@ -635,7 +551,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T04:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T04:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T04:00:00Z",
       "valid_until": "2026-09-20T05:00:00Z",
@@ -649,7 +565,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T04:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T04:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T04:00:00Z",
       "valid_until": "2026-09-20T05:00:00Z",
@@ -663,7 +579,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T04:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T04:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T04:00:00Z",
       "valid_until": "2026-09-20T05:00:00Z",
@@ -677,7 +593,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T05:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T05:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T05:00:00Z",
       "valid_until": "2026-09-20T06:00:00Z",
@@ -691,7 +607,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T05:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T05:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T05:00:00Z",
       "valid_until": "2026-09-20T06:00:00Z",
@@ -705,7 +621,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T05:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T05:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T05:00:00Z",
       "valid_until": "2026-09-20T06:00:00Z",
@@ -719,7 +635,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T06:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T06:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T06:00:00Z",
       "valid_until": "2026-09-20T07:00:00Z",
@@ -733,7 +649,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T06:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T06:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T06:00:00Z",
       "valid_until": "2026-09-20T07:00:00Z",
@@ -747,7 +663,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T06:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T06:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T06:00:00Z",
       "valid_until": "2026-09-20T07:00:00Z",
@@ -761,7 +677,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T07:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T07:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T07:00:00Z",
       "valid_until": "2026-09-20T08:00:00Z",
@@ -775,7 +691,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T07:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T07:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T07:00:00Z",
       "valid_until": "2026-09-20T08:00:00Z",
@@ -789,7 +705,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T07:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T07:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T07:00:00Z",
       "valid_until": "2026-09-20T08:00:00Z",
@@ -803,7 +719,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T08:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T08:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T08:00:00Z",
       "valid_until": "2026-09-20T09:00:00Z",
@@ -817,7 +733,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T08:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T08:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T08:00:00Z",
       "valid_until": "2026-09-20T09:00:00Z",
@@ -831,7 +747,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T08:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T08:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T08:00:00Z",
       "valid_until": "2026-09-20T09:00:00Z",
@@ -845,7 +761,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T09:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T09:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T09:00:00Z",
       "valid_until": "2026-09-20T10:00:00Z",
@@ -859,7 +775,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T09:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T09:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T09:00:00Z",
       "valid_until": "2026-09-20T10:00:00Z",
@@ -873,7 +789,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T09:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T09:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T09:00:00Z",
       "valid_until": "2026-09-20T10:00:00Z",
@@ -887,7 +803,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T10:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T10:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T10:00:00Z",
       "valid_until": "2026-09-20T11:00:00Z",
@@ -901,7 +817,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T10:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T10:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T10:00:00Z",
       "valid_until": "2026-09-20T11:00:00Z",
@@ -915,7 +831,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T10:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T10:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T10:00:00Z",
       "valid_until": "2026-09-20T11:00:00Z",
@@ -929,7 +845,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T11:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T11:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T11:00:00Z",
       "valid_until": "2026-09-20T12:00:00Z",
@@ -943,7 +859,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T11:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T11:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T11:00:00Z",
       "valid_until": "2026-09-20T12:00:00Z",
@@ -957,7 +873,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T11:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T11:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T11:00:00Z",
       "valid_until": "2026-09-20T12:00:00Z",
@@ -971,7 +887,7 @@
     },
     {
       "corridor_id": "newman-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T12:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T12:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T12:00:00Z",
       "valid_until": "2026-09-20T12:00:36Z",
@@ -985,7 +901,7 @@
     },
     {
       "corridor_id": "eggleston-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T12:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T12:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T12:00:00Z",
       "valid_until": "2026-09-20T12:00:36Z",
@@ -999,7 +915,7 @@
     },
     {
       "corridor_id": "downtown-pritchard",
-      "context_version": "nws-a5b3eb51f0c8-dd3a4d52f031-2026-09-20T12:00:00Z",
+      "context_version": "nws-a2a32e9408b8-8d42ed5960c7-2026-09-20T12:00:00Z",
       "updated_at": "2026-09-19T12:00:36Z",
       "valid_from": "2026-09-20T12:00:00Z",
       "valid_until": "2026-09-20T12:00:36Z",
@@ -1015,8 +931,8 @@
   "sources": [
     {
       "url": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
-      "sha256": "a5b3eb51f0c8350d624e0d4963aff649b0ddc20f4e621c5a0f28f6d57b6a6d4e",
-      "captured_at": "2026-09-19T13:48:05.157527Z",
+      "sha256": "a2a32e9408b8429c725f95c178f8f9066f0a29b310d8aa6af1aa7c6c6565812b",
+      "captured_at": "2026-09-19T15:08:07.129499Z",
       "row_count": 72,
       "coverage": "Campus public reference point area forecast",
       "limitations": "Forecast, not observed conditions on each path.",
@@ -1024,8 +940,8 @@
     },
     {
       "url": "https://api.weather.gov/alerts/active?point=37.2296,-80.4139",
-      "sha256": "dd3a4d52f031aeb043934e8425cfb6b1341de655a7c0836c5e6ec14ea85b2b07",
-      "captured_at": "2026-09-19T13:48:05.157534Z",
+      "sha256": "8d42ed5960c74d45b87aee0d9e4582f65c7b5c3dbc71e4faa124e475c7fcf2e7",
+      "captured_at": "2026-09-19T15:08:07.129506Z",
       "row_count": 0,
       "coverage": "NWS alerts for the campus reference point",
       "limitations": "Not campus crime alerts; empty only at capture time.",
@@ -1036,26 +952,6 @@
     "Use only overlapping forecast validity windows. No rain penalty does not mean conditions are safe."
   ],
   "hourly": [
-    {
-      "start_at": "2026-09-19T09:00:00-04:00",
-      "end_at": "2026-09-19T10:00:00-04:00",
-      "temperature": 69,
-      "temperature_unit": "F",
-      "precipitation_probability": 7,
-      "short_forecast": "Cloudy",
-      "wind_speed": "2 mph",
-      "is_daytime": true
-    },
-    {
-      "start_at": "2026-09-19T10:00:00-04:00",
-      "end_at": "2026-09-19T11:00:00-04:00",
-      "temperature": 71,
-      "temperature_unit": "F",
-      "precipitation_probability": 6,
-      "short_forecast": "Mostly Cloudy",
-      "wind_speed": "3 mph",
-      "is_daytime": true
-    },
     {
       "start_at": "2026-09-19T11:00:00-04:00",
       "end_at": "2026-09-19T12:00:00-04:00",
@@ -1754,6 +1650,26 @@
       "precipitation_probability": 46,
       "short_forecast": "Chance Showers And Thunderstorms",
       "wind_speed": "5 mph",
+      "is_daytime": true
+    },
+    {
+      "start_at": "2026-09-22T09:00:00-04:00",
+      "end_at": "2026-09-22T10:00:00-04:00",
+      "temperature": 62,
+      "temperature_unit": "F",
+      "precipitation_probability": 46,
+      "short_forecast": "Chance Showers And Thunderstorms",
+      "wind_speed": "5 mph",
+      "is_daytime": true
+    },
+    {
+      "start_at": "2026-09-22T10:00:00-04:00",
+      "end_at": "2026-09-22T11:00:00-04:00",
+      "temperature": 63,
+      "temperature_unit": "F",
+      "precipitation_probability": 46,
+      "short_forecast": "Chance Showers And Thunderstorms",
+      "wind_speed": "3 mph",
       "is_daytime": true
     }
   ],

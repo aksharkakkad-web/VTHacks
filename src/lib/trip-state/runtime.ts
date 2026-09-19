@@ -2,7 +2,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { StudentAgent } from "../../agents/student/service";
 import { decisionRecommendation } from "../../agents/student/databricks";
-import { evaluateTrip } from "../decision-client/server";
+import { evaluateTrip, evaluateTripIntelligence, getPublicTripOptions } from "../decision-client/server";
 import { HttpProvider } from "../../agents/http-provider";
 import { scopedProviderToken } from "../../agents/provider-credentials";
 import { demoDescriptors } from "../../agents/demo-provider";
@@ -29,7 +29,8 @@ export function getRuntime(): Runtime {
     // The shared demo token belongs only to our configured loopback providers.
     // ANS discovery must never cause that credential to be sent to a third party.
     provider: (descriptor, identity) => new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: demo && descriptor.source === "demo" ? process.env.BEACON_PROVIDER_TOKEN : scopedProviderToken(descriptor, identity, process.env.BEACON_PROVIDER_CREDENTIALS) }),
-    recommend: decisionRecommendation(evaluateTrip),
+    recommend: decisionRecommendation(evaluateTrip, evaluateTripIntelligence),
+    publicTripOptions: getPublicTripOptions,
     campusWeather,
     notify: (contact, message, key) => sendNotification(contact, demo ? `[Beacon demo test] ${message}` : message, key),
     graceMinutes: Number(process.env.BEACON_GRACE_MINUTES ?? 5),

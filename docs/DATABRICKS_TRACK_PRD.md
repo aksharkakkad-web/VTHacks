@@ -1,16 +1,26 @@
 # Beacon — Databricks track PRD and build contract
 
-**Owner:** Akshar · **Version:** 3 · **Date:** September 19, 2026
+**Owner:** Akshar · **Version:** 4 · **Date:** September 19, 2026
 
 **Baseline inspected:** `main` at `d8f513a` (Mahin's demo provider agents merged).
 
-This is the build contract for Beacon's logic/data track, extending the [product PRD](Beacon_Final_Hackathon_PRD.md). Shared `CandidatePlan`, `Recommendation`, and trip API shapes remain unchanged. The additive decision envelope is implemented inside this track; Mahin still owns mapping it into trip APIs.
+This is the build contract for Beacon's logic/data track, extending the [product PRD](Beacon_Final_Hackathon_PRD.md). Shared `CandidatePlan` and `Recommendation` remain unchanged. Version 4 integrates the data-side exports into Mahin's existing backend with optional named-corridor input and owner-protected evidence; Rishit still owns the screens.
 
 ## Current implementation status and scope decisions
 
-The decision/data backend now includes personalized deterministic ranking, managed transit lookup, real connected campus walking paths, nearby mapped emergency resources, historical context, refreshed weather, sanitized audits, and an optional native Databricks AI briefing. `evaluateTripIntelligence` and `getMappedWalkingOption` are additive server exports; teammates' APIs and UI remain untouched. A bounded native refresh job and an expanded dashboard draft are provided. Actual cloud runs, statement IDs and limitations are in [live evidence](DATABRICKS_LIVE_EVIDENCE.md); do not equate implemented code with verified team integration.
+The decision/data backend includes personalized deterministic ranking, managed transit lookup, connected campus walking paths, mapped emergency resources, historical context, weather, sanitized audits and optional native AI briefing. Version 4 is based on Mahin's PR #14 head `dcaeedd`, preserving his trip/ANS/Telegram work. Actual cloud runs, statement IDs and limitations are in [live evidence](DATABRICKS_LIVE_EVIDENCE.md); local backend integration is not a deployed finished UI.
 
-### Version 3 completion contract
+### Version 4 integrated contract (supersedes older completion status)
+
+- **Expanded evidence:** 719 accepted 2026 crime-log rows across nine official PDFs/79 pages (717 distinct case IDs; incomplete coverage and one quarantined row); 1,179 community lighting objects, not verified working lights; four historical pedestrian summaries; 14 official construction areas; 65 mapped AED/bleeding-control resources; 20 official notice-page records; current NWS context. These supplement official transit, 130 mapped phones and the campus path network. See [data contract](DATABRICKS_DATA.md).
+- **Actual route benefit:** construction-aware connected walks, preserving the original public endpoints: Newman–Pritchard 1,077.34m and Eggleston–Pritchard 626.55m. Each adds 22.29m to avoid currently dated published work areas. This is conservative avoidance, not proof that every remaining path is open or safe. Rebuild after construction evidence expires; no fabricated fallback path.
+- **Backend integration:** optional `corridorId` accepts the two campus routes only and verifies endpoint proximity locally. Discovery includes a mapped walk and, in demo mode, a managed timetable option with explicit 3+3-minute stop-walk assumptions. One rich evaluation returns a choice plus source-backed explanation/map/safety evidence. Confirmation, provider verification, cancellation recovery and notification gates remain Mahin's implementation. [API handoff](DATABRICKS_APP_HANDOFF.md).
+- **Native data:** a bounded serverless Spark import writes raw provenance archives plus typed public-evidence records, with a completion marker only after verification. Empty provider-outcome storage and an idempotent ingestion contract are ready; real history remains unknown, not seeded. [Import runbook](../databricks/NATIVE_PUBLIC_IMPORT.md), [provider outcomes](DATABRICKS_PROVIDER_OUTCOMES.md).
+- **Honest safety:** strict source/route/freshness validation, current walking blocks and missing-coverage warnings. `routeExposureScore: null` and `scoreStatus: unavailable` remain correct because measured lighting/current activity/complete incident coverage are absent. [Safety contract](DATABRICKS_SAFETY_EVIDENCE.md).
+- **Research:** optional bounded official-source retrieval with a provider-neutral search interface. Native web-search-compatible models were not available in this workspace; no extra service enabled. Pages/snippets cannot directly change ranking. [Research contract](DATABRICKS_WEB_RESEARCH.md).
+- **Remaining product dependencies:** Rishit's [PR #16](https://github.com/aksharkakkad-web/VTHacks/pull/16), `feat/beacon-design-system` at `17fa00f`, is now visible with green CI. Its own handoff describes a frontend simulation; the map is illustrative SVG, not our actual route geometry. Connect its views to Mahin's Trip API and the evidence endpoint, then verify a combined UI journey. Mahin's [PR #15](https://github.com/aksharkakkad-web/VTHacks/pull/15) reports the hosted backend still lacks Databricks server credentials, so local real-SQL acceptance is not hosted acceptance. Real provider participation, observed reliability, verified stop-access walks, arbitrary-address routing, measured lighting and live pedestrian data remain outside demonstrated capabilities. No deployment or main merge is implied.
+
+### Version 3 historical completion contract
 
 - **Data:** two supported walking corridors from 1,970 official VT pathway features; 130 mapped phones; official GTFS and $0 fare; next-day hourly weather/alert windows; 12 selected historical reports. Route matching uses connected geometry, phone proximity and exact named endpoint places—not invented crime scores. Downtown walking is explicitly unsupported.
 - **Personalization:** budget and walking limits are hard constraints; explicit price/walking/transfer preferences change ranking; canceled providers and expired quotes are excluded. Severe forecast weather excludes walking-only options; known closures exclude affected walking. Unknown conditions stay unknown.
@@ -26,11 +36,11 @@ Akshar's later scope decisions supersede the initial transit-only proposal and t
 - `maxBudget` is dollars, normalized internally to cents; invalid requests throw (not an `INVALID_INPUT` result).
 - `beacon-v2` is default. Baseline scoring plus rain walking multiplier 1.5 and verified-unlit penalty 3/minute; `beacon-v1` omits those penalties. Walking weights are 1/4/6; transfer weights 4/8, not the previously proposed 10.
 - Priority is `balanced`, `lowest_cost`, or `less_exposed` (means less walking, not measured crime safety). Cost-first emits `LOWEST_COST`; others emit `LOWEST_POLICY_SCORE`.
-- `local` is the pure reference function; server outage results are `local_fallback`. No current UI/API changes are implied by this work.
+- `local` is the pure reference function; server outage results are `local_fallback`. Version 4 adds the backend handoff described above, not UI implementation.
 - Real direct corridors are Newman Library → Pritchard and East Eggleston → Pritchard. No verified direct downtown itinerary is claimed. Friday Newman service does not imply Sunday service; Eggleston supports the weekend in the captured feed.
-- Actual managed schema: public_snapshots, source_manifest, incident_reports, emergency_phones, transit_departures, route_context, route_evidence, decision_events. No fake provider history is seeded.
+- Managed schema: public_snapshots, source_manifest, incident_reports, emergency_phones, transit_departures, route_context, route_evidence, decision_events, public_research_snapshots, public_research_items, public_evidence_records, public_research_imports and provider_outcomes. No fake provider history is seeded.
 - Executable runtime policy/query live in `src/lib/decision-client/decision.ts` and `src/integrations/databricks/sql.ts`; importer is `databricks/ingest/refresh_campus.py`; fixture assertions are `databricks/demo.mjs`. Proposed artifact names later in this baseline are not additional required files.
-- Baseline requirements not yet implemented: automatic audit retention cleanup, UI/API integration, and an independently observed provider-reliability pipeline. They are not claimed complete.
+- Baseline requirements not yet implemented: automatic audit retention cleanup, finished UI/deployed integration, and actual independently observed provider history. The backend API wiring and outcome ingestion contract are implemented; they do not establish real-world operation.
 
 ## 1. The project in plain English
 

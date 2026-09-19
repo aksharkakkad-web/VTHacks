@@ -39,6 +39,7 @@ try {
   node databricks/run.mjs demo            Local choice, cancellation, budget, no-option demo
   node databricks/run.mjs demo --live     Same demo, require actual Databricks results
   node databricks/run.mjs intelligence --live --enable-ai  Route-aware, grounded AI briefing
+  node databricks/run.mjs evidence --live Verify expanded managed data and trip evidence
   node databricks/run.mjs setup           Preview tables/import sizes, no cloud writes
   node databricks/run.mjs setup --apply   Create Beacon tables + MERGE public snapshots
   node databricks/run.mjs sql <file.sql>  Run one repository SQL showcase query
@@ -89,6 +90,11 @@ Optional AI queries require --enable-ai; this may consume AI quota. No paid upgr
     if(args.includes('--live')) credentials();
     const {runIntelligenceDemo}=await import('./intelligence-demo.mjs');
     await runIntelligenceDemo(compileTrack(),args.includes('--live'),args.includes('--enable-ai'));
+  } else if (command === 'evidence') {
+    if (!args.includes('--live')) throw new Error('Evidence acceptance requires --live; no simulated cloud proof.');
+    const config = credentials();
+    const { checkPublicEvidence } = await import('./evidence-check.mjs');
+    await checkPublicEvidence(compileTrack(), config, { initializeOutcomes: args.includes('--initialize-outcomes') });
   } else if (command === 'sql') {
     const file = resolve(root, args[0] || '');
     const permitted = join(root, 'databricks/sql/showcase/');

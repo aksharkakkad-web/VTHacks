@@ -11,7 +11,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -25,7 +25,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -39,7 +39,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -53,7 +53,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -67,7 +67,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -81,7 +81,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -95,7 +95,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -109,7 +109,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -123,7 +123,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -137,7 +137,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -151,7 +151,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -165,7 +165,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -179,7 +179,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -193,7 +193,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -207,7 +207,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -221,7 +221,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -235,7 +235,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -249,7 +249,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -263,7 +263,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -277,7 +277,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -291,7 +291,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -305,7 +305,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -319,7 +319,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -333,7 +333,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -347,7 +347,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -361,7 +361,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -375,7 +375,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -389,7 +389,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -403,7 +403,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -417,7 +417,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -431,7 +431,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -445,7 +445,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -459,7 +459,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -473,7 +473,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -487,7 +487,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -501,7 +501,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -515,7 +515,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -529,7 +529,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -543,7 +543,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -557,7 +557,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -571,7 +571,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -585,7 +585,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -599,7 +599,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -613,7 +613,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -627,7 +627,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -641,7 +641,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -655,7 +655,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -669,7 +669,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -683,7 +683,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -697,7 +697,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -711,7 +711,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -725,7 +725,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -739,7 +739,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -753,7 +753,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -767,7 +767,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -781,7 +781,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -795,7 +795,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -809,7 +809,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -823,7 +823,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -837,7 +837,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -851,7 +851,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -865,7 +865,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -879,7 +879,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -893,7 +893,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -907,7 +907,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -921,7 +921,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -935,7 +935,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -949,7 +949,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -963,7 +963,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -977,7 +977,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -991,7 +991,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1005,7 +1005,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1019,7 +1019,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1033,7 +1033,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1047,7 +1047,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1061,7 +1061,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1075,7 +1075,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1089,7 +1089,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1103,7 +1103,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1117,7 +1117,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1131,7 +1131,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1145,7 +1145,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1159,7 +1159,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1173,7 +1173,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1187,7 +1187,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1201,7 +1201,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1215,7 +1215,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1229,7 +1229,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1243,7 +1243,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1257,7 +1257,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1271,7 +1271,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1285,7 +1285,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1299,7 +1299,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1313,7 +1313,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1327,7 +1327,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1341,7 +1341,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1355,7 +1355,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1369,7 +1369,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1383,7 +1383,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1397,7 +1397,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1411,7 +1411,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1425,7 +1425,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1439,7 +1439,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1453,7 +1453,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1467,7 +1467,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1481,7 +1481,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1495,7 +1495,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1509,7 +1509,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1523,7 +1523,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1537,7 +1537,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1551,7 +1551,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1565,7 +1565,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1579,7 +1579,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1593,7 +1593,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1607,7 +1607,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1621,7 +1621,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1635,7 +1635,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1649,7 +1649,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1663,7 +1663,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1677,7 +1677,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1691,7 +1691,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1705,7 +1705,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1719,7 +1719,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1733,7 +1733,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1747,7 +1747,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1761,7 +1761,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1775,7 +1775,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1789,7 +1789,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1803,7 +1803,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1817,7 +1817,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1831,7 +1831,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1845,7 +1845,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1859,7 +1859,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1873,7 +1873,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1887,7 +1887,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1901,7 +1901,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1915,7 +1915,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1929,7 +1929,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1943,7 +1943,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1957,7 +1957,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1971,7 +1971,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -1985,7 +1985,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -1999,7 +1999,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2013,7 +2013,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2027,7 +2027,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2041,7 +2041,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2055,7 +2055,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2069,7 +2069,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2083,7 +2083,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2097,7 +2097,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2111,7 +2111,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2125,7 +2125,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2139,7 +2139,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2153,7 +2153,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2167,7 +2167,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2181,7 +2181,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2195,7 +2195,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2209,7 +2209,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2223,7 +2223,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2237,7 +2237,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2251,7 +2251,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2265,7 +2265,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2279,7 +2279,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "newman-pritchard",
@@ -2293,7 +2293,7 @@
     "from_stop_id": "1100",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2307,7 +2307,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2321,7 +2321,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2335,7 +2335,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2349,7 +2349,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2363,7 +2363,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2377,7 +2377,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2391,7 +2391,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2405,7 +2405,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2419,7 +2419,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2433,7 +2433,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2447,7 +2447,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2461,7 +2461,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2475,7 +2475,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2489,7 +2489,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2503,7 +2503,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2517,7 +2517,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2531,7 +2531,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2545,7 +2545,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2559,7 +2559,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2573,7 +2573,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2587,7 +2587,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2601,7 +2601,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2615,7 +2615,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2629,7 +2629,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2643,7 +2643,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2657,7 +2657,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2671,7 +2671,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2685,7 +2685,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2699,7 +2699,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2713,7 +2713,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2727,7 +2727,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2741,7 +2741,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2755,7 +2755,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2769,7 +2769,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2783,7 +2783,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2797,7 +2797,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2811,7 +2811,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2825,7 +2825,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2839,7 +2839,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2853,7 +2853,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2867,7 +2867,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2881,7 +2881,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2895,7 +2895,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2909,7 +2909,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2923,7 +2923,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2937,7 +2937,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2951,7 +2951,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2965,7 +2965,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2979,7 +2979,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -2993,7 +2993,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3007,7 +3007,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3021,7 +3021,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3035,7 +3035,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3049,7 +3049,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3063,7 +3063,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3077,7 +3077,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3091,7 +3091,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3105,7 +3105,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3119,7 +3119,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3133,7 +3133,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3147,7 +3147,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3161,7 +3161,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3175,7 +3175,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3189,7 +3189,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3203,7 +3203,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3217,7 +3217,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3231,7 +3231,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3245,7 +3245,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3259,7 +3259,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3273,7 +3273,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3287,7 +3287,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3301,7 +3301,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3315,7 +3315,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3329,7 +3329,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3343,7 +3343,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3357,7 +3357,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3371,7 +3371,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3385,7 +3385,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3399,7 +3399,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3413,7 +3413,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3427,7 +3427,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3441,7 +3441,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3455,7 +3455,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3469,7 +3469,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3483,7 +3483,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3497,7 +3497,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3511,7 +3511,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3525,7 +3525,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3539,7 +3539,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3553,7 +3553,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3567,7 +3567,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3581,7 +3581,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3595,7 +3595,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3609,7 +3609,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3623,7 +3623,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3637,7 +3637,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3651,7 +3651,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3665,7 +3665,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3679,7 +3679,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3693,7 +3693,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3707,7 +3707,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3721,7 +3721,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3735,7 +3735,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3749,7 +3749,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3763,7 +3763,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3777,7 +3777,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3791,7 +3791,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3805,7 +3805,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3819,7 +3819,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3833,7 +3833,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3847,7 +3847,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3861,7 +3861,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3875,7 +3875,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3889,7 +3889,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3903,7 +3903,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3917,7 +3917,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3931,7 +3931,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3945,7 +3945,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3959,7 +3959,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3973,7 +3973,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -3987,7 +3987,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4001,7 +4001,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4015,7 +4015,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4029,7 +4029,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4043,7 +4043,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4057,7 +4057,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4071,7 +4071,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4085,7 +4085,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4099,7 +4099,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4113,7 +4113,7 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   },
   {
     "corridor_id": "eggleston-pritchard",
@@ -4127,6 +4127,2148 @@
     "from_stop_id": "1143",
     "to_stop_id": "1146",
     "source_id": "bt-gtfs",
-    "source_version": "FY27 Blacksburg 1.6A"
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e8e6adc7-85d6-46d5-841c-451b01dd4aa2",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:04:04Z",
+    "arrival_at": "2026-09-21T11:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "4338cf26-878a-4e1d-aa87-aec4cfe45349",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:11:31Z",
+    "arrival_at": "2026-09-21T11:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "4338cf26-878a-4e1d-aa87-aec4cfe45349",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:19:04Z",
+    "arrival_at": "2026-09-21T11:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "7ac96eaa-f9ff-4fc4-bb54-44e5a6ceb621",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:26:31Z",
+    "arrival_at": "2026-09-21T11:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "7ac96eaa-f9ff-4fc4-bb54-44e5a6ceb621",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:34:04Z",
+    "arrival_at": "2026-09-21T11:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0ac417ac-98d0-4981-adb9-d8fcf8412504",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:41:31Z",
+    "arrival_at": "2026-09-21T11:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0ac417ac-98d0-4981-adb9-d8fcf8412504",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:49:04Z",
+    "arrival_at": "2026-09-21T11:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0799f0d6-0b77-4a76-b59d-ee618765e13d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T11:56:31Z",
+    "arrival_at": "2026-09-21T12:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0799f0d6-0b77-4a76-b59d-ee618765e13d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:04:04Z",
+    "arrival_at": "2026-09-21T12:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "819a30b7-c521-4f0d-9390-811281f486c1",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:11:31Z",
+    "arrival_at": "2026-09-21T12:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "819a30b7-c521-4f0d-9390-811281f486c1",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:19:04Z",
+    "arrival_at": "2026-09-21T12:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "8ac35e78-0c94-40fc-98ec-0e6cd7e90b95",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:26:31Z",
+    "arrival_at": "2026-09-21T12:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "8ac35e78-0c94-40fc-98ec-0e6cd7e90b95",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:34:04Z",
+    "arrival_at": "2026-09-21T12:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "03f00329-7657-4c27-8b1a-3564b8d84f4f",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:41:31Z",
+    "arrival_at": "2026-09-21T12:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "03f00329-7657-4c27-8b1a-3564b8d84f4f",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:49:04Z",
+    "arrival_at": "2026-09-21T12:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "b4559fd2-2131-459c-a6e1-500530bf0e5d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T12:56:31Z",
+    "arrival_at": "2026-09-21T13:12:18Z",
+    "travel_minutes": 15.783333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "b4559fd2-2131-459c-a6e1-500530bf0e5d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:06:31Z",
+    "arrival_at": "2026-09-21T13:12:18Z",
+    "travel_minutes": 5.783333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "e901140f-2b43-4929-b5b6-5df74b611ae1",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:11:31Z",
+    "arrival_at": "2026-09-21T13:25:46Z",
+    "travel_minutes": 14.25,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e901140f-2b43-4929-b5b6-5df74b611ae1",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:20:42Z",
+    "arrival_at": "2026-09-21T13:25:46Z",
+    "travel_minutes": 5.066667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "d9b88f80-33d1-423a-9346-a0fcfe273a47",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:25:50Z",
+    "arrival_at": "2026-09-21T13:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "d9b88f80-33d1-423a-9346-a0fcfe273a47",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:34:53Z",
+    "arrival_at": "2026-09-21T13:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "18de2bd8-7a02-4216-9e57-e9af7f4cd799",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:37:50Z",
+    "arrival_at": "2026-09-21T13:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "18de2bd8-7a02-4216-9e57-e9af7f4cd799",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:46:53Z",
+    "arrival_at": "2026-09-21T13:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "45ac539e-ae2e-42c5-8fd1-aca737a79f14",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:49:50Z",
+    "arrival_at": "2026-09-21T14:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "45ac539e-ae2e-42c5-8fd1-aca737a79f14",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T13:58:53Z",
+    "arrival_at": "2026-09-21T14:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "c9401b11-d1f9-415d-a3d8-47da9bab3872",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:01:50Z",
+    "arrival_at": "2026-09-21T14:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "c9401b11-d1f9-415d-a3d8-47da9bab3872",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:10:53Z",
+    "arrival_at": "2026-09-21T14:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "c8dc4285-5a00-41a5-9526-8377bffcfaac",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:13:50Z",
+    "arrival_at": "2026-09-21T14:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "c8dc4285-5a00-41a5-9526-8377bffcfaac",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:22:53Z",
+    "arrival_at": "2026-09-21T14:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "5aff3ea9-7683-4af3-bc9b-a70b84f9815a",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:25:50Z",
+    "arrival_at": "2026-09-21T14:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "5aff3ea9-7683-4af3-bc9b-a70b84f9815a",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:34:53Z",
+    "arrival_at": "2026-09-21T14:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "c79952cc-8d5e-450f-a838-7301134396f5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:37:50Z",
+    "arrival_at": "2026-09-21T14:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "c79952cc-8d5e-450f-a838-7301134396f5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:46:53Z",
+    "arrival_at": "2026-09-21T14:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "aa57018c-055c-45fc-a3a8-3901ae465a57",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:49:50Z",
+    "arrival_at": "2026-09-21T15:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "aa57018c-055c-45fc-a3a8-3901ae465a57",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T14:58:53Z",
+    "arrival_at": "2026-09-21T15:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "ee9cb039-9594-4f22-8b72-de66b4beb251",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:01:50Z",
+    "arrival_at": "2026-09-21T15:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "ee9cb039-9594-4f22-8b72-de66b4beb251",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:10:53Z",
+    "arrival_at": "2026-09-21T15:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0791fead-39fa-46af-b6d4-66d552e5ca24",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:13:50Z",
+    "arrival_at": "2026-09-21T15:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0791fead-39fa-46af-b6d4-66d552e5ca24",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:22:53Z",
+    "arrival_at": "2026-09-21T15:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "717f65e1-cfba-4dbe-9a2b-5b0b45e052c2",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:25:50Z",
+    "arrival_at": "2026-09-21T15:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "717f65e1-cfba-4dbe-9a2b-5b0b45e052c2",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:34:53Z",
+    "arrival_at": "2026-09-21T15:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "ffa534aa-fc1c-4341-8ac0-4140cece3e67",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:37:50Z",
+    "arrival_at": "2026-09-21T15:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "ffa534aa-fc1c-4341-8ac0-4140cece3e67",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:46:53Z",
+    "arrival_at": "2026-09-21T15:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "ceb87e15-ba70-4b9e-ba7b-0a59996a6847",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:49:50Z",
+    "arrival_at": "2026-09-21T16:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "ceb87e15-ba70-4b9e-ba7b-0a59996a6847",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T15:58:53Z",
+    "arrival_at": "2026-09-21T16:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "4e802c43-b17f-4e8d-9917-6ca3469bd452",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:01:50Z",
+    "arrival_at": "2026-09-21T16:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "4e802c43-b17f-4e8d-9917-6ca3469bd452",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:10:53Z",
+    "arrival_at": "2026-09-21T16:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "cad13ac4-7a88-4408-9d37-8bc8dd373dac",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:13:50Z",
+    "arrival_at": "2026-09-21T16:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "cad13ac4-7a88-4408-9d37-8bc8dd373dac",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:22:53Z",
+    "arrival_at": "2026-09-21T16:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "23cfefd1-fa94-4ac9-9d3e-0f161b752ee5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:25:50Z",
+    "arrival_at": "2026-09-21T16:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "23cfefd1-fa94-4ac9-9d3e-0f161b752ee5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:34:53Z",
+    "arrival_at": "2026-09-21T16:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "03122c0b-0aee-4a79-9bc9-3861ef790be6",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:37:50Z",
+    "arrival_at": "2026-09-21T16:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "03122c0b-0aee-4a79-9bc9-3861ef790be6",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:46:53Z",
+    "arrival_at": "2026-09-21T16:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "4a4c1c44-57fb-4c5b-b662-4dd7b6c25200",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:49:50Z",
+    "arrival_at": "2026-09-21T17:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "4a4c1c44-57fb-4c5b-b662-4dd7b6c25200",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T16:58:53Z",
+    "arrival_at": "2026-09-21T17:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "1a6606de-5a73-4142-80f4-f056ad8847cf",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:01:50Z",
+    "arrival_at": "2026-09-21T17:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "1a6606de-5a73-4142-80f4-f056ad8847cf",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:10:53Z",
+    "arrival_at": "2026-09-21T17:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "d6ad9ce6-4cd6-4507-8c69-a3538bed1abd",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:13:50Z",
+    "arrival_at": "2026-09-21T17:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "d6ad9ce6-4cd6-4507-8c69-a3538bed1abd",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:22:53Z",
+    "arrival_at": "2026-09-21T17:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "08264262-8330-44f3-9691-099dc8eeb9da",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:25:50Z",
+    "arrival_at": "2026-09-21T17:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "08264262-8330-44f3-9691-099dc8eeb9da",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:34:53Z",
+    "arrival_at": "2026-09-21T17:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "b84c263b-4a90-4d39-8bf2-8cbf555d1293",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:37:50Z",
+    "arrival_at": "2026-09-21T17:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "b84c263b-4a90-4d39-8bf2-8cbf555d1293",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:46:53Z",
+    "arrival_at": "2026-09-21T17:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0f278975-4979-4ca7-99bf-012773972e77",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:49:50Z",
+    "arrival_at": "2026-09-21T18:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0f278975-4979-4ca7-99bf-012773972e77",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T17:58:53Z",
+    "arrival_at": "2026-09-21T18:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "636648e0-107a-4403-9e9c-5b5e3776ae35",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:01:50Z",
+    "arrival_at": "2026-09-21T18:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "636648e0-107a-4403-9e9c-5b5e3776ae35",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:10:53Z",
+    "arrival_at": "2026-09-21T18:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "edeaf7c4-3234-4d32-96f5-56731d4c59ad",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:13:50Z",
+    "arrival_at": "2026-09-21T18:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "edeaf7c4-3234-4d32-96f5-56731d4c59ad",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:22:53Z",
+    "arrival_at": "2026-09-21T18:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "68f5fa6c-0886-42bf-bc1d-7e62e0b2dd22",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:25:50Z",
+    "arrival_at": "2026-09-21T18:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "68f5fa6c-0886-42bf-bc1d-7e62e0b2dd22",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:34:53Z",
+    "arrival_at": "2026-09-21T18:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "4594e855-cea7-4e6b-b12c-2129cc0dbf82",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:37:50Z",
+    "arrival_at": "2026-09-21T18:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "4594e855-cea7-4e6b-b12c-2129cc0dbf82",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:46:53Z",
+    "arrival_at": "2026-09-21T18:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "8a4bb3cb-0fb0-490b-9a18-22f42c1de90d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:49:50Z",
+    "arrival_at": "2026-09-21T19:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "8a4bb3cb-0fb0-490b-9a18-22f42c1de90d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T18:58:53Z",
+    "arrival_at": "2026-09-21T19:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "8d1a3bf4-e33e-4804-a097-4fec1f74e4d7",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:01:50Z",
+    "arrival_at": "2026-09-21T19:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "8d1a3bf4-e33e-4804-a097-4fec1f74e4d7",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:10:53Z",
+    "arrival_at": "2026-09-21T19:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "66365994-c45c-4435-83ac-c31d7861a763",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:13:50Z",
+    "arrival_at": "2026-09-21T19:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "66365994-c45c-4435-83ac-c31d7861a763",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:22:53Z",
+    "arrival_at": "2026-09-21T19:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "e0e7a1d7-b1bd-4228-a78e-1c0a74233706",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:25:50Z",
+    "arrival_at": "2026-09-21T19:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e0e7a1d7-b1bd-4228-a78e-1c0a74233706",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:34:53Z",
+    "arrival_at": "2026-09-21T19:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "fd8a4ef2-6706-4850-b368-70d15a065f0c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:37:50Z",
+    "arrival_at": "2026-09-21T19:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "fd8a4ef2-6706-4850-b368-70d15a065f0c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:46:53Z",
+    "arrival_at": "2026-09-21T19:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "e41ce4cb-3fb4-41dd-b6f2-f67056093d54",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:49:50Z",
+    "arrival_at": "2026-09-21T20:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e41ce4cb-3fb4-41dd-b6f2-f67056093d54",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T19:58:53Z",
+    "arrival_at": "2026-09-21T20:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "fdfbb7dc-ca03-48e2-80ab-39a52b247a8e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:01:50Z",
+    "arrival_at": "2026-09-21T20:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "fdfbb7dc-ca03-48e2-80ab-39a52b247a8e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:10:53Z",
+    "arrival_at": "2026-09-21T20:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "58aa10e2-9af9-4832-a166-464358118a52",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:13:50Z",
+    "arrival_at": "2026-09-21T20:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "58aa10e2-9af9-4832-a166-464358118a52",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:22:53Z",
+    "arrival_at": "2026-09-21T20:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "292545f8-ee78-4bdc-8c37-95fc678c1777",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:25:50Z",
+    "arrival_at": "2026-09-21T20:39:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "292545f8-ee78-4bdc-8c37-95fc678c1777",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:34:53Z",
+    "arrival_at": "2026-09-21T20:39:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "df055704-9e34-4094-93ef-f1d413382879",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:37:50Z",
+    "arrival_at": "2026-09-21T20:51:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "df055704-9e34-4094-93ef-f1d413382879",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:46:53Z",
+    "arrival_at": "2026-09-21T20:51:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "7d987f95-352f-4ec7-820f-8b0c895483cc",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:49:50Z",
+    "arrival_at": "2026-09-21T21:03:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "7d987f95-352f-4ec7-820f-8b0c895483cc",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T20:58:53Z",
+    "arrival_at": "2026-09-21T21:03:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "323db2c1-2c27-4af2-971e-862c0d7cd35d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:01:50Z",
+    "arrival_at": "2026-09-21T21:15:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "323db2c1-2c27-4af2-971e-862c0d7cd35d",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:10:53Z",
+    "arrival_at": "2026-09-21T21:15:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "26e7669d-8185-4455-b305-38fc0725996f",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:13:50Z",
+    "arrival_at": "2026-09-21T21:27:13Z",
+    "travel_minutes": 13.383333,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "26e7669d-8185-4455-b305-38fc0725996f",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:22:53Z",
+    "arrival_at": "2026-09-21T21:27:13Z",
+    "travel_minutes": 4.333333,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "cb29ec82-0414-490a-b95a-274ebabd0dbf",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:25:50Z",
+    "arrival_at": "2026-09-21T21:37:41Z",
+    "travel_minutes": 11.85,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "cb29ec82-0414-490a-b95a-274ebabd0dbf",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:34:04Z",
+    "arrival_at": "2026-09-21T21:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "fc8060d2-a467-4684-8da0-995629b3be42",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:40:08Z",
+    "arrival_at": "2026-09-21T21:52:41Z",
+    "travel_minutes": 12.55,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "fc8060d2-a467-4684-8da0-995629b3be42",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:49:04Z",
+    "arrival_at": "2026-09-21T21:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "1a3c86bd-9633-4efd-b46c-ab729cdd9862",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T21:56:31Z",
+    "arrival_at": "2026-09-21T22:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "1a3c86bd-9633-4efd-b46c-ab729cdd9862",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:04:04Z",
+    "arrival_at": "2026-09-21T22:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "3a2b42d7-9fed-4dfd-9b63-34dd49e8e742",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:11:31Z",
+    "arrival_at": "2026-09-21T22:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "3a2b42d7-9fed-4dfd-9b63-34dd49e8e742",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:19:04Z",
+    "arrival_at": "2026-09-21T22:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "418fce39-6aa2-4dea-8cb4-b08401f19408",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:26:31Z",
+    "arrival_at": "2026-09-21T22:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "418fce39-6aa2-4dea-8cb4-b08401f19408",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:34:04Z",
+    "arrival_at": "2026-09-21T22:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "615efeee-66da-49bf-a0fd-e007548efeda",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:41:31Z",
+    "arrival_at": "2026-09-21T22:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "615efeee-66da-49bf-a0fd-e007548efeda",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:49:04Z",
+    "arrival_at": "2026-09-21T22:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "300fe435-8dbc-486b-bb0d-86d690dc8e6e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T22:56:31Z",
+    "arrival_at": "2026-09-21T23:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "300fe435-8dbc-486b-bb0d-86d690dc8e6e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:04:04Z",
+    "arrival_at": "2026-09-21T23:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "2a8237ac-8c21-4aac-b9c4-b3a501e5d0c2",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:11:31Z",
+    "arrival_at": "2026-09-21T23:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "2a8237ac-8c21-4aac-b9c4-b3a501e5d0c2",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:19:04Z",
+    "arrival_at": "2026-09-21T23:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "8ae75ec0-3b80-42c4-a1c6-9c8a5d21cd79",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:26:31Z",
+    "arrival_at": "2026-09-21T23:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "8ae75ec0-3b80-42c4-a1c6-9c8a5d21cd79",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:34:04Z",
+    "arrival_at": "2026-09-21T23:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "78def2f3-ad4e-47ad-9865-33d4f6076f3c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:41:31Z",
+    "arrival_at": "2026-09-21T23:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "78def2f3-ad4e-47ad-9865-33d4f6076f3c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:49:04Z",
+    "arrival_at": "2026-09-21T23:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "47f2773a-f521-4c17-9df8-688d19c0f51b",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-21T23:56:31Z",
+    "arrival_at": "2026-09-22T00:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "47f2773a-f521-4c17-9df8-688d19c0f51b",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:04:04Z",
+    "arrival_at": "2026-09-22T00:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "b89f8548-ca2c-44d8-9771-2fcb2d8e71c3",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:11:31Z",
+    "arrival_at": "2026-09-22T00:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "b89f8548-ca2c-44d8-9771-2fcb2d8e71c3",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:19:04Z",
+    "arrival_at": "2026-09-22T00:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "9840e55d-e3d9-4203-a534-0595af1e16aa",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:26:31Z",
+    "arrival_at": "2026-09-22T00:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "9840e55d-e3d9-4203-a534-0595af1e16aa",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:34:04Z",
+    "arrival_at": "2026-09-22T00:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0506b3f3-4e98-4d0a-a744-29d2c172c4b3",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:41:31Z",
+    "arrival_at": "2026-09-22T00:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0506b3f3-4e98-4d0a-a744-29d2c172c4b3",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:49:04Z",
+    "arrival_at": "2026-09-22T00:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "0ba05ae6-b728-484b-9d8e-505deda50763",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T00:56:31Z",
+    "arrival_at": "2026-09-22T01:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0ba05ae6-b728-484b-9d8e-505deda50763",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:04:04Z",
+    "arrival_at": "2026-09-22T01:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "b8c63ecb-0a1c-4c78-8c6b-82a75e73937b",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:11:31Z",
+    "arrival_at": "2026-09-22T01:22:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "b8c63ecb-0a1c-4c78-8c6b-82a75e73937b",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:19:04Z",
+    "arrival_at": "2026-09-22T01:22:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "afaba310-8e36-4b85-948b-0d31b67b1fe5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:26:31Z",
+    "arrival_at": "2026-09-22T01:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "afaba310-8e36-4b85-948b-0d31b67b1fe5",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:34:04Z",
+    "arrival_at": "2026-09-22T01:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "91a34a00-4ff2-4813-9ab9-d5bc9763beea",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:41:31Z",
+    "arrival_at": "2026-09-22T01:52:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "7caa20c6-8eca-4cbe-9adf-054a3ba482c2",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:48:27Z",
+    "arrival_at": "2026-09-22T01:51:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "91a34a00-4ff2-4813-9ab9-d5bc9763beea",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:49:04Z",
+    "arrival_at": "2026-09-22T01:52:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "5703d3c1-eb2b-4ffb-a25f-4bdd09bac51e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T01:56:31Z",
+    "arrival_at": "2026-09-22T02:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "5703d3c1-eb2b-4ffb-a25f-4bdd09bac51e",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:04:04Z",
+    "arrival_at": "2026-09-22T02:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "5b3b51e4-979c-40c6-8866-eb095eea0e12",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:18:27Z",
+    "arrival_at": "2026-09-22T02:21:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "a7201ff0-fe18-48ed-87da-7918a1e6bd63",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:26:31Z",
+    "arrival_at": "2026-09-22T02:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "a7201ff0-fe18-48ed-87da-7918a1e6bd63",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:34:04Z",
+    "arrival_at": "2026-09-22T02:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "0250a5cc-4f3f-44d6-8fac-8bf02d297119",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:48:27Z",
+    "arrival_at": "2026-09-22T02:51:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "e6b00ac9-2a08-4698-9dba-34bc7c238220",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T02:56:31Z",
+    "arrival_at": "2026-09-22T03:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e6b00ac9-2a08-4698-9dba-34bc7c238220",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:04:04Z",
+    "arrival_at": "2026-09-22T03:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "cec1b3c0-4e73-4367-9fde-007a53fe189b",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:18:27Z",
+    "arrival_at": "2026-09-22T03:21:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "5d28d6c6-8a4d-4b21-988b-43efe60f4731",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:26:31Z",
+    "arrival_at": "2026-09-22T03:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "5d28d6c6-8a4d-4b21-988b-43efe60f4731",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:34:04Z",
+    "arrival_at": "2026-09-22T03:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "5a869296-e350-4980-951a-f8f69cd70105",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:48:27Z",
+    "arrival_at": "2026-09-22T03:51:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "e6a2ca4a-7fea-4ea2-ad77-d2fcb103ff08",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T03:56:31Z",
+    "arrival_at": "2026-09-22T04:07:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "e6a2ca4a-7fea-4ea2-ad77-d2fcb103ff08",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T04:04:04Z",
+    "arrival_at": "2026-09-22T04:07:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "602fbd3c-9959-4cbc-ad8d-535b4a3e9acd",
+    "route_id": "HXS",
+    "route_name": "Hokie Express Stanger",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T04:18:27Z",
+    "arrival_at": "2026-09-22T04:21:30Z",
+    "travel_minutes": 3.05,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "newman-pritchard",
+    "trip_id": "226aa112-47ad-4dd1-a2c6-ac455d5ec49c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T04:26:31Z",
+    "arrival_at": "2026-09-22T04:37:41Z",
+    "travel_minutes": 11.166667,
+    "from_stop_id": "1100",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
+  },
+  {
+    "corridor_id": "eggleston-pritchard",
+    "trip_id": "226aa112-47ad-4dd1-a2c6-ac455d5ec49c",
+    "route_id": "CAS",
+    "route_name": "Campus Shuttle",
+    "service_date": "2026-09-21",
+    "departure_at": "2026-09-22T04:34:04Z",
+    "arrival_at": "2026-09-22T04:37:41Z",
+    "travel_minutes": 3.616667,
+    "from_stop_id": "1143",
+    "to_stop_id": "1146",
+    "source_id": "bt-gtfs",
+    "source_version": "FY27 Blacksburg 1.6A:aed7634f4df2"
   }
 ]
