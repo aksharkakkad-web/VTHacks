@@ -89,6 +89,7 @@ export function SafeCircleApp() {
   }, []);
 
   function act(action: DemoAction, withHaptic = true) {
+    if (action.type === "RECONNECT" && !navigator.onLine) return;
     if (withHaptic) haptic();
     if (action.type === "RESET_PROFILE") {
       try { window.localStorage.removeItem(PROFILE_STORAGE_KEY); } catch { setSessionOnly(true); }

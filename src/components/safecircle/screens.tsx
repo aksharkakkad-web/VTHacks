@@ -287,11 +287,12 @@ function RecoveryScreen({ model, onDetails }: { model: DemoViewModel; onDetails:
 }
 
 function ArrivalScreen({ model, onFinish, onDetails }: { model: DemoViewModel; onFinish: () => void; onDetails: () => void }) {
+  const walking = model.selectedPlan?.mode === "walk";
   const completed = model.completedAt ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(model.completedAt) : "Just now";
   return (
     <div className="sc-arrival" data-testid="screen-arrival" aria-labelledby="arrival-title">
       <div className="sc-arrival-symbol"><Check size={34} /></div><p className="sc-eyebrow">Trip complete</p><h1 id="arrival-title">You’re home.</h1><p>{model.selectedPlan?.mode === "walk" ? "You made it home." : `${model.selectedPlan?.providerName} got you home.`}</p>
-      <div className="sc-arrival-details"><ArrivalRow icon={<CheckCircle2 size={19} />} label="Trip completed" value={completed} /><ArrivalRow icon={<Navigation size={19} />} label="Location sharing" value="Ended" /><ArrivalRow icon={<LockKeyhole size={19} />} label="Provider access" value="Expired" /></div>
+      <div className="sc-arrival-details"><ArrivalRow icon={<CheckCircle2 size={19} />} label="Trip completed" value={completed} /><ArrivalRow icon={<Navigation size={19} />} label="Location sharing" value={walking ? "Not shared" : "Ended"} />{!walking && <ArrivalRow icon={<LockKeyhole size={19} />} label="Provider access" value="Expired" />}</div>
       <TextButton onClick={onDetails}>View trip record <ArrowRight size={16} /></TextButton><SecondaryButton className="sc-finish-button" onClick={onFinish}>FINISH</SecondaryButton>
     </div>
   );

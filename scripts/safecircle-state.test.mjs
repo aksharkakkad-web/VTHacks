@@ -188,3 +188,8 @@ test('judge controls cannot skip required setup or manufacture a trip without a 
   }
   assert.equal(act(state,{type:'SIMULATE',scenario:'verification-failed'}),state);
 });
+test('reset returns to usable setup rather than waiting forever for initial restoration',()=>{
+  const reset=act(createDemoState(defaultProfile),{type:'RESET_PROFILE'});
+  assert.equal(reset.stage,'setup-home');
+  assert.equal(reset.profile,null);
+});

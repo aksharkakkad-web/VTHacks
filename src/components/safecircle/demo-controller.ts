@@ -144,7 +144,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
       return profile ? { ...createDemoState(profile), tripContext: state.tripContext } : state;
     }
     case "RESET_PROFILE":
-      return createDemoState(null);
+      return { ...createDemoState(null), stage: "setup-home" };
     case "SET_CONTEXT": {
       if (state.stage !== "home") return state;
       const { maxBudget, walkingPreference, note } = action.context;
