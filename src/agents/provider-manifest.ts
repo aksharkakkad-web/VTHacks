@@ -94,7 +94,7 @@ export function parseProviderManifest(value: unknown, provider: ProviderDescript
 }
 
 /** Keep only known offer fields; unsolicited personal or reliability data is dropped. */
-export function parseProviderOffer(value: unknown, manifest: ProviderManifest, now = Date.now()): ProviderOffer {
+export function parseProviderOffer(value: unknown, manifest: Pick<ProviderManifest, "profileVersion" | "providerId" | "serviceId">, now = Date.now()): ProviderOffer {
   const offer = record(value, "provider offer");
   if (manifest.profileVersion !== networkProfile || offer.profileVersion !== networkProfile || offer.providerId !== manifest.providerId || offer.serviceId !== manifest.serviceId || offer.simulated !== true) invalid("offer identity or profile");
   if (typeof offer.available !== "boolean") invalid("offer availability");

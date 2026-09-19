@@ -21,6 +21,10 @@ This is the additive contract notice for Mahin, Rishit and Akshar. The approved 
 
 The PWA manifest, icons, registration and offline fallback already exist. Current student screens still run the frontend demo controller; Rishit owns wiring them to the real trip/evidence responses. This backend work does not make browser timers proof of booking.
 
+## Optional outcome ingestion
+
+`DATABRICKS_PROVIDER_OUTCOMES_TABLE` is an opt-in server setting proposed by this slice, using the existing host/token/warehouse configuration and Akshar's `ingestProviderOutcome` contract. Akshar must provision the outcome table before activation. Without the table setting, final sanitized observations remain queued in the private trip store until its retention expires; they are not claimed as cloud-ingested. Simulation never contributes to real reliability. No schema creation runs automatically.
+
 ## Implementation checklist
 
 - [ ] Versioned manifest/offer validation and frozen fixtures.

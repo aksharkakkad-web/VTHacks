@@ -1,5 +1,7 @@
 import { test } from "node:test";
 import { strict as assert } from "node:assert";
+import type { ProviderOutcome } from "../lib/decision-client/provider-outcomes";
+import { validateProviderOutcome, calculateProviderReliability } from "../lib/decision-client/provider-outcomes";
 import { StudentAgent } from "./student/service";
 import { MemoryTripStore } from "../lib/trip-state/store";
 import { LocalDemoDirectory } from "../integrations/ans/directory";
@@ -18,8 +20,9 @@ function setup() {
   let serial = 0;
   const store = new MemoryTripStore();
   const released: TripRequest[] = [];
+  const outcomes: ProviderOutcome[] = [];
   const bookings = new Map<string, ProviderTrip>();
-  const controls = { lostResponse: false, cancellationUnknown: false, decline: false, feeMinor: 0, paidFirst: false };
+  const controls = { lostResponse: false, cancellationUnknown: false, decline: false, feeMinor: 0, paidFirst: false, outcomeOffline: false, cancellationActive: false, requestMissing: false, statusOffline: false };
   const descriptors = demoDescriptors.filter(d => d.mode !== "transit");
   const directory = new LocalDemoDirectory(descriptors, true);
   const agent = new StudentAgent({ store, demo: true, clock: () => now, directory: { discover: () => directory.discover(), verify: async descriptor => ({ ...await directory.verify(descriptor), validUntil: now + 60_000 }) },
@@ -44,16 +47,17 @@ function setup() {
         if (controls.lostResponse) throw new Error("Lost response");
         return structuredClone(result);
       },
-      getStatus: async id => structuredClone(bookings.get(id)!),
-      getRequestStatus: async id => { if (controls.lostResponse) throw new Error("Offline"); return structuredClone(bookings.get(id)); },
+      getStatus: async id => { if (controls.statusOffline) throw new Error("Status outage"); return structuredClone(bookings.get(id)!); },
+      getRequestStatus: async id => { if (controls.lostResponse) throw new Error("Offline"); return controls.requestMissing ? undefined : structuredClone(bookings.get(id)); },
       cancelTrip: async id => {
-        const result = bookings.get(id)!; result.status = "cancelled";
+        const result = bookings.get(id)!; if (controls.cancellationActive) return structuredClone(result); result.status = "cancelled";
         const payment = { ...result.payment!, state: controls.feeMinor ? "captured" as const : "voided" as const, retainedMinor: controls.feeMinor };
         result.payment = payment;
         return controls.cancellationUnknown ? { id, status: "cancelled" } : structuredClone(result);
       },
       cancelRequest: async id => {
         const result = bookings.get(id) ?? { id, status: "cancelled" as const };
+        if (controls.cancellationActive) return structuredClone(result);
         result.status = "cancelled";
         result.payment = { mode: "simulated", currency: "USD", amountMinor: result.payment?.amountMinor ?? 0, retainedMinor: 0, state: "voided" };
         bookings.set(id, result); return structuredClone(result);
@@ -65,6 +69,7 @@ function setup() {
       if (!plan) throw new Error("No feasible plan");
       return { selectedPlanId: plan.planId, reasonCodes: ["TEST_POLICY"], explanation: "Fixture choice", evaluatedAt: new Date(now).toISOString() };
     },
+    recordOutcome: async outcome => { outcomes.push(structuredClone(outcome)); if (controls.outcomeOffline) throw new Error("Temporary outcome store outage"); },
     notify: async () => { throw new Error("Test must never notify a contact"); },
   });
   const evidence = async (id: string) => await agent.evidence(id, "owner") as unknown as View;
@@ -81,7 +86,7 @@ function setup() {
     await agent.act(trip.id, "owner", "evaluate");
     return trip.id;
   };
-  return { agent, store, released, controls, evidence, confirm, start, advance: (ms: number) => { now += ms; } };
+  return { agent, store, bookings, released, controls, outcomes, evidence, confirm, start, advance: (ms: number) => { now += ms; } };
 }
 
 test("network offers stay in an owner-only sidecar and require confirmation of the exact quote", async () => {
@@ -159,5 +164,91 @@ test("a declined simulated payment returns an explicit user action without monit
   assert.equal(trip.alertDeadlineAt, undefined);
   assert.equal((await s.evidence(id)).coordination.requiredAction, "payment_declined");
   assert.equal((await s.evidence(id)).coordination.payments[0].state, "voided");
+  assert.equal(s.released.length, 1);
+});
+
+test("network recovery remains confirmable after an overdue deadline and keeps location check-in", async () => {
+  const s = setup(); const id = await s.start(); await s.confirm(id);
+  await s.agent.act(id, "owner", "expire-deadline");
+  // Provider cancellation arrives after the deadline, then monitor preserves overdue.
+  const stored = await s.store.read(id);
+  await s.agent.providerEvent(id, stored.booking!.providerId, stored.booking!.id, "provider.cancelled").catch(() => {});
+  // The callback cannot establish a cancellation that the provider did not confirm.
+  assert.equal(s.released.length, 1);
+  await s.store.update(id, async r => { r.trip.state = "WAITING_FOR_PICKUP"; });
+  await s.agent.act(id, "owner", "cancel-provider");
+  await s.agent.monitor();
+  assert.equal((await s.agent.read(id, "owner")).state, "OVERDUE");
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "confirm");
+  await s.confirm(id);
+  assert.equal(s.released.length, 2);
+});
+
+test("network arrival while awaiting replacement confirmation erases location and stops monitoring", async () => {
+  const s = setup(); const id = await s.start(); await s.confirm(id);
+  await s.agent.act(id, "owner", "cancel-provider");
+  const trip = await s.agent.act(id, "owner", "arrive");
+  assert.equal(trip.state, "ARRIVED");
+  assert.equal((await s.store.read(id)).private, undefined);
+  assert.equal(trip.alertDeadlineAt, undefined);
+  assert.equal(s.released.length, 1);
+});
+
+
+test("final provider outcomes use the existing sanitized contract and retry the same observation", async () => {
+  const s = setup(); const id = await s.start(); await s.confirm(id);
+  s.controls.outcomeOffline = true;
+  await s.agent.act(id, "owner", "cancel-provider");
+  assert.equal(s.outcomes.length, 1);
+  const first = validateProviderOutcome(s.outcomes[0]);
+  assert.equal(first.source, "simulated");
+  assert.equal(first.finalOutcome, "canceled");
+  assert.notEqual(first.observationId, id);
+  assert.notEqual(first.observationId, s.released[0].tripId);
+  assert.ok(!JSON.stringify(first).includes("37.221"));
+  s.controls.outcomeOffline = false; s.advance(10_001); await s.agent.monitor();
+  assert.equal(s.outcomes.length, 2);
+  assert.deepEqual(s.outcomes[1], first);
+  await s.agent.monitor(); assert.equal(s.outcomes.length, 2);
+  const reliability = calculateProviderReliability(s.outcomes, first.providerId, first.observedAt);
+  assert.equal(reliability.sampleSize, 0); assert.equal(reliability.excluded, 1);
+});
+
+
+test("a still-active cancellation cannot fence an uncertain request or finish private cleanup", async () => {
+  const s = setup(); const id = await s.start(); s.controls.lostResponse = true;
+  await assert.rejects(s.confirm(id), { code: "BOOKING_UNCERTAIN" });
+  s.controls.lostResponse = false; s.controls.requestMissing = true; s.controls.cancellationActive = true;
+  await s.agent.monitor();
+  assert.ok((await s.store.read(id)).pendingBooking);
+  assert.equal(s.released.length, 1);
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "check_booking");
+  const arrived = await s.agent.act(id, "owner", "arrive");
+  assert.equal(arrived.state, "ARRIVED");
+  assert.equal(arrived.sensitiveDataReleased, true);
+  assert.equal((await s.store.read(id)).cleanup?.length, 1);
+  s.controls.cancellationActive = false; s.advance(10_001); await s.agent.monitor();
+  assert.equal((await s.agent.read(id, "owner")).sensitiveDataReleased, false);
+});
+
+
+test("a reconciled settled cancellation does not depend on a redundant status lookup", async () => {
+  const s = setup(); const id = await s.start(); s.controls.lostResponse = true;
+  await assert.rejects(s.confirm(id), { code: "BOOKING_UNCERTAIN" });
+  const booking = s.bookings.get(s.released[0].tripId)!;
+  booking.status = "cancelled"; booking.payment!.state = "voided";
+  s.controls.lostResponse = false; s.controls.statusOffline = true;
+  await s.agent.monitor();
+  assert.equal((await s.agent.read(id, "owner")).state, "SELECTED");
+  assert.equal((await s.evidence(id)).coordination.payments[0].state, "voided");
+  assert.equal(s.released.length, 1);
+});
+
+test("accepted network bookings keep monitoring after their original quote expires", async () => {
+  const s = setup(); const id = await s.start(); await s.confirm(id);
+  s.advance(120_001);
+  assert.equal((await s.agent.read(id, "owner")).state, "WAITING_FOR_PICKUP");
+  assert.equal((await s.evidence(id)).coordination.requiredAction, "none");
+  await s.agent.act(id, "owner", "request");
   assert.equal(s.released.length, 1);
 });

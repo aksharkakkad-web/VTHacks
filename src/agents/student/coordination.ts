@@ -1,6 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
 import { object, type ProviderTrip } from "../contract";
 import type { NetworkOffer } from "../provider-manifest";
+import { validateProviderOutcome } from "../../lib/decision-client/provider-outcomes";
 import { paymentLiability, simulatedAuthorization } from "../../lib/payments/simulated";
 import { TripError, type NetworkAttempt, type TripRecord } from "../../lib/trip-state/model";
 
@@ -64,6 +65,15 @@ export function acceptNetworkResult(record: TripRecord, result: ProviderTrip | v
       attempt.finalizedAt ??= new Date(now).toISOString();
       attempt.outcome ??= result.status === "cancelled" ? "canceled" : result.status as "completed" | "declined";
     }
+    if (attempt.finalizedAt && (attempt.outcome === "completed" || attempt.outcome === "canceled") && !record.outcomeOutbox?.some(job => job.payload.observationId === attempt.observationId)) {
+      const payload = validateProviderOutcome({ providerId: attempt.providerId, observationId: attempt.observationId,
+        requestedAt: attempt.requestedAt, acceptedAt: attempt.acceptedAt ?? null, promisedPickupAt: null, actualPickupAt: null,
+        completedAt: attempt.outcome === "completed" ? attempt.finalizedAt : null,
+        canceledAt: attempt.outcome === "canceled" ? attempt.finalizedAt : null,
+        cancellationParty: attempt.outcome === "canceled" ? "unknown" : null,
+        finalOutcome: attempt.outcome, source: "simulated", observedAt: attempt.finalizedAt, dataVersion: "beacon-mobility-v2" });
+      (record.outcomeOutbox ??= []).push({ payload, sent: false, attempts: 0, retryAt: now });
+    }
     delete record.networkAction;
   } catch {
     uncertainPayment(record, attempt.requestId);
@@ -71,13 +81,23 @@ export function acceptNetworkResult(record: TripRecord, result: ProviderTrip | v
   }
 }
 
+/** Cleanup/fencing succeeds only when the booking itself is terminal. */
+export function acceptCancellationResult(record: TripRecord, result: ProviderTrip | void, now: number, requestId?: string) {
+  if (networkAttempt(record, requestId) && (!result || !["cancelled", "completed", "declined"].includes(result.status))) {
+    uncertainPayment(record, requestId);
+    throw new TripError("SETTLEMENT_UNCERTAIN", "Previous booking is still active or its cancellation is unknown", 502);
+  }
+  acceptNetworkResult(record, result, now, requestId);
+}
+
 export function coordinationView(record: TripRecord, now: number) {
   const network = selectedOffer(record);
   const terminal = ["ARRIVED", "FAILED"].includes(record.trip.state) && !record.pendingBooking;
   const expired = network ? Date.parse(network.offer.expiresAt) <= now : record.quoteDeadline <= now;
+  const needsConfirmation = !!record.trip.selectedPlan && !record.confirmed && !record.booking && !record.pendingBooking && ["SELECTED", "OVERDUE"].includes(record.trip.state);
   const requiredAction = record.pendingBooking || record.networkAction === "check_booking" ? "check_booking"
     : record.networkAction === "payment_declined" ? "payment_declined"
-    : terminal ? "none" : expired ? "refresh_quotes" : !record.confirmed && record.trip.state === "SELECTED" ? "confirm" : "none";
+    : terminal ? "none" : needsConfirmation ? expired ? "refresh_quotes" : "confirm" : record.trip.state === "COLLECTING_QUOTES" && expired ? "refresh_quotes" : "none";
   return {
     version: "beacon-coordination-v1", requiredAction,
     remainingBudgetMinor: remainingBudgetMinor(record), currency: "USD",

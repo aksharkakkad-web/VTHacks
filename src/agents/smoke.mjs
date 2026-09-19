@@ -14,9 +14,17 @@ async function call(path, body = {}, status = 200, method = "POST", useCookie = 
 async function create() {
   return call("/api/trips", noContact ? {} : { preferences: { trustedContact: { name: "Maya", telegramChatId: "123456789", consent: true, shareLocation: true } } }, 201);
 }
+async function approve(trip) {
+  const evidence = await call(`/api/trips/${trip.id}/evidence`, {}, 200, "GET");
+  const offer = evidence.coordination?.selectedOffer;
+  await call(`/api/trips/${trip.id}/confirm`, offer ? { planId: offer.planId, quoteId: offer.quoteId } : { planId: trip.selectedPlan.planId });
+  await call(`/api/trips/${trip.id}/verify`);
+  return call(`/api/trips/${trip.id}/request`);
+}
 async function start(trip) {
-  let result;
-  for (const action of ["discover", "evaluate", "confirm", "verify", "request"]) result = await call(`/api/trips/${trip.id}/${action}`);
+  await call(`/api/trips/${trip.id}/discover`);
+  const selected = await call(`/api/trips/${trip.id}/evaluate`);
+  const result = await approve(selected);
   assert.equal(result.state, "WAITING_FOR_PICKUP"); return result;
 }
 try {
@@ -31,9 +39,20 @@ try {
   assert.equal(initial.selectedPlan.mode, "campus_ride");
   assert.equal(initial.providerVerified, liveAns);
   assert.equal(initial.sensitiveDataReleased, true);
-  const replacement = await call(`/api/demo/trips/${trip.id}/cancel-provider`);
+  let replacement = await call(`/api/demo/trips/${trip.id}/cancel-provider`);
   assert.ok(replacement.recommendation.reasonCodes.includes("REPLANNED_AFTER_PROVIDER_FAILURE"));
   assert.equal(replacement.selectedPlan.mode, "independent_ride");
+  if (evidence.coordination?.selectedOffer) {
+    assert.equal(replacement.state, "SELECTED");
+    assert.equal(replacement.sensitiveDataReleased, false);
+    await call(`/api/trips/${trip.id}/request`, {}, 409);
+    const replacementEvidence = await call(`/api/trips/${trip.id}/evidence`, {}, 200, "GET");
+    assert.equal(replacementEvidence.coordination.requiredAction, "confirm");
+    replacement = await approve(replacement);
+    const booked = await call(`/api/trips/${trip.id}/evidence`, {}, 200, "GET");
+    assert.deepEqual(booked.coordination.payments.map(payment => payment.state), ["voided", "authorized"]);
+    assert.equal(booked.coordination.remainingBudgetMinor, 300);
+  }
   assert.equal(replacement.state, "WAITING_FOR_PICKUP");
   assert.equal(replacement.providerVerified, liveAns);
   if (liveAns) {
@@ -54,5 +73,5 @@ try {
 } finally {
   if (cookie) await call("/api/demo/reset");
 }
-console.log(`PASS: real provider HTTP → recommendation → confirmation → trust gate → booking → autonomous replacement → arrival; ${noContact ? "overdue without a notification recipient" : "overdue demo alert once"}; session, evidence, callback protection and fixture cleanup.`);
-console.log(`Evidence: ${liveAns ? "live ANS resolution and DNS/badge/TLS verification" : "local demo identity trust"}; ${decisionEngine === "databricks" ? "Databricks evaluation" : "explicit local decision-policy fallback"}. Transportation is simulated. ${noContact ? "No notification contact was submitted." : "Telegram alerts are simulated."}`);
+console.log(`PASS: real provider HTTP → recommendation → confirmation → trust gate → booking → replacement recommendation/confirmation → arrival; ${noContact ? "overdue without a notification recipient" : "overdue demo alert once"}; session, evidence, callback protection and fixture cleanup.`);
+console.log(`Evidence: ${liveAns ? "live ANS resolution and DNS/badge/TLS verification" : "local demo identity trust"}; ${decisionEngine === "databricks" ? "Databricks evaluation" : "explicit local decision-policy fallback"}. Transportation and network payments are simulated. ${noContact ? "No notification contact was submitted." : "Telegram alerts are simulated."}`);

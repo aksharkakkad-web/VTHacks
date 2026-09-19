@@ -6,6 +6,7 @@ import type { PlanSignals } from "../decision-client/decision";
 import type { PublicCorridor, TripOptionEvidence } from "../decision-client/trip-options";
 import type { TripDecisionEvidence } from "../../agents/student/databricks";
 import type { NetworkOffer } from "../../agents/provider-manifest";
+import type { ProviderOutcome } from "../decision-client/provider-outcomes";
 import type { SimulatedPayment } from "../payments/simulated";
 
 export type NetworkAttempt = {
@@ -26,6 +27,7 @@ export type TripRecord = {
   networkOffers?: Record<string, NetworkOffer>;
   networkConsent?: { id: string; planId: string; quoteId: string; termsHash: string };
   networkAttempts?: NetworkAttempt[];
+  outcomeOutbox?: { payload: ProviderOutcome; sent: boolean; attempts: number; retryAt: number }[];
   networkAction?: "payment_declined" | "check_booking";
   weatherEvidence?: WeatherEvidence;
   weatherPlanIds?: string[];
