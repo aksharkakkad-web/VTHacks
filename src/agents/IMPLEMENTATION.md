@@ -59,8 +59,10 @@ for identity verification or Beacon's authorization policy.
 
 ## Verified local checkpoint (2026-09-19)
 
-28 behavioral tests pass. The production-build HTTP smoke from the preceding trip API
-slice exercises session ownership,
+38 behavioral tests pass, including lost-response reconciliation, delayed-request
+cancellation, uncertain-booking arrival cleanup, preserved overdue deadlines, and
+replacement recovery after an outage or interrupted checkpoint.
+The production-build HTTP smoke on the reconciliation branch exercises session ownership,
 confirmation, local pretrust, Campus Ride booking, automatic Independent Ride replacement,
 geofence arrival, private-state cleanup, and one simulated overdue alert. Production Next.js
 build, lint and typecheck pass. Shared checkpoints A/B are ready for integration. Live ANS,

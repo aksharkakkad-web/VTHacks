@@ -6,10 +6,11 @@ import { demoDescriptors } from "./demo-provider";
 import { LocalDemoDirectory } from "../integrations/ans/directory";
 import { normalizeQuote, type ProviderAgent, type ProviderTripStatus, type TripRequest } from "./contract";
 import type { CandidatePlan } from "../types/provider";
+import type { TripRecord } from "../lib/trip-state/model";
 
 function setup() {
   let now = 10_000; let sends = 0; const released: TripRequest[] = [];
-  const control = { cancelFails: false, requestFails: false, cancellations: 0, status: "waiting" as ProviderTripStatus, quoteTtl: 120_000 };
+  const control = { cancelFails: false, requestFails: false, requestMissing: false, evaluationFails: false, canReconcile: true, cancellations: 0, status: "waiting" as ProviderTripStatus, quoteTtl: 120_000 };
   const store = new MemoryTripStore();
   const providers = demoDescriptors.filter((p) => p.mode !== "transit");
   const agent = new StudentAgent({ store, directory: new LocalDemoDirectory(providers, true), demo: true, clock: () => now,
@@ -18,8 +19,10 @@ function setup() {
       requestTrip: async (request) => { released.push(request); if (control.requestFails) throw new Error("Response lost"); return { id: descriptor.id + "-booking", status: "waiting" }; },
       getStatus: async () => ({ id: descriptor.id + "-booking", status: control.status }),
       cancelTrip: async () => { control.cancellations++; if (control.cancelFails) throw new Error("Provider unavailable"); },
+      getRequestStatus: control.canReconcile ? async (id) => { if (control.requestFails) throw new Error("Provider unavailable"); return !control.requestMissing && released.some((r) => r.tripId === id) ? { id: descriptor.id + "-booking", status: control.status } : undefined; } : undefined,
+      cancelRequest: control.canReconcile ? async () => { control.cancellations++; if (control.cancelFails) throw new Error("Provider unavailable"); } : undefined,
     }),
-    recommend: async (plans: CandidatePlan[]) => ({ selectedPlanId: plans.find((p) => p.mode === "campus_ride")?.planId ?? plans.find((p) => p.mode === "independent_ride")?.planId ?? plans[0].planId, reasonCodes: ["DEMO"], explanation: "Demo evaluator", evaluatedAt: new Date(now).toISOString() }),
+    recommend: async (plans: CandidatePlan[]) => { if (control.evaluationFails) throw new Error("Evaluator unavailable"); return { selectedPlanId: plans.find((p) => p.mode === "campus_ride")?.planId ?? plans.find((p) => p.mode === "independent_ride")?.planId ?? plans[0].planId, reasonCodes: ["DEMO"], explanation: "Demo evaluator", evaluatedAt: new Date(now).toISOString() }; },
     notify: async () => { sends++; return { id: "demo-message", simulated: true }; },
     graceMinutes: 5,
   });
@@ -155,4 +158,123 @@ test("cleaning an old provider does not erase an unresolved replacement disclosu
   const unresolved = await s.agent.read(trip.id, "owner");
   assert.equal(unresolved.state, "FAILED");
   assert.equal(unresolved.sensitiveDataReleased, true, "lost booking response is not proof the replacement deleted data");
+});
+
+test("a lost booking response is reconciled without sending a second precise request", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"), { code: "BOOKING_UNCERTAIN" });
+  assert.equal(s.released.length, 1);
+  s.control.requestFails = false; s.advance(60_000);
+  await Promise.all([s.agent.monitor(), s.agent.monitor()]);
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "WAITING_FOR_PICKUP");
+  assert.equal((await s.store.read(trip.id)).pendingBooking, undefined);
+  assert.equal(s.released.length, 1, "lookup must not resend coordinates or create a second booking");
+});
+
+test("arrival during an uncertain booking preserves request cancellation until it succeeds", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true; s.control.cancelFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  const arrived = await s.agent.act(trip.id, "owner", "arrive");
+  assert.equal(arrived.state, "ARRIVED"); assert.equal(arrived.sensitiveDataReleased, true);
+  assert.equal((await s.store.read(trip.id)).private, undefined);
+  s.control.cancelFails = false; s.advance(60_000); await s.agent.monitor();
+  assert.equal((await s.agent.read(trip.id, "owner")).sensitiveDataReleased, false);
+  assert.equal(s.released.length, 1);
+});
+
+test("an absent booking is replaced only after request cancellation succeeds", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  s.control.requestFails = false; s.control.requestMissing = true; s.control.cancelFails = true;
+  await s.agent.monitor();
+  assert.equal(s.released.length, 1, "a failed cancellation cannot authorize a replacement");
+  assert.ok((await s.store.read(trip.id)).pendingBooking);
+  s.control.cancelFails = false; s.advance(60_000); await s.agent.monitor();
+  const replacement = await s.agent.read(trip.id, "owner");
+  assert.equal(replacement.state, "WAITING_FOR_PICKUP");
+  assert.equal(replacement.selectedPlan?.mode, "independent_ride");
+  assert.equal(s.control.cancellations, 2); assert.equal(s.released.length, 2);
+});
+
+test("an uncertain booking keeps its original deadline and overdue alert through reconciliation", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  const deadline = (await s.agent.read(trip.id, "owner")).alertDeadlineAt;
+  assert.ok(deadline); s.advance(2_000_000); await s.agent.monitor();
+  assert.equal(s.sends(), 1);
+  s.control.requestFails = false; s.advance(60_000); await s.agent.act(trip.id, "owner", "request");
+  const reconciled = await s.agent.read(trip.id, "owner");
+  assert.equal(reconciled.state, "OVERDUE"); assert.equal(reconciled.alertDeadlineAt, deadline);
+  assert.equal(s.released.length, 1); assert.equal(s.sends(), 1);
+});
+
+test("reconciliation observes provider completion and erases private state", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  s.control.requestFails = false; s.control.status = "completed"; await s.agent.monitor();
+  const completed = await s.store.read(trip.id);
+  assert.equal(completed.trip.state, "ARRIVED"); assert.equal(completed.private, undefined);
+  assert.equal(completed.pendingBooking, undefined); assert.equal(completed.trip.sensitiveDataReleased, false);
+  assert.equal(s.released.length, 1);
+});
+
+test("providers without request reconciliation never trigger an unconfirmed replacement", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true; s.control.canReconcile = false;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  s.control.requestFails = false; await s.agent.monitor();
+  assert.equal(s.released.length, 1); assert.ok((await s.store.read(trip.id)).pendingBooking);
+  const arrived = await s.agent.act(trip.id, "owner", "arrive");
+  assert.equal(arrived.state, "ARRIVED"); assert.equal(arrived.sensitiveDataReleased, true);
+  const record = await s.store.read(trip.id);
+  assert.equal(record.private, undefined); assert.equal(record.pendingBooking, undefined);
+  assert.equal(record.cleanup?.[0].requestId, s.released[0].tripId);
+});
+
+test("replacement outages retain the deadline and resume without losing recovery intent", async () => {
+  const s = setup(); const trip = await start(s);
+  await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
+  s.control.requestFails = true;
+  await assert.rejects(s.agent.act(trip.id, "owner", "request"));
+  s.control.requestFails = false; s.control.requestMissing = true; s.control.evaluationFails = true;
+  await s.agent.monitor();
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "FAILED");
+  assert.equal(s.released.length, 1); assert.equal(s.control.cancellations, 1);
+  s.advance(2_000_000); await s.agent.monitor();
+  assert.equal(s.sends(), 1, "replacement failure must not disable the original deadline");
+  s.control.evaluationFails = false; s.advance(60_000); await s.agent.monitor();
+  const replaced = await s.agent.read(trip.id, "owner");
+  assert.equal(replaced.state, "WAITING_FOR_PICKUP"); assert.equal(replaced.selectedPlan?.mode, "independent_ride");
+  assert.equal(s.released.length, 2); assert.equal(s.control.cancellations, 1);
+});
+
+test("a persisted replacement checkpoint resumes after an interrupted cancellation flow", async () => {
+  const s = setup(); const trip = await start(s);
+  for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
+  let interrupted: TripRecord | undefined;
+  const checkpoint = s.store.checkpoint.bind(s.store);
+  s.store.checkpoint = async (record) => {
+    await checkpoint(record);
+    if (record.trip.state === "PROVIDER_FAILED") { interrupted = structuredClone(record); throw new Error("Process interrupted"); }
+  };
+  await assert.rejects(s.agent.act(trip.id, "owner", "cancel-provider"), /Process interrupted/);
+  assert.ok(interrupted?.pendingReplacement); assert.equal(interrupted.booking, undefined);
+  s.store.checkpoint = checkpoint;
+  await s.store.create(interrupted); // Restore exactly the last durable checkpoint.
+  await s.agent.monitor();
+  const resumed = await s.store.read(trip.id);
+  assert.equal(resumed.trip.state, "WAITING_FOR_PICKUP"); assert.equal(resumed.trip.selectedPlan?.mode, "independent_ride");
+  assert.equal(resumed.pendingReplacement, undefined); assert.equal(resumed.replanCount, 1);
+  assert.equal(s.released.length, 2); assert.equal(s.control.cancellations, 1);
 });

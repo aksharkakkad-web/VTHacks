@@ -7,7 +7,9 @@ normal mobile screens use provider names and never need to display it.
 
 With `BEACON_HOSTED_PROVIDERS=true`, these base paths expose the existing provider
 contract (`/agent/quote`, `/agent/request-trip`, `/agent/trip-status/:id`,
-`/agent/cancel-trip`, and `/.well-known/agent-card.json`):
+`/agent/cancel-trip`, and `/.well-known/agent-card.json`). Ride providers also advertise
+the optional `reconcile_trip` capability with `/agent/request-status/:requestId` and
+`/agent/cancel-request`:
 
 - `/api/demo/providers/transit`
 - `/api/demo/providers/campus_ride`
@@ -24,6 +26,14 @@ Booking state uses shared Redis. Requests with the same provider and trip reques
 produce one booking across instances. Cancellation erases precise coordinates and leaves
 a cancelled tombstone; replaying the request does not restore the private data. Records
 expire after 24 hours. Status responses never contain pickup, destination, or contact data.
+
+`GET /agent/request-status/:requestId` returns `{trip: null}` when unknown, or
+`{trip: {id, status}}` when a booking exists. `POST /agent/cancel-request` takes
+`{request_id: "..."}` and returns a cancelled trip. Both require the booking credential.
+Cancellation installs a tombstone even if the original request has not arrived yet, so
+a delayed request cannot create a second active booking during the retention period.
+The Student Agent uses these operations to recover lost booking responses without
+resending coordinates. A missing lookup alone never authorizes a replacement.
 
 ## Environment configuration
 

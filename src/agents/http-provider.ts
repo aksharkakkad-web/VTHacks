@@ -1,6 +1,6 @@
 import { isIP } from "node:net";
 import { publicJson } from "../integrations/ans/transport";
-import { coarseQuote, normalizeQuote, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
+import { coarseQuote, normalizeQuote, object, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
 
 export function privateAddress(ip: string) {
   return /^(0\.|10\.|127\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|224\.|255\.)/.test(ip) || ip === "::" || ip === "::1" || /^(fc|fd|fe80|::ffff:)/i.test(ip);
@@ -41,4 +41,14 @@ export class HttpProvider implements ProviderAgent {
   async requestTrip(request: TripRequest) { return parseProviderTrip(await this.call("/agent/request-trip", "POST", { trip_id: request.tripId, pickup: request.pickup, destination: request.destination })); }
   async getStatus(id: string) { return parseProviderTrip(await this.call(`/agent/trip-status/${encodeURIComponent(id)}`)); }
   async cancelTrip(id: string) { await this.call("/agent/cancel-trip", "POST", { trip_id: id }); }
+  async getRequestStatus(id: string) {
+    if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
+    const result = object(await this.call(`/agent/request-status/${encodeURIComponent(id)}`));
+    return result.trip === null ? undefined : parseProviderTrip(result.trip);
+  }
+  async cancelRequest(id: string) {
+    if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
+    const result = parseProviderTrip(await this.call("/agent/cancel-request", "POST", { request_id: id }));
+    if (result.status !== "cancelled") throw new Error("Provider did not confirm cancellation");
+  }
 }

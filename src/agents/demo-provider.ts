@@ -4,8 +4,8 @@ import { object, number, point, text, type ProviderDescriptor, type ProviderTrip
 
 export const demoDescriptors: ProviderDescriptor[] = [
   { id: "transit", name: "Transit", mode: "transit", baseUrl: "http://127.0.0.1:4311", agentHost: "localhost", source: "demo", functions: ["quote_trip", "trip_status"] },
-  { id: "campus_ride", name: "Campus Ride", mode: "campus_ride", baseUrl: "http://127.0.0.1:4312", agentHost: "localhost", source: "demo", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip"] },
-  { id: "independent_ride", name: "Independent Ride", mode: "independent_ride", baseUrl: "http://127.0.0.1:4313", agentHost: "localhost", source: "demo", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip"] },
+  { id: "campus_ride", name: "Campus Ride", mode: "campus_ride", baseUrl: "http://127.0.0.1:4312", agentHost: "localhost", source: "demo", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip", "reconcile_trip"] },
+  { id: "independent_ride", name: "Independent Ride", mode: "independent_ride", baseUrl: "http://127.0.0.1:4313", agentHost: "localhost", source: "demo", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip", "reconcile_trip"] },
 ];
 const fixtures = { transit: [0, 15, 14, 5], campus_ride: [0, 8, 11, 1], independent_ride: [7, 5, 10, 1] };
 
@@ -34,6 +34,17 @@ export class DemoProvider {
       return result;
     }
     if (method === "GET" && path.startsWith("/agent/trip-status/")) return this.get(decodeURIComponent(path.slice(19))).result;
+    if (method === "GET" && path.startsWith("/agent/request-status/")) {
+      const id = this.requests.get(decodeURIComponent(path.slice("/agent/request-status/".length)));
+      return { trip: id ? this.get(id).result : null };
+    }
+    if (method === "POST" && path === "/agent/cancel-request") {
+      const requestId = text(object(data).request_id, "request id");
+      const id = this.requests.get(requestId) ?? randomUUID();
+      this.requests.set(requestId, id);
+      const result: ProviderTrip = { id, status: "cancelled" };
+      this.trips.set(id, { result }); return result;
+    }
     if (method === "POST" && path === "/agent/cancel-trip") {
       const trip = this.get(text(object(data).trip_id, "trip id"));
       trip.result.status = "cancelled"; delete trip.sensitive; return trip.result;

@@ -22,6 +22,8 @@ export interface ProviderAgent {
   requestTrip(request: TripRequest): Promise<ProviderTrip>;
   getStatus(id: string): Promise<ProviderTrip>;
   cancelTrip(id: string): Promise<void>;
+  getRequestStatus?(requestId: string): Promise<ProviderTrip | undefined>;
+  cancelRequest?(requestId: string): Promise<void>;
 }
 export function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Expected an object");

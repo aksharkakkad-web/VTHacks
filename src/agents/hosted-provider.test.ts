@@ -51,3 +51,16 @@ test("hosted provider rejects invalid coordinates and does not retain extra priv
   await handle(request("/agent/request-trip", { ...body, trustedContact: "must-not-store" }, "fixture-token"), "/agent/request-trip");
   assert.ok(!JSON.stringify([...f.records.values()]).includes("must-not-store"));
 });
+
+test("hosted request reconciliation exposes no coordinates and prevents a delayed request after cancellation", async () => {
+  const f = fixture(); const handle = hostedProvider({ ...f, token: "fixture-token" });
+  const lookupPath = `/agent/request-status/${body.trip_id}`;
+  assert.equal((await handle(request(lookupPath), lookupPath)).status, 401);
+  const unknown = await handle(request(lookupPath, undefined, "fixture-token"), lookupPath);
+  assert.equal(unknown.status, 200); assert.deepEqual(await unknown.json(), { trip: null });
+  const cancel = await handle(request("/agent/cancel-request", { request_id: body.trip_id }, "fixture-token"), "/agent/cancel-request");
+  assert.equal(cancel.status, 200);
+  const late = await handle(request("/agent/request-trip", body, "fixture-token"), "/agent/request-trip");
+  assert.equal((await late.json()).status, "cancelled");
+  assert.equal([...f.records.values()][0].sensitive, undefined);
+});

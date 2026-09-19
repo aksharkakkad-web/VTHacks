@@ -22,6 +22,7 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
   const { descriptor, token, store } = options;
   const publicProvider = new DemoProvider(descriptor);
   const key = (id: string) => `${descriptor.id}:${id}`;
+  const requestBookingId = (id: string) => createHash("sha256").update(JSON.stringify([descriptor.id, id])).digest("hex");
   return async (request: Request, path: string): Promise<Response> => {
     try {
       if (request.method === "GET" && path === "/.well-known/agent-card.json") return json(publicProvider.handle("GET", path, {}));
@@ -35,7 +36,7 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
         const sensitive: TripRequest = { tripId: text(data.trip_id, "trip id"), pickup: point(data.pickup), destination: point(data.destination) };
         // Deterministic per-provider id plus SET NX makes retries across serverless
         // instances one booking. Cancellation retains a tombstone until the TTL.
-        const id = createHash("sha256").update(JSON.stringify([descriptor.id, sensitive.tripId])).digest("hex");
+        const id = requestBookingId(sensitive.tripId);
         await store.create(key(id), { result: { id, status: "waiting" }, sensitive });
         const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
         return json(booking.result);
@@ -44,6 +45,18 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
         const id = text(decodeURIComponent(path.slice(19)), "booking id");
         const booking = await store.read(key(id)); if (!booking) throw new TripError("NOT_FOUND", "Booking not found", 404);
         return json(booking.result);
+      }
+      if (request.method === "GET" && path.startsWith("/agent/request-status/")) {
+        const requestId = text(decodeURIComponent(path.slice("/agent/request-status/".length)), "request id");
+        const booking = await store.read(key(requestBookingId(requestId))); return json({ trip: booking?.result ?? null });
+      }
+      if (request.method === "POST" && path === "/agent/cancel-request") {
+        const requestId = text((await input(request)).request_id, "request id");
+        const id = requestBookingId(requestId);
+        // Install a cancellation tombstone even if the original request has not
+        // arrived yet, then atomically erase any already-created private record.
+        await store.create(key(id), { result: { id, status: "cancelled" } });
+        await store.revoke(key(id)); return json({ id, status: "cancelled" });
       }
       if (request.method === "POST" && path === "/agent/cancel-trip") {
         const id = text((await input(request)).trip_id, "booking id");

@@ -11,8 +11,9 @@ export type TripRecord = {
   excluded: string[]; confirmed: boolean; quoteDeadline: number;
   quoteExpirations?: Record<string, number>;
   identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
-  pendingBooking?: { providerId: string; requestId: string };
-  cleanup?: { provider: ProviderDescriptor; identity?: VerifiedIdentity; bookingId: string; attempts: number; retryAt: number }[];
+  pendingBooking?: { providerId: string; requestId: string; attempts?: number; retryAt?: number };
+  pendingReplacement?: { attempts: number; retryAt: number };
+  cleanup?: ({ provider: ProviderDescriptor; identity?: VerifiedIdentity; attempts: number; retryAt: number } & ({ bookingId: string; requestId?: never } | { requestId: string; bookingId?: never }))[];
   replanCount: number; lastStatusBeforeOverdue?: TripState;
   notification?: { state: "sending" | "sent" | "simulated" | "failed" | "uncertain"; id?: string };
   events: { at: string; state: TripState; code: string; message: string }[];

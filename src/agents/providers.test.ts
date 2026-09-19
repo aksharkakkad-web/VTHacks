@@ -90,3 +90,20 @@ test("live provider credentials require verified identity and an exact configure
   assert.equal(scopedProviderToken(live, { ...identity, providerId: "other" }, configuration), undefined);
   assert.equal(scopedProviderToken(live, { ...identity, source: "local-demo" }, configuration), undefined);
 });
+
+test("provider request reconciliation finds accepted bookings and tombstones a cancelled request before arrival", async () => {
+  const descriptor = { ...provider, functions: [...provider.functions, "reconcile_trip"] };
+  const demo = new DemoProvider(descriptor); const server = createServer(providerHandler(demo));
+  server.listen(0, "127.0.0.1"); await once(server, "listening"); const address = server.address(); assert.ok(address && typeof address !== "string");
+  const client = new HttpProvider({ ...descriptor, baseUrl: `http://127.0.0.1:${address.port}` }, { allowLocalDemo: true });
+  try {
+    assert.equal(await client.getRequestStatus("request-one"), undefined);
+    const payload = { tripId: "request-one", pickup: { lat: 37.23, lng: -80.41 }, destination: { lat: 37.22, lng: -80.42 } };
+    const booking = await client.requestTrip(payload);
+    assert.deepEqual(await client.getRequestStatus(payload.tripId), booking);
+    await client.cancelRequest(payload.tripId); assert.equal(demo.hasSensitiveData(booking.id), false);
+    await client.cancelRequest("late-request");
+    const late = await client.requestTrip({ ...payload, tripId: "late-request" });
+    assert.equal(late.status, "cancelled"); assert.equal(demo.hasSensitiveData(late.id), false);
+  } finally { server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); }
+});

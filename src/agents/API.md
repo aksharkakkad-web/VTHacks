@@ -63,7 +63,12 @@ Emergency flags (`immediate_danger`, `medical_emergency`, `serious_injury`) retu
 
 Errors are `{error:{code,message}}`. 401 means no session, 404 means missing or foreign
 trip, 409 means wrong state/stale quote/busy trip, 403 means verification/policy denied,
-and 503 means service configuration or availability. Do not display provider domains
+502 `BOOKING_UNCERTAIN` means the request may have been accepted. Keep polling the
+same trip; do not create another trip to retry. The server checks the original request
+without resending coordinates when the provider supports `reconcile_trip`. It books a
+replacement only after that provider has confirmed cancellation of the original request.
+Providers without reconciliation support require a manual status check and never trigger
+an unconfirmed replacement. 503 means service configuration or availability. Do not display provider domains
 in normal mobile UI; use `providerName`. The backend sanitizes upstream error strings.
 
 ## Demo and provider controls
@@ -82,11 +87,16 @@ or `provider.completed`; stale/mismatched bookings are rejected.
 
 Local Node runs a ten-second monitor while the server is running. Arrival removes
 private origin/home/contact/current-location state and disables the deadline. Failed
-provider cleanup leaves a durable task with only booking identifiers and TLS evidence;
+provider cleanup leaves a durable task with only booking/request identifiers and TLS evidence;
 the monitor retries it, including after arrival. Until cleanup succeeds, the status
 reports cleanup pending. Overdue trips continue processing provider completion and
 cancellation. Confirmed cancellation replans even if cleanup is temporarily unavailable.
 Replacement pickup uses the latest location when it is at most two minutes old.
+Uncertain booking requests retain the original deadline and continue overdue monitoring.
+Replacement intent is persisted before recollecting quotes; an unavailable decision or
+provider service is retried without losing the active deadline or repeating cancellation.
+Manual or geofence arrival also works while booking status is uncertain; local private data
+is erased immediately and cancellation by request ID is retried until it succeeds.
 Quotes retain each provider's expiry for confirmation and booking. ETA uses
 the selected plan; `BEACON_GRACE_MINUTES` defaults to five (configurable demo assumption).
 Notifications require explicit contact consent; location is included only with separate
