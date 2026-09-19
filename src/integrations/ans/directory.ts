@@ -36,8 +36,19 @@ export function parseDiscovered(value: unknown): ProviderDescriptor[] {
         const baseUrl = text(endpoint.agentUrl, "agent URL", 2000);
         const agentHost = text(item.agentHost, "agent host", 253).toLowerCase();
         if (providerUrl(baseUrl).hostname !== agentHost) continue;
-        const services: Pick<ProviderDescriptor, "mode" | "baseUrl" | "functions">[] = [];
-        if (tags.includes(mobilityProfile)) {
+        const services: Pick<ProviderDescriptor, "mode" | "baseUrl" | "functions" | "serviceId" | "profileVersion">[] = [];
+        if (tags.includes("beacon-mobility-v2")) {
+          const declarations = endpoint.functions.map(object).filter(f => Array.isArray(f.tags) && f.tags.includes("beacon-mobility-v2"));
+          const ids = [...new Set(declarations.flatMap(f => (f.tags as unknown[]).filter((tag): tag is string => typeof tag === "string" && /^service:[a-z][a-z0-9_-]{0,63}$/.test(tag)).map(tag => tag.slice(8))))];
+          for (const serviceId of ids.slice(0, 32)) {
+            const scoped = declarations.filter(f => (f.tags as unknown[]).filter(tag => typeof tag === "string" && tag.startsWith("service:")).length === 1 && (f.tags as unknown[]).includes(`service:${serviceId}`));
+            const modes = mobilityModes.filter(mode => scoped.some(f => (f.tags as unknown[]).includes(mode)));
+            if (modes.length !== 1) continue;
+            const mode = modes[0];
+            const capabilities = mobilityFunctions.filter(name => scoped.some(f => f.id === `${serviceId}.${name}` && (f.tags as unknown[]).includes(mode)));
+            if (capabilities.includes("quote_trip")) services.push({ serviceId, mode, baseUrl: `${baseUrl.replace(/\/$/, "")}/${serviceId}`, functions: capabilities, profileVersion: "beacon-mobility-v2" });
+          }
+        } else if (tags.includes(mobilityProfile)) {
           // ANS accepts only one endpoint per protocol. Our explicit profile maps
           // namespaced capabilities to fixed child paths without a second URL lookup.
           for (const mode of mobilityModes) {
@@ -46,15 +57,16 @@ export function parseDiscovered(value: unknown): ProviderDescriptor[] {
             if (capabilities.includes("quote_trip")) services.push({ mode, baseUrl: `${baseUrl.replace(/\/$/, "")}/${mode}`, functions: capabilities });
           }
         } else {
+          if (tags.some(tag => typeof tag === "string" && tag.startsWith("beacon-mobility-v"))) continue;
           const modes = mobilityModes.filter((mode) => tags.includes(mode));
           if (modes.length === 1 && functions.includes("quote_trip")) services.push({ mode: modes[0], baseUrl, functions });
         }
         const ansId = text(item.agentId, "agent id");
         for (const service of services) {
-          const id = providerServiceId(ansId, service.mode);
+          const id = providerServiceId(ansId, service.serviceId ?? service.mode);
           // One registered operator can expose several services; this is not a
           // claim that each simulated service has an independently verified owner.
-          if (!providers.some((p) => p.id === id)) providers.push({ id, ansId, name: `${text(item.agentDisplayName, "provider name")} / ${service.mode.replaceAll("_", " ")}`, ...service, agentHost, source: "ans" });
+          if (!providers.some((p) => p.id === id)) providers.push({ id, ansId, name: `${text(item.agentDisplayName, "provider name")} / ${(service.serviceId ?? service.mode).replaceAll("_", " ")}`, ...service, agentHost, source: "ans" });
         }
       }
     } catch { /* Malformed or unsupported search entries are not callable providers. */ }
