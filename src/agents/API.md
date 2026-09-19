@@ -44,6 +44,21 @@ BEACON_SMOKE_URL=https://<existing-beacon-host> \
 BEACON_SMOKE_LIVE_ANS=true BEACON_SMOKE_NO_CONTACT=true node src/agents/smoke.mjs
 ```
 
+## Network v2 handoff
+
+Read [the MVP contract](../../docs/MAHIN_MVP_CONTRACT.md) and [developer guide](../../docs/PROVIDER_DEVELOPER_GUIDE.md). Frozen examples: `src/agents/fixtures/provider-network-v2.json`. Configure a strong shared test token on both local processes to exercise v2; missing/short legacy configuration does not demonstrate bounded network payments.
+
+`GET /api/trips/:id/evidence` now adds owner-protected `coordination`:
+
+- `version: "beacon-coordination-v1"`, `requiredAction`: `none`, `confirm`, `refresh_quotes`, `check_booking` or `payment_declined`.
+- `selectedOffer`: displayed plan/quote/service IDs, fixed USD `totalMinor`, expiry, cancellation fee, provider pickup instructions, pickup-access flag and simulation label.
+- `operator`: self-described name, separate registered ANS ID, and verification label (`ans_verified`, `local_demo`, `not_verified`). ANS verifies registered identity, not brand affiliation or safety.
+- `paymentMode: "simulated"`, `paymentNotice: "Demo payment — no charge"`, `remainingBudgetMinor` and per-provider `payments` (state, amount and retained amount).
+
+No booking grant, service credential, internal consent ID or exact coordinates appears in this view. Keep it out of service-worker caches. `SELECTION_CHANGED` means the displayed offer is no longer the current consent target. `SETTLEMENT_UNCERTAIN` means the previous booking/payment must be checked before replacement; keep polling the same trip. Missing cancellation settlement is not a refund. Quote expiry does not invalidate an already accepted booking.
+
+The existing SafeCircle student UI is a PWA demo controller and still needs Rishit's API wiring. On reconnect, fetch the saved trip and evidence; do not reconstruct booking/verification/arrival from browser timers. When a replacement is `SELECTED` (or overdue while awaiting confirmation), display its current offer and get confirmation again. Manual/location arrival remains available during replacement confirmation.
+
 ## Browser calls
 
 1. `POST /api/trips` with `Content-Type: application/json` and the JSON below.
@@ -51,7 +66,7 @@ BEACON_SMOKE_LIVE_ANS=true BEACON_SMOKE_NO_CONTACT=true node src/agents/smoke.mj
    Save this preference object in Rishit's existing onboarding store and send it on creation.
 2. `POST /api/trips/:id/discover` with `{}` → quote list.
 3. `POST /api/trips/:id/evaluate` with `{}` → `SELECTED` plus recommendation.
-4. On **GO**, `POST /api/trips/:id/confirm`, then `/verify`, then `/request`.
+4. Read `/evidence` and display `coordination.selectedOffer`. On **GO**, `POST /api/trips/:id/confirm` with `{planId, quoteId}` from that offer, then `/verify`, then `/request`. Legacy offers without `selectedOffer` accept `{planId}`.
 5. Poll `GET /api/trips/:id` for current `Trip` and
    `GET /api/trips/:id/events` for a privacy-filtered technical timeline.
 6. Foreground location: `POST /api/trips/:id/location` with `{lat,lng,recordedAt}`.
@@ -98,7 +113,7 @@ in normal mobile UI; use `providerName`. The backend sanitizes upstream error st
 ## Demo and provider controls
 
 `POST /api/demo/trips/:id/cancel-provider` cancels the active provider and performs
-the replacement flow without another user decision. `expire-deadline` triggers the
+the replacement flow. Network v2 trips return a new recommendation and require a fresh `{planId, quoteId}` confirmation before booking; legacy v1 fixtures retain their previous automatic replacement behavior. `expire-deadline` triggers the
 overdue path. `POST /api/demo/reset` clears private state only for this session's trips.
 All require the session cookie and explicit `DEMO_MODE=true`.
 

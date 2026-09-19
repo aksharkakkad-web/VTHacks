@@ -69,3 +69,27 @@ test("resolution binds the selected host to the same registry record", () => {
   assert.throws(() => validateResolution({ ...resolution, links: [{ rel: "agent-details", href: `${api}/v1/agents/other-id` }] }, provider, api));
   assert.throws(() => validateResolution({ ...resolution, ansName: "ans://v1.0.0.attacker.example" }, provider, api));
 });
+
+test("v2 discovery separates same-mode developer services and rejects unsupported profiles", () => {
+  const capabilities = ["quote_trip", "request_trip", "trip_status", "cancel_trip", "reconcile_trip"];
+  const functions = ["late_shuttle", "accessible_shuttle"].flatMap(service => capabilities.map(capability => ({
+    id: `${service}.${capability}`, tags: ["beacon-mobility-v2", "campus_ride", `service:${service}`],
+  })));
+  const item = { agentId: "operator-one", agentHost: "operator.example", agentDisplayName: "Example Operator", status: "ACTIVE", endpoints: [{ agentUrl: "https://operator.example/services", protocol: "HTTP-API", functions }] };
+  const providers = parseDiscovered({ agents: [item] });
+  assert.deepEqual(providers.map(p => p.id), ["operator-one:late_shuttle", "operator-one:accessible_shuttle"]);
+  assert.ok(providers.every(p => p.mode === "campus_ride"));
+  assert.equal(providers[1].baseUrl, "https://operator.example/services/accessible_shuttle");
+  assert.equal(parseDiscovered({ agents: [{ ...item, endpoints: [{ ...item.endpoints[0], functions: [{ id: "quote_trip", tags: ["beacon-mobility-v99", "campus_ride"] }] }] }] }).length, 0);
+});
+
+test("v2 discovery never borrows another service's mode or lifecycle capabilities", () => {
+  const item = { agentId: "operator", agentHost: "operator.example", agentDisplayName: "Example", status: "ACTIVE", endpoints: [{ agentUrl: "https://operator.example/services", protocol: "HTTP-API", functions: [
+    { id: "one.quote_trip", tags: ["beacon-mobility-v2", "campus_ride", "service:one"] },
+    { id: "two.request_trip", tags: ["beacon-mobility-v2", "campus_ride", "service:two"] },
+    { id: "evil.quote_trip", tags: ["beacon-mobility-v2", "campus_ride", "service:../evil"] },
+  ] }] };
+  const providers = parseDiscovered({ agents: [item] });
+  assert.equal(providers.length, 1);
+  assert.deepEqual(providers[0].functions, ["quote_trip"]);
+});

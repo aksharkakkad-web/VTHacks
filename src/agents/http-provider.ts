@@ -1,3 +1,6 @@
+import { bookingPayloadHash, issueBookingGrant } from "../lib/authorization/booking-grant";
+import { networkToken } from "./demo-provider";
+import { networkProfile, normalizeNetworkQuote, parseProviderOffer } from "./provider-manifest";
 import { isIP } from "node:net";
 import { publicJson } from "../integrations/ans/transport";
 import { coarseQuote, normalizeQuote, object, parseProviderTrip, type ProviderAgent, type ProviderDescriptor, type QuoteRequest, type TripRequest } from "./contract";
@@ -37,10 +40,34 @@ export class HttpProvider implements ProviderAgent {
     if (bodyText.length > 65_536) throw new Error("Provider response too large");
     return JSON.parse(bodyText);
   }
-  async quote(request: QuoteRequest) { return normalizeQuote(await this.call("/agent/quote", "POST", coarseQuote({ ...request })), this.descriptor); }
-  async requestTrip(request: TripRequest) { return parseProviderTrip(await this.call("/agent/request-trip", "POST", { trip_id: request.tripId, pickup: request.pickup, destination: request.destination })); }
+  async quote(request: QuoteRequest) {
+    const raw = object(await this.call("/agent/quote", "POST", coarseQuote({ ...request })));
+    if (this.descriptor.profileVersion === networkProfile || "manifest" in raw || "offer" in raw) {
+      const result = normalizeNetworkQuote(raw, this.descriptor, request);
+      if (this.descriptor.mode !== "transit" && (!networkToken(this.options.token) || !this.descriptor.functions.includes("reconcile_trip"))) throw new Error("Invalid configured network provider authorization");
+      return { ...result.candidate, network: result.network, quoteExpiresAt: result.quoteExpiresAt, quoteSource: result.quoteSource };
+    }
+    if (raw.profileVersion !== undefined && raw.profileVersion !== "beacon-mobility-v1") throw new Error("Invalid provider profile");
+    return normalizeQuote(raw, this.descriptor);
+  }
+  async requestTrip(request: TripRequest) {
+    const body = { trip_id: request.tripId, pickup: request.pickup, destination: request.destination };
+    if (!request.network) {
+      if (this.descriptor.profileVersion === networkProfile) throw new Error("Invalid network booking intent");
+      return parseProviderTrip(await this.call("/agent/request-trip", "POST", body));
+    }
+    if (!networkToken(this.options.token) || !this.descriptor.functions.includes("reconcile_trip")) throw new Error("Invalid network provider authorization");
+    const offer = request.network.offer;
+    if (offer.providerId !== this.descriptor.id || offer.profileVersion !== networkProfile || !offer.available) throw new Error("Invalid network booking offer");
+    // Re-parse against the bound identity. The provider independently validates its
+    // signed offer; no consent reference or profile is put on the wire.
+    const checked = parseProviderOffer(offer, { profileVersion: networkProfile, providerId: this.descriptor.id, serviceId: this.descriptor.serviceId ?? (this.descriptor.ansId ? this.descriptor.id.slice(this.descriptor.ansId.length + 1) : this.descriptor.id) });
+    const now = Date.now();
+    const grant = issueBookingGrant({ version: 1, issuer: "beacon", audience: this.descriptor.id, scope: "book_trip", requestId: request.tripId, quoteId: checked.quoteId, payloadHash: bookingPayloadHash({ requestId: request.tripId, quoteId: checked.quoteId, pickup: request.pickup, destination: request.destination }), amountMinor: checked.price.totalMinor, currency: "USD", issuedAt: now, expiresAt: Math.min(now + 60_000, Date.parse(checked.expiresAt)), simulated: true }, this.options.token);
+    return parseProviderTrip(await this.call("/agent/request-trip", "POST", { ...body, offer: checked, grant }));
+  }
   async getStatus(id: string) { return parseProviderTrip(await this.call(`/agent/trip-status/${encodeURIComponent(id)}`)); }
-  async cancelTrip(id: string) { await this.call("/agent/cancel-trip", "POST", { trip_id: id }); }
+  async cancelTrip(id: string) { return parseProviderTrip(await this.call("/agent/cancel-trip", "POST", { trip_id: id })); }
   async getRequestStatus(id: string) {
     if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
     const result = object(await this.call(`/agent/request-status/${encodeURIComponent(id)}`));
@@ -49,6 +76,7 @@ export class HttpProvider implements ProviderAgent {
   async cancelRequest(id: string) {
     if (!this.descriptor.functions.includes("reconcile_trip")) throw new Error("Provider cannot reconcile requests");
     const result = parseProviderTrip(await this.call("/agent/cancel-request", "POST", { request_id: id }));
-    if (result.status !== "cancelled") throw new Error("Provider did not confirm cancellation");
+    if (!["cancelled", "completed", "declined"].includes(result.status)) throw new Error("Provider did not confirm cancellation");
+    return result;
   }
 }

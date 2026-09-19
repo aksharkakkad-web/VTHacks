@@ -5,6 +5,15 @@ import type { WeatherEvidence } from "../campus-evidence/evidence";
 import type { PlanSignals } from "../decision-client/decision";
 import type { PublicCorridor, TripOptionEvidence } from "../decision-client/trip-options";
 import type { TripDecisionEvidence } from "../../agents/student/databricks";
+import type { NetworkOffer } from "../../agents/provider-manifest";
+import type { ProviderOutcome } from "../decision-client/provider-outcomes";
+import type { SimulatedPayment } from "../payments/simulated";
+
+export type NetworkAttempt = {
+  requestId: string; providerId: string; quoteId: string; observationId: string;
+  amountMinor: number; cancellationFeeMinor: number; payment: SimulatedPayment;
+  requestedAt: string; acceptedAt?: string; finalizedAt?: string; outcome?: "completed" | "canceled" | "declined";
+};
 
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
@@ -15,16 +24,21 @@ export type TripRecord = {
   excluded: string[]; confirmed: boolean; quoteDeadline: number;
   quoteExpirations?: Record<string, number>;
   simulatedPlanIds?: string[];
+  networkOffers?: Record<string, NetworkOffer>;
+  networkConsent?: { id: string; planId: string; quoteId: string; termsHash: string };
+  networkAttempts?: NetworkAttempt[];
+  outcomeOutbox?: { payload: ProviderOutcome; sent: boolean; attempts: number; retryAt: number }[];
+  networkAction?: "payment_declined" | "check_booking";
   weatherEvidence?: WeatherEvidence;
   weatherPlanIds?: string[];
   corridorId?: PublicCorridor;
   planSignals?: Record<string, PlanSignals>;
   optionEvidence?: TripOptionEvidence;
   decisionEvidence?: TripDecisionEvidence;
-  identity?: VerifiedIdentity; booking?: { providerId: string; id: string };
+  identity?: VerifiedIdentity; booking?: { providerId: string; id: string; requestId?: string };
   pendingBooking?: { providerId: string; requestId: string; attempts?: number; retryAt?: number };
   pendingReplacement?: { attempts: number; retryAt: number };
-  cleanup?: ({ provider: ProviderDescriptor; identity?: VerifiedIdentity; attempts: number; retryAt: number } & ({ bookingId: string; requestId?: never } | { requestId: string; bookingId?: never }))[];
+  cleanup?: ({ provider: ProviderDescriptor; identity?: VerifiedIdentity; attempts: number; retryAt: number; attemptId?: string } & ({ bookingId: string; requestId?: never } | { requestId: string; bookingId?: never }))[];
   replanCount: number; lastStatusBeforeOverdue?: TripState;
   notification?: { state: "sending" | "sent" | "simulated" | "failed" | "uncertain"; id?: string };
   events: { at: string; state: TripState; code: string; message: string }[];

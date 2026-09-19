@@ -11,6 +11,7 @@ import { telegramSender } from "../../integrations/notifications/telegram";
 import { FileTripStore } from "./store";
 import { RedisTripStore } from "./redis-store";
 import { redisConfiguration } from "./redis-config";
+import { ingestProviderOutcome } from "../../integrations/databricks/provider-outcomes";
 import { campusWeather } from "../campus-evidence/catalog";
 
 type Runtime = { agent: StudentAgent; timer?: ReturnType<typeof setInterval>; };
@@ -32,6 +33,9 @@ export function getRuntime(): Runtime {
     recommend: decisionRecommendation(evaluateTrip, evaluateTripIntelligence),
     publicTripOptions: getPublicTripOptions,
     campusWeather,
+    ...(process.env.DATABRICKS_PROVIDER_OUTCOMES_TABLE && process.env.DATABRICKS_HOST && process.env.DATABRICKS_TOKEN && process.env.DATABRICKS_WAREHOUSE_ID ? {
+      recordOutcome: (outcome: Parameters<typeof ingestProviderOutcome>[2]) => ingestProviderOutcome({ host: process.env.DATABRICKS_HOST!, token: process.env.DATABRICKS_TOKEN!, warehouseId: process.env.DATABRICKS_WAREHOUSE_ID! }, process.env.DATABRICKS_PROVIDER_OUTCOMES_TABLE!, outcome),
+    } : {}),
     notify: (contact, message, key) => sendNotification(contact, demo ? `[Beacon demo test] ${message}` : message, key),
     graceMinutes: Number(process.env.BEACON_GRACE_MINUTES ?? 5),
   });

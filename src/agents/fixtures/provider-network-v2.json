@@ -1,0 +1,248 @@
+{
+  "fixtureNote": "Frozen contract examples at the fixed timestamp; not current/bookable provider offers. Quote IDs are illustrative, not signed reference-provider IDs.",
+  "evaluatedAt": "2026-09-19T20:00:00.000Z",
+  "quote": {
+    "manifest": {
+      "profileVersion": "beacon-mobility-v2",
+      "providerId": "independent_ride",
+      "serviceId": "independent_ride",
+      "operatorName": "Beacon demo operator",
+      "operatorAnsId": null,
+      "endpoint": "http://127.0.0.1:4313",
+      "mode": "independent_ride",
+      "capabilities": [
+        "quote_trip",
+        "request_trip",
+        "trip_status",
+        "cancel_trip",
+        "reconcile_trip"
+      ],
+      "serviceArea": {
+        "originZones": [
+          "Downtown Blacksburg"
+        ],
+        "destinationZones": [
+          "VT residential campus"
+        ]
+      },
+      "executionMode": "simulated",
+      "authorization": "beacon-hmac-v1",
+      "payment": "simulated-usd-v1"
+    },
+    "offer": {
+      "profileVersion": "beacon-mobility-v2",
+      "quoteId": "fixture-independent-quote-v2",
+      "providerId": "independent_ride",
+      "serviceId": "independent_ride",
+      "issuedAt": "2026-09-19T20:00:00.000Z",
+      "expiresAt": "2026-09-19T20:02:00.000Z",
+      "available": true,
+      "price": {
+        "currency": "USD",
+        "totalMinor": 700,
+        "kind": "fixed",
+        "feesIncluded": true
+      },
+      "cancellation": {
+        "feeMinor": 0
+      },
+      "pickup": {
+        "instructions": "Simulated pickup only; no real vehicle is dispatched.",
+        "accessVerified": false
+      },
+      "waitMinutes": 5,
+      "travelMinutes": 10,
+      "walkingMinutes": 1,
+      "transfers": 0,
+      "simulated": true
+    }
+  },
+  "noOffer": {
+    "manifest": {
+      "profileVersion": "beacon-mobility-v2",
+      "providerId": "independent_ride",
+      "serviceId": "independent_ride",
+      "operatorName": "Beacon demo operator",
+      "operatorAnsId": null,
+      "endpoint": "http://127.0.0.1:4313",
+      "mode": "independent_ride",
+      "capabilities": [
+        "quote_trip",
+        "request_trip",
+        "trip_status",
+        "cancel_trip",
+        "reconcile_trip"
+      ],
+      "serviceArea": {
+        "originZones": [
+          "Downtown Blacksburg"
+        ],
+        "destinationZones": [
+          "VT residential campus"
+        ]
+      },
+      "executionMode": "simulated",
+      "authorization": "beacon-hmac-v1",
+      "payment": "simulated-usd-v1"
+    },
+    "offer": {
+      "profileVersion": "beacon-mobility-v2",
+      "quoteId": "fixture-independent-quote-v2",
+      "providerId": "independent_ride",
+      "serviceId": "independent_ride",
+      "issuedAt": "2026-09-19T20:00:00.000Z",
+      "expiresAt": "2026-09-19T20:02:00.000Z",
+      "available": false,
+      "price": {
+        "currency": "USD",
+        "totalMinor": 700,
+        "kind": "fixed",
+        "feesIncluded": true
+      },
+      "cancellation": {
+        "feeMinor": 0
+      },
+      "pickup": {
+        "instructions": "Simulated pickup only; no real vehicle is dispatched.",
+        "accessVerified": false
+      },
+      "waitMinutes": 5,
+      "travelMinutes": 10,
+      "walkingMinutes": 1,
+      "transfers": 0,
+      "simulated": true
+    }
+  },
+  "confirmation": {
+    "planId": "network:dd1a2989380a94d1ec08aeeba6c7a6fbce2536c527f17cee856a8963e3528fb1",
+    "quoteId": "fixture-independent-quote-v2"
+  },
+  "beforeConfirmation": {
+    "version": "beacon-coordination-v1",
+    "requiredAction": "confirm",
+    "remainingBudgetMinor": 1000,
+    "currency": "USD",
+    "paymentMode": "simulated",
+    "paymentNotice": "Demo payment — no charge",
+    "operator": {
+      "name": "Beacon demo operator",
+      "ansId": null,
+      "verification": "not_verified"
+    },
+    "selectedOffer": {
+      "planId": "network:dd1a2989380a94d1ec08aeeba6c7a6fbce2536c527f17cee856a8963e3528fb1",
+      "quoteId": "fixture-independent-quote-v2",
+      "serviceId": "independent_ride",
+      "totalMinor": 700,
+      "currency": "USD",
+      "expiresAt": "2026-09-19T20:02:00.000Z",
+      "cancellationFeeMinor": 0,
+      "pickupInstructions": "Simulated pickup only; no real vehicle is dispatched.",
+      "pickupAccessVerified": false,
+      "simulated": true
+    },
+    "payments": []
+  },
+  "bookingAccepted": {
+    "id": "fixture-booking-v2",
+    "status": "waiting",
+    "payment": {
+      "mode": "simulated",
+      "currency": "USD",
+      "amountMinor": 700,
+      "retainedMinor": 0,
+      "state": "authorized"
+    }
+  },
+  "bookingUncertain": {
+    "error": {
+      "code": "BOOKING_UNCERTAIN",
+      "message": "Provider response unavailable; do not create a duplicate booking"
+    }
+  },
+  "checkingBooking": {
+    "version": "beacon-coordination-v1",
+    "requiredAction": "check_booking",
+    "remainingBudgetMinor": 300,
+    "currency": "USD",
+    "paymentMode": "simulated",
+    "paymentNotice": "Demo payment — no charge",
+    "operator": {
+      "name": "Beacon demo operator",
+      "ansId": null,
+      "verification": "not_verified"
+    },
+    "selectedOffer": {
+      "planId": "network:dd1a2989380a94d1ec08aeeba6c7a6fbce2536c527f17cee856a8963e3528fb1",
+      "quoteId": "fixture-independent-quote-v2",
+      "serviceId": "independent_ride",
+      "totalMinor": 700,
+      "currency": "USD",
+      "expiresAt": "2026-09-19T20:02:00.000Z",
+      "cancellationFeeMinor": 0,
+      "pickupInstructions": "Simulated pickup only; no real vehicle is dispatched.",
+      "pickupAccessVerified": false,
+      "simulated": true
+    },
+    "payments": [
+      {
+        "providerId": "independent_ride",
+        "mode": "simulated",
+        "currency": "USD",
+        "amountMinor": 700,
+        "retainedMinor": 0,
+        "state": "unknown"
+      }
+    ]
+  },
+  "cancelled": {
+    "id": "fixture-booking-v2",
+    "status": "cancelled",
+    "payment": {
+      "mode": "simulated",
+      "currency": "USD",
+      "amountMinor": 700,
+      "retainedMinor": 0,
+      "state": "voided"
+    }
+  },
+  "replacementConfirmation": {
+    "state": "SELECTED",
+    "confirmBody": {
+      "planId": "network:dd1a2989380a94d1ec08aeeba6c7a6fbce2536c527f17cee856a8963e3528fb1",
+      "quoteId": "fixture-independent-quote-v2"
+    },
+    "coordination": {
+      "version": "beacon-coordination-v1",
+      "requiredAction": "confirm",
+      "remainingBudgetMinor": 1000,
+      "currency": "USD",
+      "paymentMode": "simulated",
+      "paymentNotice": "Demo payment — no charge",
+      "operator": {
+        "name": "Beacon demo operator",
+        "ansId": null,
+        "verification": "not_verified"
+      },
+      "selectedOffer": {
+        "planId": "network:dd1a2989380a94d1ec08aeeba6c7a6fbce2536c527f17cee856a8963e3528fb1",
+        "quoteId": "fixture-independent-quote-v2",
+        "serviceId": "independent_ride",
+        "totalMinor": 700,
+        "currency": "USD",
+        "expiresAt": "2026-09-19T20:02:00.000Z",
+        "cancellationFeeMinor": 0,
+        "pickupInstructions": "Simulated pickup only; no real vehicle is dispatched.",
+        "pickupAccessVerified": false,
+        "simulated": true
+      },
+      "payments": []
+    }
+  },
+  "noFeasiblePlan": {
+    "error": {
+      "code": "NO_FEASIBLE_PLAN",
+      "message": "No available plan fits your current constraints"
+    }
+  }
+}

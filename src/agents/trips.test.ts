@@ -126,6 +126,14 @@ test("trip ownership blocks cross-session reads and mutations", async () => {
   await assert.rejects(s.agent.read(trip.id, "someone-else"));
   await assert.rejects(s.agent.act(trip.id, "someone-else", "confirm"));
 });
+test("confirmation rejects a different plan than the one currently displayed", async () => {
+  const s = setup(); const trip = await start(s);
+  await assert.rejects(s.agent.act(trip.id, "owner", "confirm", { planId: "an-old-displayed-plan" }), { code: "SELECTION_CHANGED" });
+  assert.equal((await s.store.read(trip.id)).confirmed, false);
+  assert.equal(s.released.length, 0);
+  await s.agent.act(trip.id, "owner", "confirm", { planId: trip.selectedPlan!.planId });
+  assert.equal((await s.store.read(trip.id)).confirmed, true);
+});
 test("cancellation autonomously recollects, reevaluates, verifies, and books replacement", async () => {
   const s = setup(); const trip = await start(s);
   for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
