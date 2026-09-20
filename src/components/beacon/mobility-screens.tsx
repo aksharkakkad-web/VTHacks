@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import Image from "next/image";
 import {
   AlertCircle,
   ArrowRight,
   CarFront,
+  Check,
   Clock3,
+  House,
   MapPin,
   Navigation,
   RefreshCw,
-  UserRound,
+  ShieldCheck,
 } from "lucide-react";
 import {
-  providerSourceLabel,
   type MobilityReadModel,
   type RideStatusReadModel,
   type RoutePoint,
@@ -35,6 +35,15 @@ type MobilityScreenProps = {
   onBoard?: () => void;
   boardingLabel?: string;
   navigation?: { destination: string; googleMapsUrl: string; appleMapsUrl: string };
+  rideExperience?: {
+    state?: "active" | "overdue" | "home";
+    providerName?: string;
+    destination?: string;
+    notificationState?: string;
+    onStillTravelling?: () => void;
+    onFinish?: () => void;
+    presenterNext?: { label: string; onClick: () => void };
+  };
 };
 
 type RideCopy = { eyebrow: string; title: string; body: string; tone: "progress" | "success" | "warning" };
@@ -109,17 +118,17 @@ function rideCopy(ride: RideStatusReadModel | undefined): RideCopy {
   switch (ride?.stage) {
     case "accepted":
     case "waiting":
-      return { eyebrow: "Waiting for pickup", title: "Your request was accepted.", body: hasPickup ? "Use the pickup details reported below." : "Pickup details have not been supplied.", tone: "progress" };
+      return { eyebrow: "Ride assigned", title: "Meet your ride.", body: hasPickup ? "Pickup details are ready." : "Pickup details are pending.", tone: "progress" };
     case "driver-assigned":
-      return { eyebrow: "Driver assigned", title: "Check the reported details.", body: hasIdentity ? "Match the provider details before you enter the vehicle." : "Driver and vehicle details have not been supplied.", tone: "progress" };
+      return { eyebrow: "Driver assigned", title: "Meet your ride.", body: hasIdentity ? "Match the details before boarding." : "Vehicle details are pending.", tone: "progress" };
     case "approaching":
-      return { eyebrow: "Pickup update", title: "Your ride is approaching.", body: "Wait at a pickup point you recognize.", tone: "progress" };
+      return { eyebrow: "Approaching", title: "Your ride is close.", body: "Wait at the listed pickup point.", tone: "progress" };
     case "arrived":
-      return { eyebrow: "Pickup update", title: "Your ride has arrived.", body: hasIdentity ? "Match the reported vehicle and driver details before boarding." : "Driver and vehicle details have not been supplied.", tone: "progress" };
+      return { eyebrow: "At pickup", title: "Your ride is here.", body: hasIdentity ? "Match the vehicle before boarding." : "Vehicle details are pending.", tone: "progress" };
     case "riding":
-      return { eyebrow: "Travelling home", title: "You’re on the way.", body: "Beacon is showing the latest status supplied for this trip.", tone: "progress" };
+      return { eyebrow: "In your ride", title: "On the way home.", body: "Beacon is following the latest provider update.", tone: "progress" };
     case "completed":
-      return { eyebrow: "Trip complete", title: "This ride is complete.", body: "The provider reported the trip complete.", tone: "success" };
+      return { eyebrow: "Ride complete", title: "Are you home?", body: "Confirm to end trip access.", tone: "success" };
     case "cancelled":
       return { eyebrow: "Ride cancelled", title: "This ride was cancelled.", body: "No active ride is being claimed.", tone: "warning" };
     default:
@@ -309,49 +318,126 @@ function WalkingScreen(props: MobilityScreenProps) {
   );
 }
 
-function DriverIdentity({ driver }: { driver: RideStatusReadModel["driver"] }) {
-  const [failedUrl, setFailedUrl] = useState<string>();
-  if (!driver?.firstName && !driver?.photoUrl) return null;
-  const showPhoto = driver.photoUrl && failedUrl !== driver.photoUrl;
+function StaticRideMap({ destination = "Home" }: { destination?: string }) {
   return (
-    <div className={styles.driverIdentity}>
-      <span className={styles.driverPhoto}>
-        {showPhoto ? <Image src={driver.photoUrl!} alt="" width={38} height={38} unoptimized onError={() => setFailedUrl(driver.photoUrl)} /> : <UserRound size={24} aria-hidden="true" />}
-      </span>
-      <span><small>Driver</small><strong>{driver.firstName || "Name unavailable"}</strong></span>
+    <div className={styles.rideMap} role="img" aria-label={`Static campus route from pickup to ${destination}`}>
+      <svg viewBox="0 0 430 310" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="430" height="310" fill="#e8efe8" />
+        <g className={styles.mapBlocks}>
+          <path d="M-12 54h138v65H-12zM154 20h105v68H154zM295 37h152v74H295zM20 154h110v82H20zM157 131h116v83H157zM314 150h133v91H314zM-10 267h160v58H-10zM183 250h110v75H183zM326 270h120v55H326z" />
+        </g>
+        <g className={styles.mapRoads}>
+          <path d="M-15 132C78 128 100 113 170 102S310 122 448 121" />
+          <path d="M142-15c-5 89 15 140 1 202s-6 93 9 138" />
+          <path d="M289-12c9 74-5 110 4 174s-3 105-9 163" />
+          <path d="M-14 251c100-5 183-14 256-2s128 2 205-10" />
+        </g>
+        <path className={styles.mapRouteHalo} d="M78 238C112 206 119 178 158 159s77-4 104-34 42-40 87-54" />
+        <path className={styles.mapRoute} d="M78 238C112 206 119 178 158 159s77-4 104-34 42-40 87-54" />
+      </svg>
+      <span className={`${styles.mapMarker} ${styles.pickupMarker}`} aria-hidden="true"><MapPin size={19} /></span>
+      <span className={`${styles.mapMarker} ${styles.homeMarker}`} aria-hidden="true"><House size={17} /></span>
+      <span className={styles.carMarker} aria-hidden="true"><CarFront size={21} /></span>
+      <span className={styles.pickupLabel}>Pickup</span>
+      <span className={styles.homeLabel}>{destination}</span>
     </div>
   );
 }
 
-function RideFacts({ ride }: { ride: RideStatusReadModel | undefined }) {
+function contactStatus(state: string | undefined) {
+  if (state === "sent") return "Contact alerted";
+  if (state === "simulated") return "Contact alert prepared";
+  if (state === "sending") return "Preparing contact alert";
+  if (state === "failed") return "Contact alert failed";
+  if (state === "uncertain") return "Contact alert unconfirmed";
+  return "No contact alert sent";
+}
+
+function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy }) {
+  const { mobility, onArrival, onHelp, onDetails, onCancel, rideExperience } = props;
+  const ride = mobility.ride;
+  const state = rideExperience?.state ?? "active";
+  const vehicle = [ride?.vehicle?.color, ride?.vehicle?.make, ride?.vehicle?.model].filter(Boolean).join(" ");
   const pickupEta = formatDuration(ride?.pickupEtaSeconds);
   const arrivalEta = formatDuration(ride?.arrivalEtaSeconds);
+  const underway = ride?.stage === "riding" || ride?.stage === "completed";
+  const eta = ride?.stage === "completed" ? "Done" : ride?.stage === "arrived" ? "Here" : ride?.stage === "riding" ? arrivalEta ?? "On route" : pickupEta ?? "—";
+  const etaLabel = ride?.stage === "completed" ? "trip" : ride?.stage === "riding" ? "to home" : "pickup";
   const updatedAt = formatTimestamp(ride?.updatedAt);
-  const vehicle = ride?.vehicle;
-  const vehicleDescription = [vehicle?.color, vehicle?.make, vehicle?.model].filter(Boolean).join(" ");
+  const provider = rideExperience?.providerName || "Ride provider";
+  const simulation = ride?.providerSource === "simulated-rideshare" || rideExperience?.notificationState === "simulated";
+  const activeRide = ride?.stage !== "completed" && ride?.stage !== "cancelled";
+  const pickupInstruction = ride?.stage === "completed"
+    ? "Confirm when you’re home."
+    : ride?.stage === "riding"
+      ? "Beacon is following your trip home."
+      : ride?.providerSource === "simulated-rideshare"
+        ? "Meet at the marked pickup point."
+        : ride?.meetingInstructions?.trim() || "Pickup instructions pending.";
+
+  if (state === "home") {
+    return (
+      <section className={`${styles.ridePanel} ${styles.homePanel}`} aria-labelledby="ride-panel-title">
+        <span className={styles.panelHandle} aria-hidden="true" />
+        <span className={styles.successMark} aria-hidden="true"><Check size={22} /></span>
+        <p className={styles.panelEyebrow}>Trip complete</p>
+        <h1 id="ride-panel-title" tabIndex={-1}>You’re home.</h1>
+        <p className={styles.panelBody}>Location sharing and provider access ended.</p>
+        <p className={styles.privacyLine}><ShieldCheck size={17} aria-hidden="true" /> Private trip access closed</p>
+        {rideExperience?.onFinish ? <PrimaryAction onClick={rideExperience.onFinish}>Finish</PrimaryAction> : null}
+        <button className={styles.textAction} type="button" onClick={onDetails}>Trip details</button>
+      </section>
+    );
+  }
+
+  if (state === "overdue") {
+    return (
+      <section className={styles.ridePanel} aria-labelledby="ride-panel-title">
+        <span className={styles.panelHandle} aria-hidden="true" />
+        <div className={styles.panelHeading}>
+          <div><p className={styles.panelEyebrow}>Check in</p><h1 id="ride-panel-title" tabIndex={-1}>Are you home?</h1></div>
+          {simulation ? <span className={styles.simulationBadge}>Simulation</span> : null}
+        </div>
+        <p className={styles.contactLine}>{contactStatus(rideExperience?.notificationState)}</p>
+        <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction>
+        <div className={styles.checkinActions}>
+          <button className={styles.secondaryAction} type="button" onClick={rideExperience?.onStillTravelling}>Still travelling</button>
+          <button className={styles.secondaryAction} type="button" onClick={onHelp}>Get help</button>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <>
-      {ride?.stale ? <p className={styles.warning}><Clock3 size={18} aria-hidden="true" /><span><strong>Status may be out of date.</strong> Check the latest provider update.</span></p> : null}
-      <section className={styles.statusCard} aria-labelledby="ride-status-title">
-        <div className={styles.statusTopline}>
-          <span><CarFront size={20} aria-hidden="true" /></span>
-          <p><small id="ride-status-title">Source</small><strong>{providerSourceLabel(ride)}</strong></p>
+    <section className={styles.ridePanel} aria-labelledby="ride-panel-title">
+      <span className={styles.panelHandle} aria-hidden="true" />
+      <div className={styles.panelHeading}>
+        <div>
+          <p className={styles.panelEyebrow}>{copy.eyebrow}</p>
+          <h1 id="ride-panel-title" tabIndex={-1}>{copy.title}</h1>
         </div>
-        <dl className={styles.rideFacts}>
-          {pickupEta ? <div><dt>Pickup ETA</dt><dd>{pickupEta}</dd></div> : null}
-          {arrivalEta ? <div><dt>Arrival ETA</dt><dd>{arrivalEta}</dd></div> : null}
-          {ride?.pickupLocation ? <div><dt>Pickup</dt><dd>{ride.pickupLocation}</dd></div> : null}
-          <div><dt>Pickup instructions</dt><dd>{ride?.meetingInstructions?.trim() || "Pickup instructions unavailable."}</dd></div>
-          {ride?.driverLocationLabel ? <div><dt>Driver location</dt><dd>{ride.driverLocationLabel}</dd></div> : null}
-          {vehicleDescription ? <div><dt>Vehicle</dt><dd>{vehicleDescription}</dd></div> : null}
-          {vehicle?.plate ? <div><dt>Plate</dt><dd>{vehicle.plate}</dd></div> : null}
-          {ride?.bookingReference ? <div><dt>Reference</dt><dd>{ride.bookingReference}</dd></div> : null}
-        </dl>
-        <DriverIdentity driver={ride?.driver} />
-      </section>
-      <p className={styles.updateNote}>{updatedAt ? `Provider update ${updatedAt}` : "Provider update time not supplied"}</p>
-    </>
+        <div className={styles.etaBlock}><strong>{eta}</strong><span>{etaLabel}</span></div>
+      </div>
+      <div className={styles.providerLine}>
+        <span className={styles.providerIcon}><CarFront size={20} aria-hidden="true" /></span>
+        <span><small>{provider}</small><strong>{ride?.driver?.firstName || "Driver pending"}</strong></span>
+        {ride?.vehicle?.plate ? <b>{ride.vehicle.plate}</b> : null}
+        {simulation ? <span className={styles.simulationBadge}>Simulation</span> : null}
+      </div>
+      <div className={styles.rideDetails}>
+        <p><small>Vehicle</small><strong>{vehicle || "Details pending"}</strong></p>
+        <p><small>{underway ? "Destination" : "Pickup"}</small><strong>{underway ? rideExperience?.destination || "Home" : ride?.pickupLocation || "Location pending"}</strong></p>
+      </div>
+      <p className={styles.pickupInstruction}><MapPin size={17} aria-hidden="true" />{pickupInstruction}</p>
+      {ride?.stale ? <p className={styles.compactWarning}><Clock3 size={15} aria-hidden="true" /> Status may be out of date.</p> : null}
+      {ride?.stage === "riding" || ride?.stage === "completed" ? <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction> : null}
+      <div className={styles.compactActions}>
+        <button type="button" onClick={onDetails}>Trip details</button>
+        <button type="button" onClick={onHelp}>Get help</button>
+        {activeRide ? <button type="button" onClick={onCancel}>Cancel</button> : null}
+      </div>
+      <p className={styles.providerUpdate}>{updatedAt ? `Updated ${updatedAt}` : "Update time unavailable"}</p>
+    </section>
   );
 }
 
@@ -369,28 +455,32 @@ function TransitWaitCard({ instruction, travelling = false }: {instruction?: str
 }
 
 function RideScreen(props: MobilityScreenProps) {
-  const { mobility, onArrival, onHelp, onDetails, onCancel, onBoard } = props;
+  const { mobility, onArrival, onHelp, onDetails, onCancel, onBoard, rideExperience } = props;
   const ride = mobility.ride;
   const transitWaiting = mobility.leg.kind === "wait" && mobility.leg.purpose === "transit-stop" && mobility.leg.status === "active";
   const transitTravelling = mobility.leg.kind === "ride" && mobility.leg.purpose === "transit-stop" && !ride;
-  const hasRideFields = Boolean(ride && (
-    ride.providerSource !== "unknown" ||
-    ride.stage !== "unknown" ||
-    ride.pickupEtaSeconds !== undefined ||
-    ride.arrivalEtaSeconds !== undefined ||
-    ride.pickupLocation ||
-    ride.meetingInstructions ||
-    ride.driver ||
-    ride.vehicle ||
-    ride.bookingReference ||
-    ride.driverLocationLabel ||
-    ride.updatedAt ||
-    ride.stale
-  ));
   const copy = transitWaiting
     ? { eyebrow: "Waiting at your stop", title: "Board when your service arrives.", body: "Check the service sign before boarding.", tone: "progress" as const }
     : transitTravelling ? {eyebrow:"Scheduled transit",title:"Follow your transit plan.",body:"Use the supplied service guidance. No live vehicle tracking is available.",tone:"progress" as const} : rideCopy(ride);
   const activeRide = Boolean(mobility.leg.status === "active" && ((ride && ride.stage !== "completed" && ride.stage !== "cancelled") || transitWaiting));
+
+  if (!transitWaiting && !transitTravelling) {
+    return (
+      <BeaconFrame>
+        <div className={styles.rideShell} data-stage={`ride-${rideExperience?.state ?? ride?.stage ?? "unknown"}`} data-testid="ride-status" aria-live="polite">
+          <div className={styles.rideMapWrap}>
+            <StaticRideMap destination={rideExperience?.destination} />
+            {rideExperience?.presenterNext ? (
+              <button className={styles.presenterNext} type="button" onClick={rideExperience.presenterNext.onClick} aria-label={`Presenter: ${rideExperience.presenterNext.label}`}>
+                Next <ArrowRight size={16} aria-hidden="true" />
+              </button>
+            ) : null}
+          </div>
+          <RidePanel props={props} copy={copy} />
+        </div>
+      </BeaconFrame>
+    );
+  }
 
   return (
     <BeaconFrame>
@@ -402,7 +492,7 @@ function RideScreen(props: MobilityScreenProps) {
         </header>
 
         <div className={`${styles.content} ${styles.rideContent}`}>
-          {(transitWaiting || transitTravelling) && !hasRideFields ? <TransitWaitCard instruction={mobility.leg.instruction} travelling={transitTravelling} /> : <RideFacts ride={ride} />}
+          <TransitWaitCard instruction={mobility.leg.instruction} travelling={transitTravelling} />
         </div>
 
         <footer className={styles.footer}>

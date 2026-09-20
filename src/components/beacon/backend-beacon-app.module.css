@@ -11,4 +11,40 @@
 .pairing button:disabled, .controls button:disabled, .action:disabled { opacity: .5; }
 .controls { display: grid; gap: 10px; padding: 4px 0 20px; }
 .controls p, .note { color: #4c645b; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.presenterTools {
+  position: fixed;
+  z-index: 30;
+  top: max(82px, calc(70px + env(safe-area-inset-top)));
+  right: 14px;
+  min-width: 92px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #a9bbb0;
+  border-radius: 13px;
+  background: #fbfaf5;
+  color: #173e35;
+  box-shadow: 0 9px 24px rgb(24 58 49 / 16%);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 760;
+  cursor: pointer;
+}
+.consumerNotice,
+.setupCard {
+  position: fixed;
+  z-index: 25;
+  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: 12px;
+  width: min(406px, calc(100% - 24px));
+  margin: 0 auto;
+  border: 1px solid #c8d5cb;
+  border-radius: 15px;
+  background: #fbfaf5;
+  color: #24463d;
+  box-shadow: 0 12px 30px rgb(24 58 49 / 16%);
+}
+.consumerNotice { min-height: 44px; padding: 12px 14px; font-size: 13px; line-height: 1.4; }
+.setupCard { padding: 13px 14px; }
+.setupCard > strong { display: block; font-size: 14px; }
 @media (max-width: 440px) { .connection { margin: 0 10px 20px; } }

@@ -19,15 +19,17 @@ function PreferencesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const demoMode = searchParams.get("demo") === "1";
+  const presenterMode = searchParams.get("presenter") === "1";
+  const demoQuery = `?demo=1${presenterMode ? "&presenter=1" : ""}`;
   const [profile, setProfile] = useState(defaultProfile);
   useEffect(() => {
     const home = readHomeDraft();
-    if (!home) { router.replace(demoMode ? "/onboarding/home?demo=1" : "/onboarding/home"); return; }
+    if (!home) { router.replace(demoMode ? `/onboarding/home${demoQuery}` : "/onboarding/home"); return; }
     queueMicrotask(() => setProfile({ ...(readProfile() ?? defaultProfile), homeName: home.homeName, homeAddress: home.homeAddress }));
-  }, [demoMode, router]);
-  return <PreferencesScreen profile={profile} onChange={setProfile} onBack={() => router.push(demoMode ? "/onboarding/home?demo=1" : "/onboarding/home")} onSave={() => {
+  }, [demoMode, demoQuery, router]);
+  return <PreferencesScreen profile={profile} onChange={setProfile} onBack={() => router.push(demoMode ? `/onboarding/home${demoQuery}` : "/onboarding/home")} onSave={() => {
     if (!validatedProfile(profile)) return;
     saveProfile(profile);
-    router.replace(demoMode ? "/demo?walkthrough=1" : "/app");
+    router.replace(demoMode ? `/demo?walkthrough=1${presenterMode ? "&presenter=1" : ""}` : "/app");
   }} />;
 }

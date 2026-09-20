@@ -255,6 +255,168 @@
 
 .spinner { animation: spin 900ms linear infinite; }
 
+.rideShell {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  background: #e8efe8;
+}
+
+.rideMapWrap {
+  position: relative;
+  min-height: 272px;
+  flex: 1 0 292px;
+  overflow: hidden;
+}
+
+.rideMap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #e8efe8;
+}
+
+.rideMap > svg { width: 100%; height: 100%; }
+.mapBlocks { fill: #d8e2d9; stroke: #cad7cc; stroke-width: 2; }
+.mapRoads { fill: none; stroke: #fbfaf5; stroke-linecap: round; stroke-width: 23; }
+.mapRouteHalo { fill: none; stroke: #fbfaf5; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13; }
+.mapRoute { fill: none; stroke: #1d7763; stroke-dasharray: 2 1; stroke-linecap: round; stroke-linejoin: round; stroke-width: 6; }
+
+.mapMarker,
+.carMarker {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: white;
+  box-shadow: 0 5px 14px rgb(25 65 54 / 18%);
+}
+
+.mapMarker {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #fbfaf5;
+  border-radius: 50%;
+  background: #153f3b;
+}
+
+.pickupMarker { bottom: 19%; left: 14%; }
+.homeMarker { top: 14%; right: 14%; background: var(--sc-mint); color: #12352f; }
+.carMarker { top: 45%; left: 53%; width: 42px; height: 34px; border: 3px solid #fbfaf5; border-radius: 12px; background: #143d3a; transform: translate(-50%, -50%); }
+
+.pickupLabel,
+.homeLabel {
+  position: absolute;
+  z-index: 2;
+  padding: 4px 7px;
+  border: 1px solid rgb(18 59 59 / 10%);
+  border-radius: 7px;
+  background: #fbfaf5;
+  color: #284640;
+  font-size: 11px;
+  font-weight: 730;
+  box-shadow: 0 4px 12px rgb(25 65 54 / 8%);
+}
+
+.pickupLabel { bottom: 15%; left: 23%; }
+.homeLabel { top: 11%; right: 23%; max-width: 132px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.presenterNext {
+  position: absolute;
+  z-index: 5;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  min-width: 86px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 13px;
+  border: 1px solid rgb(14 58 52 / 18%);
+  border-radius: 13px;
+  background: #fbfaf5;
+  color: #143d3a;
+  box-shadow: 0 8px 20px rgb(22 57 48 / 12%);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.ridePanel {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  gap: 12px;
+  margin-top: -25px;
+  padding: 10px 20px max(18px, calc(12px + env(safe-area-inset-bottom)));
+  border-top: 1px solid rgb(18 59 59 / 10%);
+  border-radius: 25px 25px 0 0;
+  background: #fbfaf5;
+  box-shadow: 0 -14px 34px rgb(31 54 49 / 10%);
+}
+
+.panelHandle { width: 42px; height: 4px; margin: 0 auto 1px; border-radius: 99px; background: #ccd5cf; }
+.panelHeading { display: flex; min-width: 0; align-items: end; justify-content: space-between; gap: 14px; }
+.panelHeading > div:first-child { min-width: 0; }
+.panelEyebrow { margin: 0 0 3px; color: var(--sc-focus); font-size: 11px; font-weight: 790; letter-spacing: 0.09em; line-height: 1.2; text-transform: uppercase; }
+.ridePanel h1 { margin: 0; color: #06262c; font-size: 29px; font-weight: 820; letter-spacing: -0.05em; line-height: 1; }
+.ridePanel h1:focus { outline: none; }
+.panelBody { margin: 0; color: #586864; font-size: 14px; line-height: 1.4; }
+
+.etaBlock { flex: 0 0 auto; text-align: right; }
+.etaBlock strong,
+.etaBlock span { display: block; }
+.etaBlock strong { color: #0b3432; font-size: 22px; font-weight: 820; letter-spacing: -0.04em; line-height: 1; }
+.etaBlock span { margin-top: 3px; color: var(--sc-muted); font-size: 10px; font-weight: 680; text-transform: uppercase; }
+
+.providerLine { display: grid; min-height: 49px; grid-template-columns: 38px minmax(0, 1fr) auto auto; align-items: center; gap: 9px; padding-block: 3px; border-block: 1px solid #e1e7e2; }
+.providerIcon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--sc-mint-pale); color: var(--sc-focus); }
+.providerLine small,
+.providerLine strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.providerLine small { color: var(--sc-muted); font-size: 10px; }
+.providerLine strong { margin-top: 2px; color: #173638; font-size: 14px; }
+.providerLine b { padding: 5px 7px; border: 1px solid #cad5cd; border-radius: 7px; background: white; color: #173638; font-size: 11px; letter-spacing: 0.05em; }
+.simulationBadge { display: inline-flex; min-height: 24px; align-items: center; padding: 0 7px; border: 1px solid #cbd8ce; border-radius: 7px; background: #eef3ed; color: #53685f; font-size: 10px; font-weight: 750; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.rideDetails { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rideDetails p { min-width: 0; margin: 0; }
+.rideDetails small,
+.rideDetails strong { display: block; }
+.rideDetails small { color: var(--sc-muted); font-size: 10px; }
+.rideDetails strong { margin-top: 3px; overflow: hidden; color: #173638; font-size: 13px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.pickupInstruction { display: grid; min-height: 44px; grid-template-columns: 19px minmax(0, 1fr); align-items: center; gap: 8px; margin: 0; padding: 8px 10px; border-radius: 12px; background: var(--sc-mint-pale); color: #285148; font-size: 12px; line-height: 1.35; }
+.compactWarning { display: flex; align-items: center; gap: 6px; margin: -4px 0 0; color: #7b541f; font-size: 11px; }
+
+.compactActions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.compactActions button,
+.textAction {
+  min-height: 44px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #35544d;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 710;
+  cursor: pointer;
+}
+.compactActions button:hover,
+.textAction:hover { background: var(--sc-sage); }
+.compactActions button:last-child { color: var(--sc-danger); }
+.providerUpdate { margin: -7px 0 0; color: #7a8783; font-size: 10px; text-align: center; }
+
+.checkinActions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.contactLine { margin: 0; padding: 9px 11px; border-left: 3px solid var(--sc-mint); background: #eef4ee; color: #36564e; font-size: 12px; font-weight: 680; }
+.homePanel { justify-items: center; padding-top: 17px; text-align: center; }
+.successMark { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 50%; background: var(--sc-mint); color: #11382f; }
+.privacyLine { display: flex; align-items: center; gap: 7px; margin: 0; color: #31584e; font-size: 12px; font-weight: 680; }
+.homePanel .primaryAction { margin-top: 3px; }
+.homePanel .textAction { width: 100%; }
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-height: 760px) {
@@ -264,6 +426,10 @@
   .mapSurface,
   .routePlaceholder { height: 176px; flex-basis: 176px; }
   .content { gap: 10px; padding-top: 11px; }
+  .rideMapWrap { min-height: 220px; flex-basis: 235px; }
+  .ridePanel { gap: 9px; padding-top: 8px; }
+  .ridePanel h1 { font-size: 26px; }
+  .pickupInstruction { min-height: 40px; }
 }
 
 @media (max-width: 374px) {
@@ -273,6 +439,9 @@
   .footer { padding-inline: 16px; }
   .rideFacts > div,
   .routeSummary > div { padding-inline: 11px; }
+  .ridePanel { padding-inline: 16px; }
+  .providerLine { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .providerLine .simulationBadge { grid-column: 2 / -1; justify-self: start; margin-bottom: 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

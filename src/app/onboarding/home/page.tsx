@@ -35,6 +35,8 @@ function BeaconHomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const demoMode = searchParams.get("demo") === "1";
+  const presenterMode = searchParams.get("presenter") === "1";
+  const demoQuery = `?demo=1${presenterMode ? "&presenter=1" : ""}`;
   const screenRef = useRef<HTMLElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -108,13 +110,13 @@ function BeaconHomeContent() {
 
   function saveHome() {
     saveHomeDraft({ homeName: selectedHome.name, homeAddress: selectedHome.address });
-    router.push(demoMode ? "/onboarding/preferences?demo=1" : "/onboarding/preferences");
+    router.push(demoMode ? `/onboarding/preferences${demoQuery}` : "/onboarding/preferences");
   }
 
   return (
     <main className={styles.stage}>
       <section ref={screenRef} className={styles.screen} aria-labelledby="home-heading">
-        <Link prefetch={false} className={styles.backButton} href={demoMode ? "/onboarding/welcome?demo=1" : "/onboarding/welcome"} aria-label="Back to welcome">
+        <Link prefetch={false} className={styles.backButton} href={demoMode ? `/onboarding/welcome${demoQuery}` : "/onboarding/welcome"} aria-label="Back to welcome">
           <ArrowLeft aria-hidden="true" strokeWidth={2} />
         </Link>
 

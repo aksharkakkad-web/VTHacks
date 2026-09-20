@@ -12,9 +12,10 @@ import { useAtomicJourney } from "@/lib/client/beacon/use-atomic-journey";
 import styles from "./backend-beacon-app.module.css";
 import { beaconApi, type AgentActivityEvent } from "@/lib/client/beacon-client";
 import { AgentActivityPanel } from "../safecircle/agent-activity-panel";
+import type { MobilityReadModel } from "@/lib/client/beacon/read-models";
 
 type Panel = "home" | "preferences" | "contact" | "context" | "help" | "details" | "cancel" | "technical" | "location" | null;
-export function BackendBeaconApp({ demoControls = false }: { demoControls?: boolean }) {
+export function BackendBeaconApp({ presenter = false }: { presenter?: boolean }) {
   const router = useRouter();
   const [profile, setProfile] = useState<SavedProfile | null>(null);
   const [context, setContext] = useState<TripContext>({});
@@ -31,9 +32,9 @@ export function BackendBeaconApp({ demoControls = false }: { demoControls?: bool
     queueMicrotask(() => {
       const saved = readProfile();
       if (saved) setProfile(saved);
-      else router.replace(`/onboarding/welcome${demoControls ? "?demo=1" : ""}`);
+      else router.replace(`/onboarding/welcome?demo=1${presenter ? "&presenter=1" : ""}`);
     });
-  }, [router, demoControls]);
+  }, [router, presenter]);
   useEffect(() => {
     if (!currentStage) return;
     window.scrollTo(0, 0);
@@ -55,7 +56,7 @@ export function BackendBeaconApp({ demoControls = false }: { demoControls?: bool
     else if (action.type === "REQUEST_CANCEL") { setPanel(null); void journey.cancel(); }
     else if (action.type === "RETRY" || action.type === "RECONNECT") void journey.retry();
     else if (action.type === "FINISH") { journey.finish(); if (snapshot && ["ARRIVED", "FAILED"].includes(snapshot.trip.state) && snapshot.cancellation?.status !== "pending") setContext({}); }
-    else if (action.type === "STILL_TRAVELLING") { journey.setNotice("Your trip remains active. Location updates can confirm progress; the overdue notification record is unchanged."); setPanel("location"); }
+    else if (action.type === "STILL_TRAVELLING") setPanel("location");
     else if (action.type === "WALK_LEG_COMPLETE" || action.type === "BOARD_TRANSIT") setPanel("location");
   }
   function updateLocation() {
@@ -69,31 +70,54 @@ export function BackendBeaconApp({ demoControls = false }: { demoControls?: bool
   }
   if (!model || !profile || journey.restoring) return <BeaconFrame><p className={styles.restore} role="status">Restoring your trip from Beacon…</p></BeaconFrame>;
   const stage = model.stage;
-  const mobility = !journey.error && !journey.offline && !journey.notice && stage !== "overdue" && stage !== "cancelling" ? normalized?.mobility : undefined;
-  const showPairing = stage === "home" || journey.error?.code === "PAIRING_REQUIRED" || journey.error?.code === "PAIR_CODE_INVALID";
+  const mobility = !journey.error && !journey.offline && !journey.notice && stage !== "cancelling" ? normalized?.mobility : undefined;
+  const pairingRequired = journey.error?.code === "PAIRING_REQUIRED" || journey.error?.code === "PAIR_CODE_INVALID";
+  const showPairing = pairingRequired || (presenter && stage === "home");
   const busy = !!journey.pending;
-  const runtimeLabel = process.env.NEXT_PUBLIC_BEACON_TEST_RUNTIME === "1" ? "Test runtime · fixture planner, offline ranking, simulated rides and payments" : "Connected to Beacon’s trip backend · simulated providers and payments";
+  const presenterStep = presenter && snapshot?.ride && !["overdue", "arrival"].includes(stage) ? (() => {
+    if (["searching", "assigned"].includes(snapshot.ride.stage)) return { label: "Show ride approaching", run: () => journey.demo("advance-ride", { stage: "approaching" }) };
+    if (snapshot.ride.stage === "approaching") return { label: "Show driver arrived", run: () => journey.demo("advance-ride", { stage: "arrived" }) };
+    if (snapshot.ride.stage === "arrived") return { label: "Start ride", run: () => journey.demo("advance-ride", { stage: "in_trip" }) };
+    if (snapshot.ride.stage === "in_trip") return { label: "Complete ride", run: () => journey.demo("advance-ride", { stage: "completed" }) };
+    if (snapshot.ride.stage === "completed") return { label: "Show missed check-in", run: () => journey.demo("expire-deadline") };
+    return undefined;
+  })() : undefined;
+  const completionMobility: MobilityReadModel | undefined = snapshot?.ride ? {
+    leg: { id: "reported-provider-status", kind: "ride", purpose: "home", status: stage === "arrival" ? "complete" : "active" },
+    ride: {
+      providerSource: snapshot.ride.simulated ? "simulated-rideshare" : "connected-provider",
+      stage: ({ searching: "waiting", assigned: "driver-assigned", approaching: "approaching", arrived: "arrived", in_trip: "riding", completed: "completed", cancelled: "cancelled", unknown: "unknown" } as const)[snapshot.ride.stage],
+      pickupEtaSeconds: snapshot.ride.pickupEtaSeconds ?? undefined,
+      meetingInstructions: snapshot.ride.meetingInstructions ?? normalized?.offer?.pickupInstructions,
+      driver: snapshot.ride.driver?.displayName ? { firstName: snapshot.ride.driver.displayName } : undefined,
+      vehicle: snapshot.ride.vehicle ? { make: snapshot.ride.vehicle.make ?? undefined, model: snapshot.ride.vehicle.model ?? undefined, color: snapshot.ride.vehicle.color ?? undefined, plate: snapshot.ride.vehicle.licensePlate ?? undefined } : undefined,
+      updatedAt: snapshot.ride.providerUpdatedAt ?? undefined,
+    },
+  } : undefined;
+  const arrivalMobility: MobilityReadModel = completionMobility ?? {
+    leg: { id: "completed-trip", kind: "ride", purpose: "home", status: "complete" },
+    ride: { providerSource: model.backendDetails?.simulated ? "simulated-rideshare" : "unknown", stage: "completed" },
+  };
+  const displayedMobility = mobility ?? (stage === "arrival" ? arrivalMobility : undefined);
   return <>
     <div data-testid={`screen-${stage}`} data-stage={stage} data-attempt={model.attemptId ?? ""} data-backend="atomic" aria-busy={busy}>
       <fieldset className={styles.screenBoundary} disabled={busy}>
         {stage === "home" ? <BeaconHomeScreen model={model} onStart={() => void journey.start()} onEditProfile={() => setPanel("preferences")} onEditHome={() => setPanel("home")} onContext={() => setPanel("context")} onHelp={() => setPanel("help")} onLocation={() => setPanel("location")} onTrustedContact={() => setPanel("contact")} />
           : stage === "recommendation" || stage === "replacement-selected" ? <RecommendationScreen model={model} onGo={() => void journey.approve()} onBack={() => setPanel("cancel")} onDetails={() => setPanel("details")} onSelectPlan={() => journey.setNotice("These are the backend’s compared options. Only the current recommendation can be confirmed; refresh options to request a new recommendation.")} />
           : ["discovering", "collecting-quotes", "evaluating", "replanning-discovery", "replanning-evaluation"].includes(stage) ? <FindingScreen model={model} onCancel={() => setPanel("cancel")} />
-          : mobility ? <MobilityScreen mobility={mobility} onWalkComplete={() => mobility.leg.purpose === "home" ? void journey.arrive() : setPanel("location")} onArrival={() => void journey.arrive()} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void journey.retry()} navigation={normalized?.navigation ?? undefined} onBoard={mobility.leg.purpose === "transit-stop" ? () => setPanel("location") : undefined} boardingLabel="Update trip location" />
+          : displayedMobility ? <MobilityScreen mobility={displayedMobility} onWalkComplete={() => displayedMobility.leg.purpose === "home" ? void journey.arrive() : setPanel("location")} onArrival={() => void journey.arrive()} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void journey.retry()} navigation={normalized?.navigation ?? undefined} onBoard={displayedMobility.leg.purpose === "transit-stop" ? () => setPanel("location") : undefined} boardingLabel="Update trip location" rideExperience={{ state: stage === "overdue" ? "overdue" : stage === "arrival" ? "home" : "active", providerName: model.selectedPlan?.providerName, destination: model.profile?.homeName, notificationState: snapshot?.notification?.state, onStillTravelling: () => act({ type: "STILL_TRAVELLING" }), onFinish: journey.finish, ...(presenterStep ? { presenterNext: { label: presenterStep.label, onClick: () => void presenterStep.run() } } : {}) }} />
           : <JourneyScreen model={model} onAction={act} onDetails={() => setPanel("details")} onHelp={() => setPanel("help")} onStartOver={journey.finish} />}
       </fieldset>
     </div>
-    <aside className={styles.connection} aria-label="Backend connection">
-      {demoControls && <button className={styles.action} onClick={() => setPanel("technical")}>Judge controls</button>}
-      <p role="status" aria-live="polite">{journey.pending ?? journey.error?.message ?? journey.notice ?? (snapshot?.planning && ["OBJECTIVE_RECEIVED","DISCOVERING","COLLECTING_QUOTES","EVALUATING"].includes(snapshot.trip.state) && snapshot.planning.phase !== "ready" ? `Planner: ${snapshot.planning.phase.replaceAll("_", " ")} · ${snapshot.planning.worker.replaceAll("_", " ")}` : runtimeLabel)}</p>
-      {showPairing && <form onSubmit={event => { event.preventDefault(); void journey.pair(code); setCode(""); }} className={styles.pairing}>
+    {presenter ? <button className={styles.presenterTools} type="button" onClick={() => setPanel("technical")}>Presenter</button> : null}
+    {(pairingRequired || journey.notice) && !presenter ? <p className={styles.consumerNotice} role="status">{pairingRequired ? "Connect the demo planner to continue." : "Couldn’t refresh. Your last trip update is still shown."}</p> : null}
+    {showPairing ? <aside className={styles.setupCard} aria-label="Demo planner setup">
+      <strong>{pairingRequired ? "Connect the demo planner" : "Planner setup"}</strong>
+      <form onSubmit={event => { event.preventDefault(); void journey.pair(code); setCode(""); }} className={styles.pairing}>
         <label>Pairing code<input aria-label="Pairing code" value={code} onChange={event => setCode(event.target.value)} autoComplete="off" placeholder="Laptop planner code" /></label>
         <button type="submit" disabled={busy || !code.trim()}>Pair planner</button>
-      </form>}
-      {stage === "home" && <small>Demo corridor: Downtown Blacksburg → campus home. Saved address labels are not geocoded. Pair the laptop planner before your first trip.</small>}
-      {snapshot && <small>{snapshot.journey.nextStep?.instruction ?? snapshot.trip.statusMessage}{snapshot.notification ? ` · Contact notification: ${snapshot.notification.state}` : " · No contact notification reported"}</small>}
-      {journey.sessionOnly && <small>Storage unavailable: keep this tab open to retain the trip identifier.</small>}
-    </aside>
+      </form>
+    </aside> : null}
     <CancelTripDialog open={panel === "cancel"} onOpenChange={open("cancel")} model={model} onAction={act} />
     <EditHomeSheet open={panel === "home"} onOpenChange={open("home")} profile={profile} onSave={persist} />
     <EditPreferencesSheet open={panel === "preferences"} onOpenChange={open("preferences")} profile={profile} onSave={persist} />
@@ -107,8 +131,8 @@ export function BackendBeaconApp({ demoControls = false }: { demoControls?: bool
       <p role="status">{locationMessage}</p>
       {snapshot && <p>Arrival assessment: {snapshot.arrival.status.replaceAll("_", " ")}</p>}
     </JourneySheet>
-    {demoControls && <>
-      <JourneySheet open={panel === "technical"} onOpenChange={open("technical")} title="Backend demo controls" description="These controls call owner-scoped backend endpoints. Provider data and payments are simulated; they do not book a commercial ride.">
+    {presenter && <>
+      <JourneySheet open={panel === "technical"} onOpenChange={open("technical")} title="Presenter tools" description="Owner-scoped demo actions. No commercial ride is booked.">
         <div className={styles.controls}>
           <p>Journey revision: {normalized?.revision ?? "No active trip"}. Planner: {snapshot?.planning?.phase ?? "Not started"}. Source: {normalized?.source ?? "Backend"}.</p>
           <label>Scenario<select value={variant} onChange={event => setVariant(event.target.value)}><option value="baseline">Baseline walking</option><option value="lighting_outage">Lighting outage</option><option value="incident_pressure">Incident pressure</option><option value="rain">Rain</option></select></label>

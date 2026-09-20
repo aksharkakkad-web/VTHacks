@@ -38,7 +38,7 @@ function formatCost(cost: number) {
 
 function BeaconBrand() {
   return (
-    <span className={styles.brand} aria-label="Beacon demo">
+    <span className={styles.brand} aria-label="Beacon">
       <span className={styles.brandMark} aria-hidden="true">
         <Image
           className={styles.brandImage}
@@ -50,7 +50,6 @@ function BeaconBrand() {
         />
       </span>
       <span className={styles.brandName}>Beacon</span>
-      <span className={styles.demoLabel}>Demo</span>
     </span>
   );
 }

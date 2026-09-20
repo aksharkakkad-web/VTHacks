@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 export default async function BeaconWelcomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ demo?: string }>;
+  searchParams: Promise<{ demo?: string; presenter?: string }>;
 }) {
   const query = await searchParams;
-  const homeHref = query.demo === "1" ? "/onboarding/home?demo=1" : "/onboarding/home";
+  const homeHref = query.demo === "1" ? `/onboarding/home?demo=1${query.presenter === "1" ? "&presenter=1" : ""}` : "/onboarding/home";
   return (
     <main className={styles.stage}>
       <section className={styles.screen} aria-labelledby="welcome-heading">

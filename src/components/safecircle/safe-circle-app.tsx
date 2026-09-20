@@ -25,9 +25,9 @@ function appReducer(state: DemoState, action: AppAction): DemoState {
 export { PROFILE_STORAGE_KEY } from "../beacon/profile-storage";
 type Panel = "home" | "preferences" | "contact" | "context" | "details" | "help" | "location" | "technical" | "cancel" | null;
 
-export function SafeCircleApp({ demoControls = false, transport, fixture = false }: { demoControls?: boolean; transport?: TripTransport | null; fixture?: boolean }) {
+export function SafeCircleApp({ demoControls = false, presenter = false, transport, fixture = false }: { demoControls?: boolean; presenter?: boolean; transport?: TripTransport | null; fixture?: boolean }) {
   if (fixture || transport !== undefined) return <FixtureApp demoControls={demoControls} transport={transport === undefined ? demoTransport : transport} />;
-  return <BackendBeaconApp demoControls={demoControls} />;
+  return <BackendBeaconApp presenter={presenter} />;
 }
 
 /** Explicit visual-regression fixtures only; never a fallback after backend errors. */
