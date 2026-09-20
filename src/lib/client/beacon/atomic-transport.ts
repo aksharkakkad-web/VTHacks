@@ -1,4 +1,4 @@
-import { confirmationPayload, createPayload, parseAtomicJourney, type AtomicJourney } from './atomic-journey';
+import { createPayload, parseAtomicJourney, type AtomicJourney } from './atomic-journey';
 import type { SavedProfile, TripContext } from '../../../components/safecircle/types';
 import type { Trip } from '../../../types/trip';
 import type { CampusRouteSelection } from './campus-locations';
@@ -10,7 +10,11 @@ export const atomicTransport={
  async create(profile:SavedProfile,context:TripContext={},route?:CampusRouteSelection){const v=await http('/api/trips',createPayload(profile,context,route));if(!v||typeof v!=='object'||typeof (v as Trip).id!=='string')throw new AtomicTransportError('INVALID_RESPONSE',502,'Missing trip identity.');return v as Trip;},
  async journey(id:string,signal?:AbortSignal){return parseAtomicJourney(await http(`${path(id)}/journey`,undefined,signal));},
  planning:(id:string)=>http(`${path(id)}/planning`,{}),
- confirm:(id:string,snapshot:AtomicJourney)=>http(`${path(id)}/confirm`,confirmationPayload(snapshot)),
+ confirm:(id:string,snapshot:AtomicJourney)=>http(`${path(id)}/confirm`,{
+  planId:snapshot.journey.selectedPlanId,
+  journeyRevision:snapshot.journey.revision,
+  ...(snapshot.journey.selectedOffer?{quoteId:snapshot.journey.selectedOffer.quoteId}:{}),
+ }),
  verify:(id:string)=>http(`${path(id)}/verify`,{}),
  request:(id:string)=>http(`${path(id)}/request`,{}),
  arrive:(id:string)=>http(`${path(id)}/arrive`,{}),
