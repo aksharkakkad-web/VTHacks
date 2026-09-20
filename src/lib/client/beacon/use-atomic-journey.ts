@@ -164,7 +164,13 @@ export function useAtomicJourney(profile: SavedProfile | null, context: TripCont
   }
   function finish() {
     if (busy.current) return;
-    if (identity.current && !current.current) { setNotice("The saved trip could not be verified. Restore its session before starting another trip."); return; }
+    if (identity.current && !current.current) {
+      if (error && ["AUTH_REQUIRED", "TRIP_NOT_FOUND"].includes(error.code)) {
+        generation.current++; readAbort.current?.abort(); persistIdentity(null); setError(null); setNotice(""); setRestoring(false);
+        return;
+      }
+      setNotice("The saved trip could not be verified. Restore its session before starting another trip."); return;
+    }
     if (current.current && !["ARRIVED", "FAILED"].includes(current.current.trip.state)) { setNotice("Cancel the active trip before starting another one."); return; }
     if (current.current?.cancellation?.status === "pending") { setNotice("Cancellation is still being confirmed. Keep this trip open."); return; }
     generation.current++; readAbort.current?.abort(); persistIdentity(null); current.current = null; setSnapshot(null); setError(null); setNotice("");

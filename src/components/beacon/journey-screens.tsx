@@ -32,6 +32,7 @@ type JourneyScreenProps = {
   onAction: (action: DemoAction) => void;
   onDetails?: () => void;
   onHelp?: () => void;
+  onStartOver?: () => void;
 };
 
 type Tone = "progress" | "success" | "warning" | "error" | "offline";
@@ -223,7 +224,7 @@ function copyFor(stage: DemoStage, model: JourneyModel): ScreenCopy {
   if (stage === ("session-error" as DemoStage)) return {
     eyebrow: "Trip unavailable",
     title: "We can’t access this trip.",
-    body: "Restore the session before taking another trip action. Beacon will not create a replacement silently.",
+    body: "Try restoring this saved trip, or start over from Home. Beacon will not create a replacement silently.",
     tone: "error",
     icon: <AlertCircle aria-hidden="true" />,
   };
@@ -367,6 +368,7 @@ function FooterActions({
   onAction,
   onDetails,
   onHelp,
+  onStartOver,
   onCancel,
 }: JourneyScreenProps & { model: JourneyModel; onCancel: () => void }) {
   const { stage } = model;
@@ -399,7 +401,10 @@ function FooterActions({
   if (stage === ("location-error" as DemoStage)) {
     return <><PrimaryButton onClick={() => onAction(act("FINISH"))}>Use Downtown Blacksburg demo pickup</PrimaryButton>{onHelp ? <button className={styles.secondaryAction} type="button" onClick={onHelp}>Get help</button> : null}</>;
   }
-  if (["verification-failed", "context-fallback"].includes(stage) || stage === ("payment-declined" as DemoStage) || stage === ("slow-request" as DemoStage) || stage === ("session-error" as DemoStage)) {
+  if (stage === ("session-error" as DemoStage)) {
+    return <><PrimaryButton onClick={() => onAction(act("RETRY"))}>Try again</PrimaryButton>{onStartOver ? <button className={styles.secondaryAction} type="button" onClick={onStartOver}>Start over</button> : null}{onHelp ? <button className={styles.secondaryAction} type="button" onClick={onHelp}>Get help</button> : null}</>;
+  }
+  if (["verification-failed", "context-fallback"].includes(stage) || stage === ("payment-declined" as DemoStage) || stage === ("slow-request" as DemoStage)) {
     return <><PrimaryButton onClick={() => onAction(act("RETRY"))}>Try again</PrimaryButton>{onHelp ? <button className={styles.secondaryAction} type="button" onClick={onHelp}>Get help</button> : null}</>;
   }
   if (stage === ("payment-unknown" as DemoStage) || stage === ("booking-unknown" as DemoStage)) {
@@ -442,7 +447,7 @@ function RecoveryFacts({ model }: { model: JourneyModel }) {
   );
 }
 
-export function JourneyScreen({ model: baseModel, onAction, onDetails, onHelp }: JourneyScreenProps) {
+export function JourneyScreen({ model: baseModel, onAction, onDetails, onHelp, onStartOver }: JourneyScreenProps) {
   const model: JourneyModel = baseModel;
   const [cancelOpen, setCancelOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
@@ -480,7 +485,7 @@ export function JourneyScreen({ model: baseModel, onAction, onDetails, onHelp }:
           </div>
 
           <footer className={styles.footer}>
-            <FooterActions model={model} onAction={onAction} onDetails={onDetails} onHelp={onHelp} onCancel={() => setCancelOpen(true)} />
+            <FooterActions model={model} onAction={onAction} onDetails={onDetails} onHelp={onHelp} onStartOver={onStartOver} onCancel={() => setCancelOpen(true)} />
             {model.stage === "session-error" && !model.backendDetails ? <button className={styles.cancelAction} type="button" onClick={() => setResetOpen(true)}>Reset local demo</button> : null}
           </footer>
         </div>
