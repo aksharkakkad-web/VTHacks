@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { StudentAgent, type Dependencies } from './student/service';
+import { applyDemoCarPairPreference } from './student/journey-coordinator';
 import { MemoryTripStore } from '../lib/trip-state/store';
 import { LocalDemoDirectory } from '../integrations/ans/directory';
 import { demoDescriptors } from './demo-provider';
 import { normalizeQuote, type ProviderAgent, type ProviderTrip, type TripRequest } from './contract';
 import type { NetworkOffer } from './provider-manifest';
 import { planJourney, type JourneyDependencies } from '../lib/decision-client/journey-planner';
-import type { JourneyRequest, JourneyResult, JourneyPlace, JourneyRide } from '../lib/decision-client/journey-types';
+import type { Journey, JourneyRequest, JourneyResult, JourneyPlace, JourneyRide } from '../lib/decision-client/journey-types';
 import { distanceMeters } from '../lib/decision-client/walking-router';
 import { ActivityStore, emptyActivity } from '../lib/agent-activity/store';
 import { MemoryJsonStore } from '../lib/planner/store';
@@ -15,16 +16,17 @@ import { MemoryJsonStore } from '../lib/planner/store';
 const origin: JourneyPlace = { id:'public-origin', name:'Fixture campus origin', point:{lat:37.2288,lng:-80.4192} };
 const home: JourneyPlace = { id:'public-home', name:'Fixture campus home', point:{lat:37.222,lng:-80.42} };
 type Binding = Omit<JourneyRide,'offer'>;
-function setup(mode: 'walk'|'bus'|'ride' = 'walk', binding = true) {
+function setup(mode: 'walk'|'bus'|'ride' = 'walk', binding = true, options: { origin?: JourneyPlace; home?: JourneyPlace; scenario?: 'baseline'; carDemo?: boolean } = {}) {
+  const tripOrigin=options.origin??origin,tripHome=options.home??home;
   let now=Date.parse('2026-09-19T21:00:00.000Z'), serial=0, notices=0;
   const store=new MemoryTripStore(), requests:JourneyRequest[]=[], bookings:TripRequest[]=[], statuses=new Map<string,ProviderTrip>(), outcomes:unknown[]=[];
-  const descriptors=mode==='ride'?demoDescriptors.filter(p=>p.mode==='campus_ride'):[];
+  const descriptors=mode==='ride'?demoDescriptors.filter(p=>options.carDemo ? p.mode==='campus_ride'||p.mode==='independent_ride' : p.mode==='campus_ride'):[];
   const directory=new LocalDemoDirectory(descriptors,true);
   const iso=(seconds=0)=>new Date(now+seconds*1000).toISOString();
   const planner:JourneyDependencies={
     route:async(a,b,at)=>{const seconds=distanceMeters(a,b)>400&&mode!=='walk'?1800:60;return {routeId:`fixture:${a.lat}:${b.lat}`,from:a,to:b,geometry:{type:'LineString',coordinates:[[a.lng,a.lat],[b.lng,b.lat]]},distanceMeters:distanceMeters(a,b),durationSeconds:seconds,instructions:[{text:'Follow the fixture path.',distanceMeters:distanceMeters(a,b),durationSeconds:seconds}],provider:'fixture_only',capturedAt:at,validUntil:new Date(Date.parse(at)+300000).toISOString()};},
     evidence:()=>({blocked:false,validUntil:null,facts:[],unknowns:['LIGHTING_UNKNOWN']}),
-    ...(mode==='bus'?{stops:[{...origin,id:'s1'},{...home,id:'s2'}],directTransit:async(q)=>({candidate:{planId:'bus',providerId:'bt',providerName:'Scheduled bus',mode:'transit',available:true,cost:0,waitMinutes:3,travelMinutes:5,walkingMinutes:0,totalMinutes:8,transfers:0,requiresProviderVerification:false},signals:{source:'scheduled',collectedAt:iso(),validUntil:iso(120)},source:{sourceSha256:'a'.repeat(64),capturedAt:iso(),serviceDate:'2026-09-19',tripId:'trip-1',routeId:'PHD',fromStopId:q.fromStopId,toStopId:q.toStopId,departureAt:iso(180),arrivalAt:iso(480),walkingSource:'mapped'},statementId:'fixture-statement',warnings:[]})} satisfies Partial<JourneyDependencies>:{}),
+    ...(mode==='bus'?{stops:[{...tripOrigin,id:'s1'},{...tripHome,id:'s2'}],directTransit:async(q)=>({candidate:{planId:'bus',providerId:'bt',providerName:'Scheduled bus',mode:'transit',available:true,cost:0,waitMinutes:3,travelMinutes:5,walkingMinutes:0,totalMinutes:8,transfers:0,requiresProviderVerification:false},signals:{source:'scheduled',collectedAt:iso(),validUntil:iso(120)},source:{sourceSha256:'a'.repeat(64),capturedAt:iso(),serviceDate:'2026-09-19',tripId:'trip-1',routeId:'PHD',fromStopId:q.fromStopId,toStopId:q.toStopId,departureAt:iso(180),arrivalAt:iso(480),walkingSource:'mapped'},statementId:'fixture-statement',warnings:[]})} satisfies Partial<JourneyDependencies>:{}),
   };
   const deps:Dependencies={store,directory:{discover:()=>directory.discover(),verify:async p=>({...await directory.verify(p),validUntil:now+60000})},demo:true,clock:()=>now,
     provider:(descriptor):ProviderAgent=>({descriptor,quote:async()=>{
@@ -34,15 +36,28 @@ function setup(mode: 'walk'|'bus'|'ride' = 'walk', binding = true) {
     recommend:async plans=>({selectedPlanId:plans[0].planId,reasonCodes:['LEGACY'],explanation:'Legacy fixture',evaluatedAt:iso()}),
     notify:async()=>{notices++;return{id:'fixture-notice',simulated:true};},recordOutcome:async value=>{outcomes.push(value);},
   };
-  Object.assign(deps,{getCompleteJourney:async(request:JourneyRequest)=>{requests.push(structuredClone(request));return planJourney(request,planner);},journeyRideBinding:async(network:NetworkOffer):Promise<Binding|null>=>binding?{pickup:origin,dropoff:home,pickupAt:new Date(Date.parse(network.offer.issuedAt)+network.offer.waitMinutes*60000).toISOString(),arrivalAt:new Date(Date.parse(network.offer.issuedAt)+(network.offer.waitMinutes+network.offer.travelMinutes)*60000).toISOString(),pickupPermitted:true}:null});
+  Object.assign(deps,{...(options.scenario?{demoScenarioEnabled:true}:{}),getCompleteJourney:async(request:JourneyRequest)=>{requests.push(structuredClone(request));return planJourney(request,planner);},journeyRideBinding:async(network:NetworkOffer):Promise<Binding|null>=>binding?{pickup:tripOrigin,dropoff:tripHome,pickupAt:new Date(Date.parse(network.offer.issuedAt)+network.offer.waitMinutes*60000).toISOString(),arrivalAt:new Date(Date.parse(network.offer.issuedAt)+(network.offer.waitMinutes+network.offer.travelMinutes)*60000).toISOString(),pickupPermitted:true}:null});
   const agent=new StudentAgent(deps);
-  const start=async()=>{const trip=await agent.create('owner',{journeyContract:'beacon-journey-v1',origin:origin.point,preferences:{home:home.point,maxBudget:10,trustedContact:{name:'Fixture',telegramChatId:'123456',consent:true,shareLocation:false}}});await agent.act(trip.id,'owner','discover');await agent.act(trip.id,'owner','evaluate');return trip.id;};
+  const start=async()=>{const trip=await agent.create('owner',{journeyContract:'beacon-journey-v1',...(options.scenario?{demoScenarioVariant:options.scenario}:{}),origin:tripOrigin.point,preferences:{home:tripHome.point,maxBudget:10,trustedContact:{name:'Fixture',telegramChatId:'123456',consent:true,shareLocation:false}}});await agent.act(trip.id,'owner','discover');await agent.act(trip.id,'owner','evaluate');return trip.id;};
   const view=(id:string)=>agent.journey(id,'owner');
   const confirm=async(id:string)=>{const v=await view(id);return agent.act(id,'owner','confirm',{journeyRevision:v.journey.revision,planId:v.trip.selectedPlan!.planId,quoteId:v.journey.selectedOffer?.quoteId});};
   const book=async(id:string)=>{await confirm(id);await agent.act(id,'owner','verify');await agent.act(id,'owner','request');};
   return {agent,deps,store,start,view,confirm,book,requests,bookings,statuses,outcomes,notices:()=>notices,advance:(ms:number)=>{now+=ms;},iso,planner};
 }
 const complete=(view:Awaited<ReturnType<StudentAgent['journey']>>)=>(view.journey as unknown as {complete:JourneyResult|null}).complete;
+
+test('Squires to New Hall West explicitly selects the independent car demo journey',()=>{
+  const walking={kind:'walk',journeyId:'walk'} as Journey;
+  const bus={kind:'bus',journeyId:'bus'} as Journey;
+  const campusRide={kind:'ride',journeyId:'campus',offerBinding:{operatorId:'campus_ride'}} as Journey;
+  const independentRide={kind:'ride',journeyId:'independent',offerBinding:{operatorId:'independent_ride'}} as Journey;
+  const result={selected:walking,alternatives:[bus,campusRide,independentRide],warnings:[],execution:{engine:'databricks',auditPersisted:true,auditStatus:'PERSISTED'}} as unknown as JourneyResult;
+  const preferred=applyDemoCarPairPreference(result,{lat:37.22960669,lng:-80.41793863},{lat:37.22223872,lng:-80.42257584},true);
+  assert.equal(preferred.selected?.journeyId,'independent');
+  assert.equal(preferred.execution.fallbackReason,'EXPLICIT_DEMO_CAR_PAIR');
+  assert.ok(preferred.warnings.includes('EXPLICIT_DEMO_CAR_PAIR'));
+  assert.equal(applyDemoCarPairPreference(result,{lat:37.22223872,lng:-80.42257584},{lat:37.22960669,lng:-80.41793863},true).selected?.journeyId,'walk');
+});
 
 test('scenario changes are owner scoped, revision bound, and require fresh consent',async()=>{
   const s=setup('ride');s.deps.demoScenarioEnabled=true;
@@ -106,6 +121,17 @@ test('native direct bus is selected, retains timetable evidence, and never invok
   assert.equal(v.trip.selectedPlan?.mode,'transit');assert.equal(complete(v)?.selected?.kind,'bus');
   assert.equal(complete(v)?.selected?.legs.find(l=>l.kind==='bus')?.transitSource?.statementId,'fixture-statement');
   await s.book(id);assert.equal(s.bookings.length,0);assert.equal((await s.view(id)).trip.state,'NAVIGATING');
+});
+test('Squires to New Hall West runs the independent simulated car booking flow',async()=>{
+  const carOrigin={id:'squires-student-center',name:'Squires Student Center',point:{lat:37.22960669,lng:-80.41793863}};
+  const carHome={id:'new-hall-west',name:'New Hall West',point:{lat:37.22223872,lng:-80.42257584}};
+  const s=setup('ride',true,{origin:carOrigin,home:carHome,scenario:'baseline',carDemo:true}),id=await s.start();
+  const selected=await s.view(id);
+  assert.equal(selected.trip.selectedPlan?.mode,'independent_ride');
+  assert.ok(selected.trip.recommendation?.reasonCodes.includes('DEMO_CAR_PAIR_OVERRIDE'));
+  await s.book(id);
+  assert.equal(s.bookings.length,1);
+  assert.equal((await s.view(id)).trip.state,'WAITING_FOR_PICKUP');
 });
 test('ride binding is explicit, quote consent is exact, and repeated requests do not rebook',async()=>{
   const s=setup('ride'),id=await s.start(),v=await s.view(id);
