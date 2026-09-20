@@ -14,3 +14,9 @@ test('offline is independent of inherited workspace configuration and Google is 
   assert.throws(()=>demoEnvironment({},'/tmp/test',{google:true}),/existing approved/);
   assert.equal(demoEnvironment({GOOGLE_ROUTES_API_KEY:'approved'},'/tmp/test',{google:true}).BEACON_GOOGLE_ROUTES_ENABLED,'true');
 });
+test('Telegram delivery is preserved only by an explicit, fully configured startup flag', () => {
+  assert.throws(()=>demoEnvironment({},'/tmp/test',{telegram:true}),/Live Telegram requires/);
+  const env=demoEnvironment({TELEGRAM_BOT_TOKEN:'123456:abcdefghijklmnopqrstuvwxyz',TELEGRAM_ALLOWED_CHAT_IDS:'123456789'},'/tmp/test',{telegram:true});
+  assert.equal(env.BEACON_NOTIFICATION_MODE,'telegram');
+  assert.equal(env.TELEGRAM_ALLOWED_CHAT_IDS,'123456789');
+});

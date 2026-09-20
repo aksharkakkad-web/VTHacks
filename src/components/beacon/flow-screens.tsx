@@ -8,17 +8,18 @@ import {
   BusFront,
   Check,
   ChevronDown,
+  ChevronRight,
   Clock3,
   Footprints,
   House,
-  Info,
-  LifeBuoy,
+  Map,
   MapPin,
   Pencil,
-  Phone,
   Settings,
+  ShieldCheck,
   SlidersHorizontal,
   WalletCards,
+  Wifi,
 } from "lucide-react";
 import type { DemoStage, DemoViewModel, SavedProfile } from "@/components/safecircle/types";
 import type { CandidatePlan } from "@/types/provider";
@@ -86,6 +87,45 @@ export function BeaconFrame({
         <div className={styles.viewport}>{children}</div>
       </section>
     </main>
+  );
+}
+
+function HomeFrame({ children, onSettings }: { children: ReactNode; onSettings: VoidCallback }) {
+  return (
+    <main className={`${styles.stage} ${styles.homeStage}`}>
+      <section className={`${styles.phone} ${styles.homePhone}`} aria-label="Beacon campus mobility demo">
+        <div className={`${styles.statusBar} ${styles.homeStatusBar}`} aria-hidden="true">
+          <span>9:41</span>
+          <span className={styles.statusIcons}>
+            <i className={styles.cellSignal}><b /><b /><b /><b /></i>
+            <Wifi size={18} strokeWidth={2.5} />
+            <i className={styles.battery}><b /></i>
+          </span>
+        </div>
+        <header className={styles.homeHeader}>
+          <span aria-hidden="true" />
+          <BeaconBrand />
+          <button className={styles.homeSettings} type="button" onClick={onSettings} aria-label="Open preferences">
+            <Settings size={25} strokeWidth={2.3} aria-hidden="true" />
+          </button>
+        </header>
+        <div className={styles.homeViewport}>{children}</div>
+      </section>
+    </main>
+  );
+}
+
+function HomeScenicArtwork() {
+  return (
+    <div className={styles.homeArtwork} aria-hidden="true">
+      <Image
+        src="/beacon-home-scenic.png"
+        alt=""
+        fill
+        sizes="(max-width: 430px) 100vw, 430px"
+        priority
+      />
+    </div>
   );
 }
 
@@ -303,77 +343,103 @@ export function PreferencesScreen({
 
 export function BeaconHomeScreen({
   model,
+  campusLocations,
+  fromLocationId,
+  toLocationId,
+  onFromLocationChange,
+  onToLocationChange,
   onStart,
   onEditProfile,
-  onEditHome,
-  onContext,
-  onHelp,
-  onLocation,
-  onTrustedContact,
 }: {
   model: DemoViewModel;
+  campusLocations: readonly { id: string; name: string; address: string; category?: string }[];
+  fromLocationId: string;
+  toLocationId: string;
+  onFromLocationChange: (id: string) => void;
+  onToLocationChange: (id: string) => void;
   onStart: VoidCallback;
   onEditProfile: VoidCallback;
-  onEditHome: VoidCallback;
-  onContext: VoidCallback;
-  onHelp?: VoidCallback;
-  onLocation?: VoidCallback;
-  onTrustedContact?: VoidCallback;
 }) {
   const profile = model.profile;
   const budget = model.constraints?.maxBudget ?? profile?.maxBudget ?? 0;
   const prefersLessWalking = (model.constraints?.walkingPreference ?? profile?.walkingPreference) === "minimal";
+  const fromLocation = campusLocations.find((location) => location.id === fromLocationId);
+  const toLocation = campusLocations.find((location) => location.id === toLocationId);
+  const hasLocations = campusLocations.length > 0;
+  const locationGroups = Array.from(new Set(campusLocations.map((location) => location.category ?? "Campus locations")))
+    .map((category) => ({ category, locations: campusLocations.filter((location) => (location.category ?? "Campus locations") === category) }));
 
   return (
-    <BeaconFrame onSettings={onEditProfile}>
+    <HomeFrame onSettings={onEditProfile}>
       <div className={`${styles.screen} ${styles.homeScreen}`}>
         <div className={styles.centeredIntro}>
           <h1>Let&apos;s get you home.</h1>
           <p>One tap. We&apos;ll find a way.</p>
         </div>
 
-        <ScenicArtwork variant="home" />
+        <HomeScenicArtwork />
 
-        <section className={`${styles.card} ${styles.routeCard}`} aria-label="Saved trip details">
-          <div className={styles.routeRow}>
-            <span className={styles.routeIcon}><MapPin size={21} aria-hidden="true" /></span>
-            <div>
+        <section className={`${styles.card} ${styles.routeCard}`} aria-labelledby="campus-route-title">
+          <h2 id="campus-route-title" className={styles.visuallyHidden}>Choose your campus route</h2>
+          <label className={styles.routeRow} htmlFor="beacon-from-location">
+            <span className={styles.routeIcon}><MapPin size={24} strokeWidth={2.25} aria-hidden="true" /></span>
+            <span className={styles.routeField}>
               <span className={styles.rowLabel}>From</span>
-              <strong>Demo pickup: Downtown Blacksburg</strong>
-            </div>
-            <button type="button" onClick={onContext}>Trip needs</button>
-          </div>
-          <div className={styles.routeRow}>
-            <span className={styles.routeIcon}><House size={21} aria-hidden="true" /></span>
-            <div>
-              <span className={styles.rowLabel}>Home</span>
-              <strong>{profile?.homeName ?? "Add your home"}</strong>
-              {profile?.homeAddress && profile.homeAddress !== profile.homeName ? <span className={styles.rowSubtext}>{profile.homeAddress}</span> : null}
-            </div>
-            <button type="button" onClick={onEditHome}>Edit</button>
-          </div>
-          <button className={styles.preferenceSummary} type="button" onClick={onEditProfile}>
-            <WalletCards size={20} aria-hidden="true" />
-            <span>${budget} max</span>
-            <span aria-hidden="true">·</span>
-            <Footprints size={20} aria-hidden="true" />
-            <span>{prefersLessWalking ? "Less walking" : "Standard walking"}</span>
+              <select
+                id="beacon-from-location"
+                value={fromLocation?.id ?? ""}
+                onChange={(event) => onFromLocationChange(event.target.value)}
+                disabled={!hasLocations}
+                aria-describedby="beacon-from-address"
+              >
+                {!fromLocation ? <option value="">Choose a campus location</option> : null}
+                {locationGroups.map((group) => (
+                  <optgroup key={group.category} label={group.category}>
+                    {group.locations.map((location) => <option key={location.id} value={location.id}>{location.name}</option>)}
+                  </optgroup>
+                ))}
+              </select>
+              <span id="beacon-from-address" className={styles.rowSubtext}>{fromLocation?.address || "No campus locations available"}</span>
+            </span>
+            <ChevronDown className={styles.routeChevron} size={22} aria-hidden="true" />
+          </label>
+          <label className={styles.routeRow} htmlFor="beacon-to-location">
+            <span className={styles.routeIcon}><House size={24} strokeWidth={2.25} aria-hidden="true" /></span>
+            <span className={styles.routeField}>
+              <span className={styles.rowLabel}>To</span>
+              <select
+                id="beacon-to-location"
+                value={toLocation?.id ?? ""}
+                onChange={(event) => onToLocationChange(event.target.value)}
+                disabled={!hasLocations}
+                aria-describedby="beacon-to-address"
+              >
+                {!toLocation ? <option value="">Choose a campus location</option> : null}
+                {locationGroups.map((group) => (
+                  <optgroup key={group.category} label={group.category}>
+                    {group.locations.map((location) => <option key={location.id} value={location.id}>{location.name}</option>)}
+                  </optgroup>
+                ))}
+              </select>
+              <span id="beacon-to-address" className={styles.rowSubtext}>{toLocation?.address || "No campus locations available"}</span>
+            </span>
+            <ChevronDown className={styles.routeChevron} size={22} aria-hidden="true" />
+          </label>
+          <button className={styles.preferenceSummary} type="button" onClick={onEditProfile} aria-label={`Trip needs: $${budget} maximum, ${prefersLessWalking ? "less walking" : "standard walking"}`}>
+            <span className={styles.preferenceDatum}><WalletCards size={23} strokeWidth={2} aria-hidden="true" /><span>${budget} max</span></span>
+            <span className={styles.preferenceDivider} aria-hidden="true" />
+            <span className={styles.preferenceDatum}><Footprints size={23} strokeWidth={2} aria-hidden="true" /><span>{prefersLessWalking ? "Less walking" : "Standard walking"}</span></span>
+            <ChevronRight className={styles.preferenceChevron} size={18} aria-hidden="true" />
           </button>
-          {onHelp || onLocation || onTrustedContact ? (
-            <div className={styles.homeUtilityActions}>
-              {onLocation ? <button type="button" onClick={onLocation}><Info size={18} aria-hidden="true" /> How location works</button> : null}
-              {onTrustedContact ? <button type="button" onClick={onTrustedContact}><Phone size={18} aria-hidden="true" /> Trusted contact</button> : null}
-              {onHelp ? <button type="button" onClick={onHelp}><LifeBuoy size={18} aria-hidden="true" /> Get help</button> : null}
-            </div>
-          ) : null}
         </section>
 
         <div className={styles.bottomActions}>
           <PrimaryAction onClick={onStart}>Get me home</PrimaryAction>
           <p>Beacon coordinates options. Not an emergency service.</p>
         </div>
+        <span className={styles.homeIosIndicator} aria-hidden="true" />
       </div>
-    </BeaconFrame>
+    </HomeFrame>
   );
 }
 
@@ -462,6 +528,112 @@ function AlternativePlan({ plan, onSelect }: { plan: CandidatePlan; onSelect?: (
   );
 }
 
+function RideConfirmationFrame({ children, onBack }: { children: ReactNode; onBack: VoidCallback }) {
+  return (
+    <main className={`${styles.stage} ${styles.confirmationStage}`}>
+      <section className={`${styles.phone} ${styles.confirmationPhone}`} aria-label="Beacon ride confirmation">
+        <div className={styles.statusBar} aria-hidden="true">
+          <span>9:41</span>
+          <span className={styles.statusIcons}>
+            <i className={styles.cellSignal}><b /><b /><b /><b /></i>
+            <Wifi size={18} strokeWidth={2.5} />
+            <i className={styles.battery}><b /></i>
+          </span>
+        </div>
+        <header className={styles.confirmationHeader}>
+          <button className={styles.confirmationBack} type="button" onClick={onBack} aria-label="Go back">
+            <ArrowLeft size={26} strokeWidth={2.5} aria-hidden="true" />
+          </button>
+          <BeaconBrand />
+          <span aria-hidden="true" />
+        </header>
+        <div className={styles.confirmationViewport}>{children}</div>
+      </section>
+    </main>
+  );
+}
+
+function CampusRideConfirmation({
+  onGo,
+  onBack,
+  onDetails,
+}: {
+  onGo: VoidCallback;
+  onBack: VoidCallback;
+  onDetails: VoidCallback;
+}) {
+  return (
+    <RideConfirmationFrame onBack={onBack}>
+      <div className={styles.confirmationScreen}>
+        <div className={styles.confirmationIntro}>
+          <h1>Confirm your ride</h1>
+          <p>Review the details below and you&rsquo;re all set.</p>
+        </div>
+
+        <figure className={styles.confirmationMap}>
+          <Image
+            src="/beacon-confirm-ride-map.png"
+            alt="Illustrative campus route from the Student Center to East Residence Halls"
+            fill
+            sizes="(max-width: 430px) 100vw, 410px"
+            priority
+          />
+          <button className={styles.mapHotspot} type="button" onClick={onDetails} aria-label="View route on map">
+            <Map size={22} aria-hidden="true" />
+            <span>View on map</span>
+          </button>
+        </figure>
+
+        <section className={styles.confirmationSheet} aria-labelledby="campus-ride-title">
+          <div className={styles.providerSummary}>
+            <span className={styles.providerIcon} aria-hidden="true"><BusFront size={30} strokeWidth={1.8} /></span>
+            <span className={styles.providerName}>
+              <h2 id="campus-ride-title">Campus Ride</h2>
+              <span>Free campus shuttle</span>
+            </span>
+            <button className={styles.confirmationPrice} type="button" onClick={onDetails} aria-label="View campus ride details, no fare">
+              <strong>$0</strong>
+              <ChevronRight size={20} strokeWidth={2.5} aria-hidden="true" />
+            </button>
+          </div>
+
+          <ul className={styles.confirmationMetrics} aria-label="Ride timing">
+            <li><span className={styles.confirmationMetricIcon}><Clock3 size={22} aria-hidden="true" /></span><span><strong>8 min</strong><small>Pickup</small></span></li>
+            <li><span className={styles.confirmationMetricIcon}><Clock3 size={22} aria-hidden="true" /></span><span><strong>19 min</strong><small>To home</small></span></li>
+            <li><span className={styles.confirmationMetricIcon}><Footprints size={22} aria-hidden="true" /></span><span><strong>0 min</strong><small>Walking</small></span></li>
+          </ul>
+
+          <div className={styles.confirmationRoute}>
+            <span className={styles.routeTrack} aria-hidden="true"><i /><i /></span>
+            <div>
+              <strong>Pickup</strong>
+              <span>Student Center</span>
+            </div>
+            <button type="button" onClick={onDetails}>Edit</button>
+            <div>
+              <strong>Drop-off</strong>
+              <span>Home (simulated access)</span>
+            </div>
+          </div>
+
+          <aside className={styles.confirmationTrust} aria-label="How Beacon checks this ride">
+            <span aria-hidden="true"><ShieldCheck size={31} strokeWidth={2} /></span>
+            <p><strong>Verified separately. Free for students.</strong>Your provider, trip access, and booking are checked separately. This demo does not book a real ride.</p>
+          </aside>
+
+          <button className={styles.confirmRideAction} type="button" onClick={onGo}>
+            <span>Confirm ride</span>
+            <ArrowRight size={24} strokeWidth={2.25} aria-hidden="true" />
+          </button>
+
+          <p className={styles.confirmationTerms}>By confirming, you agree to Beacon&rsquo;s <u>Terms of Service</u> and <u>Privacy Policy</u>.</p>
+        </section>
+        <span className={styles.homeIndicator} aria-hidden="true" />
+      </div>
+    </RideConfirmationFrame>
+  );
+}
+
 export function RecommendationScreen({
   model,
   onGo,
@@ -512,6 +684,10 @@ export function RecommendationScreen({
       return;
     }
     onDetails();
+  }
+
+  if (plan.mode === "campus_ride" && !model.isReplacement && !defaultShowAlternatives) {
+    return <CampusRideConfirmation onGo={onGo} onBack={onBack} onDetails={onDetails} />;
   }
 
   return (

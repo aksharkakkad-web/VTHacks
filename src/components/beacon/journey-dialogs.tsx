@@ -178,13 +178,14 @@ function ProfileSheetForm({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const candidate = { ...draft, maxBudget: budgetText.trim() === "" ? Number.NaN : Number(budgetText) };
+    const emptyTelegram = mode === "contact" && !draft.telegramContact?.name.trim() && !draft.telegramContact?.chatId.trim();
+    const candidate = { ...draft, ...(emptyTelegram ? { telegramContact: undefined } : {}), maxBudget: budgetText.trim() === "" ? Number.NaN : Number(budgetText) };
     const valid = validatedProfile(candidate);
     if (!valid) {
       setError(mode === "home"
         ? "Enter a home name from 2–60 characters and an address from 5–160 characters."
         : mode === "contact"
-          ? "Enter a valid phone number with 7–15 digits, or leave it blank."
+          ? "Enter a contact name and the positive numeric ID from a private Telegram chat, or leave both blank."
           : "Enter a whole-dollar budget from 0–100 and keep all profile fields valid.");
       return;
     }
@@ -210,8 +211,11 @@ function ProfileSheetForm({
       ) : null}
       {mode === "contact" ? (
         <>
-          <label><span>Trusted contact phone</span><input type="tel" value={draft.trustedContact ?? ""} maxLength={32} placeholder="Optional" onChange={(event) => setDraft({ ...draft, trustedContact: event.target.value })} /></label>
-          <p className={styles.fieldNote}>Saved for a call shortcut only. Beacon does not send notifications or share this with transport providers.</p>
+          <label><span>Contact name</span><input value={draft.telegramContact?.name ?? ""} maxLength={80} placeholder="Maya" onChange={(event) => setDraft({ ...draft, telegramContact: { name: event.target.value, chatId: draft.telegramContact?.chatId ?? "", consent: draft.telegramContact?.consent ?? false, shareLocation: draft.telegramContact?.shareLocation ?? false } })} /></label>
+          <label><span>Telegram private chat ID</span><input inputMode="numeric" pattern="[0-9]*" value={draft.telegramContact?.chatId ?? ""} maxLength={16} placeholder="123456789" onChange={(event) => setDraft({ ...draft, telegramContact: { name: draft.telegramContact?.name ?? "", chatId: event.target.value, consent: draft.telegramContact?.consent ?? false, shareLocation: draft.telegramContact?.shareLocation ?? false } })} /></label>
+          <label className={styles.choiceLine}><input type="checkbox" checked={draft.telegramContact?.consent ?? false} onChange={(event) => setDraft({ ...draft, telegramContact: { name: draft.telegramContact?.name ?? "", chatId: draft.telegramContact?.chatId ?? "", consent: event.target.checked, shareLocation: draft.telegramContact?.shareLocation ?? false } })} /> Allow Beacon to message this contact if an arrival check is missed</label>
+          <label className={styles.choiceLine}><input type="checkbox" checked={draft.telegramContact?.shareLocation ?? false} onChange={(event) => setDraft({ ...draft, telegramContact: { name: draft.telegramContact?.name ?? "", chatId: draft.telegramContact?.chatId ?? "", consent: draft.telegramContact?.consent ?? false, shareLocation: event.target.checked } })} /> Include the last location Beacon received</label>
+          <p className={styles.fieldNote}>The contact must first press Start in the approved Beacon bot. This private ID is sent only to Beacon’s server and never to a transport provider.</p>
         </>
       ) : null}
       {error ? <p className={styles.formError} role="alert">{error}</p> : null}
@@ -229,7 +233,7 @@ export function EditPreferencesSheet({ open, onOpenChange, profile, onSave, onTr
 }
 
 export function TrustedContactSheet({ open, onOpenChange, profile, onSave }: OpenProps & { profile: SavedProfile; onSave: (profile: SavedProfile) => void }) {
-  return <JourneySheet open={open} onOpenChange={onOpenChange} title="Trusted contact" description="Optional call shortcut"><ProfileSheetForm key={`${open}-${profile.trustedContact ?? ""}`} mode="contact" profile={profile} onSave={(next) => { onSave(next); onOpenChange(false); }} /></JourneySheet>;
+  return <JourneySheet open={open} onOpenChange={onOpenChange} title="Trusted contact" description="Optional Telegram missed-arrival alert"><ProfileSheetForm key={`${open}-${profile.telegramContact?.chatId ?? ""}`} mode="contact" profile={profile} onSave={(next) => { onSave(next); onOpenChange(false); }} /></JourneySheet>;
 }
 
 export function TripContextSheet({ open, onOpenChange, current, onApply, onClear }: OpenProps & { current: TripContext; onApply: (context: TripContext) => void; onClear: () => void }) {

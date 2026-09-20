@@ -12,6 +12,11 @@ export interface PlanningTripAdapter {
 
 function selectedTemplateFacts(facts:Fact[]){const required=facts.filter(f=>f.id.startsWith("limitation_"));const ordinary=facts.filter(f=>!f.id.startsWith("limitation_")).slice(0,Math.max(0,4-required.length));return[...ordinary,...required].slice(0,4);}
 function template(facts:Fact[]){return selectedTemplateFacts(facts).map(f=>f.text).join(" ");}
+function deterministicIntent(input:Record<string,unknown>):Intent{
+  const allowed:Intent["priorities"]=["minimize_walking","minimize_waiting","minimize_cost","minimize_transfers"];
+  const preferences=Array.isArray(input.preferences)?input.preferences:[];
+  return{objective:"get_home",priorities:allowed.filter(priority=>preferences.includes(priority)),evidenceRequests:[],clarification:null};
+}
 function grounded(value:unknown,run:{snapshotId:string;selectedPlanId?:string;facts?:Fact[]}){
   const output=validateOutput("student-explanation",value) as Explanation;
   if(output.snapshotId!==run.snapshotId||output.selectedPlanId!==run.selectedPlanId)throw new Error("STALE_SNAPSHOT");
@@ -23,6 +28,27 @@ function grounded(value:unknown,run:{snapshotId:string;selectedPlanId?:string;fa
   const cited=new Set(output.sentences.flatMap(s=>s.factIds));
   if((run.facts??[]).some(f=>f.id.startsWith("limitation_")&&!cited.has(f.id)))throw new Error("UNSUPPORTED_EXPLANATION");
   return output.sentences.map(s=>s.text).join(" ");
+}
+
+/** Fast production path for structured controls. Provider discovery and ranking stay
+ * behind the trip adapter; no model, worker, pairing, or generated prose is needed. */
+export class DeterministicPlanner{
+ constructor(private trips:PlanningTripAdapter,private now:()=>number=Date.now){}
+
+ async start(owner:string,tripId:string){
+  const snapshot=await this.trips.snapshot(tripId,owner);
+  if(snapshot.terminal)throw new Error("TRIP_TERMINAL");
+  if(snapshot.selectedPlanId&&snapshot.expiresAt&&snapshot.expiresAt>this.now()&&snapshot.facts?.length)return{runId:snapshot.snapshotId,phase:"ready" as const};
+  const selection=await this.trips.evaluate(tripId,owner,snapshot.snapshotId,deterministicIntent(snapshot.input));
+  if(selection.expiresAt<=this.now())throw new Error("STALE_SNAPSHOT");
+  return{runId:selection.snapshotId,phase:"ready" as const};
+ }
+
+ async view(owner:string,tripId:string):Promise<PlanningView>{
+  const snapshot=await this.trips.snapshot(tripId,owner);
+  const ready=!snapshot.terminal&&!!snapshot.selectedPlanId&&!!snapshot.expiresAt&&snapshot.expiresAt>this.now()&&!!snapshot.facts?.length;
+  return{version:"beacon-planning-v1",runId:snapshot.snapshotId,phase:ready?"ready":"unavailable",worker:"not_required",modelSource:"none",explanationSource:ready?"template":"none",snapshotId:ready?snapshot.snapshotId:null,messageCode:ready?"PLAN_READY_TEMPLATE":"PLANNER_NOT_STARTED",...(ready?{explanation:template(snapshot.facts!)}:{})};
+ }
 }
 
 export class HybridPlanner {

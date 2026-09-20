@@ -62,8 +62,9 @@ export function tripEvents(request: Request, id: string, action: string) {
     const owner = ownerSession(request).owner;
     if(action==="evidence"){
       const evidence=await getRuntime().agent.evidence(id,owner);
-      const {getPlannerRuntime}=await import("../planner/runtime");
-      return noStoreJson({...evidence,planning:await getPlannerRuntime().planner.view(owner,id)});
+      const {activePlanner}=await import("../planner/runtime");
+      const planning=["deterministic","codex_laptop"].includes(process.env.BEACON_PLANNER_MODE??"")?await activePlanner().view(owner,id):null;
+      return noStoreJson({...evidence,planning});
     }
     return noStoreJson(await getRuntime().agent.events(id, owner));
   });
@@ -74,7 +75,7 @@ export function monitorTrips(request: Request) { return handleTripHttp(async () 
 export function getJourney(request:Request,id:string){return handleTripHttp(async()=>{
   const owner = ownerSession(request).owner;
   const result = await getRuntime().agent.journey(id,owner);
-  const {getPlannerRuntime} = await import('../planner/runtime');
-  const planning = process.env.BEACON_PLANNER_MODE === 'codex_laptop' ? await getPlannerRuntime().planner.view(owner,id) : null;
+  const {activePlanner} = await import('../planner/runtime');
+  const planning = ['deterministic','codex_laptop'].includes(process.env.BEACON_PLANNER_MODE??'') ? await activePlanner().view(owner,id) : null;
   return noStoreJson({...result, navigation:navigationHandoff(result.journey), planning:bindPlanningToJourney(planning,result.planningSnapshotId)});
 });}

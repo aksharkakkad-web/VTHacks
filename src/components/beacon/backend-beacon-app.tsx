@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BeaconFrame, BeaconHomeScreen, FindingScreen, RecommendationScreen } from "./flow-screens";
 import { JourneyScreen } from "./journey-screens";
@@ -13,8 +13,11 @@ import styles from "./backend-beacon-app.module.css";
 import { beaconApi, type AgentActivityEvent } from "@/lib/client/beacon-client";
 import { AgentActivityPanel } from "../safecircle/agent-activity-panel";
 import type { MobilityReadModel } from "@/lib/client/beacon/read-models";
+import { ArrivalCaseChooser, PresenterTimelineControls, type ArrivalCase } from "./presenter-controls";
+import { CAMPUS_LOCATIONS, DEFAULT_FROM_LOCATION_ID, DEFAULT_TO_LOCATION_ID, campusLocation } from "@/lib/client/beacon/campus-locations";
 
 type Panel = "home" | "preferences" | "contact" | "context" | "help" | "details" | "cancel" | "technical" | "location" | null;
+const ROUTE_SELECTION_KEY = "beacon.campus-route.v1";
 export function BackendBeaconApp({ presenter = false }: { presenter?: boolean }) {
   const router = useRouter();
   const [profile, setProfile] = useState<SavedProfile | null>(null);
@@ -25,16 +28,42 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
   const [locationMessage, setLocationMessage] = useState("");
   const [activity, setActivity] = useState<{tripId:string;events:AgentActivityEvent[]} | null>(null);
   const [activityMessage, setActivityMessage] = useState("");
-  const journey = useAtomicJourney(profile, context);
+  const [presenterHistory, setPresenterHistory] = useState<string[]>([]);
+  const [presenterReviewOffset, setPresenterReviewOffset] = useState(0);
+  const [busyCase, setBusyCase] = useState<ArrivalCase | null>(null);
+  const [routeIds, setRouteIds] = useState({ from: DEFAULT_FROM_LOCATION_ID, to: DEFAULT_TO_LOCATION_ID });
+  const presenterTripId = useRef<string | null>(null);
+  const routeSelection = useMemo(() => ({ from: campusLocation(routeIds.from), to: campusLocation(routeIds.to) }), [routeIds]);
+  const journeyProfile = useMemo(() => profile ? { ...profile, homeName: routeSelection.to.name, homeAddress: routeSelection.to.address } : null, [profile, routeSelection]);
+  const journey = useAtomicJourney(journeyProfile, context, routeSelection);
   const { model, normalized, snapshot } = journey;
   const currentStage = model?.stage;
+  const presenterHistoryKey = currentStage === "overdue"
+    ? "overdue"
+    : currentStage === "arrival"
+      ? "arrival"
+      : snapshot?.ride ? `ride:${snapshot.ride.stage}` : null;
   useEffect(() => {
     queueMicrotask(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem(ROUTE_SELECTION_KEY) ?? "null");
+        const valid = (id: unknown) => typeof id === "string" && CAMPUS_LOCATIONS.some(location => location.id === id);
+        if (valid(stored?.from) && valid(stored?.to) && stored.from !== stored.to) setRouteIds({ from: stored.from, to: stored.to });
+      } catch { /* Keep the defaults when storage is unavailable or malformed. */ }
       const saved = readProfile();
       if (saved) setProfile(saved);
       else router.replace(`/onboarding/welcome?demo=1${presenter ? "&presenter=1" : ""}`);
     });
   }, [router, presenter]);
+  function selectRoute(endpoint: "from" | "to", id: string) {
+    if (!CAMPUS_LOCATIONS.some(location => location.id === id)) return;
+    setRouteIds(current => {
+      const other = endpoint === "from" ? "to" : "from";
+      const next = id === current[other] ? { ...current, [endpoint]: id, [other]: current[endpoint] } : { ...current, [endpoint]: id };
+      try { localStorage.setItem(ROUTE_SELECTION_KEY, JSON.stringify(next)); } catch { /* Session state still works. */ }
+      return next;
+    });
+  }
   useEffect(() => {
     if (!currentStage) return;
     window.scrollTo(0, 0);
@@ -43,6 +72,30 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
       const heading = document.querySelector<HTMLElement>("h1"); heading?.setAttribute("tabindex", "-1"); heading?.focus({ preventScroll: true });
     }
   }, [currentStage]);
+  useEffect(() => {
+    if (!presenter) return;
+    const tripId = snapshot?.trip.id ?? null;
+    let active = true;
+    const timer = window.setTimeout(() => {
+      if (!active) return;
+      if (!tripId) {
+        presenterTripId.current = null;
+        setPresenterHistory([]);
+        setPresenterReviewOffset(0);
+        return;
+      }
+      if (!presenterHistoryKey) return;
+      if (presenterTripId.current !== tripId) {
+        presenterTripId.current = tripId;
+        setPresenterHistory([presenterHistoryKey]);
+        setPresenterReviewOffset(0);
+        return;
+      }
+      setPresenterHistory(previous => previous.at(-1) === presenterHistoryKey ? previous : [...previous, presenterHistoryKey]);
+      setPresenterReviewOffset(0);
+    }, 0);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [presenter, presenterHistoryKey, snapshot?.trip.id]);
   const open = (value: Panel) => (visible: boolean) => setPanel(visible ? value : null);
   function persist(next: SavedProfile) {
     if (snapshot && !["ARRIVED", "FAILED"].includes(snapshot.trip.state)) { journey.setNotice("Finish or cancel this trip before changing saved preferences."); return; }
@@ -60,7 +113,7 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
     else if (action.type === "WALK_LEG_COMPLETE" || action.type === "BOARD_TRANSIT") setPanel("location");
   }
   function updateLocation() {
-    if (!snapshot) { setLocationMessage("This hackathon uses a synthetic Blacksburg corridor, not your saved address. No device location is needed to start it."); return; }
+    if (!snapshot) { setLocationMessage("Choose campus endpoints on Home before starting. No device location is needed before a trip starts."); return; }
     if (!navigator.geolocation) { setLocationMessage("Device location is unavailable. You can still confirm arrival manually when you reach home."); return; }
     setLocationMessage("Requesting a location sample with your permission…");
     navigator.geolocation.getCurrentPosition(position => {
@@ -74,12 +127,14 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
   const pairingRequired = journey.error?.code === "PAIRING_REQUIRED" || journey.error?.code === "PAIR_CODE_INVALID";
   const showPairing = pairingRequired;
   const busy = !!journey.pending;
-  const presenterStep = presenter && snapshot?.ride && !["overdue", "arrival"].includes(stage) ? (() => {
-    if (["searching", "assigned"].includes(snapshot.ride.stage)) return { label: "Show ride approaching", run: () => journey.demo("advance-ride", { stage: "approaching" }) };
-    if (snapshot.ride.stage === "approaching") return { label: "Show driver arrived", run: () => journey.demo("advance-ride", { stage: "arrived" }) };
-    if (snapshot.ride.stage === "arrived") return { label: "Start ride", run: () => journey.demo("advance-ride", { stage: "in_trip" }) };
-    if (snapshot.ride.stage === "in_trip") return { label: "Complete ride", run: () => journey.demo("advance-ride", { stage: "completed" }) };
-    if (snapshot.ride.stage === "completed") return { label: "Show missed check-in", run: () => journey.demo("expire-deadline") };
+  const displayedPresenterKey = presenterHistory.at(-(presenterReviewOffset + 1)) ?? presenterHistoryKey;
+  const presenterStep = presenter && presenterReviewOffset === 0 ? (() => {
+    if (stage === "arrival") return { label: "Finish demo", run: () => Promise.resolve(journey.finish()) };
+    if (!snapshot?.ride) return undefined;
+    if (["searching", "assigned"].includes(snapshot.ride.stage)) return { label: "Ride approaching", run: () => journey.demo("advance-ride", { stage: "approaching" }) };
+    if (snapshot.ride.stage === "approaching") return { label: "Driver arrived", run: () => journey.demo("advance-ride", { stage: "arrived" }) };
+    if (snapshot.ride.stage === "arrived") return { label: "Ride in progress", run: () => journey.demo("advance-ride", { stage: "in_trip" }) };
+    if (snapshot.ride.stage === "in_trip") return { label: "Arrival check", run: () => journey.demo("advance-ride", { stage: "completed" }) };
     return undefined;
   })() : undefined;
   const completionMobility: MobilityReadModel | undefined = snapshot?.ride ? {
@@ -98,17 +153,51 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
     leg: { id: "completed-trip", kind: "ride", purpose: "home", status: "complete" },
     ride: { providerSource: model.backendDetails?.simulated ? "simulated-rideshare" : "unknown", stage: "completed" },
   };
-  const displayedMobility = mobility ?? (stage === "arrival" ? arrivalMobility : undefined);
+  const presenterRideStages = { searching: "waiting", assigned: "driver-assigned", approaching: "approaching", arrived: "arrived", in_trip: "riding", completed: "completed", cancelled: "cancelled", unknown: "unknown" } as const;
+  const reviewedRideStage = displayedPresenterKey?.startsWith("ride:") ? displayedPresenterKey.slice(5) : undefined;
+  const presenterMobility: MobilityReadModel | undefined = reviewedRideStage && completionMobility ? {
+    ...completionMobility,
+    ride: completionMobility.ride ? { ...completionMobility.ride, stage: presenterRideStages[reviewedRideStage as keyof typeof presenterRideStages] ?? completionMobility.ride.stage } : undefined,
+  } : undefined;
+  const displayedMobility = presenter && displayedPresenterKey ? (presenterMobility ?? completionMobility ?? arrivalMobility) : mobility ?? (stage === "arrival" ? arrivalMobility : undefined);
+  const presenterExperienceState = displayedPresenterKey === "overdue" ? "overdue" : displayedPresenterKey === "arrival" ? "home" : "active";
+  const presenterLabels: Record<string, string> = { "ride:searching": "Finding a driver", "ride:assigned": "Driver assigned", "ride:approaching": "Driver approaching", "ride:arrived": "Driver arrived", "ride:in_trip": "Ride in progress", "ride:completed": "Arrival check", overdue: "Missed arrival check", arrival: "Arrival confirmed" };
+  const previousPresenterKey = presenterHistory.at(-(presenterReviewOffset + 2));
+  const canReviewBack = Boolean(previousPresenterKey);
+  const canAdvancePresenter = presenterReviewOffset > 0 || Boolean(presenterStep);
+  async function chooseArrivalCase(choice: ArrivalCase) {
+    setBusyCase(choice);
+    try {
+      if (choice === "confirm-arrival") await journey.arrive();
+      else await journey.demo("expire-deadline");
+    } finally {
+      setBusyCase(null);
+    }
+  }
   return <>
     <div data-testid={`screen-${stage}`} data-stage={stage} data-attempt={model.attemptId ?? ""} data-backend="atomic" aria-busy={busy}>
       <fieldset className={styles.screenBoundary} disabled={busy}>
-        {stage === "home" ? <BeaconHomeScreen model={model} onStart={() => void journey.start()} onEditProfile={() => setPanel("preferences")} onEditHome={() => setPanel("home")} onContext={() => setPanel("context")} onHelp={() => setPanel("help")} onLocation={() => setPanel("location")} onTrustedContact={() => setPanel("contact")} />
+        {stage === "home" ? <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={routeIds.from} toLocationId={routeIds.to} onFromLocationChange={id => selectRoute("from", id)} onToLocationChange={id => selectRoute("to", id)} onStart={() => void journey.start()} onEditProfile={() => setPanel("preferences")} />
           : stage === "recommendation" || stage === "replacement-selected" ? <RecommendationScreen model={model} onGo={() => void journey.approve()} onBack={() => setPanel("cancel")} onDetails={() => setPanel("details")} onSelectPlan={() => journey.setNotice("These are the backend’s compared options. Only the current recommendation can be confirmed; refresh options to request a new recommendation.")} />
           : ["discovering", "collecting-quotes", "evaluating", "replanning-discovery", "replanning-evaluation"].includes(stage) ? <FindingScreen model={model} onCancel={() => setPanel("cancel")} />
-          : displayedMobility ? <MobilityScreen mobility={displayedMobility} onWalkComplete={() => displayedMobility.leg.purpose === "home" ? void journey.arrive() : setPanel("location")} onArrival={() => void journey.arrive()} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void journey.retry()} navigation={normalized?.navigation ?? undefined} onBoard={displayedMobility.leg.purpose === "transit-stop" ? () => setPanel("location") : undefined} boardingLabel="Update trip location" rideExperience={{ state: stage === "overdue" ? "overdue" : stage === "arrival" ? "home" : "active", providerName: model.selectedPlan?.providerName, destination: model.profile?.homeName, notificationState: snapshot?.notification?.state, onStillTravelling: () => act({ type: "STILL_TRAVELLING" }), onFinish: journey.finish, ...(presenterStep ? { presenterNext: { label: presenterStep.label, onClick: () => void presenterStep.run() } } : {}) }} />
+          : displayedMobility ? <MobilityScreen mobility={displayedMobility} onWalkComplete={() => displayedMobility.leg.purpose === "home" ? void journey.arrive() : setPanel("location")} onArrival={() => void journey.arrive()} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void journey.retry()} navigation={normalized?.navigation ?? undefined} onBoard={displayedMobility.leg.purpose === "transit-stop" ? () => setPanel("location") : undefined} boardingLabel="Update trip location" rideExperience={{ state: presenter ? presenterExperienceState : stage === "overdue" ? "overdue" : stage === "arrival" ? "home" : "active", providerName: model.selectedPlan?.providerName, destination: model.profile?.homeName, notificationState: snapshot?.notification?.state, onStillTravelling: () => act({ type: "STILL_TRAVELLING" }), onFinish: journey.finish, showSimulationDisclosure: !presenter }} />
           : <JourneyScreen model={model} onAction={act} onDetails={() => setPanel("details")} onHelp={() => setPanel("help")} onStartOver={journey.finish} />}
       </fieldset>
     </div>
+    {presenter && displayedMobility && displayedPresenterKey ? <aside className={styles.presenterDock} aria-label="Presenter walkthrough controls">
+      <PresenterTimelineControls
+        currentStageLabel={presenterLabels[displayedPresenterKey] ?? "Trip progress"}
+        previousLabel={previousPresenterKey ? presenterLabels[previousPresenterKey] : undefined}
+        nextLabel={presenterReviewOffset > 0 ? presenterLabels[presenterHistory.at(-presenterReviewOffset) ?? ""] : presenterStep?.label ?? (displayedPresenterKey === "ride:completed" ? "Choose outcome below" : undefined)}
+        onBack={() => setPresenterReviewOffset(value => Math.min(value + 1, presenterHistory.length - 1))}
+        onNext={() => { if (presenterReviewOffset > 0) setPresenterReviewOffset(value => Math.max(0, value - 1)); else if (presenterStep) void presenterStep.run(); }}
+        backDisabled={!canReviewBack}
+        nextDisabled={!canAdvancePresenter}
+        busyAction={busy && !busyCase ? "next" : null}
+      />
+      {displayedPresenterKey === "ride:completed" && presenterReviewOffset === 0 ? <ArrivalCaseChooser disabled={busy} busyCase={busyCase} onChoose={choice => void chooseArrivalCase(choice)} description="The provider says the ride ended. Choose what Beacon learns next; provider completion alone does not prove the student reached home." /> : null}
+      <p className={styles.presenterTruth}>Demo transport only · no real vehicle is dispatched.</p>
+    </aside> : null}
     {(pairingRequired || journey.notice) && !presenter ? <p className={styles.consumerNotice} role="status">{pairingRequired ? "Connect the demo planner to continue." : "Couldn’t refresh. Your last trip update is still shown."}</p> : null}
     {showPairing ? <aside className={styles.setupCard} aria-label="Demo planner setup">
       <strong>{pairingRequired ? "Connect the demo planner" : "Planner setup"}</strong>
@@ -125,7 +214,7 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
     <HelpSheet open={panel === "help"} onOpenChange={open("help")} trustedContact={profile.trustedContact} />
     <TripDetailsSheet open={panel === "details"} onOpenChange={open("details")} model={model} />
     <JourneySheet open={panel === "location"} onOpenChange={open("location")} title="Location and trip progress" description="Device location is sent only when you choose to share it. The backend checks accuracy and freshness before advancing a leg or confirming arrival.">
-      <p className={styles.note}>The demo route uses a synthetic campus corridor. Your real device position may not match it. No precise location is shared with a provider before the backend’s consent and authorization gates pass.</p>
+      <p className={styles.note}>The selected endpoints use official Virginia Tech campus reference points; demo route geometry and car movement are simulated. Your real device position may not match them. No precise location is shared with a provider before the backend’s consent and authorization gates pass.</p>
       <button className={styles.action} disabled={busy} onClick={updateLocation}>Share one location sample</button>
       <p role="status">{locationMessage}</p>
       {snapshot && <p>Arrival assessment: {snapshot.arrival.status.replaceAll("_", " ")}</p>}

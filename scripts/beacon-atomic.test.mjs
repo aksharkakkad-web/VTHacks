@@ -5,16 +5,43 @@ import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const require=createRequire(import.meta.url),ts=require('typescript'),dir=mkdtempSync(join(tmpdir(),'beacon-atomic-'));
-for(const f of ['atomic-journey','atomic-transport'])writeFileSync(join(dir,`${f}.js`),ts.transpileModule(readFileSync(new URL(`../src/lib/client/beacon/${f}.ts`,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText);
+for(const [f,source] of [['atomic-journey','../src/lib/client/beacon/atomic-journey.ts'],['atomic-transport','../src/lib/client/beacon/atomic-transport.ts'],['campus-locations','../src/lib/client/beacon/campus-locations.ts'],['walking-router','../src/lib/decision-client/walking-router.ts'],['demo-scenario','../src/lib/decision-client/demo-scenario.ts'],['navigation','../src/lib/journey/navigation.ts']])writeFileSync(join(dir,`${f}.js`),ts.transpileModule(readFileSync(new URL(source,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText);
 after(()=>rmSync(dir,{recursive:true,force:true}));
 const {parseAtomicJourney,normalizeJourney,confirmationPayload,createPayload,stageForJourney}=require(join(dir,'atomic-journey.js'));
 const {backendErrorStage}=require(join(dir,'atomic-journey.js'));
+const {CAMPUS_LOCATIONS}=require(join(dir,'campus-locations.js'));
+const {demoScenarioRoute}=require(join(dir,'demo-scenario.js'));
+const {navigationHandoff}=require(join(dir,'navigation.js'));
 const profile={homeName:'My home',homeAddress:'PRIVATE ADDRESS',maxBudget:12,walkingPreference:'minimal',avoidTransfers:true};
 const time='2026-09-19T12:00:00Z';
 const candidate={planId:'dynamic:ride-892',providerId:'new-provider',providerName:'New operator',mode:'independent_ride',available:true,cost:8.4,waitMinutes:4,travelMinutes:7,walkingMinutes:2,totalMinutes:13,requiresProviderVerification:true};
 function fixture(){return {trip:{id:'trip-one',state:'SELECTED',candidates:[candidate],selectedPlan:candidate,providerVerified:false,sensitiveDataReleased:false},journey:{schemaVersion:'beacon-journey-v1',revision:4,binding:'hash',createdAt:time,selectedPlanId:candidate.planId,selectedOffer:null,legs:[],pickup:{point:null,instructions:null,accessVerified:null},waiting:{point:null,indoorAccessVerified:null},remainingBudgetMinor:1200,limitations:[],nextStep:null,complete:null},coordination:{version:'beacon-coordination-v1',requiredAction:'confirm',remainingBudgetMinor:1200,currency:'USD',paymentMode:'simulated',payments:[],selectedOffer:{planId:candidate.planId,quoteId:'quote-current',serviceId:'service-new',totalMinor:840,currency:'USD',expiresAt:'2026-09-19T12:05:00Z',cancellationFeeMinor:100,pickupInstructions:'At the signed pickup',pickupAccessVerified:true,simulated:true}},ride:null,arrival:{status:'NOT_DETECTED'},notification:null,cancellation:null,navigation:null,planning:null,selectionCurrent:true};}
 test('dynamic candidates and exact confirmation identifiers survive normalization',()=>{const s=parseAtomicJourney(fixture()),n=normalizeJourney(s,profile);assert.equal(n.model.selectedPlan.planId,candidate.planId);assert.equal(n.model.selectedPlan.cost,8.4);assert.deepEqual(confirmationPayload(s),{planId:candidate.planId,journeyRevision:4,quoteId:'quote-current'});});
 test('creation sends preferences and explicit synthetic scenario, never address or contact coordinates',()=>{const p=createPayload(profile,{note:'drinking',maxBudget:9});assert.equal(p.journeyContract,'beacon-journey-v1');assert.equal(p.demoScenarioVariant,'baseline');assert.equal(p.temporary_context.max_budget,9);assert.equal(p.temporary_context.has_been_drinking,true);assert.equal(p.preferences.walkingPreference,'minimize');assert.ok(!JSON.stringify(p).includes('PRIVATE'));assert.equal(p.origin,undefined);assert.equal(p.preferences.home,undefined);});
+test('creation forwards only explicit Telegram consent fields to private trip input',()=>{const p=createPayload({...profile,telegramContact:{name:'Maya',chatId:'123456789',consent:true,shareLocation:false}});assert.deepEqual(p.preferences.trustedContact,{name:'Maya',telegramChatId:'123456789',consent:true,shareLocation:false});assert.ok(!JSON.stringify(p).includes('trustedContactPhone'));});
+test('all 870 ordered campus pairs produce exact backend coordinates, bounded demo geometry and a walking handoff',async()=>{
+  assert.equal(CAMPUS_LOCATIONS.length,30);
+  assert.equal(new Set(CAMPUS_LOCATIONS.map(location=>location.id)).size,30);
+  let pairs=0;
+  for(const from of CAMPUS_LOCATIONS)for(const to of CAMPUS_LOCATIONS){
+    if(from.id===to.id)continue;
+    pairs++;
+    const payload=createPayload(profile,{}, {from,to});
+    assert.deepEqual(payload.origin,from.point);
+    assert.deepEqual(payload.preferences.home,to.point);
+    assert.ok(!JSON.stringify(payload).includes(from.address));
+    const route=await demoScenarioRoute(from.point,to.point,time);
+    assert.deepEqual(route.from,from.point);
+    assert.deepEqual(route.to,to.point);
+    assert.ok(route.distanceMeters>0);
+    const handoff=navigationHandoff({nextStep:{legId:'walk',showMap:true},complete:{selected:{legs:[{id:'walk',kind:'walk',from:{name:from.name,point:from.point},to:{name:to.name,point:to.point}}]}}});
+    const google=new URL(handoff.googleMapsUrl);
+    assert.equal(google.searchParams.get('origin'),`${from.point.lat},${from.point.lng}`);
+    assert.equal(google.searchParams.get('destination'),`${to.point.lat},${to.point.lng}`);
+    assert.equal(google.searchParams.get('travelmode'),'walking');
+  }
+  assert.equal(pairs,870);
+});
 test('stale or non-confirmable offers cannot produce consent payload',()=>{const s=fixture();s.selectionCurrent=false;assert.throws(()=>confirmationPayload(s));s.selectionCurrent=true;s.coordination.requiredAction='check_booking';assert.throws(()=>confirmationPayload(s));});
 test('malformed money, state, route coordinates and navigation are rejected',()=>{for(const mutate of [s=>s.trip.selectedPlan={...candidate,cost:NaN},s=>s.trip.state='MAGIC',s=>s.coordination.selectedOffer.totalMinor=-1,s=>s.navigation={destination:'Home',googleMapsUrl:'javascript:alert(1)',appleMapsUrl:'https://maps.apple.com'},s=>s.journey.legs=[{id:'a',kind:'walk',directions:[],durationSeconds:2,geometry:{type:'LineString',coordinates:[[200,1],[2,3]]}}]]){const s=fixture();mutate(s);assert.throws(()=>parseAtomicJourney(s));}});
 test('every actual TripState maps intentionally to its exact presentation screen',()=>{const expected={IDLE:'home',OBJECTIVE_RECEIVED:'discovering',DISCOVERING:'discovering',COLLECTING_QUOTES:'collecting-quotes',EVALUATING:'evaluating',SELECTED:'recommendation',VERIFYING_PROVIDER:'verifying-initial',COORDINATING:'coordinating-initial',NAVIGATING:'in-trip-initial',WAITING_FOR_PICKUP:'waiting-initial',IN_TRIP:'in-trip-initial',PROVIDER_FAILED:'provider-cancelled',REPLANNING:'replanning-discovery',OVERDUE:'overdue',ARRIVED:'arrival',FAILED:'no-options'};for(const [state,stage] of Object.entries(expected)){const s=fixture();s.trip.state=state;s.coordination.requiredAction='none';assert.equal(stageForJourney(s),stage,state);}});

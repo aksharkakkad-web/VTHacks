@@ -5,10 +5,10 @@ const [runtimePath,command='show',argument]=process.argv.slice(2);
 if(!runtimePath)throw new Error('Usage: node scripts/demo-control.mjs /private/runtime/operator.json start|show|scenario|advance|cancel|overdue|home [value]');
 const runtime=JSON.parse(await readFile(runtimePath,'utf8'));
 const client=new DemoClient(runtime.base,runtime.workerToken,runtime.cookie);
-if(!runtime.cookie){await client.pair();runtime.cookie=client.cookie;}
+if(!runtime.cookie&&runtime.plannerMode==='codex_laptop'){await client.pair();runtime.cookie=client.cookie;}
 if(command==='start'){
   const trip=await client.create({budget:argument===undefined?10:Number(argument)});runtime.tripId=trip.id;
-  await writeFile(runtimePath,JSON.stringify(runtime),{mode:0o600});
+  runtime.cookie=client.cookie;await writeFile(runtimePath,JSON.stringify(runtime),{mode:0o600});
   console.log(JSON.stringify(receipt(await client.plan(trip.id)),null,2));
 }else{
   if(!runtime.tripId)throw new Error('Run start first');

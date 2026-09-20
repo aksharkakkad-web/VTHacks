@@ -34,7 +34,7 @@ type MobilityScreenProps = {
   onRetryRoute?: () => void;
   onBoard?: () => void;
   boardingLabel?: string;
-  navigation?: { destination: string; googleMapsUrl: string; appleMapsUrl: string };
+  navigation?: { destination: string; googleMapsUrl: string; appleMapsUrl?: string };
   rideExperience?: {
     state?: "active" | "overdue" | "home";
     providerName?: string;
@@ -43,10 +43,19 @@ type MobilityScreenProps = {
     onStillTravelling?: () => void;
     onFinish?: () => void;
     presenterNext?: { label: string; onClick: () => void };
+    showSimulationDisclosure?: boolean;
   };
 };
 
 type RideCopy = { eyebrow: string; title: string; body: string; tone: "progress" | "success" | "warning" };
+type RideStage = RideStatusReadModel["stage"];
+type RideMapCopy = {
+  stageLabel: string;
+  pickupLabel: string;
+  destinationLabel: string;
+  vehicleLocation: string;
+  progress: number;
+};
 
 function finitePositive(value: number | undefined): value is number {
   return value !== undefined && Number.isFinite(value) && value >= 0;
@@ -133,6 +142,69 @@ function rideCopy(ride: RideStatusReadModel | undefined): RideCopy {
       return { eyebrow: "Ride cancelled", title: "This ride was cancelled.", body: "No active ride is being claimed.", tone: "warning" };
     default:
       return { eyebrow: "Ride status", title: "Checking your ride.", body: "Beacon is waiting for a confirmed provider update.", tone: "warning" };
+  }
+}
+
+function rideMapCopy(stage: RideStage, destination: string): RideMapCopy {
+  switch (stage) {
+    case "accepted":
+    case "waiting":
+    case "driver-assigned":
+      return {
+        stageLabel: "Driver heading to pickup",
+        pickupLabel: "Pickup",
+        destinationLabel: destination,
+        vehicleLocation: "east of the pickup point",
+        progress: 0,
+      };
+    case "approaching":
+      return {
+        stageLabel: "Driver approaching pickup",
+        pickupLabel: "Pickup · next",
+        destinationLabel: destination,
+        vehicleLocation: "near the pickup point",
+        progress: 0,
+      };
+    case "arrived":
+      return {
+        stageLabel: "Driver at pickup",
+        pickupLabel: "Pickup · driver here",
+        destinationLabel: destination,
+        vehicleLocation: "at the pickup point",
+        progress: 0,
+      };
+    case "riding":
+      return {
+        stageLabel: `On the way to ${destination}`,
+        pickupLabel: "Pickup complete",
+        destinationLabel: `${destination} · en route`,
+        vehicleLocation: "partway along the route",
+        progress: 58,
+      };
+    case "completed":
+      return {
+        stageLabel: `Arrived at ${destination}`,
+        pickupLabel: "Pickup complete",
+        destinationLabel: `${destination} · arrived`,
+        vehicleLocation: `at ${destination}`,
+        progress: 100,
+      };
+    case "cancelled":
+      return {
+        stageLabel: "Ride cancelled",
+        pickupLabel: "Pickup cancelled",
+        destinationLabel: destination,
+        vehicleLocation: "not shown after cancellation",
+        progress: 0,
+      };
+    default:
+      return {
+        stageLabel: "Waiting for provider update",
+        pickupLabel: "Pickup status unknown",
+        destinationLabel: destination,
+        vehicleLocation: "unconfirmed",
+        progress: 0,
+      };
   }
 }
 
@@ -303,7 +375,13 @@ function WalkingScreen(props: MobilityScreenProps) {
           {route?.warning ? <p className={styles.warning}><AlertCircle size={18} aria-hidden="true" /><span>{route.warning}</span></p> : null}
           <RouteSummary route={route} />
           <Directions route={route} />
-          {props.navigation && <p className={styles.updateNote}>Open directions to {props.navigation.destination}: <a href={props.navigation.googleMapsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href={props.navigation.appleMapsUrl} target="_blank" rel="noopener noreferrer">Apple Maps</a>. The external app chooses its own path.</p>}
+          {props.navigation ? (
+            <a className={styles.navigationAction} href={props.navigation.googleMapsUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open walking directions to ${props.navigation.destination} in Google Maps`}>
+              <Navigation size={20} aria-hidden="true" />
+              <span>Open in Google Maps</span>
+              <ArrowRight size={20} aria-hidden="true" />
+            </a>
+          ) : null}
           <p className={styles.updateNote}>{routeSourceLabel(route?.source)} · {updatedAt ? `Updated ${updatedAt}` : "Update time not supplied"}</p>
         </div>
 
@@ -318,9 +396,19 @@ function WalkingScreen(props: MobilityScreenProps) {
   );
 }
 
-function StaticRideMap({ destination = "Home" }: { destination?: string }) {
+function StaticRideMap({ destination = "Home", stage = "unknown", simulated = false }: { destination?: string; stage?: RideStage; simulated?: boolean }) {
+  const mapCopy = rideMapCopy(stage, destination);
+  const stageLabel = simulated ? `Simulated ride · ${mapCopy.stageLabel}` : mapCopy.stageLabel;
   return (
-    <div className={styles.rideMap} role="img" aria-label={`Static campus route from pickup to ${destination}`}>
+    <div
+      className={styles.rideMap}
+      data-testid="ride-map"
+      data-ride-stage={stage}
+      data-route-progress={mapCopy.progress}
+      data-simulated={simulated || undefined}
+      role="img"
+      aria-label={`${simulated ? "Simulated transport. No real vehicle was dispatched. " : ""}Illustrative ride route from pickup to ${destination}. ${mapCopy.stageLabel}. Vehicle location is ${mapCopy.vehicleLocation}. Route progress is ${mapCopy.progress} percent.`}
+    >
       <svg viewBox="0 0 430 310" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <rect width="430" height="310" fill="#e8efe8" />
         <g className={styles.mapBlocks}>
@@ -332,14 +420,16 @@ function StaticRideMap({ destination = "Home" }: { destination?: string }) {
           <path d="M289-12c9 74-5 110 4 174s-3 105-9 163" />
           <path d="M-14 251c100-5 183-14 256-2s128 2 205-10" />
         </g>
-        <path className={styles.mapRouteHalo} d="M78 238C112 206 119 178 158 159s77-4 104-34 42-40 87-54" />
-        <path className={styles.mapRoute} d="M78 238C112 206 119 178 158 159s77-4 104-34 42-40 87-54" />
+        <path className={styles.mapRouteHalo} d="M78 246C140 243 194 240 242 249C268 253 281 251 286 239C291 216 296 190 293 162C290 143 292 131 293 121C320 122 348 122 380 121" />
+        <path className={styles.mapRoute} d="M78 246C140 243 194 240 242 249C268 253 281 251 286 239C291 216 296 190 293 162C290 143 292 131 293 121C320 122 348 122 380 121" />
+        <path data-testid="ride-map-progress" className={styles.mapRouteProgress} pathLength="100" d="M78 246C140 243 194 240 242 249C268 253 281 251 286 239C291 216 296 190 293 162C290 143 292 131 293 121C320 122 348 122 380 121" />
       </svg>
-      <span className={`${styles.mapMarker} ${styles.pickupMarker}`} aria-hidden="true"><MapPin size={19} /></span>
-      <span className={`${styles.mapMarker} ${styles.homeMarker}`} aria-hidden="true"><House size={17} /></span>
-      <span className={styles.carMarker} aria-hidden="true"><CarFront size={21} /></span>
-      <span className={styles.pickupLabel}>Pickup</span>
-      <span className={styles.homeLabel}>{destination}</span>
+      <span data-testid="ride-map-pickup" className={`${styles.mapMarker} ${styles.pickupMarker}`} aria-hidden="true"><MapPin size={19} /></span>
+      <span data-testid="ride-map-destination" className={`${styles.mapMarker} ${styles.homeMarker}`} aria-hidden="true"><House size={17} /></span>
+      <span data-testid="ride-map-car" className={styles.carMarker} aria-hidden="true"><CarFront size={21} /></span>
+      <span className={styles.pickupLabel} aria-hidden="true">{mapCopy.pickupLabel}</span>
+      <span className={styles.homeLabel} aria-hidden="true">{mapCopy.destinationLabel}</span>
+      <span data-testid="ride-map-stage" className={styles.mapStageLabel} aria-hidden="true">{stageLabel}</span>
     </div>
   );
 }
@@ -366,6 +456,7 @@ function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy
   const updatedAt = formatTimestamp(ride?.updatedAt);
   const provider = rideExperience?.providerName || "Ride provider";
   const simulation = ride?.providerSource === "simulated-rideshare" || rideExperience?.notificationState === "simulated";
+  const discloseSimulation = simulation && rideExperience?.showSimulationDisclosure !== false;
   const activeRide = ride?.stage !== "completed" && ride?.stage !== "cancelled";
   const pickupInstruction = ride?.stage === "completed"
     ? "Confirm when you’re home."
@@ -383,6 +474,7 @@ function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy
         <p className={styles.panelEyebrow}>Trip complete</p>
         <h1 id="ride-panel-title" tabIndex={-1}>You’re home.</h1>
         <p className={styles.panelBody}>Location sharing and provider access ended.</p>
+        {discloseSimulation ? <p className={styles.simulationDisclosure}>Demo ride status · no real vehicle dispatched.</p> : null}
         <p className={styles.privacyLine}><ShieldCheck size={17} aria-hidden="true" /> Private trip access closed</p>
         {rideExperience?.onFinish ? <PrimaryAction onClick={rideExperience.onFinish}>Finish</PrimaryAction> : null}
         <button className={styles.textAction} type="button" onClick={onDetails}>Trip details</button>
@@ -396,8 +488,9 @@ function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy
         <span className={styles.panelHandle} aria-hidden="true" />
         <div className={styles.panelHeading}>
           <div><p className={styles.panelEyebrow}>Check in</p><h1 id="ride-panel-title" tabIndex={-1}>Are you home?</h1></div>
-          {simulation ? <span className={styles.simulationBadge}>Simulation</span> : null}
         </div>
+        {discloseSimulation ? <p className={styles.simulationDisclosure}>Demo ride status · no real vehicle dispatched.</p> : null}
+        <p className={styles.pickupInstruction}><MapPin size={17} aria-hidden="true" />Beacon could not confirm arrival at {rideExperience?.destination || "home"}.</p>
         <p className={styles.contactLine}>{contactStatus(rideExperience?.notificationState)}</p>
         <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction>
         <div className={styles.checkinActions}>
@@ -422,8 +515,8 @@ function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy
         <span className={styles.providerIcon}><CarFront size={20} aria-hidden="true" /></span>
         <span><small>{provider}</small><strong>{ride?.driver?.firstName || "Driver pending"}</strong></span>
         {ride?.vehicle?.plate ? <b>{ride.vehicle.plate}</b> : null}
-        {simulation ? <span className={styles.simulationBadge}>Simulation</span> : null}
       </div>
+      {discloseSimulation ? <p className={styles.simulationDisclosure}>Demo ride status · no real vehicle dispatched.</p> : null}
       <div className={styles.rideDetails}>
         <p><small>Vehicle</small><strong>{vehicle || "Details pending"}</strong></p>
         <p><small>{underway ? "Destination" : "Pickup"}</small><strong>{underway ? rideExperience?.destination || "Home" : ride?.pickupLocation || "Location pending"}</strong></p>
@@ -457,6 +550,7 @@ function TransitWaitCard({ instruction, travelling = false }: {instruction?: str
 function RideScreen(props: MobilityScreenProps) {
   const { mobility, onArrival, onHelp, onDetails, onCancel, onBoard, rideExperience } = props;
   const ride = mobility.ride;
+  const simulatedRide = ride?.providerSource === "simulated-rideshare" || rideExperience?.notificationState === "simulated";
   const transitWaiting = mobility.leg.kind === "wait" && mobility.leg.purpose === "transit-stop" && mobility.leg.status === "active";
   const transitTravelling = mobility.leg.kind === "ride" && mobility.leg.purpose === "transit-stop" && !ride;
   const copy = transitWaiting
@@ -467,9 +561,9 @@ function RideScreen(props: MobilityScreenProps) {
   if (!transitWaiting && !transitTravelling) {
     return (
       <BeaconFrame>
-        <div className={styles.rideShell} data-stage={`ride-${rideExperience?.state ?? ride?.stage ?? "unknown"}`} data-testid="ride-status" aria-live="polite">
+        <div className={styles.rideShell} data-stage={`ride-${rideExperience?.state ?? ride?.stage ?? "unknown"}`} data-ride-stage={ride?.stage ?? "unknown"} data-testid="ride-status" aria-live="polite">
           <div className={styles.rideMapWrap}>
-            <StaticRideMap destination={rideExperience?.destination} />
+            <StaticRideMap destination={rideExperience?.destination} stage={ride?.stage} simulated={simulatedRide} />
             {rideExperience?.presenterNext ? (
               <button className={styles.presenterNext} type="button" onClick={rideExperience.presenterNext.onClick} aria-label={`Presenter: ${rideExperience.presenterNext.label}`}>
                 Next <ArrowRight size={16} aria-hidden="true" />
@@ -508,7 +602,7 @@ function RideScreen(props: MobilityScreenProps) {
 
 export function MobilityScreen(props: MobilityScreenProps) {
   const { mobility } = props;
-  if (mobility.leg.kind === "walk" && mobility.leg.status === "active") {
+  if (mobility.leg.kind === "walk") {
     return <WalkingScreen {...props} />;
   }
   return <RideScreen {...props} />;

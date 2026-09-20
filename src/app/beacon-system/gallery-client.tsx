@@ -19,6 +19,7 @@ import {
   TrustedContactSheet,
 } from "@/components/beacon/journey-dialogs";
 import styles from "./specimen.module.css";
+import { CAMPUS_LOCATIONS, DEFAULT_FROM_LOCATION_ID, DEFAULT_TO_LOCATION_ID } from "@/lib/client/beacon/campus-locations";
 
 type GalleryGroup = "Journey" | "Modes" | "Recovery" | "Errors" | "Sheets";
 type Variant = "walk-recommendation" | "walk-active" | "transit-recommendation" | "transit-boarding" | "transit-active";
@@ -124,7 +125,7 @@ function SheetPreview({ sheet, model }: { sheet: Sheet; model: DemoViewModel }) 
   if (sheet === "options") return <RecommendationScreen model={model} onGo={ignore} onBack={ignore} onDetails={ignore} onSelectPlan={ignore} defaultShowAlternatives />;
   return (
     <>
-      <BeaconHomeScreen model={model} onStart={ignore} onEditProfile={ignore} onEditHome={ignore} onContext={ignore} />
+      <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={ignore} onToLocationChange={ignore} onStart={ignore} onEditProfile={ignore} />
       {!open ? <button className={styles.reopenSheet} type="button" onClick={() => setOpen(true)}>Reopen {sheet} sheet</button> : null}
       {sheet === "home" && model.profile ? <EditHomeSheet open={open} onOpenChange={setOpen} profile={model.profile} onSave={ignoreProfile} /> : null}
       {sheet === "preferences" && model.profile ? <EditPreferencesSheet open={open} onOpenChange={setOpen} profile={model.profile} onSave={ignoreProfile} /> : null}
@@ -149,7 +150,7 @@ function Preview({ item, longContent }: { item: GalleryItem; longContent: boolea
   if (item.component === "preferences") return <PreferencesScreen profile={defaultProfile} onChange={ignoreProfile} onSave={ignore} onBack={ignore} />;
   if (!model) return null;
   if (item.component === "sheet" && item.sheet) return <SheetPreview key={item.id} sheet={item.sheet} model={model} />;
-  if (item.component === "home") return <BeaconHomeScreen model={model} onStart={ignore} onEditProfile={ignore} onEditHome={ignore} onContext={ignore} onHelp={ignore} onLocation={ignore} onTrustedContact={ignore} />;
+  if (item.component === "home") return <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={ignore} onToLocationChange={ignore} onStart={ignore} onEditProfile={ignore} />;
   if (item.component === "finding") return <FindingScreen model={model} onCancel={ignore} />;
   if (item.component === "recommendation") return <RecommendationScreen model={model} onGo={ignore} onBack={ignore} onDetails={ignore} onSelectPlan={ignorePlan} />;
   const mobility = fallbackMobility({ ...createDemoState(model.profile), stage: model.stage, selectedPlanId: model.selectedPlan?.planId });

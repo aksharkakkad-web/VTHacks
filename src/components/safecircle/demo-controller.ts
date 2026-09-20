@@ -624,11 +624,23 @@ export function validatedProfile(input: unknown): SavedProfile | null {
   if (candidate.walkingPreference !== "normal" && candidate.walkingPreference !== "minimal") return null;
   if (typeof candidate.avoidTransfers !== "boolean") return null;
   if (candidate.trustedContact !== undefined && typeof candidate.trustedContact !== "string") return null;
+  if (candidate.telegramContact !== undefined) {
+    if (!candidate.telegramContact || typeof candidate.telegramContact !== "object") return null;
+    const telegram = candidate.telegramContact;
+    if (typeof telegram.name !== "string" || typeof telegram.chatId !== "string" || typeof telegram.consent !== "boolean" || typeof telegram.shareLocation !== "boolean") return null;
+  }
   const homeName = candidate.homeName.trim();
   const homeAddress = candidate.homeAddress.trim();
   const maxBudget = candidate.maxBudget;
   const contact = candidate.trustedContact?.trim() ?? "";
+  const telegram = candidate.telegramContact ? {
+    name: candidate.telegramContact.name.trim(),
+    chatId: candidate.telegramContact.chatId.trim(),
+    consent: candidate.telegramContact.consent,
+    shareLocation: candidate.telegramContact.shareLocation,
+  } : undefined;
   if (contact && (!/^\+?[\d()\s.-]+$/.test(contact) || contact.replace(/\D/g, "").length < 7 || contact.replace(/\D/g, "").length > 15)) return null;
+  if (telegram && (telegram.name.length < 2 || telegram.name.length > 80 || !/^[1-9]\d{0,15}$/.test(telegram.chatId) || !Number.isSafeInteger(Number(telegram.chatId)))) return null;
   if (homeName.length < 2 || homeName.length > 60 || homeAddress.length < 5 || homeAddress.length > 160) return null;
   if (!Number.isFinite(maxBudget) || maxBudget < 0 || maxBudget > 100) return null;
   return {
@@ -638,5 +650,6 @@ export function validatedProfile(input: unknown): SavedProfile | null {
     walkingPreference: candidate.walkingPreference,
     avoidTransfers: candidate.avoidTransfers,
     trustedContact: contact,
+    ...(telegram ? { telegramContact: telegram } : {}),
   };
 }

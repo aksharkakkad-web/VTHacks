@@ -108,6 +108,8 @@ test('invalid stored profiles fail closed instead of crashing startup',()=>{
   assert(validatedProfile(defaultProfile));
   assert(validatedProfile({...defaultProfile,trustedContact:'+1 (540) 555-0100'}));
   assert.equal(validatedProfile({...defaultProfile,trustedContact:'javascript:alert(1)'}),null);
+  assert.deepEqual(validatedProfile({...defaultProfile,telegramContact:{name:'Maya',chatId:'123456789',consent:true,shareLocation:false}}).telegramContact,{name:'Maya',chatId:'123456789',consent:true,shareLocation:false});
+  assert.equal(validatedProfile({...defaultProfile,telegramContact:{name:'Maya',chatId:'@maya',consent:true,shareLocation:false}}),null);
 });
 
 test('walking never impersonates a provider or releases pickup data',()=>{

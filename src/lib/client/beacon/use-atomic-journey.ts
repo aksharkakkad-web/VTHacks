@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { DemoStage, DemoViewModel, SavedProfile, TripContext } from "../../../components/safecircle/types";
 import { backendErrorStage, normalizeJourney, type AtomicJourney } from "./atomic-journey";
 import { atomicTransport as api, AtomicTransportError } from "./atomic-transport";
+import type { CampusRouteSelection } from "./campus-locations";
 
 export const ACTIVE_JOURNEY_KEY = "beacon.atomic-trip.v1";
 type Failure = { code: string; message: string; stage: DemoStage };
@@ -17,7 +18,7 @@ function homeModel(profile: SavedProfile, context: TripContext): DemoViewModel {
 
 /** One owner for trip identity, authoritative reads, commands and restoration.
  * Storage contains only an opaque trip ID, never a serialized UI or journey. */
-export function useAtomicJourney(profile: SavedProfile | null, context: TripContext) {
+export function useAtomicJourney(profile: SavedProfile | null, context: TripContext, route?: CampusRouteSelection) {
   const [snapshot, setSnapshot] = useState<AtomicJourney | null>(null);
   const [error, setError] = useState<Failure | null>(null);
   const [notice, setNotice] = useState("");
@@ -106,7 +107,7 @@ export function useAtomicJourney(profile: SavedProfile | null, context: TripCont
   async function start() {
     if (!profile || identity.current) return;
     await command("Finding your options…", async epoch => {
-      const trip = await api.create(profile, context);
+      const trip = await api.create(profile, context, route);
       if (!validEpoch(epoch)) return;
       persistIdentity(trip.id);
       await refresh();
@@ -175,7 +176,7 @@ export function useAtomicJourney(profile: SavedProfile | null, context: TripCont
     if (current.current?.cancellation?.status === "pending") { setNotice("Cancellation is still being confirmed. Keep this trip open."); return; }
     generation.current++; readAbort.current?.abort(); persistIdentity(null); current.current = null; setSnapshot(null); setError(null); setNotice("");
   }
-  const normalized = useMemo(() => snapshot && profile ? normalizeJourney(snapshot, profile, context) : null, [snapshot, profile, context]);
+  const normalized = useMemo(() => snapshot && profile ? normalizeJourney(snapshot, profile, context, route) : null, [snapshot, profile, context, route]);
   const model = useMemo(() => {
     if (!profile) return null;
     const base = normalized?.model ?? homeModel(profile, context);

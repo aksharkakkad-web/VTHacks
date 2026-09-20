@@ -1,4 +1,4 @@
-/** Isolated real HTTP backend. Fixture model by default; --real-model uses the paired Codex account. */
+/** Isolated real HTTP backend. Deterministic by default; --real-model is legacy opt-in coverage. */
 import {spawn} from 'node:child_process';
 import {mkdtemp,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
@@ -13,6 +13,7 @@ const root=dirname(dirname(fileURLToPath(import.meta.url)));
 const state=await mkdtemp(join(tmpdir(),'beacon-browser-backend-'));
 const env=demoEnvironment(process.env,state,{offline:true});
 const realModel=process.argv.includes('--real-model');
+if(realModel)env.BEACON_PLANNER_MODE='codex_laptop';
 env.NEXT_PUBLIC_BEACON_TEST_RUNTIME=realModel?'0':'1';
 const port=Number(process.env.BEACON_PORT||3123);
 if(!Number.isSafeInteger(port)||port<1024||port>65535)throw new Error('BEACON_PORT must be an integer from 1024 to 65535');
@@ -40,15 +41,11 @@ try{
   if(!monitor.ok)throw new Error('Authenticated monitor startup check failed');
   if((await monitor.json()).checked!==true)throw new Error('Unexpected monitor startup response');
   await writeFile(join(state,'monitor-startup.json'),JSON.stringify({checkedAt:new Date().toISOString(),status:'passed',endpoint:'/api/trips/monitor',scheduler:'server_runtime',intervalMs:10000}),{mode:0o600,flag:'wx'});
-  const planner=realModel?await connectPlanner():{model:'gpt-5.6-sol',close:async()=>{},run:async(role,input)=>{
-    if(role==='student-intent')return{objective:'get_home',priorities:['minimize_walking'],evidenceRequests:[{topic:'lighting'},{topic:'waiting_places'}],clarification:null};
-    if(role==='research-intent')return{topics:['lighting','waiting_places']};
-    return{snapshotId:input.snapshotId,selectedPlanId:input.selectedPlanId,sentences:[...input.facts.filter(f=>f.id.startsWith('limitation_')),...input.facts.filter(f=>!f.id.startsWith('limitation_'))].slice(0,4).map(f=>({text:f.text,factIds:[f.id]}))};
-  }};
-  worker=new Worker(new Backend(env.BEACON_BACKEND_URL,env.BEACON_PLANNER_WORKER_TOKEN),planner);
+  const planner=realModel?await connectPlanner():null;
+  if(planner)worker=new Worker(new Backend(env.BEACON_BACKEND_URL,env.BEACON_PLANNER_WORKER_TOKEN),planner);
   const operator=join(state,'operator.json');
-  await writeFile(operator,JSON.stringify({base:env.BEACON_BACKEND_URL,workerToken:env.BEACON_PLANNER_WORKER_TOKEN,modelInference:realModel?'codex_subscription':'fixture_only',runtime:production?'production':'development'}),{mode:0o600,flag:'wx'});
-  console.log(JSON.stringify({ready:true,base:env.BEACON_BACKEND_URL,operator,modelInference:realModel?'codex_subscription':'fixture_only',model:planner.model,ranking:'offline',providers:'simulated',notifications:'simulated',monitor:'server_runtime_10s_startup_verified'}));
-  const work=(async()=>{while(!stopping){let worked=false;try{worked=await worker.step();}catch(error){if(error.message==='WORKER_UNAUTHORIZED')throw error;console.error(JSON.stringify({worker:'retrying',code:['STALE_LEASE','BACKEND_UNAVAILABLE'].includes(error.message)?error.message:'WORKER_UNAVAILABLE'}));}await Promise.race([stopped,new Promise(resolve=>setTimeout(resolve,worked?350:1500))]);}})();
-  await Promise.race([stopped,work,...[app,providers].map(child=>child.done.then(()=>{if(!stopping)throw new Error('Runtime stopped');}))]);
+  await writeFile(operator,JSON.stringify({base:env.BEACON_BACKEND_URL,workerToken:env.BEACON_PLANNER_WORKER_TOKEN,plannerMode:env.BEACON_PLANNER_MODE,modelInference:realModel?'codex_subscription':'none',runtime:production?'production':'development'}),{mode:0o600,flag:'wx'});
+  console.log(JSON.stringify({ready:true,base:env.BEACON_BACKEND_URL,operator,plannerMode:env.BEACON_PLANNER_MODE,modelInference:realModel?'codex_subscription':'none',model:planner?.model??'none',ranking:'offline',providers:'simulated',notifications:'simulated',monitor:'server_runtime_10s_startup_verified'}));
+  const work=worker?(async()=>{while(!stopping){let worked=false;try{worked=await worker.step();}catch(error){if(error.message==='WORKER_UNAUTHORIZED')throw error;console.error(JSON.stringify({worker:'retrying',code:['STALE_LEASE','BACKEND_UNAVAILABLE'].includes(error.message)?error.message:'WORKER_UNAVAILABLE'}));}await Promise.race([stopped,new Promise(resolve=>setTimeout(resolve,worked?350:1500))]);}})():null;
+  await Promise.race([stopped,...(work?[work]:[]),...[app,providers].map(child=>child.done.then(()=>{if(!stopping)throw new Error('Runtime stopped');}))]);
 }finally{stop();const timer=setTimeout(()=>{for(const child of children)child.kill('SIGKILL');},3000);await Promise.all([...children].map(child=>child.done.catch(()=>{})));await workerStop;clearTimeout(timer);console.log(`Private runtime retained: ${state}`);}

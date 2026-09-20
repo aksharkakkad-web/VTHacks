@@ -19,6 +19,9 @@ bot before it can message them. This is a contact notification, not emergency di
 6. Set `BEACON_NOTIFICATION_MODE=telegram` only when ready for authorized real alerts.
    Set it to `simulated` for routine smoke tests. Live Telegram is independent of
    `DEMO_MODE`, which controls transportation fixtures; demo texts have a visible label.
+7. For the complete local judge runtime, start with `npm run demo -- --telegram`.
+   Without that explicit flag, `npm run demo` strips Telegram credentials and records a
+   simulated notification. The app contact sheet must use an allowlisted private chat ID.
 
 The trip request's `preferences.trustedContact` is now
 `{name, telegramChatId, consent, shareLocation}`. `telegramChatId` is a positive decimal

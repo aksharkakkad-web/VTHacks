@@ -5,6 +5,13 @@ import type { Trip } from "@/types/trip";
 
 export type WalkingPreference = "normal" | "minimal";
 
+export type TelegramContactProfile = {
+  name: string;
+  chatId: string;
+  consent: boolean;
+  shareLocation: boolean;
+};
+
 export type SavedProfile = {
   homeName: string;
   homeAddress: string;
@@ -12,6 +19,7 @@ export type SavedProfile = {
   walkingPreference: WalkingPreference;
   avoidTransfers: boolean;
   trustedContact?: string;
+  telegramContact?: TelegramContactProfile;
 };
 
 export type TripContext = {

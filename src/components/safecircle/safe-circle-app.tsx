@@ -17,6 +17,7 @@ import { fallbackMobility, mobilitySample, sampleResponse, type MobilitySample }
 import type { TripCommand, TripTransport } from "../../lib/client/beacon/trip-response";
 import { demoTransport } from "../../lib/client/beacon/demo-transport";
 import { BackendBeaconApp } from "../beacon/backend-beacon-app";
+import { CAMPUS_LOCATIONS, DEFAULT_FROM_LOCATION_ID, DEFAULT_TO_LOCATION_ID } from "../../lib/client/beacon/campus-locations";
 
 type AppAction = DemoAction | { type: "APPLY_RESPONSE"; value: unknown; sample?: boolean };
 function appReducer(state: DemoState, action: AppAction): DemoState {
@@ -202,7 +203,7 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
 
   return <>
     <div data-testid={`screen-${state.stage}`} data-stage={state.stage} data-attempt={state.attemptId ?? ""}>
-      {state.stage === "home" ? <BeaconHomeScreen model={model} onStart={() => act({ type: "START_TRIP" })} onEditProfile={() => setPanel("preferences")} onEditHome={() => setPanel("home")} onContext={() => setPanel("context")} onHelp={() => setPanel("help")} onLocation={() => setPanel("location")} onTrustedContact={() => setPanel("contact")} />
+      {state.stage === "home" ? <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={() => undefined} onToLocationChange={() => undefined} onStart={() => act({ type: "START_TRIP" })} onEditProfile={() => setPanel("preferences")} />
       : state.stage === "recommendation" || state.stage === "replacement-selected" ? <RecommendationScreen model={model} onGo={() => act({ type: "GO" })} onBack={() => act({ type: "FINISH" })} onDetails={() => setPanel("details")} onSelectPlan={(planId) => act({ type: "SELECT_PLAN", planId, now: Date.now() })} />
       : ["discovering", "collecting-quotes", "evaluating", "replanning-discovery", "replanning-evaluation"].includes(state.stage) ? <FindingScreen model={model} onCancel={() => act({ type: "FINISH" })} />
       : mobility ? <MobilityScreen mobility={mobility} onWalkComplete={() => act({ type: "WALK_LEG_COMPLETE" })} onArrival={() => act({ type: "CONFIRM_ARRIVAL" })} onBoard={mobility.leg.purpose === "transit-stop" ? () => act({ type: "BOARD_TRANSIT" }) : undefined} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void request("refresh", state)} />

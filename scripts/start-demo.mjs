@@ -10,9 +10,11 @@ import {demoEnvironment, loadExistingDatabricksToken} from './demo-environment.m
 
 const root=dirname(dirname(fileURLToPath(import.meta.url)));
 try { process.loadEnvFile(join(root,'.env.local')); } catch(error) { if(error.code!=='ENOENT')throw error; }
+const telegram=process.argv.includes('--telegram');
+if(telegram)try { process.loadEnvFile(join(root,'.env.telegram.local')); } catch(error) { if(error.code==='ENOENT')throw new Error('Create .env.telegram.local before starting with --telegram'); throw error; }
 const check=process.argv.includes('--check'), offline=process.argv.includes('--offline');
 const state=await mkdtemp(join(tmpdir(),'beacon-demo-'));
-const env=demoEnvironment(process.env,state,{offline,google:process.argv.includes('--google')});
+const env=demoEnvironment(process.env,state,{offline,google:process.argv.includes('--google'),telegram});
 const children=new Set();let stopping=false;let end;let shutdownTimer;
 const stopped=new Promise(resolve=>{end=resolve;});
 function start(args,childEnv=env) {
@@ -53,7 +55,7 @@ try {
     }catch{throw new Error('Existing Databricks connection could not be verified. Retry startup, or use --offline for local ranking.');}
   }
   env.BEACON_DEMO_EXPECT_DATABRICKS=db?'true':'false';
-  console.log(`Demo data: labeled campus scenario. Databricks: ${db?'existing workspace configured; receipt will verify each query':'local comparison (offline)'}. Rides and notifications: simulated.`);
+  console.log(`Demo data: labeled campus scenario. Databricks: ${db?'existing workspace configured; receipt will verify each query':'local comparison (offline)'}. Rides: simulated. Trusted-contact alerts: ${telegram?'live Telegram (allowlisted)':'simulated'}.`);
   const providers=start([join(state,'compiled/agents/serve-demo.js')]);
   const app=start(['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p','3123']);
   await Promise.all([ready(`${env.BEACON_BACKEND_URL}/`,app),ready('http://127.0.0.1:4312/.well-known/agent-card.json',providers)]);
@@ -61,14 +63,10 @@ try {
     env.BEACON_SMOKE_FIXTURE_MODEL=process.argv.includes('--fixture-model')?'true':'false';
     await start(['scripts/demo-acceptance.mjs']).done;
   } else {
-    const worker=start(['tools/beacon-laptop-worker/worker.mjs']);
-    const response=await fetch(`${env.BEACON_BACKEND_URL}/api/internal/planner/pairing`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${env.BEACON_PLANNER_WORKER_TOKEN}`},body:'{}'});
-    if(!response.ok)throw new Error('Unable to create a demo pairing code');
-    const pairing=await response.json();
     const operator=join(state,'operator.json');
-    await writeFile(operator,JSON.stringify({base:env.BEACON_BACKEND_URL,workerToken:env.BEACON_PLANNER_WORKER_TOKEN}),{mode:0o600,flag:'wx'});
-    console.log(`\nBeacon: ${env.BEACON_BACKEND_URL}\nPairing code (10 minutes): ${pairing.code}\nOperator runtime: ${operator}\nStart a scripted trip: node scripts/demo-control.mjs ${operator} start\nCtrl-C stops this demo.\n`);
-    await Promise.race([stopped,...[app,providers,worker].map(child=>child.done.then(()=>{if(!stopping)throw new Error('Demo process stopped');}))]);
+    await writeFile(operator,JSON.stringify({base:env.BEACON_BACKEND_URL,workerToken:env.BEACON_PLANNER_WORKER_TOKEN,plannerMode:env.BEACON_PLANNER_MODE}),{mode:0o600,flag:'wx'});
+    console.log(`\nBeacon: ${env.BEACON_BACKEND_URL}\nPlanner: deterministic (no OpenAI worker or pairing required)\nOperator runtime: ${operator}\nStart a scripted trip: node scripts/demo-control.mjs ${operator} start\nCtrl-C stops this demo.\n`);
+    await Promise.race([stopped,...[app,providers].map(child=>child.done.then(()=>{if(!stopping)throw new Error('Demo process stopped');}))]);
   }
 } catch(error) {
   if(!stopping)throw error;
