@@ -118,7 +118,54 @@ for name in (*TABLES,'service_trips'):
   const payload = Buffer.from(JSON.stringify(bundle));
   if (payload.length > 32 * 1024 * 1024) fail('Decoded payload exceeds 32 MB');
   const encoded = gzipSync(payload).toString('base64');
-  const notebook = `# Databricks notebook source\n# Local deployment candidate: official public scheduled GTFS, no credentials.\nimport base64, gzip, hashlib, json\nfrom pyspark.sql import functions as F\nfrom datetime import date, datetime\n\nraw = gzip.decompress(base64.b64decode('${encoded}'))\nassert len(raw) <= 32 * 1024 * 1024\nassert hashlib.sha256(raw).hexdigest() == '${sha(payload)}'\nbundle = json.loads(raw)\nschema = 'workspace.beacon'\nspark.sql('CREATE SCHEMA IF NOT EXISTS ' + schema)\ncounts = {}\nfor table in ['transit_stops','transit_routes','transit_trips','transit_stop_times','transit_service_trips','transit_source_archive','transit_imports']:\n    fields = bundle['schemas'][table]\n    spark.sql('CREATE TABLE IF NOT EXISTS ' + schema + '.' + table + ' (' + fields + ',imported_at TIMESTAMP) USING DELTA')\n    rows = bundle['tables'][table]\n    assert len(rows) <= 100000\n    if rows:\n        for row in rows:\n            for column in fields.split(','):\n                name, kind = column.split(' ')\n                if kind == 'DATE': row[name] = date.fromisoformat(row[name])\n                if kind == 'TIMESTAMP': row[name] = datetime.fromisoformat(row[name].replace('Z', '+00:00'))\n        frame = spark.createDataFrame(rows, fields).withColumn('imported_at', F.current_timestamp())\n        view = 'beacon_native_' + table\n        frame.createOrReplaceTempView(view)\n        condition = ' AND '.join('t.' + key + '=s.' + key for key in bundle['keys'][table])\n        spark.sql('MERGE INTO ' + schema + '.' + table + ' t USING ' + view + ' s ON ' + condition + ' WHEN NOT MATCHED THEN INSERT *')\n    actual = spark.table(schema + '.' + table).where(F.col('source_sha256') == bundle['source_sha256']).count()\n    assert actual == len(rows), table + ': count mismatch'\n    counts[table] = actual\n    print('BEACON_TRANSIT_IMPORT', table, actual)\ndbutils.notebook.exit(json.dumps({'import_completed': True, 'source_sha256': bundle['source_sha256'], 'counts': counts}))\n`;
+  const notebook = `# Databricks notebook source
+# Local deployment candidate: official public scheduled GTFS, no credentials.
+import base64, gzip, hashlib, json
+from pyspark.sql import functions as F
+from datetime import date, datetime
+
+raw = gzip.decompress(base64.b64decode('${encoded}'))
+assert len(raw) <= 32 * 1024 * 1024
+assert hashlib.sha256(raw).hexdigest() == '${sha(payload)}'
+bundle = json.loads(raw)
+schema = 'workspace.beacon'
+spark.sql('CREATE SCHEMA IF NOT EXISTS ' + schema)
+counts = {}
+# Immutable source rows first; capture metadata and the completion marker last.
+for table in ['transit_stops','transit_routes','transit_trips','transit_stop_times','transit_service_trips','transit_source_archive','transit_imports']:
+    fields = bundle['schemas'][table]
+    columns = [column.split(' ')[0] for column in fields.split(',')]
+    spark.sql('CREATE TABLE IF NOT EXISTS ' + schema + '.' + table + ' (' + fields + ',imported_at TIMESTAMP) USING DELTA')
+    rows = bundle['tables'][table]
+    assert len(rows) <= 100000
+    for row in rows:
+        for column in fields.split(','):
+            name, kind = column.split(' ')
+            if kind == 'DATE': row[name] = date.fromisoformat(row[name])
+            if kind == 'TIMESTAMP': row[name] = datetime.fromisoformat(row[name].replace('Z', '+00:00'))
+    frame = spark.createDataFrame(rows, fields).withColumn('imported_at', F.current_timestamp())
+    if rows:
+        view = 'beacon_native_' + table
+        frame.createOrReplaceTempView(view)
+        condition = ' AND '.join('t.' + key + '=s.' + key for key in bundle['keys'][table])
+        update = ''
+        if table == 'transit_source_archive':
+            # The source hash remains immutable; only its latest capture manifest changes.
+            update = " WHEN MATCHED AND CAST(get_json_object(s.manifest_json, '$.captured_at') AS TIMESTAMP) > CAST(get_json_object(t.manifest_json, '$.captured_at') AS TIMESTAMP) THEN UPDATE SET t.manifest_json=s.manifest_json,t.imported_at=s.imported_at"
+        elif table == 'transit_imports':
+            update = ' WHEN MATCHED AND s.captured_at > t.captured_at THEN UPDATE SET t.captured_at=s.captured_at,t.service_start=s.service_start,t.service_end=s.service_end,t.imported_at=s.imported_at'
+        spark.sql('MERGE INTO ' + schema + '.' + table + ' t USING ' + view + ' s ON ' + condition + update + ' WHEN NOT MATCHED THEN INSERT *')
+    actual = spark.table(schema + '.' + table).where(F.col('source_sha256') == bundle['source_sha256'])
+    if table == 'transit_service_trips':
+        # Old service dates remain stored; verify only the newly declared horizon.
+        marker = bundle['tables']['transit_imports'][0]
+        actual = actual.where(F.col('service_date').between(date.fromisoformat(marker['service_start']), date.fromisoformat(marker['service_end'])))
+    assert actual.count() == len(rows), table + ': count mismatch'
+    assert frame.select(*columns).exceptAll(actual.select(*columns)).limit(1).count() == 0, table + ': stored values mismatch'
+    counts[table] = len(rows)
+    print('BEACON_TRANSIT_IMPORT', table, len(rows))
+dbutils.notebook.exit(json.dumps({'import_completed': True, 'source_sha256': bundle['source_sha256'], 'counts': counts}))
+`;
   return { notebook, summary: { source_sha256: source, status: 'local_deployment_candidate_not_run', counts: Object.fromEntries(Object.entries(tables).map(([name, rows]) => [name, rows.length])), source_archive_bytes: archive.length, payload_bytes: payload.length, notebook_bytes: Buffer.byteLength(notebook), service_start: manifest.service_start, service_end: manifest.service_end } };
 }
 

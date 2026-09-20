@@ -10,7 +10,7 @@
 
 ---
 
-**Team handoff, September 19, 2026.** Read [what changes](../specs/2026-09-19-beacon-provider-network-pivot-design.md) first. Product direction is approved; proposed wire fields need owner alignment before code changes. All unchecked items below are remaining work or verification, not completion claims.
+**Team handoff, September 19, 2026.** Read [what changes](../specs/2026-09-19-beacon-provider-network-pivot-design.md) first. Product direction is approved; proposed wire fields need owner alignment before code changes. All unchecked items below are remaining work or verification, not completion claims. Mahin’s backend implementation and local verification are recorded in [MAHIN_MVP_STATUS.md](../../MAHIN_MVP_STATUS.md); the student UI and hosted integration remain separate gates.
 
 ## Who does what
 
@@ -35,7 +35,7 @@ Akshar does not book rides; Rishit does not decide winners in the browser; Mahin
 **Files:** `src/types/provider.ts`, `src/types/recommendation.ts`, `src/types/trip.ts`, `src/agents/contract.ts`, `src/agents/API.md`, `docs/TEAM_CONTRACT.md`. These are proposed edit targets, not changes made by this plan.
 
 - [x] Preserve the integrated public-route/evidence handoff and port the missing-transfer fix from [PR #17](https://github.com/aksharkakkad-web/VTHacks/pull/17). Provider normalization and decision/SQL tests pass together. Showing backend unknowns in the connected UI remains part of Task 4.
-- [ ] Publish a short contract-change note for all three owners before editing shared types. Freeze sample payloads for quote, no offer, confirmation, booking accepted, booking uncertain, cancellation, replacement confirmation and no feasible plan.
+- [x] Publish a short contract-change note for all three owners before editing shared types. Freeze sample payloads for quote, no offer, confirmation, booking accepted, booking uncertain, cancellation, replacement confirmation and no feasible plan.
 - [ ] Agree the following proposed fields/semantics. Mahin owns the schema; Akshar and Rishit consume the same fixtures. Names below are proposed, not existing API fields.
 
 | Proposed object | Fields/semantics to freeze |
@@ -47,9 +47,9 @@ Akshar does not book rides; Rishit does not decide winners in the browser; Mahin
 | `PaymentGrant` | Opaque reference restricted to provider/quote/attempt, currency, maximum amount and expiry. A demo grant has `simulated` provenance and cannot charge. Grant references stay out of browser responses, SQL, URLs and logs. |
 | `BookingResult` / UI view | Provider booking reference, actual status, last update, pickup instructions, cancelability/fees, payment state and required user action. Authenticated server state is authoritative. |
 
-- [ ] Keep existing Trip API paths and demo amounts unless an explicit shared change is recorded. Adapt the legacy provider profile alongside the new version; reject unsupported versions rather than guessing.
-- [ ] Keep trip objectives immutable with `objectiveVersion: 0` for this slice. A mutable objective/version protocol requires a separate agreed change. Bind re-evaluations to the current offer/consent so old decisions cannot book after a replacement.
-- [ ] Define which replacement actions a confirmation allows. Default to reconfirming a new paid offer unless the user explicitly approved bounded automatic replacement; total spend includes existing charges/fees. Pending refunds do not restore available budget.
+- [x] Keep existing Trip API paths and demo amounts unless an explicit shared change is recorded. Adapt the legacy provider profile alongside the new version; reject unsupported versions rather than guessing.
+- [x] Keep trip objectives immutable with `objectiveVersion: 0` for this slice. A mutable objective/version protocol requires a separate agreed change. Bind re-evaluations to the current offer/consent so old decisions cannot book after a replacement.
+- [x] Define which replacement actions a confirmation allows. Default to reconfirming a new paid offer unless the user explicitly approved bounded automatic replacement; total spend includes existing charges/fees. Pending refunds do not restore available budget.
 
 **Acceptance:** All three can consume the same fixtures without inventing fields or exposing secrets. Shared change is reviewed before owner-specific consumers land. Commit this contract separately from runtime implementation.
 
@@ -61,11 +61,11 @@ Akshar does not book rides; Rishit does not decide winners in the browser; Mahin
 **New files proposed:** `src/agents/provider-manifest.ts`, `docs/PROVIDER_DEVELOPER_GUIDE.md`, `src/agents/provider-conformance.test.ts`.
 **Depends on:** Task 1.
 
-- [ ] Separate registered operator, transport brand, unique service and transport mode. Keep `beacon-mobility-v1` identified as Beacon's profile, not an ANS protocol.
-- [ ] Discover a bounded set of compatible agents through ANS. Check endpoint identity, supported contract, service area and required capabilities before admitting an offer. Preserve URL/redirect/credential protections; registry results are untrusted input.
-- [ ] Define supported service authentication. Scope credentials/grants to the verified recipient and operation. Provider handlers must authenticate Beacon and validate issuer, audience, scope, expiry and replay protection; do not treat an arbitrary `providerId` as proof.
-- [ ] Document how a developer publishes a manifest, configures its own platform access and implements quote/book/status/cancel/reconcile behavior. No platform keys belong in the Student Agent or browser.
-- [ ] Run two compatible simulated services through the same adapter. Configure an additional service without adding platform-specific branches to the Student Agent. Record whether operators are actually independent; use truthful labels if both are Beacon-operated.
+- [x] Separate registered operator, transport brand, unique service and transport mode. Keep `beacon-mobility-v1` identified as Beacon's profile, not an ANS protocol.
+- [x] Discover a bounded set of compatible agents through ANS. Check endpoint identity, supported contract, service area and required capabilities before admitting an offer. Preserve URL/redirect/credential protections; registry results are untrusted input.
+- [x] Define supported service authentication. Scope credentials/grants to the verified recipient and operation. Provider handlers must authenticate Beacon and validate issuer, audience, scope, expiry and replay protection; do not treat an arbitrary `providerId` as proof.
+- [x] Document how a developer publishes a manifest, configures its own platform access and implements quote/book/status/cancel/reconcile behavior. No platform keys belong in the Student Agent or browser.
+- [x] Run two compatible simulated services through the same adapter. Configure an additional service without adding platform-specific branches to the Student Agent. Record whether operators are actually independent; use truthful labels if both are Beacon-operated.
 
 **Acceptance:** Compatible service succeeds; unsupported version, mismatched identity/endpoint, missing capabilities and expired offers fail before precise data or grants are released. Conformance tests exercise independently callable endpoints, not only in-process mocks. Commit discovery/contract support separately.
 
@@ -75,13 +75,13 @@ Akshar does not book rides; Rishit does not decide winners in the browser; Mahin
 **New modules proposed:** `src/lib/authorization/booking-grant.ts`, `src/lib/payments/simulated.ts`.
 **Depends on:** Tasks 1–2; Task 5's decision input agreement.
 
-- [ ] Enforce selected-offer freshness and consent again immediately before booking. A provider that needs extra passenger data or account authorization must return a required-action state, not silently receive the whole profile.
-- [ ] Add simulated limited payment grants and separate payment states. Bind consent, booking attempt and payment authorization to the same service/quote/terms. No real card entry or charge in this milestone.
-- [ ] Make retries safe across provider execution, persistent trip state and payment operations. Reconcile timeout/unknown results before retrying or replacing. Cancel/refund operations return their actual result; an HTTP timeout is not confirmed cancellation.
-- [ ] Account for confirmed charges, unsettled authorizations and cancellation fees during replanning. Reconfirm changed terms; never auto-cancel a nonrefundable future ticket without the required permission.
-- [ ] Return an owner-protected UI view with operator/source labels, pickup instructions, booking/payment progress and required action. Keep grants, credentials and contact data private.
-- [ ] Preserve monitoring and consent-based Telegram behavior. Routine tests use simulated notifications or `BEACON_SMOKE_NO_CONTACT=true`; they do not send real alerts.
-- [ ] Emit sanitized final provider outcomes using Akshar's existing ingestion contract only when facts and provenance qualify. Mark simulations as simulated; do not create a fake reliability history.
+- [x] Enforce selected-offer freshness and consent again immediately before booking. The MVP excludes unsupported passenger/account authorization requirements before ranking; no provider receives the whole profile. An interactive extra-permission flow remains a future contract extension.
+- [x] Add simulated limited payment grants and separate payment states. Bind consent, booking attempt and payment authorization to the same service/quote/terms. No real card entry or charge in this milestone.
+- [x] Make retries safe across provider execution, persistent trip state and payment operations. Reconcile timeout/unknown results before retrying or replacing. Cancel/refund operations return their actual result; an HTTP timeout is not confirmed cancellation.
+- [x] Account for confirmed charges, unsettled authorizations and cancellation fees during replanning. Reconfirm changed terms; never auto-cancel a nonrefundable future ticket without the required permission.
+- [x] Return an owner-protected UI view with operator/source labels, pickup instructions, booking/payment progress and required action. Keep grants, credentials and contact data private.
+- [x] Preserve monitoring and consent-based Telegram behavior. Routine tests use simulated notifications or `BEACON_SMOKE_NO_CONTACT=true`; they do not send real alerts.
+- [x] Emit sanitized final provider outcomes using Akshar's existing ingestion contract only when facts and provenance qualify. Mark simulations as simulated; do not create a fake reliability history.
 
 **Acceptance:** One confirmation produces at most one logical booking/payment under duplicate requests; an uncertain old attempt cannot cause a second charge; unselected providers receive no precise data; cancellation/replan/arrival remain persisted and recoverable. Commit booking/payment and recovery in reviewable chunks.
 
@@ -131,13 +131,13 @@ Akshar does not book rides; Rishit does not decide winners in the browser; Mahin
 **Owners:** All three. Mahin runs integration; Rishit verifies the mobile journey; Akshar verifies decisions/provenance.
 **Files:** existing `src/agents/*test.ts`, `src/agents/smoke.mjs`, decision-track tests; update each owner's handoff with actual results.
 
-- [ ] Run the relevant provider/agent tests: `bash src/agents/test.sh`.
-- [ ] Run decision tests: `node databricks/run.mjs test`. Run importer tests only when data/importer code changes.
-- [ ] Run required repository checks: `./scripts/pre-pr.sh`.
+- [x] Run the relevant provider/agent tests: `bash src/agents/test.sh`.
+- [x] Run decision tests: `node databricks/run.mjs test`. Run importer tests only when data/importer code changes.
+- [x] Run required repository checks: `./scripts/pre-pr.sh`.
 - [ ] Exercise a newly configured compatible service, failed identity, denied authorization, expired quote/grant, duplicated request, payment decline, uncertain booking, cancellation with fees, no feasible replacement and stale/offline UI.
 - [ ] Demonstrate Databricks choosing an eligible offer, the student confirming, the provider executing a simulated booking and Beacon recovering without duplicate booking/payment or unauthorized data release.
 - [ ] Verify a mobile browser against the deployed integration candidate and record the commit, environment, actual decision engine and simulated/live boundaries. Unit tests alone do not prove that journey.
-- [ ] Preserve the frozen $10 budget, $0 Campus Ride and $7 Independent Ride scenario unless the team explicitly changes it. Named campus-route scenarios remain separate from the default downtown demo.
+- [x] Preserve the frozen $10 budget, $0 Campus Ride and $7 Independent Ride scenario unless the team explicitly changes it. Named campus-route scenarios remain separate from the default downtown demo.
 
 **Done for the pivot demo:** common provider contract + two callable simulated services + ANS identity checks + evidence-backed decision + bounded simulated authorization + connected UI + tested recovery. Mark independence, payment and transport simulation accurately.
 

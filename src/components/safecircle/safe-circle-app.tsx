@@ -31,7 +31,7 @@ function haptic() {
   try { navigator.vibrate(10); } catch { /* Unsupported haptics are a silent no-op. */ }
 }
 
-export function SafeCircleApp() {
+export function SafeCircleApp({ onConnectedMode }: { onConnectedMode?: () => void } = {}) {
   const [state, dispatch] = useReducer(transitionDemo, null, () => createDemoState(null));
   const [panel, setPanel] = useState<Panel>(null);
   const [onboardingDraft, setOnboardingDraft] = useState<SavedProfile>(defaultProfile);
@@ -121,6 +121,7 @@ export function SafeCircleApp() {
 
   return (
     <AppShell onTechnicalOpen={() => setPanel("technical")}>
+      {onConnectedMode && <div className="sc-fixture-switch"><button type="button" onClick={onConnectedMode}>Open connected demo</button></div>}
       {showMap && <MapSurface model={model} />}
       <div className="sc-live-region" aria-live="polite" aria-atomic="true">
         <span className="sr-only">SafeCircle status: {model.trip.statusMessage}</span>

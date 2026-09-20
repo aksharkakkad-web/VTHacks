@@ -31,6 +31,16 @@ function setup(recommend?: Dependencies["recommend"], campusWeather?: Dependenci
   return { agent, store, released, control, sends: () => sends, advance: (ms: number) => { now += ms; } };
 }
 const input = { origin: { lat: 37.229, lng: -80.414 }, preferences: { home: { lat: 37.221, lng: -80.420 }, maxBudget: 10, walkingPreference: "minimize", trustedContact: { name: "Maya", telegramChatId: "123456789", consent: true, shareLocation: true } } };
+
+test('explicit walking limits are stored as hard preferences and malformed limits are rejected', async () => {
+  const s = setup();
+  const trip = await s.agent.create('owner', { ...input, preferences: { ...input.preferences, cannotWalk: true, maxWalkingMinutes: 0 } });
+  const context = (await s.store.read(trip.id)).context;
+  assert.equal(context.cannotWalk, true); assert.equal(context.maxWalkingMinutes, 0);
+  assert.equal((await s.store.read(trip.id)).journeyContract, 'beacon-journey-v1');
+  for (const maxWalkingMinutes of [-1, '5', Infinity]) await assert.rejects(s.agent.create('owner', { ...input, preferences: { ...input.preferences, maxWalkingMinutes } }));
+  await assert.rejects(s.agent.create('owner', { ...input, preferences: { ...input.preferences, cannotWalk: 'yes' } }));
+});
 test("campus weather stays private, affects recommendation, and expires before confirmation", async () => {
   const calls: unknown[] = [];
   const s = setup(decisionRecommendation(runDecision), (at) => {
@@ -126,6 +136,14 @@ test("trip ownership blocks cross-session reads and mutations", async () => {
   await assert.rejects(s.agent.read(trip.id, "someone-else"));
   await assert.rejects(s.agent.act(trip.id, "someone-else", "confirm"));
 });
+test("confirmation rejects a different plan than the one currently displayed", async () => {
+  const s = setup(); const trip = await start(s);
+  await assert.rejects(s.agent.act(trip.id, "owner", "confirm", { planId: "an-old-displayed-plan" }), { code: "SELECTION_CHANGED" });
+  assert.equal((await s.store.read(trip.id)).confirmed, false);
+  assert.equal(s.released.length, 0);
+  await s.agent.act(trip.id, "owner", "confirm", { planId: trip.selectedPlan!.planId });
+  assert.equal((await s.store.read(trip.id)).confirmed, true);
+});
 test("cancellation autonomously recollects, reevaluates, verifies, and books replacement", async () => {
   const s = setup(); const trip = await start(s);
   for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
@@ -138,7 +156,12 @@ test("cancellation autonomously recollects, reevaluates, verifies, and books rep
 test("arrival geofence removes private state and prevents overdue alerts", async () => {
   const s = setup(); const trip = await start(s);
   for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
-  const arrived = await s.agent.act(trip.id, "owner", "location", { ...input.preferences.home, recordedAt: new Date(10_000).toISOString() });
+  const first = await s.agent.act(trip.id, "owner", "location", { ...input.preferences.home, accuracyMeters: 10, recordedAt: new Date(10_000).toISOString() });
+  assert.equal(first.state, "WAITING_FOR_PICKUP");
+  s.advance(15_000);
+  await s.agent.act(trip.id, "owner", "location", { ...input.preferences.home, accuracyMeters: 10, recordedAt: new Date(25_000).toISOString() });
+  s.advance(15_000);
+  const arrived = await s.agent.act(trip.id, "owner", "location", { ...input.preferences.home, accuracyMeters: 10, recordedAt: new Date(40_000).toISOString() });
   assert.equal(arrived.state, "ARRIVED");
   assert.equal(arrived.sensitiveDataReleased, false);
   assert.equal(arrived.lastKnownLocation, undefined);
@@ -202,8 +225,9 @@ test("provider completion is still observed after a trip becomes overdue", async
   for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
   s.advance(2_000_000); await s.agent.monitor();
   s.control.status = "completed"; await s.agent.monitor();
-  assert.equal((await s.agent.read(trip.id, "owner")).state, "ARRIVED");
-  assert.equal((await s.store.read(trip.id)).private, undefined);
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "OVERDUE");
+  assert.equal((await s.agent.journey(trip.id, "owner")).ride?.stage, "completed");
+  assert.ok((await s.store.read(trip.id)).private, "ride completion does not prove arrival home");
   assert.equal(s.sends(), 1);
 });
 
@@ -287,16 +311,28 @@ test("an uncertain booking keeps its original deadline and overdue alert through
   assert.equal(s.released.length, 1); assert.equal(s.sends(), 1);
 });
 
-test("reconciliation observes provider completion and erases private state", async () => {
+test("reconciliation observes provider completion but waits for home arrival", async () => {
   const s = setup(); const trip = await start(s);
   await s.agent.act(trip.id, "owner", "confirm"); await s.agent.act(trip.id, "owner", "verify");
   s.control.requestFails = true;
   await assert.rejects(s.agent.act(trip.id, "owner", "request"));
   s.control.requestFails = false; s.control.status = "completed"; await s.agent.monitor();
   const completed = await s.store.read(trip.id);
-  assert.equal(completed.trip.state, "ARRIVED"); assert.equal(completed.private, undefined);
-  assert.equal(completed.pendingBooking, undefined); assert.equal(completed.trip.sensitiveDataReleased, false);
+  assert.equal(completed.trip.state, "NAVIGATING"); assert.ok(completed.private);
+  assert.equal(completed.pendingBooking, undefined); assert.equal(completed.trip.sensitiveDataReleased, true);
   assert.equal(s.released.length, 1);
+});
+
+test("completed rides still trigger exactly one overdue alert without home arrival", async () => {
+  const s = setup(); const trip = await start(s);
+  for (const action of ["confirm", "verify", "request"] as const) await s.agent.act(trip.id, "owner", action);
+  s.control.status = "completed";
+  await s.agent.monitor();
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "NAVIGATING");
+  s.advance(2_000_000);
+  await s.agent.monitor(); await s.agent.monitor();
+  assert.equal((await s.agent.read(trip.id, "owner")).state, "OVERDUE");
+  assert.equal(s.sends(), 1);
 });
 
 test("providers without request reconciliation never trigger an unconfirmed replacement", async () => {

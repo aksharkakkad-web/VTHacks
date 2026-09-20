@@ -1,5 +1,7 @@
 # Beacon — Databricks track PRD and build contract
 
+> Current hackathon demo: [DEMO_BACKEND_RUNBOOK.md](DEMO_BACKEND_RUNBOOK.md) adds opt-in complete synthetic conditions and the scenario-only `beacon-journey-rank-v2-demo` policy. Lighting, illustrative incident pressure and rain now change the demo ranking, while hard budget/walking constraints still apply. The public-data/v1 path below retains its original evidence semantics. Akshar now owns both data and coordination; Rishit owns UI wiring.
+
 **Owner:** Akshar · **Version:** 6 (combined-vision data-side POC) · **Date:** September 19, 2026
 
 ### Version 6: combined-vision data-side POC

@@ -3,6 +3,12 @@
 The app stays Beacon-branded. The infrastructure domain is server configuration;
 normal mobile screens use provider names and never need to display it.
 
+## Provider-network MVP update
+
+A strong `BEACON_HOSTED_PROVIDER_TOKEN` enables the v2 manifest/offer and bounded simulated booking-grant flow. Existing v1 ANS registrations can negotiate that envelope; newly registered v2 services use distinct service IDs and scoped tags. See [the developer guide](../../docs/PROVIDER_DEVELOPER_GUIDE.md) and [verified local status](../../docs/MAHIN_MVP_STATUS.md). These implementation checks do not establish that the current deployed environment has been upgraded.
+
+Network cancellation now requires terminal booking and payment settlement, then returns a replacement recommendation for new confirmation. `DATABRICKS_PROVIDER_OUTCOMES_TABLE` optionally enables sanitized simulated-outcome ingestion with the existing workspace credentials; provision its schema first. No table creation runs automatically.
+
 ## What is implemented
 
 With `BEACON_HOSTED_PROVIDERS=true`, these base paths expose the existing provider

@@ -118,3 +118,29 @@ export function getSafetyEvidence(corridorId:string,evaluatedAt=new Date().toISO
 export function getPublicTripOptions(corridorId:PublicCorridor,demo:boolean,evaluatedAt:string) {
   return collectPublicTripOptions(corridorId,demo,evaluatedAt,{walking:getMappedWalkingOption,transit:getScheduledTransitOption});
 }
+
+/** Additive whole-journey handoff. Mahin retains consent, booking, progression and recovery execution. */
+export async function getCompleteJourney(request: import('./journey-types').JourneyRequest) {
+  const [{ planJourney }, { createWalkingRouter }, { assessPathEvidence }, { loadJourneyPlaces }, demo] = await Promise.all([
+    import('./journey-planner'), import('./walking-router'), import('./path-evidence'), import('./journey-data'), import('./demo-scenario'),
+  ]);
+  const scenario=demo.scenarioEnabled(process.env);
+  const rawVariant=request.demoScenarioVariant??process.env.BEACON_DEMO_SCENARIO_VARIANT??'baseline';
+  if(scenario&&!['baseline','lighting_outage','incident_pressure','rain'].includes(rawVariant)) throw new Error('INVALID_DEMO_SCENARIO');
+  const variant=scenario?rawVariant as import('./demo-scenario').DemoScenarioVariant:undefined;
+  const places = scenario ? {stops:demo.demoScenarioStops(request.origin,request.destination),waitingPlaces:[],warnings:['SYNTHETIC_SCENARIO_PUBLIC_STOPS_NOT_REAL'] as string[],
+    transitSourceSha256:demo.demoScenarioTransit({fromStopId:'demo-origin-stop',toStopId:'demo-home-stop',evaluatedAt:request.evaluatedAt,accessWalkingMinutes:0,egressWalkingMinutes:0,maxWaitMinutes:45,walkingSource:'estimated'})?.source.sourceSha256} : loadJourneyPlaces(request.evaluatedAt);
+  const host = process.env.DATABRICKS_HOST, token = process.env.DATABRICKS_TOKEN, warehouseId = process.env.DATABRICKS_WAREHOUSE_ID;
+  const googleScenario=scenario&&process.env.BEACON_GOOGLE_ROUTES_ENABLED==='true';
+  const result = await planJourney({ ...request, waitingPlaces: request.waitingPlaces ?? (scenario?undefined:places.waitingPlaces) }, {
+    route: scenario&&!googleScenario?demo.demoScenarioRoute:createWalkingRouter(process.env), evidence: assessPathEvidence,
+    stops: places.stops, transitSourceSha256: places.transitSourceSha256,
+    directTransit: scenario ? async query=>demo.demoScenarioTransit(query) : getFullTransitOption,
+    ...(variant?{demoScenarioVariant:variant}:{}),
+    rankOptions: { workspace: host && token && warehouseId ? { host, token, warehouseId, auditTable: process.env.DATABRICKS_AUDIT_TABLE } : undefined,
+      persistAudit: process.env.BEACON_JOURNEY_AUDIT_WRITES === 'true' },
+  });
+  if(result.demoScenario&&googleScenario) result.demoScenario.routeSource='google_routes';
+  result.warnings.push(...places.warnings);
+  return result;
+}

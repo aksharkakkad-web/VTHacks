@@ -1,29 +1,34 @@
 import type { CandidatePlan } from "../types/provider";
+import type { NetworkOffer, ProviderOffer } from "./provider-manifest";
+import type { SimulatedPayment } from "../lib/payments/simulated";
+import { parseProviderDetails, type ProviderDetails } from "../lib/journey/provider-status";
 
 export type ProviderDescriptor = {
   id: string; name: string; mode: Exclude<CandidatePlan["mode"], "walk">;
   baseUrl: string; agentHost: string; functions: string[]; source: "ans" | "demo";
   ansId?: string;
+  serviceId?: string;
+  profileVersion?: "beacon-mobility-v1" | "beacon-mobility-v2";
 };
 export type QuoteRequest = {
   originZone: string; destinationZone: string; maxBudget: number;
   minimizeWalking: boolean; minimizeTransfers: boolean;
 };
 export type Point = { lat: number; lng: number };
-export type TripRequest = { tripId: string; pickup: Point; destination: Point };
-export type ProviderTripStatus = "accepted" | "waiting" | "cancelled" | "in_trip" | "completed";
-export type ProviderTrip = { id: string; status: ProviderTripStatus };
+export type TripRequest = { tripId: string; pickup: Point; destination: Point; network?: { offer: ProviderOffer; consentId: string } };
+export type ProviderTripStatus = "accepted" | "waiting" | "cancelled" | "in_trip" | "completed" | "declined";
+export type ProviderTrip = { id: string; status: ProviderTripStatus; payment?: SimulatedPayment; details?: ProviderDetails };
 /** Adapter metadata is stripped before publishing the frozen CandidatePlan shape. */
-export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number; quoteSource?: "simulated" };
-export function providerServiceId(ansId: string, mode: ProviderDescriptor["mode"]) { return `${ansId}:${mode}`; }
+export type ProviderQuote = CandidatePlan & { quoteExpiresAt?: number; quoteSource?: "simulated"; network?: NetworkOffer };
+export function providerServiceId(ansId: string, serviceId: string) { return `${ansId}:${serviceId}`; }
 export interface ProviderAgent {
   descriptor: ProviderDescriptor;
   quote(request: QuoteRequest): Promise<ProviderQuote>;
   requestTrip(request: TripRequest): Promise<ProviderTrip>;
   getStatus(id: string): Promise<ProviderTrip>;
-  cancelTrip(id: string): Promise<void>;
+  cancelTrip(id: string): Promise<void | ProviderTrip>;
   getRequestStatus?(requestId: string): Promise<ProviderTrip | undefined>;
-  cancelRequest?(requestId: string): Promise<void>;
+  cancelRequest?(requestId: string): Promise<void | ProviderTrip>;
 }
 export function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Expected an object");
@@ -67,7 +72,15 @@ export function normalizeQuote(value: unknown, provider: ProviderDescriptor, now
 }
 export function parseProviderTrip(value: unknown): ProviderTrip {
   const t = object(value);
-  const statuses: unknown[] = ["accepted", "waiting", "cancelled", "in_trip", "completed"];
+  const statuses: unknown[] = ["accepted", "waiting", "cancelled", "in_trip", "completed", "declined"];
   if (!statuses.includes(t.status)) throw new Error("Invalid provider status");
-  return { id: text(t.id, "provider trip id"), status: t.status as ProviderTripStatus };
+  let payment: SimulatedPayment | undefined;
+  if (t.payment !== undefined) {
+    const p = object(t.payment);
+    const amountMinor = number(p.amountMinor, "payment amount", 1_000_000);
+    const retainedMinor = number(p.retainedMinor, "payment retention", amountMinor);
+    if (p.mode !== "simulated" || p.currency !== "USD" || !["authorized", "voided", "captured", "refunded", "unknown"].includes(String(p.state)) || !Number.isSafeInteger(amountMinor) || !Number.isSafeInteger(retainedMinor) || (["authorized", "voided", "refunded"].includes(String(p.state)) && retainedMinor !== 0)) throw new Error("Invalid provider payment");
+    payment = { mode: "simulated", currency: "USD", amountMinor, retainedMinor, state: p.state as SimulatedPayment["state"] };
+  }
+  return { id: text(t.id, "provider trip id"), status: t.status as ProviderTripStatus, ...(payment ? { payment } : {}), ...(t.details === undefined ? {} : { details: parseProviderDetails(t.details) }) };
 }
