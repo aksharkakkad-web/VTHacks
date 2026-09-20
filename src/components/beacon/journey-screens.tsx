@@ -282,7 +282,7 @@ function copyFor(stage: DemoStage, model: JourneyModel): ScreenCopy {
 function StatusArtwork({ tone, icon }: { tone: Tone; icon: ReactNode }) {
   return (
     <div className={`${styles.artwork} ${styles[`tone_${tone}`]}`} aria-hidden="true">
-      <Image className={styles.landscape} src="/beacon-welcome-landscape.webp" alt="" fill sizes="(max-width: 430px) 100vw, 430px" />
+      <Image className={styles.landscape} src="/beacon-welcome-landscape.webp" alt="" fill sizes="(max-width: 430px) 100vw, 430px" loading="eager" />
       <span className={styles.iconDisc}>{icon}</span>
     </div>
   );
