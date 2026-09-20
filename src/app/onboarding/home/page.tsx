@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { readHomeDraft, saveHomeDraft } from "@/components/beacon/profile-storage";
 import { validatedProfile } from "@/components/safecircle/demo-controller";
 import { defaultProfile } from "@/components/safecircle/mock-data";
+import { CAMPUS_LOCATIONS } from "@/lib/client/beacon/campus-locations";
 import { ArrowLeft, ArrowRight, ChevronRight, MapPin, X } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
 import styles from "./home.module.css";
@@ -16,12 +17,7 @@ type HomeLocation = {
   address: string;
 };
 
-const DEMO_LOCATIONS: HomeLocation[] = [
-  { name: "Pritchard Hall", address: "Virginia Tech, Blacksburg, VA" },
-  { name: "Pritchard Hall Rd", address: "Blacksburg, VA" },
-  { name: "Pritchard Hall (West)", address: "Virginia Tech, Blacksburg, VA" },
-  { name: "Pritchard Hall Parking Lot", address: "Virginia Tech, Blacksburg, VA" },
-];
+const HOME_LOCATIONS: HomeLocation[] = CAMPUS_LOCATIONS.map(({ name, address }) => ({ name, address }));
 
 export default function BeaconHomePage() {
   return (
@@ -40,7 +36,9 @@ function BeaconHomeContent() {
   const screenRef = useRef<HTMLElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [selectedHome, setSelectedHome] = useState(DEMO_LOCATIONS[0]);
+  const [selectedHome, setSelectedHome] = useState(
+    HOME_LOCATIONS.find((location) => location.name === "Pritchard Hall") ?? HOME_LOCATIONS[0],
+  );
   const [manualName, setManualName] = useState("");
   const [manualAddress, setManualAddress] = useState("");
   const [manualError, setManualError] = useState("");
@@ -57,7 +55,7 @@ function BeaconHomeContent() {
         homeName: unknown;
         homeAddress: unknown;
       }>;
-      const matchingDemoLocation = DEMO_LOCATIONS.find(
+      const matchingDemoLocation = HOME_LOCATIONS.find(
         (location) =>
           location.name === savedHome.homeName &&
           location.address === savedHome.homeAddress,
@@ -84,7 +82,7 @@ function BeaconHomeContent() {
   }, []);
 
   const normalizedQuery = query.trim().toLowerCase();
-  const filteredLocations = DEMO_LOCATIONS.filter((location) =>
+  const filteredLocations = HOME_LOCATIONS.filter((location) =>
     `${location.name} ${location.address}`.toLowerCase().includes(normalizedQuery),
   );
 
@@ -195,20 +193,20 @@ function BeaconHomeContent() {
                 <div className={styles.sheetHandle} aria-hidden="true" />
                 <Dialog.Title className={styles.dialogTitle}>Choose home</Dialog.Title>
                 <Dialog.Description className={styles.dialogDescription}>
-                  Choose a sample destination or enter your own home below.
+                  Choose any supported Virginia Tech destination or enter your own home below.
                 </Dialog.Description>
 
                 <div className={styles.searchField}>
                   <MapPin aria-hidden="true" size={21} fill="currentColor" strokeWidth={2.4} />
                   <label className="sr-only" htmlFor="home-location-search">
-                    Search sample demo home locations
+                    Search Virginia Tech home locations
                   </label>
                   <input
                     id="home-location-search"
                     autoFocus
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Search Pritchard Hall"
+                    placeholder="Search Virginia Tech locations"
                     autoComplete="off"
                   />
                   {query && (
@@ -223,7 +221,7 @@ function BeaconHomeContent() {
                   )}
                 </div>
 
-                <div className={styles.results} aria-label="Demo locations">
+                <div className={styles.results} aria-label="Virginia Tech locations">
                   {filteredLocations.map((location) => (
                     <button
                       className={styles.result}
@@ -241,7 +239,7 @@ function BeaconHomeContent() {
                     </button>
                   ))}
                   {filteredLocations.length === 0 && (
-                    <p className={styles.noResults}>No demo locations match that search.</p>
+                    <p className={styles.noResults}>No Virginia Tech locations match that search.</p>
                   )}
                 </div>
 
