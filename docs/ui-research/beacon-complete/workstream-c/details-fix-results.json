@@ -1,0 +1,118 @@
+{
+  "base": "http://localhost:3100",
+  "checks": [
+    "360: in-trip-initial details open and close with focus restored",
+    "360: arrival details open and close with focus restored",
+    "360: walk arrival states local completion without claiming prior provider access",
+    "360: transit arrival states local completion without claiming prior provider access",
+    "360: long destination lower controls remain reachable by scrolling",
+    "393: in-trip-initial details open and close with focus restored",
+    "393: arrival details open and close with focus restored",
+    "393: walk arrival states local completion without claiming prior provider access",
+    "393: transit arrival states local completion without claiming prior provider access",
+    "393: long destination lower controls remain reachable by scrolling",
+    "No browser console errors or page exceptions"
+  ],
+  "screens": [
+    {
+      "name": "360-in-trip-initial-details-fixed",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-arrival-details-fixed",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-walk-arrival-fixed",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-transit-arrival-fixed",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-long-cancel-rect",
+      "rect": {
+        "x": 93.953125,
+        "y": 738.140625,
+        "width": 172.09375,
+        "height": 44
+      }
+    },
+    {
+      "name": "360-long-controls-reachable",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-in-trip-initial-details-fixed",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-arrival-details-fixed",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-walk-arrival-fixed",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-transit-arrival-fixed",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-long-cancel-rect",
+      "rect": {
+        "x": 110.453125,
+        "y": 808.1875,
+        "width": 172.09375,
+        "height": 44
+      }
+    },
+    {
+      "name": "393-long-controls-reachable",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    }
+  ],
+  "errors": [],
+  "findings": []
+}

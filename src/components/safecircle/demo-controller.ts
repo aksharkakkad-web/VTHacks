@@ -33,6 +33,7 @@ const confirmationSequence: DemoStage[] = [
 
 const recoverySequence: DemoStage[] = [
   "provider-cancelled",
+  "reconciling",
   "replanning-discovery",
   "replanning-evaluation",
   "replacement-selected",
@@ -43,34 +44,13 @@ const recoverySequence: DemoStage[] = [
   "waiting-replacement",
 ];
 
-const automaticDelay: Partial<Record<DemoStage, number>> = {
-  discovering: 1800,
-  "collecting-quotes": 1900,
-  evaluating: 2200,
-  "verifying-initial": 2300,
-  "authorizing-initial": 1900,
-  "coordinating-initial": 2200,
-  "accepted-initial": 2400,
-  "waiting-initial": 4200,
-  "arriving-initial": 3800,
-  "in-trip-initial": 4800,
-  "provider-cancelled": 2600,
-  "replanning-discovery": 2500,
-  "replanning-evaluation": 2700,
-  "replacement-selected": 2500,
-  "verifying-replacement": 2300,
-  "authorizing-replacement": 1900,
-  "coordinating-replacement": 2200,
-  "accepted-replacement": 2500,
-  "waiting-replacement": 4200,
-  "arriving-replacement": 3800,
-  "in-trip-replacement": 4800,
-  "context-fallback": 2600,
-};
-
 export function createDemoState(profile: SavedProfile | null = null): DemoState {
   return {
     stage: profile ? "home" : "bootstrap",
+    paymentStatus: "not-started",
+    bookingStatus: "not-started",
+    attemptNumber: 0,
+    cancellationFee: 0,
     profile,
     tripContext: {},
     candidates: demoCandidates,
@@ -124,7 +104,9 @@ function beginRecovery(state: DemoState): DemoState {
   return withRevision(state, {
     stage: "provider-cancelled",
     failedPlanIds,
-    selectedPlanId: undefined,
+    userApproved: false,
+    bookingStatus: "unknown",
+    paymentStatus: "unknown",
     recommendation: undefined,
     providerVerified: false,
     providerAuthorized: false,
@@ -134,12 +116,41 @@ function beginRecovery(state: DemoState): DemoState {
 }
 
 export function transitionDemo(state: DemoState, action: DemoAction): DemoState {
+  // ADVANCE/JUMP build explicitly applied judge fixtures. The app never schedules them.
   switch (action.type) {
+    case "BOARD_TRANSIT": {
+      const plan = demoCandidates.find(p => p.planId === state.selectedPlanId);
+      if (!state.integration?.mobility && plan?.mode === "transit" && state.stage.startsWith("waiting")) return withRevision(state, { stage: state.recoveryCount ? "in-trip-replacement" : "in-trip-initial" });
+      const m = state.integration?.mobility;
+      if (!m || m.leg.kind !== "wait" || m.leg.purpose !== "transit-stop" || !state.integration || !state.stage.startsWith("waiting")) return state;
+      return withRevision(state, { stage: state.recoveryCount ? "in-trip-replacement" : "in-trip-initial", integration: { ...state.integration, mobility: { ...m, leg: { ...m.leg, kind: "ride" }, ride: { providerSource: m.ride?.providerSource ?? "unknown", stage: "unknown" } } } });
+    }
+    case "WALK_LEG_COMPLETE": {
+      const m = state.integration?.mobility;
+      if (!m && demoCandidates.find(p => p.planId === state.selectedPlanId)?.mode === "walk") return transitionDemo(state, { type: "CONFIRM_ARRIVAL", now: Date.now() });
+      if (!m || m.leg.kind !== "walk" || m.leg.status !== "active" || !state.integration || !/^(waiting|in-trip|arriving)-/.test(state.stage)) return state;
+      if (m.leg.purpose === "home") return transitionDemo(state, { type: "CONFIRM_ARRIVAL", now: Date.now() });
+      return withRevision(state, { integration: { ...state.integration, mobility: { ...m, leg: { ...m.leg, kind: "wait", status: "active" }, walkingRoute: undefined } } });
+    }
+    case "RESTORE_STATE": return action.state;
+    case "RESET_DEMO_TRIP": return state.stage === "session-error" ? createDemoState(state.profile) : state;
+    case "SELECT_PLAN": {
+      if (!["recommendation", "replacement-selected"].includes(state.stage) || !state.profile) return state;
+      const plan = eligiblePlans(state.profile, state.tripContext, state.failedPlanIds).find(p => p.planId === action.planId);
+      return plan ? withRevision(state, { selectedPlanId: plan.planId, recommendation: recommendationFor(plan), userApproved: false, offerExpiresAt: (action.now ?? Date.now()) + 300000 }) : state;
+    }
+    case "EXPIRE_OFFER":
+      return ["recommendation", "replacement-selected"].includes(state.stage) ? withRevision(state, { stage: "offer-changed", userApproved: false }) : state;
+    case "REQUEST_CANCEL": {
+      if (["offline", "reconnecting", "cancelling", "cancelled", "arrival", "session-error"].includes(state.stage)) return state;
+      if ((!state.userApproved && !state.attemptId) || state.bookingStatus === "not-required") return createDemoState(state.profile);
+      return withRevision(state, { stage: "cancelling", cancellationRequested: true, providerAuthorized: false, sensitiveDataReleased: false });
+    }
     case "RESTORE_PROFILE":
       return { ...createDemoState(validatedProfile(action.profile)), stage: validatedProfile(action.profile) ? "home" : "setup-home" };
     case "SAVE_PROFILE": {
       const profile = validatedProfile(action.profile);
-      return profile ? { ...createDemoState(profile), tripContext: state.tripContext } : state;
+      return profile && ["home", "no-options", "setup-preferences", "setup-home"].includes(state.stage) ? { ...createDemoState(profile), tripContext: state.tripContext } : state;
     }
     case "RESET_PROFILE":
       return { ...createDemoState(null), stage: "setup-home" };
@@ -158,24 +169,35 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
     case "CLEAR_CONTEXT":
       return state.stage === "home" ? withRevision(state, { tripContext: {} }) : state;
     case "START_TRIP":
-      return beginTrip(state);
-    case "GO":
-      return state.stage === "recommendation"
-        ? withRevision(state, {
-            stage: demoCandidates.find(plan => plan.planId === state.selectedPlanId)?.requiresProviderVerification ? "verifying-initial" : "in-trip-initial",
-            userApproved: true,
-            providerVerified: false,
-            providerAuthorized: false,
-            sensitiveDataReleased: false,
-          })
-        : state;
+      return state.stage === "home" ? beginTrip(state) : state;
+    case "GO": {
+      if (!["recommendation", "replacement-selected"].includes(state.stage) || !state.selectedPlanId) return state;
+      if (state.offerExpiresAt && (action.now ?? Date.now()) >= state.offerExpiresAt) return withRevision(state, { stage: "offer-changed", userApproved: false });
+      const plan = demoCandidates.find(p => p.planId === state.selectedPlanId);
+      if (!plan) return state;
+      const suffix = state.recoveryCount ? "replacement" : "initial";
+      const booked = plan.mode === "campus_ride" || plan.mode === "independent_ride";
+      return withRevision(state, {
+        stage: plan.mode === "walk" ? `in-trip-${suffix}` : plan.mode === "transit" ? `waiting-${suffix}` : `verifying-${suffix}`,
+        userApproved: true, providerVerified: false, providerAuthorized: false, sensitiveDataReleased: false,
+        paymentStatus: booked ? "not-started" : "not-required", bookingStatus: booked ? "not-started" : "not-required",
+        attemptNumber: state.attemptNumber + 1,
+        attemptId: booked ? `demo-attempt-${state.attemptNumber + 1}` : undefined,
+        cancellationRequested: false, lastTripUpdateAt: action.now ?? Date.now(),
+      });
+    }
     case "ADVANCE": {
       if (state.paused || state.stage === "offline") return state;
+      if (state.stage === "replacement-selected") return state;
+      if (state.stage === "cancelling") return withRevision(state, { stage: "cancelled", bookingStatus: state.bookingStatus === "not-required" ? "not-required" : "cancelled", paymentStatus: state.paymentStatus === "not-required" ? "not-required" : "voided", providerAuthorized: false, sensitiveDataReleased: false });
+      if (state.stage === "reconnecting") return withRevision(state, { stage: state.offlineResume?.stage ?? "home", previousStage: state.offlineResume?.previousStage, paused: state.offlineResume?.paused ?? false, offlineResume: undefined });
+      const selectedMode = demoCandidates.find(p => p.planId === state.selectedPlanId)?.mode;
+      if (state.stage.startsWith("waiting") && selectedMode === "transit") return withRevision(state, { stage: state.recoveryCount ? "in-trip-replacement" : "in-trip-initial", lastTripUpdateAt: action.now });
       const initialNext = nextIn(initialSequence, state.stage);
       if (initialNext === "recommendation") {
         const selected = selectedFor(state);
         return selected
-          ? withRevision(state, { stage: "recommendation", selectedPlanId: selected.planId, recommendation: recommendationFor(selected) })
+          ? withRevision(state, { stage: "recommendation", selectedPlanId: selected.planId, recommendation: recommendationFor(selected), offerExpiresAt: (action.now ?? Date.now()) + 300000 })
           : withRevision(state, { stage: "no-options" });
       }
       if (initialNext) return withRevision(state, { stage: initialNext });
@@ -184,6 +206,8 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
       if (confirmationNext) {
         return withRevision(state, {
           stage: confirmationNext,
+          paymentStatus: confirmationNext.startsWith("authorizing") ? "pending" : "approved",
+          bookingStatus: confirmationNext.startsWith("authorizing") ? "not-started" : confirmationNext.startsWith("coordinating") ? "pending" : "accepted",
           ...(confirmationNext === "waiting-initial" ? { lastTripUpdateAt: action.now } : {}),
           providerVerified: state.providerVerified || state.stage === "verifying-initial",
           providerAuthorized: state.providerAuthorized || (state.stage === "authorizing-initial" && state.providerVerified && !!state.userApproved),
@@ -209,16 +233,19 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
           stage: "replacement-selected",
           selectedPlanId: replacement.planId,
           recommendation: recommendationFor(replacement),
+          userApproved: false,
+          offerExpiresAt: (action.now ?? Date.now()) + 300000,
         });
       }
 
       const recoveryNext = nextIn(recoverySequence, state.stage);
       if (recoveryNext) {
-        if (state.stage === "replacement-selected" && !demoCandidates.find(plan => plan.planId === state.selectedPlanId)?.requiresProviderVerification) {
-          return withRevision(state, { stage: "in-trip-replacement" });
-        }
         return withRevision(state, {
           stage: recoveryNext,
+          ...(state.stage === "reconciling" ? { bookingStatus: "cancelled" as const, paymentStatus: "voided" as const } : {}),
+          ...(state.stage === "verifying-replacement" ? { paymentStatus: "pending" as const, bookingStatus: "not-started" as const } : {}),
+          ...(state.stage === "authorizing-replacement" ? { paymentStatus: "approved" as const, bookingStatus: "pending" as const } : {}),
+          ...(state.stage === "coordinating-replacement" ? { bookingStatus: "accepted" as const } : {}),
           ...(recoveryNext === "waiting-replacement" ? { lastTripUpdateAt: action.now } : {}),
           providerVerified: state.providerVerified || state.stage === "verifying-replacement",
           providerAuthorized: state.providerAuthorized || (state.stage === "authorizing-replacement" && state.providerVerified && !!state.userApproved),
@@ -245,10 +272,12 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         "accepted-initial",
         "waiting-initial",
         "arriving-initial",
+        "in-trip-initial",
         "coordinating-replacement",
         "accepted-replacement",
         "waiting-replacement",
         "arriving-replacement",
+        "in-trip-replacement",
       ]).has(state.stage)
         ? beginRecovery(state)
         : state;
@@ -257,7 +286,15 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         if (state.stage === "offline") return state;
         return withRevision(state, { stage: "offline", previousStage: state.stage, paused: true, offlineResume: { stage: state.stage, previousStage: state.previousStage, paused: state.paused } });
       }
-      if (!state.profile) return state;
+      if (!state.profile || state.stage === "offline" || state.stage === "reconnecting") return state;
+      if (["payment-declined", "payment-unknown", "booking-unknown"].includes(action.scenario)) {
+        if (!state.attemptId) return state;
+        return withRevision(state, { stage: action.scenario, previousStage: state.stage,
+          paymentStatus: action.scenario === "payment-declined" ? "declined" : action.scenario === "payment-unknown" ? "unknown" : state.paymentStatus,
+          bookingStatus: action.scenario === "payment-declined" ? "not-started" : "unknown",
+          providerAuthorized: false, sensitiveDataReleased: false });
+      }
+      if (["slow-request", "session-error", "location-error", "offer-changed"].includes(action.scenario)) return withRevision(state, { stage: action.scenario, previousStage: state.stage, ...(action.scenario === "offer-changed" ? { userApproved: false } : {}) });
       if (action.scenario === "context-fallback") {
         return withRevision(beginTrip(state), { stage: "context-fallback", fallbackActive: true });
       }
@@ -277,6 +314,13 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
       });
     }
     case "RETRY":
+      if (state.stage === "context-fallback") return beginTrip(state);
+      // A retry requests reconciliation; only a provider response can resolve an unknown outcome.
+      if (["booking-unknown", "payment-unknown"].includes(state.stage)) return state;
+      if (state.stage === "session-error") return state.previousStage ? withRevision(state, { stage: state.previousStage }) : state;
+      if (state.stage === "location-error") return withRevision(state, { stage: "home" });
+      if (state.stage === "slow-request") return withRevision(state, { stage: state.previousStage ?? "discovering" });
+      if (state.stage === "offer-changed" || state.stage === "payment-declined") return withRevision(state, { stage: state.recoveryCount ? "replanning-discovery" : "discovering", userApproved: false, providerVerified: false, providerAuthorized: false, sensitiveDataReleased: false });
       if (state.stage === "verification-failed") {
         return withRevision(state, {
           stage: state.recoveryCount > 0 ? "verifying-replacement" : "verifying-initial",
@@ -286,14 +330,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         ? withRevision(state, { stage: "replanning-discovery" }) : beginTrip(state);
       return state;
     case "RECONNECT":
-      return state.stage === "offline"
-        ? withRevision(state, {
-            stage: state.offlineResume?.stage ?? state.previousStage ?? "home",
-            previousStage: state.offlineResume?.previousStage,
-            paused: state.offlineResume?.paused ?? false,
-            offlineResume: undefined,
-          })
-        : state;
+      return state.stage === "offline" ? withRevision(state, { stage: "reconnecting", paused: false }) : state;
     case "CONFIRM_ARRIVAL":
       return state.stage === "overdue" || state.stage.startsWith("in-trip") ? withRevision(state, {
         stage: "arrival",
@@ -307,7 +344,7 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
         previousStage: undefined,
       }) : state;
     case "FINISH":
-      return createDemoState(state.profile);
+      return ["home", "arrival", "cancelled", "no-options", "discovering", "collecting-quotes", "evaluating", "recommendation", "replacement-selected", "replanning-discovery", "replanning-evaluation", "offer-changed", "location-error", "verification-failed", "payment-declined"].includes(state.stage) ? createDemoState(state.profile) : state;
     case "TOGGLE_PAUSE":
       return withRevision(state, { paused: !state.paused });
     case "JUMP":
@@ -315,13 +352,13 @@ export function transitionDemo(state: DemoState, action: DemoAction): DemoState 
   }
 }
 
-function snapshotForStage(state: DemoState, stage: DemoStage, now?: number): DemoState {
+export function snapshotForStage(state: DemoState, stage: DemoStage, now?: number): DemoState {
   // Judge shortcuts replay the same transitions instead of inventing trust flags.
   let cursor = { ...createDemoState(state.profile), tripContext: state.tripContext };
   if (!state.profile && !["bootstrap", "setup-home", "setup-preferences"].includes(stage)) return { ...cursor, stage: "setup-home" };
   if (["home", "setup-home", "setup-preferences", "bootstrap"].includes(stage)) return { ...cursor, stage };
   if (stage === "offline") return transitionDemo(state, { type: "SIMULATE", scenario: "offline" });
-  const recovering = stage.includes("replacement") || stage.startsWith("replanning") || stage === "provider-cancelled" || (stage === "arrival" && state.recoveryCount > 0);
+  const recovering = stage.includes("replacement") || stage.startsWith("replanning") || stage === "provider-cancelled" || stage === "reconciling" || (stage === "arrival" && state.recoveryCount > 0);
   cursor = beginTrip(cursor);
   for (let step = 0; step < 40; step++) {
     if (cursor.stage === stage) return cursor;
@@ -329,8 +366,14 @@ function snapshotForStage(state: DemoState, stage: DemoStage, now?: number): Dem
     if (stage === "no-options") return transitionDemo(cursor, { type: "SIMULATE", scenario: "no-options" });
     if (stage === "verification-failed" && cursor.stage === "verifying-initial") return transitionDemo(cursor, { type: "SIMULATE", scenario: "verification-failed" });
     if (stage === "overdue" && cursor.stage.startsWith("in-trip")) return transitionDemo(cursor, { type: "SIMULATE", scenario: "overdue" });
-    const next = cursor.stage === "recommendation"
-      ? transitionDemo(cursor, { type: "GO" })
+    if (["payment-declined", "payment-unknown", "booking-unknown", "cancelling", "cancelled"].includes(stage) && cursor.stage === "coordinating-initial") {
+      if (stage === "cancelling" || stage === "cancelled") { const pending = transitionDemo(cursor, { type: "REQUEST_CANCEL" }); return stage === "cancelled" ? transitionDemo(pending, { type: "ADVANCE", now }) : pending; }
+      return transitionDemo(cursor, { type: "SIMULATE", scenario: stage as "payment-declined" });
+    }
+    if (["session-error", "location-error", "slow-request", "offer-changed"].includes(stage)) return transitionDemo(cursor, { type: "SIMULATE", scenario: stage as "session-error" });
+    if (stage === "reconnecting") return transitionDemo(transitionDemo(cursor, { type: "SIMULATE", scenario: "offline" }), { type: "RECONNECT" });
+    const next = cursor.stage === "recommendation" || cursor.stage === "replacement-selected"
+      ? transitionDemo(cursor, { type: "GO", now })
       : recovering && cursor.stage === "waiting-initial"
         ? transitionDemo(cursor, { type: "CANCEL_PROVIDER" })
         : transitionDemo(cursor, { type: "ADVANCE", now });
@@ -338,10 +381,6 @@ function snapshotForStage(state: DemoState, stage: DemoStage, now?: number): Dem
     cursor = next;
   }
   return cursor;
-}
-
-export function getAutomaticAdvanceDelay(stage: DemoStage) {
-  return automaticDelay[stage] ?? null;
 }
 
 const activeInitial = new Set<DemoStage>(["waiting-initial", "arriving-initial", "in-trip-initial"]);
@@ -358,7 +397,7 @@ function tripStateFor(stage: DemoStage): TripState {
   if (stage.startsWith("authorizing") || stage.startsWith("coordinating")) return "COORDINATING";
   if (stage.startsWith("accepted") || stage.startsWith("waiting") || stage.startsWith("arriving")) return "WAITING_FOR_PICKUP";
   if (stage.startsWith("in-trip")) return "IN_TRIP";
-  if (stage === "provider-cancelled") return "PROVIDER_FAILED";
+  if (stage === "provider-cancelled" || stage === "reconciling") return "PROVIDER_FAILED";
   if (stage === "replanning-discovery") return "REPLANNING";
   if (stage === "arrival") return "ARRIVED";
   if (stage === "overdue") return "OVERDUE";
@@ -470,12 +509,12 @@ function timelineFor(state: DemoState): TechnicalStep[] {
     {
       id: "approval",
       title: "User approved GO",
-      detail: "Original budget and preferences remain binding during recovery",
+      detail: "This exact offer needs its own confirmation",
       state: state.userApproved ? "done" : effectiveStage === "recommendation" ? "active" : "pending",
     },
     {
       id: "identity",
-      title: "ANS identity verified",
+      title: "Demo provider identity checked",
       detail: selected?.providerId ?? "Provider operator pending",
       state: state.stage === "verification-failed"
         ? "failed"
@@ -508,7 +547,7 @@ function timelineFor(state: DemoState): TechnicalStep[] {
     {
       id: "accepted",
       title: "Provider accepted",
-      detail: "Pickup coordination confirmed",
+      detail: "Simulated booking response; pickup instructions unavailable",
       state: effectiveStage.startsWith("accepted")
         ? "active"
         : activeInitial.has(effectiveStage) || activeReplacement.has(effectiveStage) || state.stage === "arrival"
@@ -530,7 +569,7 @@ function timelineFor(state: DemoState): TechnicalStep[] {
       state: state.stage === "arrival" ? "done" : "pending",
     },
   );
-  return selected && !selected.requiresProviderVerification
+  return selected && (selected.mode === "walk" || selected.mode === "transit")
     ? steps.filter(step => !["identity", "authorization", "release", "accepted"].includes(step.id))
     : steps;
 }
@@ -541,11 +580,13 @@ export function deriveViewModel(state: DemoState): DemoViewModel {
   const interruptedStage = state.stage === "offline" ? state.offlineResume?.stage ?? state.previousStage ?? "home" : state.stage;
   const effectiveStage = interruptedStage === "overdue" ? state.offlineResume?.previousStage ?? state.previousStage ?? "in-trip-initial" : interruptedStage;
   const progressStep = progressFor(effectiveStage);
-  const isReplacement = replacementStages.has(state.stage) || (state.stage === "arrival" && state.recoveryCount > 0);
+  const isReplacement = state.recoveryCount > 0 || replacementStages.has(state.stage) || (state.stage === "arrival" && state.recoveryCount > 0);
   const isActiveTrip = activeInitial.has(state.stage) || activeReplacement.has(state.stage);
 
   return {
     stage: state.stage,
+    paymentStatus: state.paymentStatus, bookingStatus: state.bookingStatus, attemptId: state.attemptId,
+    offerExpiresAt: state.offerExpiresAt, cancellationFee: state.cancellationFee, cancellationRequested: state.cancellationRequested,
     profile,
     constraints: profile ? resolveConstraints(profile, state.tripContext) : null,
     trip: {

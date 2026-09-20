@@ -1,0 +1,14 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [
+    "New user onboarding"
+  ],
+  "shots": [
+    "02-welcome",
+    "03-home-setup",
+    "04-preferences",
+    "05-home",
+    "06-discovery"
+  ],
+  "errors": []
+}

@@ -1,0 +1,207 @@
+{
+  "category": "logo-reveal",
+  "duration_s": 3.2,
+  "fps": 60,
+  "canvas": {
+    "w": 1035,
+    "h": 990,
+    "aspect": "69:66",
+    "background": "transparent"
+  },
+  "style": "Calm, premium, exact-brand static-frame logo assembly with one continuous route draw and a restrained destination-pin settle.",
+  "palette": "derive-from-asset",
+  "font": "none; preserve the baked Beacon wordmark",
+  "beats": [
+    0.35,
+    1.7,
+    1.95,
+    2.3
+  ],
+  "export": "alpha-overlay",
+  "asset_needs": [],
+  "block": "logo-outro",
+  "blueprint": {
+    "id": "logo-assemble-lockup",
+    "role": "Brand_Outro",
+    "variant": "static-frame",
+    "camera": "locked",
+    "adaptation": "The ring and wordmark are present from frame zero; the route assembles inside the ring, the destination pin settles, and the completed lockup holds without an exit."
+  },
+  "customize": {
+    "preserve_exact_artwork": true,
+    "remove": [
+      "tagline",
+      "url",
+      "glow",
+      "fade-in",
+      "fade-out",
+      "bounce",
+      "loop",
+      "sound",
+      "ui-chrome",
+      "camera-motion"
+    ],
+    "route_direction": "lower-left opening to destination pin",
+    "final_state": "dead-static exact Beacon lockup"
+  },
+  "shot_brief": "The complete outer ring and Beacon wordmark are already centered on a transparent stage. After a 0.35-second landing hold, the route grows in one uninterrupted lower-left-to-destination stroke with gentle acceleration and a long deceleration. The pin becomes spatially revealed at the route endpoint and settles monotonically with critically damped motion—never fading or overshooting. At 2.30 seconds every animated channel stops and the exact finished lockup remains unchanged through 3.20 seconds.",
+  "shots": [
+    {
+      "id": "opening-hold",
+      "start_s": 0,
+      "end_s": 0.35,
+      "frames": [0, 21],
+      "action": "Show the complete base ring and baked Beacon wordmark at their final position. No animated property changes."
+    },
+    {
+      "id": "route-to-arrival",
+      "start_s": 0.35,
+      "end_s": 2.3,
+      "frames": [21, 138],
+      "action": "Reveal the route continuously from the lower-left opening to the destination while the pin reveal and settle overlap the route's final approach."
+    },
+    {
+      "id": "final-lockup-hold",
+      "start_s": 2.3,
+      "end_s": 3.2,
+      "frames": [138, 192],
+      "action": "Hold the exact completed lockup dead static on transparency; no exit or ambient motion."
+    }
+  ],
+  "layers": [
+    {
+      "id": "base-lockup",
+      "asset": "assets/beacon-intro-base.png",
+      "role": "Authoritative ring and wordmark foundation",
+      "z": 0,
+      "start_s": 0,
+      "end_s": 3.2,
+      "motion": "none"
+    },
+    {
+      "id": "route-artwork",
+      "asset": "assets/beacon-intro-road.png",
+      "role": "Exact road pixels revealed by a single SVG path mask",
+      "z": 1,
+      "start_s": 0.35,
+      "end_s": 3.2,
+      "motion": {
+        "property": "mask stroke-dashoffset",
+        "path": "M 280 650 C 330 550 445 455 635 355",
+        "path_length": 1,
+        "stroke_width_px": 250,
+        "stroke_linecap": "round",
+        "from": 1,
+        "to": 0,
+        "active_start_s": 0.35,
+        "active_end_s": 1.95,
+        "ease": "cubic-bezier(0.45, 0, 0.12, 1)",
+        "constraints": "One continuous draw only; never restart, reverse, pulse, or redraw."
+      }
+    },
+    {
+      "id": "destination-pin",
+      "asset": "assets/beacon-intro-pin.png",
+      "role": "Exact destination pin and endpoint detail",
+      "z": 2,
+      "start_s": 1.7,
+      "end_s": 3.2,
+      "motion": {
+        "reveal": {
+          "property": "clip-path circle",
+          "origin": "62% 35%",
+          "from": "circle(0% at 62% 35%)",
+          "to": "circle(100% at 62% 35%)",
+          "start_s": 1.7,
+          "end_s": 1.9,
+          "ease": "cubic-bezier(0.16, 1, 0.3, 1)"
+        },
+        "settle": {
+          "from": {
+            "translate_y_px": 16,
+            "scale": 0.96
+          },
+          "to": {
+            "translate_y_px": 0,
+            "scale": 1
+          },
+          "start_s": 1.7,
+          "end_s": 2.3,
+          "ease": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "constraints": "Monotonic critically damped approximation; no bounce, overshoot, opacity animation, rotation, or post-settle drift."
+        }
+      }
+    },
+    {
+      "id": "final-artwork-reference",
+      "asset": "assets/beacon-intro-final.png",
+      "role": "Authoritative final-frame comparison and reduced-motion fallback; do not crossfade it over the assembled layers",
+      "z": 3,
+      "start_s": 2.3,
+      "end_s": 3.2,
+      "motion": "none",
+      "render_usage": "verification-reference"
+    }
+  ],
+  "timing": {
+    "opening_hold": [0, 0.35],
+    "route_draw": [0.35, 1.95],
+    "pin_reveal_and_settle": [1.7, 2.3],
+    "dead_static_hold": [2.3, 3.2]
+  },
+  "easing": {
+    "route_draw": "cubic-bezier(0.45, 0, 0.12, 1)",
+    "pin_reveal": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "pin_settle": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "hold": "none"
+  },
+  "verification_timestamps_s": [
+    0,
+    0.35,
+    1.15,
+    1.7,
+    1.95,
+    2.15,
+    2.3,
+    3.183333
+  ],
+  "verification": [
+    {
+      "at_s": 0,
+      "expect": "Base ring and Beacon wordmark are complete, sharp, centered, and fully opaque on transparency."
+    },
+    {
+      "at_s": 0.35,
+      "expect": "Opening hold is unchanged; route reveal begins at the lower-left opening with no pop."
+    },
+    {
+      "at_s": 1.15,
+      "expect": "Exactly one continuous route front is visible between the opening and destination."
+    },
+    {
+      "at_s": 1.7,
+      "expect": "Route is on its final approach and the pin reveal begins at the endpoint without opacity change."
+    },
+    {
+      "at_s": 1.95,
+      "expect": "Route draw is complete once and remains complete."
+    },
+    {
+      "at_s": 2.15,
+      "expect": "Pin is visible and still converging monotonically toward its exact final transform with no overshoot."
+    },
+    {
+      "at_s": 2.3,
+      "expect": "All animated channels equal their final values and the assembled pixels match the final artwork reference."
+    },
+    {
+      "at_s": 3.183333,
+      "expect": "Last rendered frame is pixel-identical to the 2.30-second lockup: transparent background, no fade, drift, redraw, or reset."
+    }
+  ],
+  "content": {
+    "logo": "assets/beacon-intro-final.png",
+    "tagline": null,
+    "url": null
+  }
+}

@@ -1,0 +1,26 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { BeaconFrame } from "@/components/beacon/flow-screens";
+import { readProfile } from "@/components/beacon/profile-storage";
+import { SafeCircleApp } from "@/components/safecircle/safe-circle-app";
+
+export function DemoEntry({ walkthrough, manual = false }: { walkthrough: boolean; manual?: boolean }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (walkthrough) return;
+    router.replace(readProfile() ? "/demo?walkthrough=1" : "/onboarding/welcome?demo=1");
+  }, [router, walkthrough]);
+
+  if (walkthrough) return <SafeCircleApp demoControls {...(manual ? { transport: null } : {})} />;
+
+  return (
+    <BeaconFrame>
+      <p role="status" style={{ padding: 24, textAlign: "center" }}>
+        Starting the complete Beacon walkthrough…
+      </p>
+    </BeaconFrame>
+  );
+}

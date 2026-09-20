@@ -1,0 +1,26 @@
+{
+  "base": "http://localhost:3000",
+  "run": "baseline",
+  "checks": [
+    "Discovery waits for explicit response: unchanged after 4.6 seconds",
+    "Identity waits for explicit response: unchanged after 4.6 seconds"
+  ],
+  "shots": [
+    "02-welcome",
+    "05-home",
+    "06-discovery",
+    "06-quote-response",
+    "07-comparison",
+    "08-recommendation",
+    "09-identity"
+  ],
+  "errors": [
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found"
+  ],
+  "findings": [],
+  "failure": "locator.tap: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Judge controls', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"beacon-judge-button\">Judge controls</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <nextjs-portal></nextjs-portal> from <script data-nextjs-dev-overlay=\"true\">…</script> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <nextjs-portal></nextjs-portal> from <script data-nextjs-dev-overlay=\"true\">…</script> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    24 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <nextjs-portal></nextjs-portal> from <script data-nextjs-dev-overlay=\"true\">…</script> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying tap action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at tap (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-integration.mjs:19:60)\n    at judge (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-integration.mjs:21:32)\n    at next (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-integration.mjs:22:37)\n    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-integration.mjs:33:181"
+}

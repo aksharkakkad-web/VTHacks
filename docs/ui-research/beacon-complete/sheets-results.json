@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Edit home validates, saves and closes",
+    "Preferences rejects blank budget and saves explicit value",
+    "Optional contact validates and creates call shortcut only; Escape dismisses help",
+    "Optional temporary context applies, reopens correctly and clears",
+    "Real browser location-denial returns to labeled demo pickup"
+  ],
+  "errors": []
+}

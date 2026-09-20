@@ -3,18 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#eef3f0">
-  <title>SafeCircle — Connection paused</title>
+  <meta name="theme-color" content="#fbfaf5">
+  <title>Beacon — Connection paused</title>
   <style>
-    :root{color-scheme:light;--paper:#fff;--sage:#eef3f0;--carbon:#0d1212;--forest:#34484a;--mint:#56bfa1}
-    *{box-sizing:border-box}body{margin:0;background:var(--sage);color:var(--carbon);font-family:system-ui,sans-serif;min-height:100svh;display:grid;place-items:center;padding:24px}
-    main{max-width:390px;background:var(--paper);padding:32px 24px;border-radius:28px}svg{width:48px;height:48px;color:var(--forest)}h1{font-size:32px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin:24px 0 16px}p{font-size:16px;line-height:1.5;color:var(--forest)}button{margin-top:16px;width:100%;min-height:56px;border:0;border-radius:16px;background:var(--mint);color:var(--carbon);font:600 16px system-ui;cursor:pointer}button:focus-visible{outline:3px solid var(--forest);outline-offset:4px}small{display:block;margin-top:16px;font-size:14px;line-height:1.5}
+    :root{color-scheme:light;--paper:#fbfaf5;--sage:#e8eee6;--carbon:#15382d;--forest:#426253;--mint:#204f3a}
+    *{box-sizing:border-box}body{margin:0;background:var(--sage);color:var(--carbon);font-family:system-ui,sans-serif;min-height:100dvh;display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))}
+    main{max-width:390px;background:var(--paper);padding:32px 24px;border-radius:28px}svg{width:48px;height:48px;color:var(--forest)}h1{font-size:32px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin:24px 0 16px}p{font-size:16px;line-height:1.5;color:var(--forest)}button{margin-top:16px;width:100%;min-height:56px;border:0;border-radius:16px;background:var(--mint);color:#fff;font:600 16px system-ui;cursor:pointer}button:focus-visible{outline:3px solid var(--forest);outline-offset:4px}small{display:block;margin-top:16px;font-size:14px;line-height:1.5}
   </style>
 </head>
 <body><main>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m2 2 20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 4-2m6 0a10 10 0 0 1 4 2M2 9a16 16 0 0 1 4-3m4-1a16 16 0 0 1 12 4"/><circle cx="12" cy="20" r="1"/></svg>
   <h1>Let’s reconnect.</h1>
-  <p>SafeCircle needs a connection to check your trip. Your last update may be out of date.</p>
-  <button type="button" onclick="location.reload()">Try again</button>
+  <p id="connection" role="status">Beacon needs a connection to check your trip. Your last update may be out of date.</p>
+  <button type="button" onclick="retryConnection(this)">Try again</button>
   <small>No new ride or arrival is confirmed while you’re offline.</small>
-</main></body></html>
+</main>
+<script>
+async function retryConnection(button) {
+  button.disabled = true;
+  document.getElementById('connection').textContent = 'Checking your connection…';
+  try {
+    const response = await fetch('/manifest.webmanifest', { cache: 'no-store', signal: AbortSignal.timeout(6000) });
+    if (!response.ok) throw new Error('Connection unavailable');
+    location.reload();
+  } catch {
+    document.getElementById('connection').textContent = 'Still offline or unable to connect. Check Wi-Fi or mobile data, then try again.';
+    button.disabled = false;
+  }
+}
+</script></body></html>

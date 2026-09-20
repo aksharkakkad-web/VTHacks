@@ -1,0 +1,191 @@
+{
+  "base": "http://localhost:3000",
+  "viewport": "390x844",
+  "shots": [
+    {
+      "id": "01",
+      "name": "01Splash / loading"
+    },
+    {
+      "id": "02",
+      "name": "02Welcome"
+    },
+    {
+      "id": "03",
+      "name": "03Set your home"
+    },
+    {
+      "id": "04",
+      "name": "04Your preferences"
+    },
+    {
+      "id": "05",
+      "name": "05Home / Get me home"
+    },
+    {
+      "id": "06",
+      "name": "06Checking providers"
+    },
+    {
+      "id": "07",
+      "name": "07Comparing routes"
+    },
+    {
+      "id": "08",
+      "name": "08Recommended plan"
+    },
+    {
+      "id": "09",
+      "name": "09Checking identity"
+    },
+    {
+      "id": "10",
+      "name": "10Authorizing trip"
+    },
+    {
+      "id": "11",
+      "name": "11Booking pending"
+    },
+    {
+      "id": "12",
+      "name": "12Pickup / boarding"
+    },
+    {
+      "id": "13",
+      "name": "13Travelling home"
+    },
+    {
+      "id": "14",
+      "name": "14You’re home"
+    },
+    {
+      "id": "W1",
+      "name": "W1Walking recommendation"
+    },
+    {
+      "id": "W2",
+      "name": "W2Walking active"
+    },
+    {
+      "id": "T1",
+      "name": "T1Transit recommendation"
+    },
+    {
+      "id": "T2",
+      "name": "T2Transit boarding"
+    },
+    {
+      "id": "T3",
+      "name": "T3Transit active"
+    },
+    {
+      "id": "R1",
+      "name": "R1Provider cancelled"
+    },
+    {
+      "id": "R2",
+      "name": "R2Reconcile old attempt"
+    },
+    {
+      "id": "R3",
+      "name": "R3Find replacement"
+    },
+    {
+      "id": "R4",
+      "name": "R4Approve replacement"
+    },
+    {
+      "id": "E1",
+      "name": "E1No suitable plan"
+    },
+    {
+      "id": "E2",
+      "name": "E2Offer changed"
+    },
+    {
+      "id": "E3",
+      "name": "E3Provider check failed"
+    },
+    {
+      "id": "E4",
+      "name": "E4Payment declined"
+    },
+    {
+      "id": "E5a",
+      "name": "E5aPayment unknown"
+    },
+    {
+      "id": "E5b",
+      "name": "E5bBooking unknown"
+    },
+    {
+      "id": "E6a",
+      "name": "E6aOffline"
+    },
+    {
+      "id": "E6b",
+      "name": "E6bReconnecting"
+    },
+    {
+      "id": "E7",
+      "name": "E7Session error"
+    },
+    {
+      "id": "E8",
+      "name": "E8Location unavailable"
+    },
+    {
+      "id": "E9",
+      "name": "E9Slow request"
+    },
+    {
+      "id": "E10",
+      "name": "E10Trip overdue"
+    },
+    {
+      "id": "E11a",
+      "name": "E11aCancellation pending"
+    },
+    {
+      "id": "E11b",
+      "name": "E11bCancellation confirmed"
+    },
+    {
+      "id": "S1",
+      "name": "S1Edit home"
+    },
+    {
+      "id": "S2",
+      "name": "S2Edit preferences"
+    },
+    {
+      "id": "S3",
+      "name": "S3Location explanation"
+    },
+    {
+      "id": "S4",
+      "name": "S4Trip context"
+    },
+    {
+      "id": "S5",
+      "name": "S5Other options"
+    },
+    {
+      "id": "S6",
+      "name": "S6Trip details"
+    },
+    {
+      "id": "S7",
+      "name": "S7Help"
+    },
+    {
+      "id": "S8",
+      "name": "S8Trusted contact"
+    },
+    {
+      "id": "S9",
+      "name": "S9Cancel confirmation"
+    }
+  ],
+  "errors": []
+}

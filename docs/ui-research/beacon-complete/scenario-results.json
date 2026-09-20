@@ -1,0 +1,9 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [],
+  "shots": [
+    "FAILURE"
+  ],
+  "errors": [],
+  "controls": []
+}

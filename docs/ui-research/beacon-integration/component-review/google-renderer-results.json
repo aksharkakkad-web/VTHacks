@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "name": "Missing SDK returns sdk-missing without drawing a fallback map",
+      "passed": true,
+      "detail": "sdk-missing"
+    },
+    {
+      "name": "Initialized SDK renders",
+      "passed": true,
+      "detail": "rendered"
+    },
+    {
+      "name": "Polyline receives every supplied vertex unchanged",
+      "passed": true,
+      "detail": [
+        {
+          "lat": 37.1,
+          "lng": -80.4
+        },
+        {
+          "lat": 37.15,
+          "lng": -80.35
+        },
+        {
+          "lat": 37.2,
+          "lng": -80.3
+        }
+      ]
+    },
+    {
+      "name": "Polyline disables geodesic smoothing",
+      "passed": true,
+      "detail": false
+    },
+    {
+      "name": "Bounds include every supplied vertex",
+      "passed": true,
+      "detail": 3
+    },
+    {
+      "name": "Cleanup detaches overlays and clears container",
+      "passed": true,
+      "detail": {
+        "detached": 3,
+        "replaced": true
+      }
+    }
+  ],
+  "failed": []
+}

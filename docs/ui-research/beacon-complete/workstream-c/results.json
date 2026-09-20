@@ -1,0 +1,25 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [],
+  "screens": [
+    {
+      "name": "360-walk-active",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-walk-cancel-sheet",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    }
+  ],
+  "errors": [],
+  "findings": [],
+  "failure": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-stage=\"cancelling\"]') to be visible\u001b[22m\n\n    at stage (/Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-trip-final.mjs:20:52)\n    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-trip-final.mjs:44:326"
+}

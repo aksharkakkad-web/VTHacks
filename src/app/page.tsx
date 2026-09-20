@@ -1,5 +1,1 @@
-import { SafeCircleApp } from "@/components/safecircle/safe-circle-app";
-
-export default function Home() {
-  return <SafeCircleApp />;
-}
+export { default } from "./onboarding/splash/page";

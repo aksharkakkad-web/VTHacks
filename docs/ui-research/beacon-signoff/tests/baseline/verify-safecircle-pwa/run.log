@@ -1,0 +1,16 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('link', { name: /Get started/i }) to be visible[22m
+
+    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-safecircle-pwa.mjs:8:264 {
+  log: [
+    "  - waiting for getByRole('link', { name: /Get started/i }) to be visible"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.3

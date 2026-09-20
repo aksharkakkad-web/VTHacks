@@ -10,18 +10,18 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "SafeCircle — Get me home",
+  title: "Beacon — Get me home",
   description:
-    "SafeCircle coordinates and verifies a simple way home across campus.",
-  applicationName: "SafeCircle",
+    "Get me home. Beacon handles the rest. A campus mobility demo.",
+  applicationName: "Beacon",
   icons: {
-    icon: "/safecircle-192.png",
-    apple: "/safecircle-180.png",
+    icon: "/beacon-192.png",
+    apple: "/beacon-180.png",
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "SafeCircle",
+    title: "Beacon",
   },
   formatDetection: {
     telephone: false,
@@ -32,7 +32,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#eef3f0",
+  themeColor: "#fbfaf6",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,0 +1,367 @@
+npm notice run beacon@0.1.0 lint
+npm notice run eslint
+TAP version 13
+# Subtest: decodePolyline preserves Google's documented latitude/longitude vector
+ok 1 - decodePolyline preserves Google's documented latitude/longitude vector
+  ---
+  duration_ms: 0.748916
+  type: 'test'
+  ...
+# Subtest: routePoints preserves backend coordinate ordering without rerouting
+ok 2 - routePoints preserves backend coordinate ordering without rerouting
+  ---
+  duration_ms: 0.161208
+  type: 'test'
+  ...
+# Subtest: route geometry rejects truncated and out-of-bounds untrusted payloads
+ok 3 - route geometry rejects truncated and out-of-bounds untrusted payloads
+  ---
+  duration_ms: 0.342709
+  type: 'test'
+  ...
+# Subtest: Google renderer uses only supplied vertices and fails safely without the SDK
+ok 4 - Google renderer uses only supplied vertices and fails safely without the SDK
+  ---
+  duration_ms: 0.242708
+  type: 'test'
+  ...
+# Subtest: provider source labels remain neutral and explicitly label local demo data
+ok 5 - provider source labels remain neutral and explicitly label local demo data
+  ---
+  duration_ms: 0.225291
+  type: 'test'
+  ...
+# Subtest: parseTripResponse rejects unknown, non-string, malformed, and invented-plan input
+ok 6 - parseTripResponse rejects unknown, non-string, malformed, and invented-plan input
+  ---
+  duration_ms: 0.353458
+  type: 'test'
+  ...
+# Subtest: applyTripResponse fails closed for stale, foreign, sample, and consent-breaking responses
+ok 7 - applyTripResponse fails closed for stale, foreign, sample, and consent-breaking responses
+  ---
+  duration_ms: 0.24775
+  type: 'test'
+  ...
+# Subtest: late transport responses cannot revive a home or setup session
+ok 8 - late transport responses cannot revive a home or setup session
+  ---
+  duration_ms: 0.055875
+  type: 'test'
+  ...
+# Subtest: applyTripResponse accepts only a newer matching authoritative update
+ok 9 - applyTripResponse accepts only a newer matching authoritative update
+  ---
+  duration_ms: 0.212042
+  type: 'test'
+  ...
+# Subtest: terminal arrival revokes sensitive access while retaining accepted booking history
+ok 10 - terminal arrival revokes sensitive access while retaining accepted booking history
+  ---
+  duration_ms: 0.252208
+  type: 'test'
+  ...
+# Subtest: stored integration mobility is revalidated before a refresh can use it
+ok 11 - stored integration mobility is revalidated before a refresh can use it
+  ---
+  duration_ms: 0.299167
+  type: 'test'
+  ...
+# Subtest: authoritative completed or missing walking data never becomes a new active walk
+ok 12 - authoritative completed or missing walking data never becomes a new active walk
+  ---
+  duration_ms: 0.125958
+  type: 'test'
+  ...
+# Subtest: walking and transit cancellations return locally without a nonexistent provider request
+ok 13 - walking and transit cancellations return locally without a nonexistent provider request
+  ---
+  duration_ms: 0.256125
+  type: 'test'
+  ...
+# Subtest: judge mobility samples stay explicit, candidate-bound, and free of invented driver identity
+ok 14 - judge mobility samples stay explicit, candidate-bound, and free of invented driver identity
+  ---
+  duration_ms: 0.521125
+  type: 'test'
+  ...
+# Subtest: onboarding destination and exact budget survive a new page
+ok 15 - onboarding destination and exact budget survive a new page
+  ---
+  duration_ms: 0.66375
+  type: 'test'
+  ...
+# Subtest: blocked storage keeps onboarding usable in memory and rejects invalid budgets
+ok 16 - blocked storage keeps onboarding usable in memory and rejects invalid budgets
+  ---
+  duration_ms: 0.134958
+  type: 'test'
+  ...
+# Subtest: refresh restores the same simulated booking and separate payment state
+ok 17 - refresh restores the same simulated booking and separate payment state
+  ---
+  duration_ms: 0.606166
+  type: 'test'
+  ...
+# Subtest: corrupt or foreign saved trip fails closed rather than silently starting another
+ok 18 - corrupt or foreign saved trip fails closed rather than silently starting another
+  ---
+  duration_ms: 0.450584
+  type: 'test'
+  ...
+# Subtest: finishing the local trip clears its saved snapshot
+ok 19 - finishing the local trip clears its saved snapshot
+  ---
+  duration_ms: 0.0935
+  type: 'test'
+  ...
+# Subtest: malformed saved presentation fields fail closed before rendering
+ok 20 - malformed saved presentation fields fail closed before rendering
+  ---
+  duration_ms: 0.2165
+  type: 'test'
+  ...
+# Subtest: backend status restoration requests fresh authority and does not persist route or driver payload
+ok 21 - backend status restoration requests fresh authority and does not persist route or driver payload
+  ---
+  duration_ms: 0.251
+  type: 'test'
+  ...
+# Subtest: stored mobility is validated before it can reach a map or ride card
+ok 22 - stored mobility is validated before it can reach a map or ride card
+  ---
+  duration_ms: 0.247667
+  type: 'test'
+  ...
+# Subtest: one teammate ready names the two still outstanding
+ok 23 - one teammate ready names the two still outstanding
+  ---
+  duration_ms: 2.219083
+  type: 'test'
+  ...
+# Subtest: all three ready calls a team sync
+ok 24 - all three ready calls a team sync
+  ---
+  duration_ms: 0.295458
+  type: 'test'
+  ...
+# Subtest: no changes produces no comment
+ok 25 - no changes produces no comment
+  ---
+  duration_ms: 0.059875
+  type: 'test'
+  ...
+# Subtest: invalid status is rejected
+ok 26 - invalid status is rejected
+  ---
+  duration_ms: 0.153
+  type: 'test'
+  ...
+# Subtest: home has no completed trust or trip events
+ok 27 - home has no completed trust or trip events
+  ---
+  duration_ms: 2.694542
+  type: 'test'
+  ...
+# Subtest: GO precedes identity and authorization; precise data is withheld until both pass
+ok 28 - GO precedes identity and authorization; precise data is withheld until both pass
+  ---
+  duration_ms: 0.583125
+  type: 'test'
+  ...
+# Subtest: cancellation revokes original access and independently verifies replacement
+ok 29 - cancellation revokes original access and independently verifies replacement
+  ---
+  duration_ms: 0.614125
+  type: 'test'
+  ...
+# Subtest: recovery never exceeds the approved budget
+ok 30 - recovery never exceeds the approved budget
+  ---
+  duration_ms: 0.27925
+  type: 'test'
+  ...
+# Subtest: initial and replacement arrival retain provider and revoke temporary access
+ok 31 - initial and replacement arrival retain provider and revoke temporary access
+  ---
+  duration_ms: 0.433125
+  type: 'test'
+  ...
+# Subtest: offline is a pause and reconnect resumes the same trip
+ok 32 - offline is a pause and reconnect resumes the same trip
+  ---
+  duration_ms: 0.178
+  type: 'test'
+  ...
+# Subtest: failed verification withholds data and has a retry path
+ok 33 - failed verification withholds data and has a retry path
+  ---
+  duration_ms: 0.234583
+  type: 'test'
+  ...
+# Subtest: invalid stored profiles fail closed instead of crashing startup
+ok 34 - invalid stored profiles fail closed instead of crashing startup
+  ---
+  duration_ms: 0.381709
+  type: 'test'
+  ...
+# Subtest: walking never impersonates a provider or releases pickup data
+ok 35 - walking never impersonates a provider or releases pickup data
+  ---
+  duration_ms: 0.87625
+  type: 'test'
+  ...
+# Subtest: recovery retry never resurrects a cancelled provider
+ok 36 - recovery retry never resurrects a cancelled provider
+  ---
+  duration_ms: 0.688
+  type: 'test'
+  ...
+# Subtest: repeated offline events preserve overdue resume and manual pause
+ok 37 - repeated offline events preserve overdue resume and manual pause
+  ---
+  duration_ms: 0.466583
+  type: 'test'
+  ...
+# Subtest: home cannot complete a trip; active constraints remain approved
+ok 38 - home cannot complete a trip; active constraints remain approved
+  ---
+  duration_ms: 0.166791
+  type: 'test'
+  ...
+# Subtest: finish clears pause, interrupted states, and prior trip data
+ok 39 - finish clears pause, interrupted states, and prior trip data
+  ---
+  duration_ms: 0.091583
+  type: 'test'
+  ...
+# Subtest: cancelled route disappears and recoverable states are not failures
+ok 40 - cancelled route disappears and recoverable states are not failures
+  ---
+  duration_ms: 0.261792
+  type: 'test'
+  ...
+# Subtest: empty context does not pretend a temporary preference was applied
+ok 41 - empty context does not pretend a temporary preference was applied
+  ---
+  duration_ms: 0.484334
+  type: 'test'
+  ...
+# Subtest: judge shortcuts use the same constraints and verification invariants
+ok 42 - judge shortcuts use the same constraints and verification invariants
+  ---
+  duration_ms: 0.440584
+  type: 'test'
+  ...
+# Subtest: profile actions validate storage data at the state boundary
+ok 43 - profile actions validate storage data at the state boundary
+  ---
+  duration_ms: 0.093792
+  type: 'test'
+  ...
+# Subtest: judge controls cannot skip required setup or manufacture a trip without a profile
+ok 44 - judge controls cannot skip required setup or manufacture a trip without a profile
+  ---
+  duration_ms: 0.072084
+  type: 'test'
+  ...
+# Subtest: reset returns to usable setup rather than waiting forever for initial restoration
+ok 45 - reset returns to usable setup rather than waiting forever for initial restoration
+  ---
+  duration_ms: 0.048291
+  type: 'test'
+  ...
+# Subtest: search never exposes a selected provider or recommendation before evaluation finishes
+ok 46 - search never exposes a selected provider or recommendation before evaluation finishes
+  ---
+  duration_ms: 0.10825
+  type: 'test'
+  ...
+# Subtest: overdue preserves a stale trip snapshot and recorded update without inventing GPS
+ok 47 - overdue preserves a stale trip snapshot and recorded update without inventing GPS
+  ---
+  duration_ms: 0.126541
+  type: 'test'
+  ...
+# Subtest: replacement pauses for fresh exact-offer consent and cannot advance itself
+ok 48 - replacement pauses for fresh exact-offer consent and cannot advance itself
+  ---
+  duration_ms: 0.169167
+  type: 'test'
+  ...
+# Subtest: repeated start and confirmation taps produce one attempt
+ok 49 - repeated start and confirmation taps produce one attempt
+  ---
+  duration_ms: 0.121125
+  type: 'test'
+  ...
+# Subtest: unknown payment and booking retries preserve the attempt and await a response
+ok 50 - unknown payment and booking retries preserve the attempt and await a response
+  ---
+  duration_ms: 0.178292
+  type: 'test'
+  ...
+# Subtest: expired offers cannot book; refreshed offers require confirmation
+ok 51 - expired offers cannot book; refreshed offers require confirmation
+  ---
+  duration_ms: 0.162542
+  type: 'test'
+  ...
+# Subtest: scheduled transit skips booking, payment and precise-location release
+ok 52 - scheduled transit skips booking, payment and precise-location release
+  ---
+  duration_ms: 0.2515
+  type: 'test'
+  ...
+# Subtest: offline blocks new confirmations, cancellations and arrival
+ok 53 - offline blocks new confirmations, cancellations and arrival
+  ---
+  duration_ms: 0.076334
+  type: 'test'
+  ...
+1..53
+# tests 53
+# suites 0
+# pass 53
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 275.275917
+npm notice run beacon@0.1.0 typecheck
+npm notice run next typegen && tsc --noEmit
+Generating route types...
+✓ Types generated successfully
+npm notice run beacon@0.1.0 build
+npm notice run next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 11ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 701ms
+  Running TypeScript ...
+  Finished TypeScript in 1604ms ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/13) ...
+  Generating static pages using 9 workers (3/13) 
+  Generating static pages using 9 workers (6/13) 
+  Generating static pages using 9 workers (9/13) 
+✓ Generating static pages using 9 workers (13/13) in 170ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /app
+├ ○ /beacon-system
+├ ○ /demo
+├ ○ /manifest.webmanifest
+├ ○ /onboarding/home
+├ ○ /onboarding/intro
+├ ○ /onboarding/preferences
+├ ○ /onboarding/splash
+└ ○ /onboarding/welcome
+
+
+○  (Static)  prerendered as static content
+

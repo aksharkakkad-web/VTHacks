@@ -1,0 +1,143 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [
+    {
+      "name": "normal journey reaches recommendation from transport responses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Screen 08 uses exact heading",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ride response supplies simulated pickup details",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "pickup details include a server-supplied update time",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal pickup has no navigation map",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal journey reaches active ride status",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal journey reaches arrival",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal journey reaches recommendation from transport responses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Screen 08 uses exact heading",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "provider cancellation produces a fresh replacement offer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "replacement requires fresh confirmation before pickup",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "replacement journey reaches arrival",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal journey reaches recommendation from transport responses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Screen 08 uses exact heading",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cancellation remains pending before provider response",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cancellation reaches a terminal response",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cancellation keeps the same attempt correlation",
+      "pass": true,
+      "detail": "demo-attempt-1 -> demo-attempt-1"
+    },
+    {
+      "name": "normal journey reaches recommendation from transport responses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Screen 08 uses exact heading",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390px phone viewport has no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normal flow does not require opening Judge controls",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no page errors",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no console errors",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no failed browser requests",
+      "pass": true,
+      "detail": "[]"
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "requestFailures": [],
+  "screenshots": [
+    "docs/ui-research/beacon-signoff/screenshots/normal-01-recommendation.png",
+    "docs/ui-research/beacon-signoff/screenshots/normal-02-waiting.png",
+    "docs/ui-research/beacon-signoff/screenshots/normal-03-arrival.png",
+    "docs/ui-research/beacon-signoff/screenshots/normal-01-recommendation.png",
+    "docs/ui-research/beacon-signoff/screenshots/recovery-replacement.png",
+    "docs/ui-research/beacon-signoff/screenshots/normal-01-recommendation.png",
+    "docs/ui-research/beacon-signoff/screenshots/cancellation-terminal.png",
+    "docs/ui-research/beacon-signoff/screenshots/normal-01-recommendation.png"
+  ],
+  "recordings": [
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@a5829241c73e171fcde9722fb16bfd7c.webm",
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@af705cc507e4a7ecc310cf58ceec4481.webm",
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@1e4867220978cf0d20a5d3eba2895081.webm"
+  ]
+}

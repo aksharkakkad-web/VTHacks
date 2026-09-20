@@ -1,0 +1,74 @@
+[
+  {
+    "file": "verify-beacon-complete.mjs",
+    "code": 1,
+    "durationMs": 32435,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-complete/run.log"
+  },
+  {
+    "file": "verify-beacon-flow.mjs",
+    "code": 1,
+    "durationMs": 19466,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-flow/run.log"
+  },
+  {
+    "file": "verify-beacon-gallery.mjs",
+    "code": 0,
+    "durationMs": 13696,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-gallery/run.log"
+  },
+  {
+    "file": "verify-beacon-integration.mjs",
+    "code": 1,
+    "durationMs": 36791,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-integration/run.log"
+  },
+  {
+    "file": "verify-beacon-planning-final.mjs",
+    "code": 1,
+    "durationMs": 19311,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-planning-final/run.log"
+  },
+  {
+    "file": "verify-beacon-preferences.mjs",
+    "code": 1,
+    "durationMs": 31493,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-preferences/run.log"
+  },
+  {
+    "file": "verify-beacon-scenarios.mjs",
+    "code": 1,
+    "durationMs": 21436,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-scenarios/run.log"
+  },
+  {
+    "file": "verify-beacon-setup-final.mjs",
+    "code": 1,
+    "durationMs": 30864,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-setup-final/run.log"
+  },
+  {
+    "file": "verify-beacon-sheets.mjs",
+    "code": 1,
+    "durationMs": 31004,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-sheets/run.log"
+  },
+  {
+    "file": "verify-beacon-trip-final.mjs",
+    "code": 1,
+    "durationMs": 13197,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-beacon-trip-final/run.log"
+  },
+  {
+    "file": "verify-safecircle-pwa.mjs",
+    "code": 1,
+    "durationMs": 16344,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-safecircle-pwa/run.log"
+  },
+  {
+    "file": "verify-safecircle.mjs",
+    "code": 1,
+    "durationMs": 31330,
+    "log": "docs/ui-research/beacon-signoff/tests/baseline/verify-safecircle/run.log"
+  }
+]

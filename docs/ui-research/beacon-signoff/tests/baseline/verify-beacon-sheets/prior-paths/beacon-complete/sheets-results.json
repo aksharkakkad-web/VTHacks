@@ -1,0 +1,6 @@
+{
+  "checks": [],
+  "errors": [
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\n\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n"
+  ]
+}

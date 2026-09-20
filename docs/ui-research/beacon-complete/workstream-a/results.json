@@ -1,0 +1,460 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [
+    {
+      "name": "360x800 splash honors reduced motion",
+      "passed": true,
+      "detail": "none"
+    },
+    {
+      "name": "360x800 01-splash no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 new user routes to welcome",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 welcome has one setup path",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 02-welcome targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 02-welcome input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 02-welcome no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 03-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 03-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 03-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 home draft saved",
+      "passed": true,
+      "detail": "{\"homeName\":\"Pritchard Hall\",\"homeAddress\":\"Virginia Tech, Blacksburg, VA\"}"
+    },
+    {
+      "name": "360x800 04-preferences targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 04-preferences input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 04-preferences no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 05-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 05-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360x800 05-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 splash honors reduced motion",
+      "passed": true,
+      "detail": "none"
+    },
+    {
+      "name": "390x844 01-splash no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 new user routes to welcome",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 welcome has one setup path",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 02-welcome targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 02-welcome input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 02-welcome no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Manual home rejects blank values and keeps dialog open",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-manual-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-manual-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-manual-invalid no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Manual home accepts valid label and address",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 03-manual-selected no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 home draft saved",
+      "passed": true,
+      "detail": "{\"homeName\":\"Hahn Hall South\",\"homeAddress\":\"800 Washington Street SW, Blacksburg, VA\"}"
+    },
+    {
+      "name": "390x844 04-preferences targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 04-preferences input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 04-preferences no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Preferences reject blank budget",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Preferences support keyboard movement",
+      "passed": true,
+      "detail": "beacon-budget-slider"
+    },
+    {
+      "name": "390x844 05-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 05-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 05-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Profile preferences reject blank budget without closing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Profile budget edit persists",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Profile home edit rejects invalid values without closing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Profile home edit survives refresh",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 05-returning-edited no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Saved home draft survives setup refresh",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Returning user skips onboarding",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 splash honors reduced motion",
+      "passed": true,
+      "detail": "none"
+    },
+    {
+      "name": "393x852 01-splash no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 new user routes to welcome",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 welcome has one setup path",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 02-welcome targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 02-welcome input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 02-welcome no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 03-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 03-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 03-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 home draft saved",
+      "passed": true,
+      "detail": "{\"homeName\":\"Pritchard Hall\",\"homeAddress\":\"Virginia Tech, Blacksburg, VA\"}"
+    },
+    {
+      "name": "393x852 04-preferences targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 04-preferences input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 04-preferences no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 05-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 05-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "393x852 05-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 splash honors reduced motion",
+      "passed": true,
+      "detail": "none"
+    },
+    {
+      "name": "430x932 01-splash no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 new user routes to welcome",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 welcome has one setup path",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 02-welcome targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 02-welcome input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 02-welcome no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 03-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 03-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 03-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 home draft saved",
+      "passed": true,
+      "detail": "{\"homeName\":\"Pritchard Hall\",\"homeAddress\":\"Virginia Tech, Blacksburg, VA\"}"
+    },
+    {
+      "name": "430x932 04-preferences targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 04-preferences input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 04-preferences no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 05-home targets at least 44px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 05-home input font at least 16px",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 05-home no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No page errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "No console errors",
+      "passed": true,
+      "detail": "[]"
+    }
+  ],
+  "screenshots": [
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/360x800-01-splash.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/360x800-02-welcome.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/360x800-03-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/360x800-04-preferences.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/360x800-05-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-01-splash.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-02-welcome.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-03-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-03-manual-invalid.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-03-manual-selected.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-04-preferences.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-05-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/390x844-05-returning-edited.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/393x852-01-splash.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/393x852-02-welcome.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/393x852-03-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/393x852-04-preferences.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/393x852-05-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/430x932-01-splash.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/430x932-02-welcome.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/430x932-03-home.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/430x932-04-preferences.png",
+    "docs/ui-research/beacon-complete/workstream-a/screenshots/430x932-05-home.png"
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "targetIssues": [],
+  "inputFontIssues": [],
+  "notes": []
+}

@@ -1,0 +1,65 @@
+{
+  "evidence": [
+    {
+      "name": "360x800-booking",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "stage": "coordinating-initial",
+      "smallControls": 0
+    },
+    {
+      "name": "390x844-authorization",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "stage": "authorizing-initial",
+      "smallControls": 0
+    },
+    {
+      "name": "393x852-pickup-cancel",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "stage": "waiting-initial",
+      "smallControls": 0
+    },
+    {
+      "name": "430x932-travelling",
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "stage": "in-trip-initial",
+      "smallControls": 0
+    },
+    {
+      "name": "390x844-location-error",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "stage": "location-error",
+      "smallControls": 0
+    },
+    {
+      "name": "1440x1000-gallery",
+      "modes": [
+        "walking",
+        "transit"
+      ],
+      "sheets": [
+        "help"
+      ],
+      "variants": [
+        "long-content",
+        "reduced-motion",
+        "replacement"
+      ]
+    }
+  ],
+  "errors": []
+}

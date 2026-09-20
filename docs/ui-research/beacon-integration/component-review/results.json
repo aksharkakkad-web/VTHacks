@@ -1,0 +1,459 @@
+{
+  "base": "http://localhost:3101/beacon-system",
+  "checks": [
+    {
+      "name": "360 walking-home no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 walking-home controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 walking-home map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "360 walking-home reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 walking-pickup no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 walking-pickup controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 walking-pickup map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "360 walking-pickup reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 walking-stop no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 walking-stop controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 walking-stop map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "360 walking-stop reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 route-loading no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 route-loading controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 route-loading map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "360 route-loading reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 route-unavailable no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 route-unavailable controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 route-unavailable map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "360 route-unavailable reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 unavailable route has no fake map",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360 route-stale no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 route-stale controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 route-stale map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "360 route-stale reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 stale fixture is clearly non-navigation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360 ride-waiting no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 ride-waiting controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 ride-waiting map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "360 ride-waiting reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 simulated source disclosed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360 ride-riding no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 ride-riding controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 ride-riding map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "360 ride-riding reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 active ride has arrival action",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360 source-unknown no horizontal overflow",
+      "passed": true,
+      "detail": "360/360"
+    },
+    {
+      "name": "360 source-unknown controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "360 source-unknown map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "360 source-unknown reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "360 unknown source stays unconfirmed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390 walking-home no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 walking-home controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 walking-home map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "390 walking-home reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 walking-pickup no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 walking-pickup controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 walking-pickup map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "390 walking-pickup reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 walking-stop no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 walking-stop controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 walking-stop map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "390 walking-stop reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 route-loading no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 route-loading controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 route-loading map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "390 route-loading reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 route-unavailable no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 route-unavailable controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 route-unavailable map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "390 route-unavailable reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 unavailable route has no fake map",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390 route-stale no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 route-stale controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 route-stale map policy",
+      "passed": true,
+      "detail": "maps=1"
+    },
+    {
+      "name": "390 route-stale reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 stale fixture is clearly non-navigation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390 ride-waiting no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 ride-waiting controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 ride-waiting map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "390 ride-waiting reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 simulated source disclosed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390 ride-riding no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 ride-riding controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 ride-riding map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "390 ride-riding reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 active ride has arrival action",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390 source-unknown no horizontal overflow",
+      "passed": true,
+      "detail": "390/390"
+    },
+    {
+      "name": "390 source-unknown controls >=44",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "390 source-unknown map policy",
+      "passed": true,
+      "detail": "maps=0"
+    },
+    {
+      "name": "390 source-unknown reduced motion settled",
+      "passed": true,
+      "detail": "animations=0"
+    },
+    {
+      "name": "390 unknown source stays unconfirmed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "360 stale footer remains reachable by scrolling",
+      "passed": true,
+      "detail": {
+        "x": 95.953125,
+        "y": 738.421875,
+        "width": 168.09375,
+        "height": 44
+      }
+    },
+    {
+      "name": "390 stale footer remains reachable by scrolling",
+      "passed": true,
+      "detail": {
+        "x": 110.953125,
+        "y": 782.1875,
+        "width": 168.09375,
+        "height": 44
+      }
+    }
+  ],
+  "screens": [
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-walking-home.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-walking-pickup.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-walking-stop.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-route-loading.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-route-unavailable.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-route-stale.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-ride-waiting.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-ride-riding.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-source-unknown.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-walking-home.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-walking-pickup.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-walking-stop.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-route-loading.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-route-unavailable.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-route-stale.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-ride-waiting.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-ride-riding.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-source-unknown.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/360x800-route-stale-footer.png",
+    "docs/ui-research/beacon-integration/component-review/screenshots/390x844-route-stale-footer.png"
+  ],
+  "errors": [],
+  "findings": []
+}
