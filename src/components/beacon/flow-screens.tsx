@@ -349,6 +349,7 @@ export function BeaconHomeScreen({
   toLocationId,
   onFromLocationChange,
   onToLocationChange,
+  routeSelectionDisabled = false,
   onStart,
   onEditProfile,
 }: {
@@ -356,6 +357,7 @@ export function BeaconHomeScreen({
   campusLocations: readonly { id: string; name: string; address: string; category?: string }[];
   fromLocationId: string;
   toLocationId: string;
+  routeSelectionDisabled?: boolean;
   onFromLocationChange: (id: string) => void;
   onToLocationChange: (id: string) => void;
   onStart: VoidCallback;
@@ -390,7 +392,7 @@ export function BeaconHomeScreen({
                 id="beacon-from-location"
                 value={fromLocation?.id ?? ""}
                 onChange={(event) => onFromLocationChange(event.target.value)}
-                disabled={!hasLocations}
+                disabled={routeSelectionDisabled || !hasLocations}
                 aria-describedby="beacon-from-address"
               >
                 {!fromLocation ? <option value="">Choose a campus location</option> : null}
@@ -412,7 +414,7 @@ export function BeaconHomeScreen({
                 id="beacon-to-location"
                 value={toLocation?.id ?? ""}
                 onChange={(event) => onToLocationChange(event.target.value)}
-                disabled={!hasLocations}
+                disabled={routeSelectionDisabled || !hasLocations}
                 aria-describedby="beacon-to-address"
               >
                 {!toLocation ? <option value="">Choose a campus location</option> : null}

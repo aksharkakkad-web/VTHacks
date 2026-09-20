@@ -1,6 +1,12 @@
 # Beacon
 
-Beacon is a mobile-first campus mobility coordinator for the outcome **“Get me home.”** Independent provider agents offer plans, Databricks recommends one, the student confirms, and GoDaddy ANS verifies the selected provider before precise trip data is shared. If a provider fails, Beacon replans. This repository is the **starter foundation**, not a working trip flow or safety service yet.
+Beacon is a mobile-first campus mobility coordinator for the outcome **“Get me home.”** The frontend demo walks through transit and rideshare journeys using simulated trip updates. The connected application separately coordinates provider agents, recommendations, verification, and recovery.
+
+## Present the frontend demo
+
+Open `/demo` for the complete clickable walkthrough using the existing Beacon screens. Choose Transit or Rideshare, confirm the plan, and use the visible progress controls to reach pickup, boarding, travel, and arrival. At the arrival check, choose home or destination not reached to show the Telegram alert preview, then restart for another run.
+
+The walkthrough runs locally in the browser without planner pairing or provider credentials. Transportation and the Telegram message are simulated; no real notification is sent. The connected application remains at `/app`, and `/demo?transport=live` explicitly opens its connected demo.
 
 ## Run locally
 
@@ -12,9 +18,9 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open <http://localhost:3000>. No sponsor credentials are required to start the foundation app. Put real values only in `.env.local`, which is ignored by Git. Do not put server credentials in `NEXT_PUBLIC_*` variables.
+Open <http://localhost:3000/demo>. No sponsor credentials are required for the frontend walkthrough. Put real values only in `.env.local`, which is ignored by Git. Do not put server credentials in `NEXT_PUBLIC_*` variables.
 
-Before a PR, run `./scripts/pre-pr.sh`. It runs lint, typecheck, and production build. `npm run dev` starts the Next.js app only; trip APIs and sponsor integrations are not implemented yet.
+Before a PR, run `./scripts/pre-pr.sh`. It runs lint, core tests, typecheck, and production build. Connected trip APIs require their documented backend configuration; the frontend walkthrough does not.
 
 ## Team kickoff
 
@@ -27,19 +33,19 @@ Akshar's [Databricks track PRD and build contract](docs/DATABRICKS_TRACK_PRD.md)
 ## Repository layout
 
 ```text
-src/app/                   Next.js App Router and eventual PWA UI
-src/components/            shadcn/ui component foundation
+src/app/                   Next.js App Router, PWA UI, and API routes
+src/components/            Beacon screens and shared UI components
 src/types/                 shared CandidatePlan, Recommendation, Trip types
-src/agents/                provider and student-agent track (planned)
-src/integrations/          ANS, Databricks, maps, notifications (planned)
-src/lib/                   policy, trip state, demo helpers (planned)
-databricks/                notebooks and SQL (planned)
+src/agents/                provider and student-agent coordination
+src/integrations/          ANS, Databricks, maps, notifications
+src/lib/                   policy, trip state, demo helpers
+databricks/                notebooks and SQL
 docs/                      PRD, kickoff, phases, workflow, team contract
 .github/                   CI, ownership, PR template
 scripts/                   task and pre-PR helpers
 ```
 
-The empty track directories will be created by their owners as implementation begins. Shared TypeScript contracts exist now; API paths are listed in `docs/TEAM_CONTRACT.md` but no trip endpoints exist yet.
+Shared TypeScript contracts are in `src/types`. Connected trip API behavior is documented in `src/agents/API.md`; the frontend walkthrough uses browser-local simulation state.
 
 ## GitHub setup remaining
 
