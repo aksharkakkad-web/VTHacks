@@ -1,0 +1,17 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'Edit', exact: true })[22m
+
+    at tap (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-sheets.mjs:2:581)
+    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-sheets.mjs:4:279 {
+  log: [
+    "  - waiting for getByRole('button', { name: 'Edit', exact: true })"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.3

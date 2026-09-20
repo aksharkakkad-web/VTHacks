@@ -1,0 +1,27 @@
+{
+  "mobile": [
+    {
+      "width": 360,
+      "height": 800,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "width": 393,
+      "height": 852,
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "navSelections": 46,
+  "sheetsClosedAndReopened": 8
+}

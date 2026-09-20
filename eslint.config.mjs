@@ -9,9 +9,15 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    ".next-beacon/**",
+    ".next-beacon-dev/**",
+    ".next-browser-backend/**",
+    ".next-gallery-check/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Independent Remotion asset project has its own dependency/config boundary.
+    "videos/beacon-splash-remotion/**",
   ]),
 ]);
 

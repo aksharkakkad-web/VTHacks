@@ -1,0 +1,214 @@
+{
+  "base": "http://localhost:3123",
+  "checks": [
+    "360: walk cancellation immediately closes local plan without fictional provider cancellation",
+    "360: transit cancellation immediately closes local plan without fictional provider cancellation",
+    "360: booking-unknown explains same-attempt reconciliation and offers no new booking",
+    "360: payment-unknown explains same-attempt reconciliation and offers no new booking",
+    "360: help explains boundaries and exposes verified emergency/nonemergency links; no calls placed",
+    "360: long walking destination wraps; trip details and controls remain at least 44px with reduced motion",
+    "393: walk cancellation immediately closes local plan without fictional provider cancellation",
+    "393: transit cancellation immediately closes local plan without fictional provider cancellation",
+    "393: booking-unknown explains same-attempt reconciliation and offers no new booking",
+    "393: payment-unknown explains same-attempt reconciliation and offers no new booking",
+    "393: help explains boundaries and exposes verified emergency/nonemergency links; no calls placed",
+    "393: long walking destination wraps; trip details and controls remain at least 44px with reduced motion",
+    "No browser console errors or page exceptions"
+  ],
+  "screens": [
+    {
+      "name": "360-walk-active",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-walk-cancel-sheet",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-walk-stopped",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-transit-active",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-transit-cancel-sheet",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-transit-stopped",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-booking-unknown",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-payment-unknown",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-help",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-arrival",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-long-walking-destination",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "360-trip-details",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-walk-active",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-walk-cancel-sheet",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-walk-stopped",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-transit-active",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-transit-cancel-sheet",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-transit-stopped",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-booking-unknown",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-payment-unknown",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-help",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-arrival",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-long-walking-destination",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    },
+    {
+      "name": "393-trip-details",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "small": [],
+      "animations": []
+    }
+  ],
+  "errors": [],
+  "findings": []
+}

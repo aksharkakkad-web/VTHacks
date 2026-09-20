@@ -1,0 +1,202 @@
+{
+  "startedAt": "2026-09-20T01:47:56.763Z",
+  "base": "http://localhost:3000",
+  "runtime": "production",
+  "modelInference": "codex_subscription",
+  "ranking": "offline",
+  "providers": "simulated",
+  "notifications": "simulated",
+  "checks": [
+    "real laptop model supplies the recommendation explanation",
+    "ranking remains honestly offline",
+    "grounded model explanation is visible in the offer",
+    "default saved preferences produce a ride offer",
+    "confirmation action is reachable inside the 390x844 viewport",
+    "UI consent produces a simulated provider booking",
+    "manual arrival is confirmed by backend",
+    "Finish returns Home",
+    "no page or console errors",
+    "no failed browser requests",
+    "no backend HTTP errors"
+  ],
+  "screenshots": [
+    "docs/ui-research/backend-integration/real-model/recommendation.png",
+    "docs/ui-research/backend-integration/real-model/recommendation-actions.png",
+    "docs/ui-research/backend-integration/real-model/pickup.png",
+    "docs/ui-research/backend-integration/real-model/arrival.png",
+    "docs/ui-research/backend-integration/real-model/finished-home.png"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "abortedRequests": [],
+  "network": [
+    {
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/confirm",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/arrive",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/trips/2dfb3220-a1d0-4175-9001-17db5b3f1d88/journey",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "planning": {
+    "phase": "ready",
+    "model": "gpt-5.6-sol",
+    "modelSource": "codex_subscription",
+    "explanationSource": "llm_grounded"
+  },
+  "decision": {
+    "engine": "local_fallback",
+    "selectedKind": "ride",
+    "alternativeCount": 3
+  },
+  "status": "passed",
+  "finishedAt": "2026-09-20T01:48:23.250Z"
+}

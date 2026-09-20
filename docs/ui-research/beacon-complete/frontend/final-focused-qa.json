@@ -1,0 +1,15 @@
+{
+  "manualHome": {
+    "invalidStayedOpen": true,
+    "validSelected": true,
+    "persisted": {
+      "homeName": "Hahn Hall South",
+      "homeAddress": "800 Washington Street SW, Blacksburg, VA"
+    },
+    "viewport": "390x844"
+  },
+  "gallery360": {
+    "overflow": false
+  },
+  "errors": []
+}

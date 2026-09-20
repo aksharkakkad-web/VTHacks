@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1035, height=990" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      #stage {
+        position: relative;
+        width: 1035px;
+        height: 990px;
+        overflow: hidden;
+        isolation: isolate;
+        background: transparent;
+      }
+
+      .clip,
+      .brand-layer,
+      #beacon-route-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .clip {
+        pointer-events: none;
+      }
+
+      .brand-layer {
+        display: block;
+        object-fit: fill;
+        user-select: none;
+      }
+
+      #base-lockup {
+        z-index: 0;
+      }
+
+      #route-artwork {
+        z-index: 1;
+      }
+
+      #destination-pin {
+        z-index: 2;
+      }
+
+      #beacon-route-svg {
+        display: block;
+        overflow: visible;
+      }
+
+      #pin-artwork {
+        transform-origin: 62% 35%;
+        will-change: transform;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="beacon-splash"
+      data-start="0"
+      data-duration="3.2"
+      data-fps="60"
+      data-width="1035"
+      data-height="990"
+    >
+      <div
+        id="base-lockup"
+        class="clip"
+        data-start="0"
+        data-duration="3.2"
+        data-track-index="0"
+      >
+        <img
+          id="base-artwork"
+          class="brand-layer"
+          src="assets/beacon-intro-base.png"
+          alt=""
+          draggable="false"
+        />
+      </div>
+
+      <div
+        id="route-artwork"
+        class="clip"
+        data-start="0.35"
+        data-duration="2.85"
+        data-track-index="1"
+      >
+        <svg
+          id="beacon-route-svg"
+          viewBox="0 0 1035 990"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <mask
+              id="route-reveal-mask"
+              x="0"
+              y="0"
+              width="1035"
+              height="990"
+              maskUnits="userSpaceOnUse"
+              maskContentUnits="userSpaceOnUse"
+              mask-type="luminance"
+            >
+              <path
+                id="route-reveal-path"
+                d="M 280 650 C 330 550 445 455 635 355"
+                pathLength="1"
+                fill="none"
+                stroke="white"
+                stroke-width="250"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-dasharray="1"
+                stroke-dashoffset="1"
+              />
+            </mask>
+          </defs>
+          <image
+            id="road-pixels"
+            href="assets/beacon-intro-road.png"
+            x="0"
+            y="0"
+            width="1035"
+            height="990"
+            preserveAspectRatio="none"
+            mask="url(#route-reveal-mask)"
+          />
+          <path
+            d="M 285 545 L 300 515 C 330 535 360 560 385 580"
+            fill="none"
+            stroke="#16282a"
+            stroke-width="7"
+            stroke-linecap="round"
+            mask="url(#route-reveal-mask)"
+          />
+        </svg>
+      </div>
+
+      <div
+        id="destination-pin"
+        class="clip"
+        data-start="1.7"
+        data-duration="1.5"
+        data-track-index="2"
+      >
+        <svg
+          id="pin-artwork"
+          class="brand-layer"
+          viewBox="0 0 1035 990"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <clipPath id="pin-reveal-clip" clipPathUnits="userSpaceOnUse">
+              <circle id="pin-reveal-circle" cx="642" cy="347" r="0" />
+            </clipPath>
+          </defs>
+          <image
+            href="assets/beacon-intro-pin.png"
+            x="0"
+            y="0"
+            width="1035"
+            height="990"
+            preserveAspectRatio="none"
+            clip-path="url(#pin-reveal-clip)"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      function cubicBezier(x1, y1, x2, y2) {
+        const sample = (t, a1, a2) => {
+          const c = 3 * a1;
+          const b = 3 * (a2 - a1) - c;
+          const a = 1 - c - b;
+          return ((a * t + b) * t + c) * t;
+        };
+        const slope = (t, a1, a2) => {
+          const c = 3 * a1;
+          const b = 3 * (a2 - a1) - c;
+          const a = 1 - c - b;
+          return 3 * a * t * t + 2 * b * t + c;
+        };
+
+        return (progress) => {
+          if (progress <= 0 || progress >= 1) return progress;
+
+          let t = progress;
+          for (let i = 0; i < 8; i += 1) {
+            const currentSlope = slope(t, x1, x2);
+            if (Math.abs(currentSlope) < 1e-7) break;
+            t -= (sample(t, x1, x2) - progress) / currentSlope;
+          }
+
+          if (t < 0 || t > 1) {
+            let low = 0;
+            let high = 1;
+            t = progress;
+            for (let i = 0; i < 12; i += 1) {
+              if (sample(t, x1, x2) < progress) low = t;
+              else high = t;
+              t = (low + high) / 2;
+            }
+          }
+
+          return sample(t, y1, y2);
+        };
+      }
+
+      const routeEase = cubicBezier(0.45, 0, 0.12, 1);
+      const settleEase = cubicBezier(0.16, 1, 0.3, 1);
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#route-reveal-path",
+        { attr: { "stroke-dashoffset": 1 } },
+        {
+          attr: { "stroke-dashoffset": 0 },
+          duration: 1.6,
+          ease: routeEase,
+          immediateRender: true,
+        },
+        0.35,
+      );
+
+      tl.fromTo(
+        "#pin-reveal-circle",
+        { attr: { r: 0 } },
+        {
+          attr: { r: 1450 },
+          duration: 0.2,
+          ease: settleEase,
+          immediateRender: true,
+        },
+        1.7,
+      );
+
+      tl.fromTo(
+        "#pin-artwork",
+        { y: 16, scale: 0.96 },
+        {
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: settleEase,
+          immediateRender: true,
+        },
+        1.7,
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["beacon-splash"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

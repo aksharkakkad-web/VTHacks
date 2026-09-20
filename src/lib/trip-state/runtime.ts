@@ -49,7 +49,7 @@ export function getRuntime(): Runtime {
     // ANS discovery must never cause that credential to be sent to a third party.
     provider: (descriptor, identity) => uber && descriptor.source === 'demo' && descriptor.id === uber.descriptor.id && descriptor.baseUrl === uber.descriptor.baseUrl
       ? uber : new HttpProvider(descriptor, { allowLocalDemo: demo, pin: identity?.serverFingerprint, token: providers.tokenFor(descriptor) ?? scopedProviderToken(descriptor, identity, process.env.BEACON_PROVIDER_CREDENTIALS) }),
-    recommend: decisionRecommendation(evaluateTrip, (plans, context, signals, options) => evaluateTripIntelligence(plans, context, signals, { ...options, enableAi: process.env.BEACON_PLANNER_MODE !== 'codex_laptop' })),
+    recommend: decisionRecommendation(evaluateTrip, (plans, context, signals, options) => evaluateTripIntelligence(plans, context, signals, { ...options, enableAi: false })),
     getCompleteJourney,
     journeyRideBinding: network => uber && network.offer.providerId === uber.descriptor.id ? uber.journeyRideBinding(network) : syntheticBinding(network),
     publicTripOptions: getPublicTripOptions,

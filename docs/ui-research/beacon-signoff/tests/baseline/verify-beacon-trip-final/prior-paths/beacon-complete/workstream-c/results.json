@@ -1,0 +1,14 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [],
+  "screens": [],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\n\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found"
+  ],
+  "findings": [],
+  "failure": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-stage=\"in-trip-initial\"]') to be visible\u001b[22m\n\n    at stage (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-trip-final.mjs:20:52)\n    at seed (/Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-trip-final.mjs:23:304)\n    at async file:///Users/rishits/Documents/ChatGPT/vthacks/scripts/.baseline-verify-beacon-trip-final.mjs:43:225"
+}

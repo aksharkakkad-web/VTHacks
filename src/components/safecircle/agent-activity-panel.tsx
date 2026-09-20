@@ -51,7 +51,7 @@ export function AgentActivityPanel({ events, planning }: { events: AgentActivity
       </div>
       <p className="sc-activity-note">Pausing only stops this panel from scrolling. Trip coordination continues on the server.</p>
       <div className="sc-source-strip" aria-label="Connected source status">
-        <span><strong>Worker</strong>{planning?.worker ?? "not started"}</span>
+        <span><strong>Worker</strong>{planning?.worker === "not_required" ? "not required" : planning?.worker ?? "not started"}</span>
         <span><strong>Model</strong>{planning?.model ?? (planning?.modelSource === "codex_subscription" ? "Connected subscription" : "none")}</span>
         <span><strong>Explanation</strong>{planning?.explanationSource ?? "none"}</span>
       </div>

@@ -1,0 +1,26 @@
+{
+  "base": "http://localhost:3100",
+  "checks": [
+    "New user onboarding",
+    "Main real-tap journey, including separate identity/access/payment/booking"
+  ],
+  "shots": [
+    "02-welcome",
+    "03-home-setup",
+    "04-preferences",
+    "05-home",
+    "06-discovery",
+    "07-comparison",
+    "08-recommendation",
+    "08-offer-terms",
+    "09-identity",
+    "10-authorization",
+    "11-booking",
+    "12-accepted",
+    "12-pickup",
+    "12-approaching",
+    "13-travelling",
+    "14-arrival"
+  ],
+  "errors": []
+}

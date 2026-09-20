@@ -1,0 +1,271 @@
+npm notice run beacon@0.1.0 lint
+npm notice run eslint
+TAP version 13
+# Subtest: onboarding destination and exact budget survive a new page
+ok 1 - onboarding destination and exact budget survive a new page
+  ---
+  duration_ms: 0.806625
+  type: 'test'
+  ...
+# Subtest: blocked storage keeps onboarding usable in memory and rejects invalid budgets
+ok 2 - blocked storage keeps onboarding usable in memory and rejects invalid budgets
+  ---
+  duration_ms: 0.205625
+  type: 'test'
+  ...
+# Subtest: refresh restores the same simulated booking and separate payment state
+ok 3 - refresh restores the same simulated booking and separate payment state
+  ---
+  duration_ms: 0.909542
+  type: 'test'
+  ...
+# Subtest: corrupt or foreign saved trip fails closed rather than silently starting another
+ok 4 - corrupt or foreign saved trip fails closed rather than silently starting another
+  ---
+  duration_ms: 0.358042
+  type: 'test'
+  ...
+# Subtest: finishing the local trip clears its saved snapshot
+ok 5 - finishing the local trip clears its saved snapshot
+  ---
+  duration_ms: 0.443166
+  type: 'test'
+  ...
+# Subtest: malformed saved presentation fields fail closed before rendering
+ok 6 - malformed saved presentation fields fail closed before rendering
+  ---
+  duration_ms: 0.314667
+  type: 'test'
+  ...
+# Subtest: one teammate ready names the two still outstanding
+ok 7 - one teammate ready names the two still outstanding
+  ---
+  duration_ms: 1.723291
+  type: 'test'
+  ...
+# Subtest: all three ready calls a team sync
+ok 8 - all three ready calls a team sync
+  ---
+  duration_ms: 0.297125
+  type: 'test'
+  ...
+# Subtest: no changes produces no comment
+ok 9 - no changes produces no comment
+  ---
+  duration_ms: 0.096333
+  type: 'test'
+  ...
+# Subtest: invalid status is rejected
+ok 10 - invalid status is rejected
+  ---
+  duration_ms: 0.238417
+  type: 'test'
+  ...
+# Subtest: home has no completed trust or trip events
+ok 11 - home has no completed trust or trip events
+  ---
+  duration_ms: 1.001458
+  type: 'test'
+  ...
+# Subtest: GO precedes identity and authorization; precise data is withheld until both pass
+ok 12 - GO precedes identity and authorization; precise data is withheld until both pass
+  ---
+  duration_ms: 0.705792
+  type: 'test'
+  ...
+# Subtest: cancellation revokes original access and independently verifies replacement
+ok 13 - cancellation revokes original access and independently verifies replacement
+  ---
+  duration_ms: 0.647792
+  type: 'test'
+  ...
+# Subtest: recovery never exceeds the approved budget
+ok 14 - recovery never exceeds the approved budget
+  ---
+  duration_ms: 0.192084
+  type: 'test'
+  ...
+# Subtest: initial and replacement arrival retain provider and revoke temporary access
+ok 15 - initial and replacement arrival retain provider and revoke temporary access
+  ---
+  duration_ms: 0.33525
+  type: 'test'
+  ...
+# Subtest: offline is a pause and reconnect resumes the same trip
+ok 16 - offline is a pause and reconnect resumes the same trip
+  ---
+  duration_ms: 0.098417
+  type: 'test'
+  ...
+# Subtest: failed verification withholds data and has a retry path
+ok 17 - failed verification withholds data and has a retry path
+  ---
+  duration_ms: 0.3315
+  type: 'test'
+  ...
+# Subtest: invalid stored profiles fail closed instead of crashing startup
+ok 18 - invalid stored profiles fail closed instead of crashing startup
+  ---
+  duration_ms: 0.259292
+  type: 'test'
+  ...
+# Subtest: walking never impersonates a provider or releases pickup data
+ok 19 - walking never impersonates a provider or releases pickup data
+  ---
+  duration_ms: 0.393542
+  type: 'test'
+  ...
+# Subtest: recovery retry never resurrects a cancelled provider
+ok 20 - recovery retry never resurrects a cancelled provider
+  ---
+  duration_ms: 1.430167
+  type: 'test'
+  ...
+# Subtest: repeated offline events preserve overdue resume and manual pause
+ok 21 - repeated offline events preserve overdue resume and manual pause
+  ---
+  duration_ms: 0.174834
+  type: 'test'
+  ...
+# Subtest: home cannot complete a trip; active constraints remain approved
+ok 22 - home cannot complete a trip; active constraints remain approved
+  ---
+  duration_ms: 0.077625
+  type: 'test'
+  ...
+# Subtest: finish clears pause, interrupted states, and prior trip data
+ok 23 - finish clears pause, interrupted states, and prior trip data
+  ---
+  duration_ms: 0.055833
+  type: 'test'
+  ...
+# Subtest: cancelled route disappears and recoverable states are not failures
+ok 24 - cancelled route disappears and recoverable states are not failures
+  ---
+  duration_ms: 0.152292
+  type: 'test'
+  ...
+# Subtest: empty context does not pretend a temporary preference was applied
+ok 25 - empty context does not pretend a temporary preference was applied
+  ---
+  duration_ms: 0.348709
+  type: 'test'
+  ...
+# Subtest: judge shortcuts use the same constraints and verification invariants
+ok 26 - judge shortcuts use the same constraints and verification invariants
+  ---
+  duration_ms: 0.262042
+  type: 'test'
+  ...
+# Subtest: profile actions validate storage data at the state boundary
+ok 27 - profile actions validate storage data at the state boundary
+  ---
+  duration_ms: 0.05125
+  type: 'test'
+  ...
+# Subtest: judge controls cannot skip required setup or manufacture a trip without a profile
+ok 28 - judge controls cannot skip required setup or manufacture a trip without a profile
+  ---
+  duration_ms: 0.046834
+  type: 'test'
+  ...
+# Subtest: reset returns to usable setup rather than waiting forever for initial restoration
+ok 29 - reset returns to usable setup rather than waiting forever for initial restoration
+  ---
+  duration_ms: 0.033792
+  type: 'test'
+  ...
+# Subtest: search never exposes a selected provider or recommendation before evaluation finishes
+ok 30 - search never exposes a selected provider or recommendation before evaluation finishes
+  ---
+  duration_ms: 0.071958
+  type: 'test'
+  ...
+# Subtest: overdue preserves a stale trip snapshot and recorded update without inventing GPS
+ok 31 - overdue preserves a stale trip snapshot and recorded update without inventing GPS
+  ---
+  duration_ms: 0.088875
+  type: 'test'
+  ...
+# Subtest: replacement pauses for fresh exact-offer consent and cannot advance itself
+ok 32 - replacement pauses for fresh exact-offer consent and cannot advance itself
+  ---
+  duration_ms: 0.088875
+  type: 'test'
+  ...
+# Subtest: repeated start and confirmation taps produce one attempt
+ok 33 - repeated start and confirmation taps produce one attempt
+  ---
+  duration_ms: 0.055041
+  type: 'test'
+  ...
+# Subtest: unknown payment and booking outcomes reconcile the same attempt; cancellation stays pending
+ok 34 - unknown payment and booking outcomes reconcile the same attempt; cancellation stays pending
+  ---
+  duration_ms: 0.124375
+  type: 'test'
+  ...
+# Subtest: expired offers cannot book; refreshed offers require confirmation
+ok 35 - expired offers cannot book; refreshed offers require confirmation
+  ---
+  duration_ms: 0.058917
+  type: 'test'
+  ...
+# Subtest: scheduled transit skips booking, payment and precise-location release
+ok 36 - scheduled transit skips booking, payment and precise-location release
+  ---
+  duration_ms: 0.066625
+  type: 'test'
+  ...
+# Subtest: offline blocks new confirmations, cancellations and arrival
+ok 37 - offline blocks new confirmations, cancellations and arrival
+  ---
+  duration_ms: 0.058291
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249.908875
+npm notice run beacon@0.1.0 typecheck
+npm notice run next typegen && tsc --noEmit
+Generating route types...
+✓ Types generated successfully
+npm notice run beacon@0.1.0 build
+npm notice run next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 11ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 671ms
+  Running TypeScript ...
+  Finished TypeScript in 1679ms ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/13) ...
+  Generating static pages using 9 workers (3/13) 
+  Generating static pages using 9 workers (6/13) 
+  Generating static pages using 9 workers (9/13) 
+✓ Generating static pages using 9 workers (13/13) in 280ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /app
+├ ○ /beacon-system
+├ ○ /demo
+├ ○ /manifest.webmanifest
+├ ○ /onboarding/home
+├ ○ /onboarding/intro
+├ ○ /onboarding/preferences
+├ ○ /onboarding/splash
+└ ○ /onboarding/welcome
+
+
+○  (Static)  prerendered as static content
+

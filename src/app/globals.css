@@ -20,7 +20,7 @@
 }
 
 :root {
-  --sc-paper: #ffffff;
+  --sc-paper: #fbfaf6;
   --sc-sage: #eef3f0;
   --sc-sage-strong: #dfe9e3;
   --sc-map-land: #e4ece7;
@@ -28,7 +28,7 @@
   --sc-mint: #56bfa1;
   --sc-mint-hover: #49ae91;
   --sc-mint-pale: #e5f5ef;
-  --sc-forest: #34484a;
+  --sc-forest: #10282a;
   --sc-carbon: #0d1212;
   --sc-muted: #667280;
   --sc-muted-soft: #6b7780;
@@ -62,6 +62,38 @@
   --sc-type-meta: 12px;
   --sc-motion-fast: 180ms ease;
   --sc-motion: 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Beacon onboarding system */
+  --beacon-paper: #faf9f6;
+  --beacon-surface: #fffefa;
+  --beacon-sage: #f1f3f0;
+  --beacon-sage-strong: #e2e9e4;
+  --beacon-mint: #4f9f87;
+  --beacon-mint-strong: #236f5c;
+  --beacon-mint-pale: #edf4f0;
+  --beacon-charcoal: #111918;
+  --beacon-forest: #344541;
+  --beacon-muted: #69716f;
+  --beacon-danger: #a94444;
+  --beacon-danger-pale: #fceded;
+  --beacon-border: #e3e5e2;
+  --beacon-border-strong: #cdd3cf;
+  --beacon-space-1: 4px;
+  --beacon-space-2: 8px;
+  --beacon-space-3: 12px;
+  --beacon-space-4: 16px;
+  --beacon-space-5: 20px;
+  --beacon-space-6: 24px;
+  --beacon-space-8: 32px;
+  --beacon-space-10: 40px;
+  --beacon-radius-sm: 10px;
+  --beacon-radius-md: 16px;
+  --beacon-radius-lg: 18px;
+  --beacon-radius-shell: 28px;
+  --beacon-shadow-control: 0 1px 2px rgb(17 25 24 / 0.045);
+  --beacon-shadow-shell: 0 28px 70px rgb(17 25 24 / 0.14);
+  --beacon-motion-fast: 160ms ease;
+  --beacon-motion: 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * { box-sizing: border-box; border-color: var(--sc-border); }
@@ -468,3 +500,9 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Deliberately available only on the separate /demo route. */
+.beacon-judge-button { position: fixed; z-index: 25; top: max(4px, env(safe-area-inset-top)); left: 4px; min-height: 44px; padding: 8px 12px; border: 1px solid #9cac9e; border-radius: 12px; background: #fbfaf5; color: #194d3c; font: 600 12px var(--font-instrument-sans), sans-serif; }
+
+/* Connection feedback stays in document flow so it cannot cover the task heading. */
+.sc-integration-note { max-width: 420px; margin: 12px auto; padding: 12px 18px; color: #354f45; background: #eef2eb; font-size: 14px; line-height: 1.5; border-radius: 12px; }

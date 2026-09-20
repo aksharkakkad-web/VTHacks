@@ -1,5 +1,1 @@
-import { BeaconApp } from "@/components/safecircle/beacon-app";
-
-export default function Home() {
-  return <BeaconApp />;
-}
+export { default } from "./onboarding/splash/page";

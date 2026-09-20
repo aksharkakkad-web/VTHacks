@@ -72,7 +72,7 @@ function ContextDialogContent({ open, onOpenChange, current, onApply, onClear }:
       <form className="sc-form sc-dialog-form" onSubmit={apply}>
         <label><span>Budget override (optional)</span><div className="sc-money-input"><span>$</span><input type="number" min="0" max="100" value={draft.maxBudget ?? ""} onChange={(event) => setDraft({ ...draft, maxBudget: event.target.value ? Number(event.target.value) : undefined })} placeholder="Use saved budget" /></div></label>
         <fieldset className="sc-choice-field"><legend>How are you feeling?</legend><div className="sc-context-options"><label><input type="radio" name="note" checked={(draft.note ?? "none") === "none"} onChange={() => setDraft({ ...draft, note: "none" })} /><span>No change</span></label><label><input type="radio" name="note" checked={draft.note === "tired"} onChange={() => setDraft({ ...draft, note: "tired" })} /><span>I’m tired</span></label><label><input type="radio" name="note" checked={draft.note === "drinking"} onChange={() => setDraft({ ...draft, note: "drinking" })} /><span>I’ve been drinking</span></label></div></fieldset>
-        <p className="sc-field-note">Tired or drinking context minimizes walking and avoids transfers. SafeCircle does not diagnose impairment.</p>
+        <p className="sc-field-note">Tired or drinking context minimizes walking and avoids transfers. Beacon does not diagnose impairment.</p>
         <PrimaryButton type="submit">APPLY TO THIS TRIP</PrimaryButton>
         <button className="sc-dialog-text-action" type="button" onClick={() => { onClear(); onOpenChange(false); }}>Clear temporary context</button>
       </form>
@@ -83,7 +83,7 @@ function ContextDialogContent({ open, onOpenChange, current, onApply, onClear }:
 export function HelpDialog({ open, onOpenChange, trustedContact }: { open: boolean; onOpenChange: (open: boolean) => void; trustedContact?: string }) {
   const contactHref = trustedContact ? `tel:${trustedContact.replace(/[^+\d]/g, "")}` : null;
   return (
-    <AppDialog open={open} onOpenChange={onOpenChange} title="Get help" description="SafeCircle coordinates mobility. It is not emergency dispatch.">
+    <AppDialog open={open} onOpenChange={onOpenChange} title="Get help" description="Beacon coordinates mobility. It is not emergency dispatch.">
       <div className="sc-help-list"><a href="tel:911"><Phone size={20} /><span><strong>Call 911</strong><small>Immediate danger or medical emergency</small></span><ArrowRight size={18} /></a><a href="tel:+15403824343"><ShieldCheck size={20} /><span><strong>Campus non-emergency assistance</strong><small>Virginia Tech Police dispatch</small></span><ArrowRight size={18} /></a>{contactHref && <a href={contactHref}><Phone size={20} /><span><strong>Call trusted contact</strong><small>{trustedContact}</small></span><ArrowRight size={18} /></a>}</div>
     </AppDialog>
   );
@@ -98,5 +98,5 @@ export function DetailsDialog({ open, onOpenChange, model }: { open: boolean; on
 }
 
 export function TechnicalDialog({ open, onOpenChange, model, onAction }: { open: boolean; onOpenChange: (open: boolean) => void; model: DemoViewModel; onAction: (action: DemoAction) => void }) {
-  return <AppDialog open={open} onOpenChange={onOpenChange} title="What SafeCircle did" description="Judge view · deterministic simulated events" wide><TechnicalPanel model={model} onAction={onAction} /></AppDialog>;
+  return <AppDialog open={open} onOpenChange={onOpenChange} title="What Beacon did" description="Judge view · deterministic simulated events" wide><TechnicalPanel model={model} onAction={onAction} /></AppDialog>;
 }

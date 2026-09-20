@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { MemoryJsonStore } from "../lib/planner/store";
 import { emptyPlannerState, PlannerQueue } from "../lib/planner/queue";
 import { HybridPlanner, type PlanningTripAdapter } from "../lib/planner/orchestrator";
+import * as plannerModule from "../lib/planner/orchestrator";
 
 function fixture() {
   let now = Date.parse("2026-09-19T12:00:00Z");
@@ -38,7 +39,7 @@ function fixture() {
   const queue = new PlannerQueue(new MemoryJsonStore(emptyPlannerState()), () => now);
   const planner = new HybridPlanner(queue, adapter, () => now);
   return {
-    queue, planner,
+    queue, planner, adapter,
     pair: async () => queue.pair("owner", await queue.createPairing()),
     advance: (ms: number) => { now += ms; },
     arrive: () => { arrived = true; snapshot = "arrived"; },
@@ -58,6 +59,48 @@ async function completeCurrent(q: PlannerQueue, output: unknown, outcome: "succe
   });
   return claim.job;
 }
+
+test("deterministic planning evaluates structured trip input without a model worker", async () => {
+  const DeterministicPlanner = (plannerModule as typeof plannerModule & {
+    DeterministicPlanner?: new (adapter: PlanningTripAdapter, now?: () => number) => {
+      start(owner: string, tripId: string): Promise<{ phase: string }>;
+      view(owner: string, tripId: string): Promise<{ phase: string; worker: string; modelSource: string; explanationSource: string; explanation?: string }>;
+    };
+  }).DeterministicPlanner;
+  assert.equal(typeof DeterministicPlanner, "function", "deterministic planner module must exist");
+
+  let selected = false;
+  let evaluations = 0;
+  let receivedIntent: unknown;
+  const adapter: PlanningTripAdapter = {
+    snapshot: async () => selected
+      ? { snapshotId: "selection", terminal: false, selectedPlanId: "ride", expiresAt: Date.parse("2026-09-19T12:01:00Z"), facts: [
+          { id: "selected", text: "Campus ride is the selected plan." },
+          { id: "cost", text: "The quoted total is $7.00." },
+        ], input: { objective: "get_home", preferences: ["minimize_walking"] } }
+      : { snapshotId: "objective", terminal: false, input: { objective: "get_home", preferences: ["minimize_walking"] } },
+    evaluate: async (_tripId, _owner, _snapshotId, intent) => {
+      evaluations++;
+      receivedIntent = intent;
+      selected = true;
+      return { snapshotId: "selection", selectedPlanId: "ride", expiresAt: Date.parse("2026-09-19T12:01:00Z"), facts: [
+        { id: "selected", text: "Campus ride is the selected plan." },
+        { id: "cost", text: "The quoted total is $7.00." },
+      ] };
+    },
+  };
+  const planner = new DeterministicPlanner!(adapter, () => Date.parse("2026-09-19T12:00:00Z"));
+
+  assert.equal((await planner.start("owner", "trip")).phase, "ready");
+  assert.equal(evaluations, 1);
+  assert.deepEqual(receivedIntent, { objective: "get_home", priorities: ["minimize_walking"], evidenceRequests: [], clarification: null });
+  const view = await planner.view("owner", "trip");
+  assert.equal(view.phase, "ready");
+  assert.equal(view.worker, "not_required");
+  assert.equal(view.modelSource, "none");
+  assert.equal(view.explanationSource, "template");
+  assert.equal(view.explanation, "Campus ride is the selected plan. The quoted total is $7.00.");
+});
 
 test("planning coalesces one active run per paired owner and isolates owners", async () => {
   const f = fixture();
@@ -140,4 +183,34 @@ test("polling an expired plan never starts another model job", async () => {
   }
   assert.equal((await f.queue.readRun("trip-1"))?.id, before?.id);
   assert.equal(f.counts().evaluations, 1);
+});
+
+test("leased evaluation snapshot changes show progress without stale prose; unrelated changes stay blocked",async()=>{
+ const f=fixture();await f.pair();await f.planner.start('owner','trip-1');
+ await completeCurrent(f.queue,{objective:'get_home',priorities:[],evidenceRequests:[],clarification:null});
+ let release!:()=>void,entered!:()=>void;
+ const held=new Promise<void>(resolve=>{release=resolve;}),started=new Promise<void>(resolve=>{entered=resolve;});
+ const evaluate=f.adapter.evaluate;
+ f.adapter.evaluate=async(...args)=>{const selection=await evaluate(...args);entered();await held;return selection;};
+ const ticking=f.planner.tick();await started;
+ const progress=await f.planner.view('owner','trip-1');
+ assert.equal(progress.phase,'gathering');assert.equal(progress.snapshotId,null);assert.equal(progress.explanation,undefined);assert.equal(progress.explanationSource,'none');
+ const snapshot=f.adapter.snapshot;
+ f.adapter.snapshot=async(...args)=>{const value=await snapshot(...args);return {...value,input:{...value.input,objective:'different'}};};
+ assert.equal((await f.planner.view('owner','trip-1')).messageCode,'PLANNER_STALE_SNAPSHOT');
+ f.adapter.snapshot=snapshot;
+ release();await ticking;
+ assert.equal((await f.planner.view('owner','trip-1')).phase,'explaining');
+});
+
+test("expired evaluator lease never hides an unbound changed snapshot",async()=>{
+ const f=fixture();await f.pair();await f.planner.start('owner','trip-1');
+ await completeCurrent(f.queue,{objective:'get_home',priorities:[],evidenceRequests:[],clarification:null});
+ let release!:()=>void,entered!:()=>void;
+ const held=new Promise<void>(resolve=>{release=resolve;}),started=new Promise<void>(resolve=>{entered=resolve;});
+ const evaluate=f.adapter.evaluate;
+ f.adapter.evaluate=async(...args)=>{const selection=await evaluate(...args);entered();await held;return selection;};
+ const ticking=f.planner.tick();await started;f.advance(90001);
+ assert.equal((await f.planner.view('owner','trip-1')).phase,'unavailable');
+ release();await assert.rejects(ticking,/STALE_SNAPSHOT|STALE_STAGE/);
 });

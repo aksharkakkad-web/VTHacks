@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Edit home validates, saves and closes",
+    "Preferences rejects blank budget and saves explicit value",
+    "Optional contact validates and creates call shortcut only; Escape dismisses help",
+    "Optional temporary context applies, reopens correctly and clears",
+    "Real browser location-denial returns to labeled demo pickup",
+    "Selecting an eligible alternative changes review without booking",
+    "Judge fault injection resolves the same submitted booking only after explicit response",
+    "Unknown cancellation outcome resolves cancellation, never resurrects booking",
+    "Corrupt local simulation has explicit confirmed reset"
+  ],
+  "errors": []
+}

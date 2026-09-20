@@ -1,0 +1,6 @@
+locator.waitFor: Timeout 18000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-stage="evaluating"]') to be visible[22m
+
+    at state (/Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-complete.mjs:20:57)
+    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-complete.mjs:25:88

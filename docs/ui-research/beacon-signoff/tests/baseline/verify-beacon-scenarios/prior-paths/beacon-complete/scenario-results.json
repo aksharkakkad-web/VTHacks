@@ -1,0 +1,15 @@
+{
+  "base": "http://localhost:3000",
+  "checks": [],
+  "shots": [
+    "FAILURE"
+  ],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\n\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found",
+    "./src/app/demo/transport/route.ts:1:1\nError: Module not found: Can't resolve '../../../../lib/demo/transport-server'\n> 1 | ...rt { DemoTransportServer } from \"../../../../lib/demo/transport-serv...\n    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  2 | ...\n  3 | ...t globalDemo = globalThis as typeof globalThis & { beaconDemoServer?...\n  4 | ...t server = globalDemo.beaconDemoServer ??= new DemoTransportServer();\n\nhttps://nextjs.org/docs/messages/module-not-found"
+  ],
+  "controls": []
+}

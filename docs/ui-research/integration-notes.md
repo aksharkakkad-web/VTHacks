@@ -12,10 +12,10 @@ The UI pass does not change the shared contracts. The PRD and `TEAM_CONTRACT.md`
 
 ## Handoff to real trip state
 
-- Keep the visual components and map/sheet shell. Replace demo event production with the existing team's Trip API when it arrives.
+- Preserve the visual system and sheets. Connect Mahin’s transport to the validated frontend adapter when the endpoint contract is agreed. Show exact route geometry only for an active walking leg; waiting/riding use the ride-status card.
 - Feed candidates, selected plan, recommendation explanation/reason codes, verification flag, sensitive-data flag, expected arrival and status from the returned `Trip`.
 - `SELECTED` means awaiting the user's GO in the frozen shared type. The PRD calls this awaiting confirmation; no shared type rename is needed.
-- Render verification, coordination, waiting, in-trip, failure, replanning and arrival from actual backend events. Browser timers are demo-only.
+- Render verification, coordination, waiting, in-trip, failure, replanning and arrival from actual backend events. Frontend timers must not manufacture trip/provider status, including in demos. Apply explicit judge sample responses instead.
 - A completed identity check alone does not authorize release. Show release only when the backend's `sensitiveDataReleased` flag is true; precise data protection must be enforced server-side.
 - Replace fixture-based candidate filtering with the Databricks-produced recommendation. The frontend demo only exercises preferences and UI states.
 - Persisted profile and demo session are local preview data. They are not a server user record or a booking.

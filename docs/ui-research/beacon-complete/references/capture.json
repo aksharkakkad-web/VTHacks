@@ -1,0 +1,35 @@
+[
+  {
+    "name": "transit-go",
+    "url": "https://help.transitapp.com/article/549-how-to-use-go",
+    "images": 7,
+    "title": "How to use GO - Transit Support"
+  },
+  {
+    "name": "transit-quickstart",
+    "url": "https://help.transitapp.com/article/546-transit-6-0-quick-start-guide",
+    "images": 7,
+    "title": "Quick start guide: Transit 6.0 - Transit Support"
+  },
+  {
+    "name": "transit-offline",
+    "url": "https://help.transitapp.com/article/90-does-transit-work-offline",
+    "images": 3,
+    "title": "Does Transit work offline? - Transit Support"
+  },
+  {
+    "name": "apple-progress",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/progress-indicators",
+    "error": "page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://developer.apple.com/design/human-interface-guidelines/progress-indicators\nCall log:\n\u001b[2m  - navigating to \"https://developer.apple.com/design/human-interface-guidelines/progress-indicators\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  },
+  {
+    "name": "gojek-booking",
+    "url": "https://pageflows.com/post/ios/booking-a-ride/gojek/",
+    "error": "page.goto: Navigation to \"https://pageflows.com/post/ios/booking-a-ride/gojek/\" is interrupted by another navigation to \"chrome-error://chromewebdata/\"\nCall log:\n\u001b[2m  - navigating to \"https://pageflows.com/post/ios/booking-a-ride/gojek/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  },
+  {
+    "name": "gojek-cancel",
+    "url": "https://pageflows.com/post/ios/cancelling-a-booking/gojek/",
+    "error": "page.goto: Navigation to \"https://pageflows.com/post/ios/cancelling-a-booking/gojek/\" is interrupted by another navigation to \"https://pageflows.com/post/ios/booking-a-ride/gojek/\"\nCall log:\n\u001b[2m  - navigating to \"https://pageflows.com/post/ios/cancelling-a-booking/gojek/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  }
+]

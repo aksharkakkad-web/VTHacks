@@ -16,7 +16,7 @@ const { createDemoState, transitionDemo: act, deriveViewModel: view, validatedPr
 const { defaultProfile, campusRide, rideshare, eligiblePlans } = require(join(build,'mock-data.js'));
 const advance = state => act(state,{type:'ADVANCE'});
 function until(state, stage) {
-  for(let i=0;i<40 && state.stage!==stage;i++) state=advance(state);
+  for(let i=0;i<40 && state.stage!==stage;i++) state=state.stage==='replacement-selected' && stage!=='replacement-selected' ? act(state,{type:'GO'}) : advance(state);
   assert.equal(state.stage,stage,`Expected ${stage}`);
   return state;
 }
@@ -49,7 +49,8 @@ test('GO precedes identity and authorization; precise data is withheld until bot
 test('cancellation revokes original access and independently verifies replacement',()=>{
   let state=until(act(recommendation(),{type:'GO'}),'waiting-initial');
   state=act(state,{type:'CANCEL_PROVIDER'});
-  assert.equal(state.selectedPlanId,undefined);
+  assert.equal(state.selectedPlanId,campusRide.planId);
+  assert.equal(state.userApproved,false);
   assert.equal(state.providerVerified,false);
   assert.equal(state.providerAuthorized,false);
   assert.equal(state.sensitiveDataReleased,false);
@@ -87,7 +88,7 @@ test('offline is a pause and reconnect resumes the same trip',()=>{
   state=act(state,{type:'SIMULATE',scenario:'offline'});
   const paused=advance(state);
   assert.equal(paused.stage,'offline');
-  state=act(paused,{type:'RECONNECT'});
+  state=advance(act(paused,{type:'RECONNECT'}));
   assert.equal(state.stage,'waiting-initial');
   assert.equal(state.selectedPlanId,plan);
 });
@@ -107,6 +108,8 @@ test('invalid stored profiles fail closed instead of crashing startup',()=>{
   assert(validatedProfile(defaultProfile));
   assert(validatedProfile({...defaultProfile,trustedContact:'+1 (540) 555-0100'}));
   assert.equal(validatedProfile({...defaultProfile,trustedContact:'javascript:alert(1)'}),null);
+  assert.deepEqual(validatedProfile({...defaultProfile,telegramContact:{name:'Maya',chatId:'123456789',consent:true,shareLocation:false}}).telegramContact,{name:'Maya',chatId:'123456789',consent:true,shareLocation:false});
+  assert.equal(validatedProfile({...defaultProfile,telegramContact:{name:'Maya',chatId:'@maya',consent:true,shareLocation:false}}),null);
 });
 
 test('walking never impersonates a provider or releases pickup data',()=>{
@@ -133,7 +136,7 @@ test('repeated offline events preserve overdue resume and manual pause',()=>{
   state=act(state,{type:'TOGGLE_PAUSE'});
   state=act(state,{type:'SIMULATE',scenario:'offline'});
   state=act(state,{type:'SIMULATE',scenario:'offline'});
-  state=act(state,{type:'RECONNECT'});
+  state=advance(act(state,{type:'RECONNECT'}));
   assert.equal(state.stage,'overdue');
   assert.equal(state.paused,true);
   assert.equal(act(state,{type:'STILL_TRAVELLING'}).stage,'in-trip-initial');
@@ -157,7 +160,7 @@ test('cancelled route disappears and recoverable states are not failures',()=>{
   const active=until(act(recommendation(),{type:'GO'}),'waiting-initial');
   const cancelled=act(active,{type:'CANCEL_PROVIDER'});
   assert.equal(view(cancelled).isRouteVisible,false);
-  assert.equal(view(cancelled).isReplacement,false);
+  assert.equal(view(cancelled).isReplacement,true);
   assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).trip.state,'WAITING_FOR_PICKUP');
   assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).isRouteVisible,true);
   assert.equal(view(act(active,{type:'SIMULATE',scenario:'offline'})).isStale,true);
@@ -213,4 +216,73 @@ test('overdue preserves a stale trip snapshot and recorded update without invent
   assert.equal(view(state).lastTripUpdateAt,now);
   assert.equal(view(state).trip.lastKnownLocation,undefined);
   assert.equal(view(state).trip.alertDeadlineAt,undefined);
+});
+
+test('replacement pauses for fresh exact-offer consent and cannot advance itself',()=>{
+  let state=until(act(recommendation(),{type:'GO'}),'waiting-initial');
+  state=until(act(state,{type:'CANCEL_PROVIDER'}),'replacement-selected');
+  assert.equal(state.userApproved,false);
+  assert.equal(state.bookingStatus,'cancelled');
+  const attempt=state.attemptId;
+  for(let n=0;n<10;n++) state=advance(state);
+  assert.equal(state.stage,'replacement-selected');
+  assert.equal(state.attemptId,attempt);
+  state=act(state,{type:'GO'});
+  assert.equal(state.stage,'verifying-replacement');
+  assert.notEqual(state.attemptId,attempt);
+  assert.equal(state.sensitiveDataReleased,false);
+});
+test('repeated start and confirmation taps produce one attempt',()=>{
+  let state=recommendation();
+  const chosen=state;
+  assert.equal(act(state,{type:'START_TRIP'}),chosen);
+  state=act(state,{type:'GO'});
+  const approved=state;
+  for(let n=0;n<20;n++) {state=act(state,{type:'GO'});state=act(state,{type:'START_TRIP'});}
+  assert.equal(state,approved);
+  assert.equal(state.attemptNumber,1);
+});
+test('unknown payment and booking retries preserve the attempt and await a response',()=>{
+  for(const scenario of ['payment-unknown','booking-unknown']) {
+    let state=until(act(recommendation(),{type:'GO'}),'coordinating-initial');
+    const attempt=state.attemptId;
+    state=act(state,{type:'SIMULATE',scenario});
+    for(const type of ['START_TRIP','GO','FINISH','ADVANCE']) assert.equal(act(state,{type}),state);
+    state=act(state,{type:'RETRY'});
+    assert.equal(state.attemptId,attempt);
+    assert.equal(state.attemptNumber,1);
+    assert.equal(state.bookingStatus,'unknown');
+    state=act(state,{type:'REQUEST_CANCEL'});
+    assert.equal(state.stage,'cancelling');
+    assert.equal(act(state,{type:'FINISH'}),state);
+    state=act(state,{type:'SIMULATE',scenario});
+    assert.equal(state.cancellationRequested,true);
+    state=act(state,{type:'RETRY'});
+    assert.equal(state.stage,scenario);
+    assert.equal(state.bookingStatus,'unknown');
+  }
+});
+test('expired offers cannot book; refreshed offers require confirmation',()=>{
+  let state=recommendation();
+  state=act(state,{type:'GO',now:state.offerExpiresAt+1});
+  assert.equal(state.stage,'offer-changed');
+  assert.equal(state.attemptId,undefined);
+  state=until(act(state,{type:'RETRY'}),'recommendation');
+  assert.equal(state.userApproved,false);
+});
+test('scheduled transit skips booking, payment and precise-location release',()=>{
+  let state=recommendation({...defaultProfile,avoidTransfers:false});
+  state=act(state,{type:'SELECT_PLAN',planId:'transit-017'});
+  state=act(state,{type:'GO'});
+  assert.equal(state.stage,'waiting-initial');
+  assert.equal(state.bookingStatus,'not-required');
+  assert.equal(state.paymentStatus,'not-required');
+  assert.equal(state.providerVerified,false);
+  assert.equal(state.sensitiveDataReleased,false);
+  assert.equal(advance(state).stage,'in-trip-initial');
+});
+test('offline blocks new confirmations, cancellations and arrival',()=>{
+  let state=until(act(recommendation(),{type:'GO'}),'in-trip-initial');
+  state=act(state,{type:'SIMULATE',scenario:'offline'});
+  for(const type of ['GO','START_TRIP','REQUEST_CANCEL','CONFIRM_ARRIVAL','FINISH']) assert.equal(act(state,{type}),state);
 });

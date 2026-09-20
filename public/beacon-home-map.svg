@@ -1,0 +1,34 @@
+<svg width="720" height="480" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="480" rx="28" fill="#EEF3EF"/>
+  <path d="M0 314C96 260 151 246 225 254C300 262 345 298 436 294C527 290 604 224 720 214V480H0V314Z" fill="#DDECE1"/>
+  <g fill="#DDE3E1">
+    <path d="M34 30H121L111 104L21 96L34 30Z"/><path d="M157 20L230 37L213 104L139 88L157 20Z"/>
+    <path d="M292 17L383 28L373 92L280 85L292 17Z"/><path d="M468 17L557 31L544 96L458 79L468 17Z"/>
+    <path d="M601 43L693 29L706 102L619 116L601 43Z"/><path d="M464 141L550 163L524 233L439 207L464 141Z"/>
+    <path d="M586 151L685 174L661 249L562 221L586 151Z"/><path d="M297 175L402 162L415 240L317 255L297 175Z"/>
+    <path d="M95 354L196 333L214 413L112 438L95 354Z"/><path d="M511 340L616 317L642 409L541 435L511 340Z"/>
+  </g>
+  <g stroke="#FFFDF9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-35 122C92 145 196 147 290 130C406 108 535 106 756 159" stroke-width="31"/>
+    <path d="M-20 264C103 226 172 213 257 226C333 238 423 287 526 278C602 271 661 235 749 229" stroke-width="26"/>
+    <path d="M245 -31C236 69 255 128 312 193C368 257 397 336 388 509" stroke-width="27"/>
+    <path d="M112 -15C126 105 170 171 246 218C319 264 386 292 472 320C556 347 635 397 744 477" stroke-width="20"/>
+    <path d="M500 -24C476 74 435 132 379 177C324 221 267 284 230 365C208 414 193 459 188 502" stroke-width="19"/>
+    <path d="M-30 395C89 365 176 358 251 374C344 395 430 418 540 398C610 385 666 366 747 335" stroke-width="18"/>
+  </g>
+  <g fill="#A9D8BC">
+    <circle cx="81" cy="190" r="18"/><circle cx="106" cy="181" r="23"/><circle cx="128" cy="199" r="17"/>
+    <circle cx="598" cy="91" r="17"/><circle cx="619" cy="74" r="21"/><circle cx="641" cy="94" r="16"/>
+    <circle cx="68" cy="426" r="18"/><circle cx="86" cy="408" r="22"/><circle cx="109" cy="431" r="18"/>
+    <circle cx="672" cy="301" r="17"/><circle cx="693" cy="286" r="22"/><circle cx="713" cy="305" r="16"/>
+  </g>
+  <g stroke="#78B996" stroke-width="6" stroke-linecap="round"><path d="M107 194V223"/><path d="M619 88V120"/><path d="M86 423V451"/><path d="M692 301V328"/></g>
+  <g transform="translate(360 214)">
+    <circle cy="12" r="54" fill="#D8F3E8"/>
+    <path d="M0-30C-24-30-42-12-42 11C-42 41 0 77 0 77C0 77 42 41 42 11C42-12 24-30 0-30Z" fill="#20B982"/>
+    <circle cy="10" r="14" fill="#FFFDF9"/>
+  </g>
+  <text x="510" y="136" fill="#80908A" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="18" transform="rotate(13 510 136)">Virginia Tech Dr</text>
+  <text x="327" y="325" fill="#16343A" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="21" font-weight="650">Pritchard Hall</text>
+  <text x="31" y="346" fill="#5C9F88" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="19">Drillfield</text>
+</svg>

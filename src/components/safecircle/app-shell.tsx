@@ -7,15 +7,15 @@ export function AppShell({ children, onTechnicalOpen, modeLabel = "Fixture previ
     <main className="sc-stage">
       <div className="sc-desktop-context" aria-hidden="true">
         <BrandMark />
-        <p>SafeCircle</p>
+        <p>Beacon</p>
         <span>Get me home. We handle the rest.</span>
         <small>{modeLabel}</small>
       </div>
-      <section className="sc-phone" aria-label="SafeCircle interactive demo">
+      <section className="sc-phone" aria-label="Beacon interactive demo">
         <header className="sc-header">
-          <div className="sc-wordmark" aria-label="SafeCircle">
+          <div className="sc-wordmark" aria-label="Beacon">
             <BrandMark small />
-            <span>SafeCircle</span>
+            <span>Beacon</span>
           </div>
           <div className="sc-header-actions">
             <span className="sc-demo-label">{modeLabel}</span>

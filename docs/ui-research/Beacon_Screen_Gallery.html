@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beacon screen gallery</title>
+  <style>
+    :root { --ink:#092b28; --mint:#dff4ea; --line:#dfe9e4; --paper:#fbfaf5; --muted:#66746f; --done:#e5f4e9; --revise:#fff0d9; --missing:#f3f2ed; }
+    * { box-sizing:border-box; } body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    header { max-width:1320px; margin:auto; padding:40px 28px 22px; } h1 { font-size:clamp(28px,4vw,48px); line-height:1; margin:0 0 12px; } p { max-width:760px; margin:0; color:var(--muted); }
+    .key { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; } .tag { padding:5px 10px; border-radius:999px; font-size:13px; font-weight:700; } .done { background:var(--done); } .revise { background:var(--revise); } .missing { background:var(--missing); }
+    main { max-width:1320px; margin:auto; padding:0 28px 48px; } h2 { margin:38px 0 14px; font-size:22px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:18px; }
+    article { position:relative; overflow:hidden; border:1px solid var(--line); border-radius:18px; background:white; box-shadow:0 2px 10px #143d3510; }
+    article.missing-card { min-height:270px; display:flex; flex-direction:column; justify-content:center; padding:22px; background:var(--missing); border-style:dashed; }
+    img { width:100%; height:370px; display:block; object-fit:cover; object-position:top; background:#eee; border-bottom:1px solid var(--line); }
+    .copy { padding:14px; } .number { color:#55736a; font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; } h3 { margin:4px 0 8px; font-size:20px; line-height:1.1; } .copy p { font-size:14px; }
+    label { display:flex; align-items:center; gap:8px; margin-top:12px; color:var(--ink); font-size:14px; font-weight:700; cursor:pointer; } input { width:18px; height:18px; accent-color:#12765f; }
+    .status { position:absolute; top:10px; right:10px; z-index:1; padding:5px 9px; border-radius:99px; font-size:12px; font-weight:800; box-shadow:0 1px 4px #0002; } .status.done { background:var(--done); } .status.revise { background:var(--revise); } .status.missing { background:var(--missing); }
+    details { margin-top:26px; border:1px solid var(--line); border-radius:14px; background:white; padding:15px; } summary { cursor:pointer; font-weight:800; } ul { margin:12px 0 0; padding-left:20px; } a { color:#126a58; } .fine { margin-top:30px; font-size:13px; }
+    @media (max-width:600px) { header,main { padding-left:16px; padding-right:16px; } img { height:410px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Beacon screen gallery</h1>
+    <p>Every generated concept and representative PWA screen that maps to the current app flow. Use the checkboxes to mark a screen as reviewed; they save only in this browser. “Done” means an existing visual exists, not that it matches the new provider-network requirements.</p>
+    <div class="key"><span class="tag done">Visual exists</span><span class="tag revise">Exists but needs redesign</span><span class="tag missing">No screen visual yet</span></div>
+  </header>
+  <main>
+    <h2>Setup and home</h2>
+    <section class="grid">
+      <article class="missing-card"><span class="status missing">No static image</span><div class="number">01 · Splash</div><h3>Splash / restore</h3><p>The PWA has an animated splash/loading experience, but no single generated screen image is saved yet.</p><label><input data-id="01" type="checkbox"> Mark reviewed</label></article>
+      <article><span class="status done">Visual exists</span><img src="concepts/beacon-onboarding-home-concept.png" alt="Beacon onboarding concept"><div class="copy"><div class="number">02 · Welcome</div><h3>Welcome</h3><p>Closest generated concept. Treat as visual direction; its precise place in the current onboarding may need review.</p><label><input data-id="02" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status done">Visual exists</span><img src="final/01-onboarding-home.png" alt="Beacon set-home PWA screen"><div class="copy"><div class="number">03 · Set your home</div><h3>Set your home</h3><p>Existing PWA screen capture.</p><label><input data-id="03" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status done">Visual exists</span><img src="concepts/beacon-next-screens/preferences-final.png" alt="Beacon preferences generated concept"><div class="copy"><div class="number">04 · Preferences</div><h3>Your preferences</h3><p>Generated concept. Existing PWA screenshot is linked below.</p><label><input data-id="04" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status done">Visual exists</span><img src="concepts/beacon-next-screens/home-final.png" alt="Beacon home generated concept"><div class="copy"><div class="number">05 · Home</div><h3>Get me home</h3><p>Generated concept. Existing PWA screenshot is linked below.</p><label><input data-id="05" type="checkbox"> Mark reviewed</label></div></article>
+    </section>
+    <h2>Finding and confirming a plan</h2>
+    <section class="grid">
+      <article><span class="status revise">Needs redesign</span><img src="concepts/beacon-trip-progress/01-availability-final.png" alt="Checking nearby rides generated concept"><div class="copy"><div class="number">06 · Availability</div><h3>Checking providers</h3><p>Generated concept. Update it with actual operator/service and simulated labels.</p><label><input data-id="06" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Needs redesign</span><img src="concepts/beacon-trip-progress/02-comparison-final.png" alt="Comparing routes generated concept"><div class="copy"><div class="number">07 · Comparison</div><h3>Comparing routes</h3><p>Generated concept. Update it with valid-offer and unknown-information states.</p><label><input data-id="07" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Needs redesign</span><img src="concepts/beacon-next-screens/recommendation-final.png" alt="Beacon recommendation generated concept"><div class="copy"><div class="number">08 · Recommendation</div><h3>Review and confirm plan</h3><p>Old generated concept. This is the highest-priority redesign: operator, service, terms, expiry and source label are missing.</p><label><input data-id="08" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Needs redesign</span><img src="concepts/beacon-trip-progress/03-provider-final.png" alt="Confirming provider generated concept"><div class="copy"><div class="number">09 · Identity check</div><h3>Checking provider identity</h3><p>Generated concept. Add the real operator and verification source.</p><label><input data-id="09" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Needs redesign</span><img src="concepts/beacon-trip-progress/04-authorization-final.png" alt="Preparing trip generated concept"><div class="copy"><div class="number">10 · Authorization</div><h3>Authorizing access</h3><p>Generated concept. Add a distinct simulated-payment state.</p><label><input data-id="10" type="checkbox"> Mark reviewed</label></div></article>
+      <article class="missing-card"><span class="status missing">No visual yet</span><div class="number">11 · Booking</div><h3>Booking pending</h3><p>Needed: submitted booking status, separate payment status, details and cancellation action.</p><label><input data-id="11" type="checkbox"> Mark reviewed</label></article>
+    </section>
+    <h2>Pickup, trip and arrival</h2>
+    <section class="grid">
+      <article class="missing-card"><span class="status missing">No current-map visual</span><div class="number">12 · Pickup</div><h3>Pickup / boarding</h3><p>Needed: actual instructions or an honest “Pickup instructions unavailable” message.</p><label><input data-id="12" type="checkbox"> Mark reviewed</label></article>
+      <article><span class="status revise">Existing PWA</span><img src="final/in-trip-initial.png" alt="Beacon active trip PWA screen"><div class="copy"><div class="number">13 · Travelling</div><h3>Travelling home</h3><p>Existing PWA screen capture. Update to use real backend status and supported route data.</p><label><input data-id="13" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Existing PWA</span><img src="beacon-flow/06-arrival.png" alt="Beacon arrival generated screen"><div class="copy"><div class="number">14 · Arrival</div><h3>You’re home</h3><p>Existing generated screen. Needs actual arrival and simulated-payment result.</p><label><input data-id="14" type="checkbox"> Mark reviewed</label></div></article>
+    </section>
+    <h2>Recovery and special paths</h2>
+    <section class="grid">
+      <article><span class="status revise">Existing PWA</span><img src="final/provider-cancelled.png" alt="Provider cancelled PWA screen"><div class="copy"><div class="number">R1 · Disruption</div><h3>Provider failed</h3><p>Existing PWA screen; needs a more explicit booking/payment reconciliation step.</p><label><input data-id="r1" type="checkbox"> Mark reviewed</label></div></article>
+      <article class="missing-card"><span class="status missing">No current-map visual</span><div class="number">R2 · Reconciliation</div><h3>Checking old booking</h3><p>Needed: old booking and payment status, known fee, remaining budget and safe waiting state.</p><label><input data-id="r2" type="checkbox"> Mark reviewed</label></article>
+      <article><span class="status revise">Existing PWA</span><img src="final/replanning-discovery.png" alt="Replacement discovery PWA screen"><div class="copy"><div class="number">R3 · Replacement search</div><h3>Finding a replacement</h3><p>Existing PWA screen. Update it to use fresh valid offers.</p><label><input data-id="r3" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Needs redesign</span><img src="final/replacement-selected.png" alt="Replacement selected PWA screen"><div class="copy"><div class="number">R4 · Replacement approval</div><h3>Confirm replacement</h3><p>Existing PWA screen. Current direction requires a fresh confirmation before booking the replacement.</p><label><input data-id="r4" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status revise">Existing PWA</span><img src="final/no-options.png" alt="No options PWA screen"><div class="copy"><div class="number">E1 · No feasible plan</div><h3>Nothing fits</h3><p>Existing PWA screen.</p><label><input data-id="e1" type="checkbox"> Mark reviewed</label></div></article>
+      <article class="missing-card"><span class="status missing">No visuals yet</span><div class="number">E2–E5</div><h3>Offer / payment problems</h3><p>Needed: expired offer, payment declined, booking unknown and payment unknown.</p><label><input data-id="e2e5" type="checkbox"> Mark reviewed</label></article>
+      <article><span class="status revise">Existing PWA</span><img src="final/offline.png" alt="Offline PWA screen"><div class="copy"><div class="number">E6 · Offline</div><h3>Updates paused</h3><p>Existing PWA screen; reconnect must reload authoritative state.</p><label><input data-id="e6" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status done">Existing PWA</span><img src="final/verification-failed.png" alt="Verification failure PWA screen"><div class="copy"><div class="number">E3 · Verification failed</div><h3>Provider not approved</h3><p>Existing PWA screen; wording should remain consistent with the identity source.</p><label><input data-id="e3" type="checkbox"> Mark reviewed</label></div></article>
+      <article><span class="status done">Existing PWA</span><img src="final/overdue.png" alt="Overdue trip PWA screen"><div class="copy"><div class="number">E10 · Overdue</div><h3>Trip check-in</h3><p>Existing PWA screen.</p><label><input data-id="e10" type="checkbox"> Mark reviewed</label></div></article>
+    </section>
+    <details><summary>Open the rest of the saved PWA screenshots</summary><ul>
+      <li><a href="final/02-onboarding-preferences.png">Preferences PWA screenshot</a> · <a href="final/03-home.png">Home PWA screenshot</a> · <a href="final/04-edit-home.png">Edit home</a> · <a href="final/05-trip-context.png">Trip context</a></li>
+      <li><a href="final/discovering.png">Discovering</a> · <a href="final/collecting-quotes.png">Collecting quotes</a> · <a href="final/evaluating.png">Evaluating</a> · <a href="final/recommendation.png">Recommendation PWA screenshot</a></li>
+      <li><a href="final/verifying-initial.png">Initial verification</a> · <a href="final/authorizing-initial.png">Initial authorization</a> · <a href="final/coordinating-initial.png">Initial coordination</a> · <a href="final/accepted-initial.png">Initial accepted</a></li>
+      <li><a href="final/waiting-initial.png">Initial waiting</a> · <a href="final/arriving-initial.png">Initial arriving</a> · <a href="final/in-trip-initial.png">Initial trip</a> · <a href="final/arrival-initial.png">Initial arrival</a></li>
+      <li><a href="final/replanning-evaluation.png">Replacement evaluation</a> · <a href="final/verifying-replacement.png">Replacement verification</a> · <a href="final/authorizing-replacement.png">Replacement authorization</a> · <a href="final/coordinating-replacement.png">Replacement coordination</a> · <a href="final/accepted-replacement.png">Replacement accepted</a> · <a href="final/waiting-replacement.png">Replacement waiting</a> · <a href="final/arriving-replacement.png">Replacement arriving</a> · <a href="final/in-trip-replacement.png">Replacement trip</a></li>
+      <li><a href="final/walking-recommendation.png">Walking recommendation</a> · <a href="final/walking-active.png">Walking active</a> · <a href="final/walking-arrival.png">Walking arrival</a> · <a href="beacon-flow/07-walking.png">Generated walking screen</a></li>
+      <li><a href="final/help.png">Help</a> · <a href="final/trip-details.png">Trip details</a> · <a href="final/context-fallback.png">Limited context</a> · <a href="final/restricted-storage.png">Restricted storage</a> · <a href="final/reset-profile.png">Reset profile</a></li>
+    </ul></details>
+    <p class="fine">This gallery intentionally excludes Mobbin, Uber, Apple and Transit reference screenshots. It contains only Beacon’s generated concepts and Beacon PWA screenshots.</p>
+  </main>
+  <script>
+    document.querySelectorAll("input[data-id]").forEach((input) => {
+      const key = "beacon-gallery-" + input.dataset.id;
+      input.checked = localStorage.getItem(key) === "true";
+      input.addEventListener("change", () => localStorage.setItem(key, input.checked));
+    });
+  </script>
+</body>
+</html>

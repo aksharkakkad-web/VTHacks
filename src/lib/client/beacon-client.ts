@@ -32,7 +32,7 @@ export type PlanningEvidence = {
   version: "beacon-planning-v1";
   runId: string;
   phase: "understanding" | "gathering" | "evaluating" | "explaining" | "ready" | "needs_input" | "unavailable";
-  worker: "online" | "offline" | "auth_required" | "rate_limited";
+  worker: "online" | "offline" | "auth_required" | "rate_limited" | "not_required";
   modelSource: "codex_subscription" | "none";
   explanationSource: "llm_grounded" | "template" | "none";
   snapshotId?: string;

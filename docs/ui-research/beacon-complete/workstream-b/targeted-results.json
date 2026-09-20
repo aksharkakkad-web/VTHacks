@@ -1,0 +1,28 @@
+{
+  "base": "http://localhost:3123",
+  "galleryBase": "http://localhost:3124",
+  "checks": [
+    "Offer price, source, expiry, and fee precede static confirmation at 320/360/390/393/430; visible journey controls meet 44px.",
+    "Alternative selection updates the review to $8.40 Rideshare and remains pre-booking with explicit simulated source.",
+    "Discovery, comparison, identity, access, payment, and booking have distinct planning states.",
+    "Verification failure withholds exact data and retry returns to identity check without release.",
+    "State restore moves focus to the task heading and provides a concise status announcement.",
+    "Gallery long-content and reduced-motion fixture has no horizontal overflow or active animation."
+  ],
+  "screenshots": [
+    "consent-320x568",
+    "consent-360x800",
+    "consent-390x844",
+    "consent-393x852",
+    "consent-430x932",
+    "alternative-rideshare",
+    "state-discovering",
+    "state-evaluating",
+    "state-verifying-initial",
+    "state-authorizing-initial",
+    "state-coordinating-initial",
+    "verification-retry",
+    "gallery-long-content-reduced-motion"
+  ],
+  "errors": []
+}

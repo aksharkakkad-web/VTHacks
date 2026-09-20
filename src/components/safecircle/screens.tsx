@@ -128,7 +128,7 @@ function PreferencesSetupScreen({ draft, onSave, onBack }: { draft: SavedProfile
     <BottomSheet className="is-setup" labelledBy="setup-preferences-title" testId="screen-setup-preferences">
       <p className="sc-step-label">Setup · 2 of 2</p>
       <h1 id="setup-preferences-title">Keep the plan simple.</h1>
-      <p className="sc-screen-subtitle">SafeCircle uses these limits for every recommendation.</p>
+      <p className="sc-screen-subtitle">Beacon uses these limits for every recommendation.</p>
       <form className="sc-form" onSubmit={submit}>
         <label><span>Maximum trip cost</span><div className="sc-money-input"><span>$</span><input type="number" min="0" max="100" step="1" inputMode="decimal" value={budget} onChange={(event) => setBudget(event.target.value)} aria-invalid={!valid} /></div></label>
         {!valid && <p className="sc-form-error" role="alert">Enter a budget from $0 to $100.</p>}
@@ -189,7 +189,7 @@ function SearchScreen({ model, onTechnical }: { model: DemoViewModel; onTechnica
         <StatusRow icon={<BusFront size={19} />} title="Checking availability" detail="Your exact pickup is not shared yet" state={status("collecting-quotes")} />
         <StatusRow icon={<Route size={19} />} title="Comparing routes" detail="Using your price, walking, and time preferences" state={status("evaluating")} />
       </div>
-      <TextButton onClick={onTechnical}>See what SafeCircle is doing <ArrowRight size={16} /></TextButton>
+      <TextButton onClick={onTechnical}>See what Beacon is doing <ArrowRight size={16} /></TextButton>
     </BottomSheet>
   );
 }
@@ -218,12 +218,12 @@ function CoordinationScreen({ model, onDetails }: { model: DemoViewModel; onDeta
   const stage = model.stage;
   const replacement = stage.includes("replacement");
   const content = stage.startsWith("verifying")
-    ? { eyebrow: replacement ? "Confirming your new ride" : "Confirming your ride", title: "Confirming your ride…", body: "Your exact pickup stays private until the provider is confirmed.", icon: <ShieldCheck size={25} /> }
+    ? { eyebrow: replacement ? "Replacement provider identity" : "Provider identity", title: "Checking provider identity…", body: "Exact pickup stays private until identity and trip authorization both pass.", icon: <ShieldCheck size={25} /> }
     : stage.startsWith("authorizing")
       ? { eyebrow: "Provider confirmed", title: "Keeping details limited.", body: "Only the pickup details needed for this trip will be shared.", icon: <LockKeyhole size={25} /> }
       : stage.startsWith("coordinating")
         ? { eyebrow: "Provider confirmed", title: "Requesting your pickup.", body: "Your verified provider now has the details needed to meet you.", icon: <Navigation size={25} /> }
-        : { eyebrow: "Pickup confirmed", title: replacement ? "New ride confirmed." : "Your ride is confirmed.", body: replacement ? "Still within your preferences. Your pickup is on the way." : "Your pickup is on the way.", icon: <CheckCircle2 size={25} /> };
+        : { eyebrow: "Simulated booking accepted", title: replacement ? "Replacement request accepted." : "Your request was accepted.", body: "Demo provider response. Pickup instructions and progress depend on the supplied trip updates.", icon: <CheckCircle2 size={25} /> };
   return (
     <BottomSheet className="is-centered" labelledBy="coordination-title" testId={`screen-${stage}`}>
       <div className="sc-state-symbol is-large">{content.icon}</div>
@@ -260,7 +260,7 @@ function ActiveTripScreen({ model, onDetails, onHelp }: { model: DemoViewModel; 
       <div className="sc-provider-strip"><span className="sc-provider-icon">{isWalking ? <Footprints size={22} /> : plan.mode === "independent_ride" ? <CarFront size={22} /> : <BusFront size={22} />}</span><div><strong>{isWalking ? "Walk home" : plan.providerName}</strong><small>{isWalking ? "Direct walking route" : plan.mode === "independent_ride" ? "Rideshare pickup" : plan.mode === "campus_ride" ? "Campus shuttle" : "Transit ride"}</small></div><span>{isWalking ? `${plan.walkingMinutes} min` : `$${plan.cost.toFixed(2)}`}</span></div>
       <TripTimeline step={model.progressStep} walking={isWalking} />
       <div className="sc-active-actions"><SecondaryButton onClick={onDetails}>Trip details</SecondaryButton><SecondaryButton onClick={onHelp}><Phone size={18} /> Help</SecondaryButton></div>
-      <p className="sc-auto-note">This simulated trip advances automatically.</p>
+      <p className="sc-auto-note">Simulated trip status comes from explicit demo responses.</p>
     </BottomSheet>
   );
 }
@@ -279,8 +279,8 @@ function RecoveryScreen({ model, onDetails }: { model: DemoViewModel; onDetails:
       <div className={`sc-state-symbol${cancelled ? " is-amber" : ""}`}>{cancelled ? <XCircle size={23} /> : selected ? <CheckCircle2 size={23} /> : <Route size={23} />}</div>
       <p className={`sc-eyebrow${cancelled ? " is-amber" : ""}`}>{cancelled ? "Provider update" : selected ? "Replacement selected" : "Automatic recovery"}</p>
       <h1 id="recovery-title">{cancelled ? "Your ride cancelled." : selected ? "Another option fits." : "We’re handling it."}</h1>
-      <p className="sc-screen-subtitle">{cancelled ? "You don’t need to retry. SafeCircle will find another way home." : selected ? `${model.selectedPlan?.providerName} stays within your approved budget and walking preference.` : "The same approved constraints are being used for your replacement."}</p>
-      {selected && model.selectedPlan ? <><ProviderCard plan={model.selectedPlan} recommendation={model.recommendation} verified={false} replacement /><p className="sc-inline-progress" role="status"><span className="sc-loader is-small" /> Confirming this option…</p></> : <div className="sc-status-list"><StatusRow icon={<Check size={18} />} title="Previous provider removed" detail="Temporary access revoked" state="done" /><StatusRow icon={<Search size={18} />} title="Finding suitable replacements" detail="No price above your budget" state={cancelled ? "pending" : "active"} /><StatusRow icon={<ShieldCheck size={18} />} title="Replacement verification" detail="Starts after selection" state="pending" /></div>}
+      <p className="sc-screen-subtitle">{cancelled ? "You don’t need to retry. Beacon will find another way home." : selected ? `${model.selectedPlan?.providerName} stays within your approved budget and walking preference.` : "The same approved constraints are being used for your replacement."}</p>
+      {selected && model.selectedPlan ? <><ProviderCard plan={model.selectedPlan} recommendation={model.recommendation} verified={false} replacement /><p className="sc-inline-progress" role="status">This replacement needs your confirmation.</p></> : <div className="sc-status-list"><StatusRow icon={<Check size={18} />} title="Previous provider removed" detail="Temporary access revoked" state="done" /><StatusRow icon={<Search size={18} />} title="Finding suitable replacements" detail="No price above your budget" state={cancelled ? "pending" : "active"} /><StatusRow icon={<ShieldCheck size={18} />} title="Replacement verification" detail="Starts after confirmation" state="pending" /></div>}
       {selected && model.selectedPlan && <TextButton onClick={onDetails}>View replacement details <ArrowRight size={16} /></TextButton>}
     </BottomSheet>
   );
@@ -301,12 +301,12 @@ function ArrivalScreen({ model, onFinish, onDetails }: { model: DemoViewModel; o
 function SupportingStateScreen(props: ScreenProps) {
   const { model, onAction, onEditProfile, onOpenHelp } = props;
   const stage = model.stage;
-  if (stage === "context-fallback") return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Limited context" title="Using your saved preferences." body="Advanced campus context is unavailable in this demo. Basic budget and walking checks still work." primary="CONTINUE" onPrimary={() => onAction({ type: "ADVANCE" })} />;
-  if (stage === "offline") return <MessageSheet stage={stage} icon={<WifiOff size={24} />} eyebrow="Updates paused" title="You’re offline." body="SafeCircle is holding the last known trip state. No new provider updates are being simulated." primary="TRY TO RECONNECT" onPrimary={() => onAction({ type: "RECONNECT" })} />;
+  if (stage === "context-fallback") return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Limited context" title="Using your saved preferences." body="Advanced campus context is unavailable in this demo. Basic budget and walking checks still work." primary="CONTINUE" onPrimary={() => onAction({ type: "RETRY" })} />;
+  if (stage === "offline") return <MessageSheet stage={stage} icon={<WifiOff size={24} />} eyebrow="Updates paused" title="You’re offline." body="Beacon is holding the last known trip state. No new provider updates are being simulated." primary="TRY TO RECONNECT" onPrimary={() => onAction({ type: "RECONNECT" })} />;
   if (stage === "verification-failed") return <MessageSheet stage={stage} icon={<XCircle size={24} />} eyebrow="Verification stopped" title="We couldn’t verify this provider." body="Precise pickup was not shared. You can retry the identity check or return home." primary="RETRY VERIFICATION" onPrimary={() => onAction({ type: "RETRY" })} secondary="RETURN HOME" onSecondary={() => onAction({ type: "FINISH" })} />;
   if (stage === "no-options") return <MessageSheet stage={stage} icon={<Search size={24} />} eyebrow="No suitable option" title="Nothing fits your limits right now." body={`No remaining option stays within your $${model.constraints?.maxBudget.toFixed(0)} budget and walking preference.`} primary="EDIT PREFERENCES" onPrimary={onEditProfile} secondary="TRY AGAIN" onSecondary={() => onAction({ type: "RETRY" })} />;
   const updated = model.lastTripUpdateAt ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(model.lastTripUpdateAt) : "Time unavailable";
-  return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Trip check-in" title="Are you home?" body="This simulated trip is overdue. SafeCircle has not contacted anyone automatically." detail={<div className="sc-last-known"><strong>Last known: on the way home</strong><p>{model.selectedPlan?.providerName ?? "Trip"} · {model.profile?.homeAddress}</p><small>Updated {updated}. Precise location is unavailable in this demo.</small></div>} primary="YES, I’M HOME" onPrimary={() => onAction({ type: "CONFIRM_ARRIVAL", now: Date.now() })} secondary="STILL TRAVELLING" onSecondary={() => onAction({ type: "STILL_TRAVELLING" })} tertiary="Get help" onTertiary={onOpenHelp} />;
+  return <MessageSheet stage={stage} icon={<AlertTriangle size={24} />} eyebrow="Trip check-in" title="Are you home?" body="This simulated trip is overdue. Beacon has not contacted anyone automatically." detail={<div className="sc-last-known"><strong>Last known: on the way home</strong><p>{model.selectedPlan?.providerName ?? "Trip"} · {model.profile?.homeAddress}</p><small>Updated {updated}. Precise location is unavailable in this demo.</small></div>} primary="YES, I’M HOME" onPrimary={() => onAction({ type: "CONFIRM_ARRIVAL", now: Date.now() })} secondary="STILL TRAVELLING" onSecondary={() => onAction({ type: "STILL_TRAVELLING" })} tertiary="Get help" onTertiary={onOpenHelp} />;
 }
 
 function MessageSheet({ stage, icon, eyebrow, title, body, detail, primary, secondary, tertiary, onPrimary, onSecondary, onTertiary }: { stage: DemoStage; icon: ReactNode; eyebrow: string; title: string; body: string; detail?: ReactNode; primary: string; secondary?: string; tertiary?: string; onPrimary: () => void; onSecondary?: () => void; onTertiary?: () => void }) {

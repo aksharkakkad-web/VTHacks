@@ -1,0 +1,327 @@
+.specimenPage {
+  min-height: 100svh;
+  background: var(--beacon-sage);
+}
+
+.gallery {
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: 270px minmax(430px, 1fr);
+  grid-template-rows: auto 1fr;
+  background: #dfe9e3;
+  color: #10282a;
+}
+
+.galleryHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  grid-column: 1 / -1;
+  padding: 26px 32px 22px;
+  border-bottom: 1px solid rgb(16 40 42 / 12%);
+  background: #f7f7f2;
+}
+
+.galleryToggles { display: flex; flex: 0 0 auto; gap: 9px; }
+.galleryToggles label { display: inline-flex; min-height: 44px; align-items: center; gap: 7px; padding: 0 11px; border: 1px solid #d7ddda; border-radius: 10px; color: #41524f; font-size: 11px; font-weight: 650; cursor: pointer; }
+.galleryToggles input { width: 17px; height: 17px; accent-color: #236f5c; }
+.reducedMotion *,
+.reducedMotion *::before,
+.reducedMotion *::after { scroll-behavior: auto !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+
+.galleryHeader p { margin: 0 0 7px; color: #236f5c; font-size: 11px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+.galleryHeader h1 { margin: 0; font-size: clamp(28px, 3vw, 42px); font-weight: 720; letter-spacing: -0.05em; line-height: 1; }
+.galleryHeader span { display: block; margin-top: 9px; color: #69716f; font-size: 13px; }
+
+.galleryNav {
+  height: calc(100svh - 132px);
+  overflow-y: auto;
+  padding: 18px 14px 28px;
+  border-right: 1px solid rgb(16 40 42 / 12%);
+  background: #f7f7f2;
+}
+
+.galleryNav > div + div { margin-top: 20px; }
+.galleryNav h2 { margin: 0 8px 7px; color: #77827f; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.galleryNav button { display: grid; width: 100%; min-height: 44px; grid-template-columns: 40px 1fr; align-items: center; gap: 7px; padding: 5px 9px; border: 0; border-radius: 10px; background: transparent; color: #41524f; text-align: left; cursor: pointer; }
+.galleryNav button:hover { background: #edf1ed; }
+.galleryNav button[aria-pressed="true"] { background: #10282a; color: white; }
+.galleryNav button strong { font-size: 11px; }
+.galleryNav button span { font-size: 12px; line-height: 1.25; }
+
+.galleryPreview {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  height: calc(100svh - 132px);
+  grid-template-columns: minmax(150px, 1fr) 430px minmax(30px, 1fr);
+  align-items: center;
+  gap: 28px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.galleryCaption { align-self: start; padding-top: 42px; }
+.galleryCaption span,
+.galleryCaption strong,
+.galleryCaption small { display: block; }
+.galleryCaption span { color: #236f5c; font-size: 13px; font-weight: 800; }
+.galleryCaption strong { max-width: 220px; margin-top: 7px; font-size: 26px; letter-spacing: -0.04em; line-height: 1.05; }
+.galleryCaption small { margin-top: 8px; color: #667471; font-size: 11px; }
+
+.previewViewport {
+  --beacon-frame-height: max(620px, min(844px, calc(100dvh - 172px)));
+  --beacon-frame-padding: 0px;
+  width: 430px;
+  height: var(--beacon-frame-height);
+  min-height: 620px;
+  overflow: hidden;
+  border-radius: 48px;
+  background: #fbfaf6;
+  box-shadow: 0 24px 64px rgb(16 40 42 / 20%);
+}
+
+.previewViewport > * { min-height: 100%; }
+.routeFrame { width: 100%; height: 100%; border: 0; background: #fbfaf6; }
+.reopenSheet { position: fixed; z-index: 120; right: 24px; bottom: 24px; min-height: 44px; padding: 0 15px; border: 0; border-radius: 12px; background: #10282a; color: white; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+@media (max-width: 920px) {
+  .gallery { grid-template-columns: 1fr; }
+  .galleryHeader { display: grid; padding: 20px; }
+  .galleryToggles { flex-wrap: wrap; }
+  .galleryNav { display: flex; height: auto; gap: 14px; overflow-x: auto; padding: 12px 16px; border-right: 0; border-bottom: 1px solid rgb(16 40 42 / 12%); }
+  .galleryNav > div { display: flex; flex: 0 0 auto; gap: 5px; }
+  .galleryNav > div + div { margin-top: 0; }
+  .galleryNav h2 { display: none; }
+  .galleryNav button { width: 56px; grid-template-columns: 1fr; text-align: center; }
+  .galleryNav button span { display: none; }
+  .galleryPreview { height: auto; min-height: 844px; grid-template-columns: 1fr; justify-items: center; overflow: visible; }
+  .galleryCaption { padding-top: 0; justify-self: start; }
+  .previewViewport { max-width: 100%; }
+}
+
+@media (max-width: 500px) {
+  .specimenPage { display: none; }
+  .gallery { min-width: 0; }
+  .galleryPreview { min-width: 0; padding-inline: 12px; }
+  .previewViewport { width: 100%; }
+}
+
+.foundation {
+  display: none;
+}
+
+.previewArea {
+  min-width: 0;
+}
+
+.previewLabel {
+  display: none;
+}
+
+.phoneFrame {
+  min-width: 0;
+}
+
+.specimenIntro {
+  margin-bottom: var(--beacon-space-8);
+}
+
+.kicker {
+  margin: 0 0 var(--beacon-space-2);
+  color: var(--beacon-mint-strong);
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.specimenIntro h2,
+.foundation h1 {
+  margin: 0;
+  color: var(--beacon-charcoal);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+}
+
+.specimenIntro h2 {
+  max-width: 300px;
+  font-size: 34px;
+  line-height: 1.02;
+}
+
+.specimenIntro > p:last-child {
+  margin: var(--beacon-space-3) 0 0;
+  color: var(--beacon-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.componentSection {
+  min-width: 0;
+  margin: 0 0 var(--beacon-space-8);
+  padding: 0;
+  border: 0;
+}
+
+.componentSection h3,
+.componentSection legend {
+  width: 100%;
+  margin: 0 0 var(--beacon-space-3);
+  color: var(--beacon-forest);
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.02em;
+}
+
+.componentSection > * + * {
+  margin-top: var(--beacon-space-4);
+}
+
+.choiceStack,
+.calloutStack,
+.buttonStack {
+  display: grid;
+  gap: var(--beacon-space-3);
+}
+
+.rowGroup {
+  border-top: 1px solid var(--beacon-border);
+}
+
+.buttonStack {
+  justify-items: start;
+}
+
+.foundation h1 {
+  max-width: 520px;
+  font-size: clamp(38px, 4vw, 58px);
+  line-height: 0.98;
+}
+
+.foundationCopy,
+.foundationSection p {
+  color: var(--beacon-muted);
+  line-height: 1.55;
+}
+
+.foundationCopy {
+  max-width: 520px;
+  margin: var(--beacon-space-5) 0 0;
+  font-size: 16px;
+}
+
+.foundationSection {
+  max-width: 520px;
+  padding-top: var(--beacon-space-6);
+  border-top: 1px solid var(--beacon-border-strong);
+}
+
+.foundationSection h2 {
+  margin: 0 0 var(--beacon-space-3);
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.02em;
+}
+
+.foundationSection p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--beacon-space-2);
+}
+
+.swatches span {
+  display: flex;
+  min-height: 78px;
+  align-items: flex-end;
+  padding: 10px;
+  border: 1px solid var(--beacon-border-strong);
+  border-radius: var(--beacon-radius-sm);
+  font-size: 11px;
+  font-weight: 680;
+}
+
+.swatchPaper {
+  background: var(--beacon-paper);
+}
+
+.swatchSage {
+  background: var(--beacon-sage-strong);
+}
+
+.swatchMint {
+  background: var(--beacon-mint);
+  color: #09261f;
+}
+
+.swatchCharcoal {
+  background: var(--beacon-charcoal);
+  color: white;
+}
+
+@media (min-width: 900px) {
+  .specimenPage {
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    grid-template-columns: minmax(0, 1fr) 430px;
+    gap: clamp(48px, 7vw, 112px);
+    align-items: center;
+    padding: clamp(44px, 6vw, 88px);
+    background: var(--beacon-sage);
+  }
+
+  .specimenPage::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 45%;
+    width: 1px;
+    background: var(--beacon-border);
+    content: "";
+  }
+
+  .foundation {
+    z-index: 1;
+    display: grid;
+    align-content: center;
+    gap: var(--beacon-space-8);
+  }
+
+  .previewArea {
+    z-index: 1;
+    width: 430px;
+    justify-self: end;
+  }
+
+  .previewLabel {
+    display: block;
+    margin: 0 0 var(--beacon-space-3);
+    color: var(--beacon-muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .phoneFrame {
+    height: min(844px, calc(100svh - 200px));
+    min-height: 620px;
+  }
+
+  .phoneFrame > * {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 389px) {
+  .specimenIntro h2 {
+    font-size: 30px;
+  }
+}
