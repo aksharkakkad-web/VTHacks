@@ -1,0 +1,27 @@
+{
+  "source": "Hankey, Lu, Mondschein and Buehler; Virginia Tech; hosted by USDOT National Transportation Library",
+  "url": "https://rosap.ntl.bts.gov/view/dot/34766/dot_34766_DS1.pdf",
+  "landing_url": "https://rosap.ntl.bts.gov/view/dot/34766",
+  "captured_at": "2026-09-19T13:42:56.821894+00:00",
+  "sha256": "487731015c97a8eb6602d5d15e7819de56ce18178ceaf255af7130e0397dae63",
+  "filename": "blacksburg-pedestrian-count-study-2016.pdf",
+  "report_date": "2016-05-31",
+  "observation_year": 2015,
+  "page_count": 59,
+  "rights": "Report page ii states No restrictions; do not infer a separate raw-data license.",
+  "limitations": [
+    "Historical 2015 aggregate measurements and derived estimates, not a current/live activity feed.",
+    "The report contains aggregate tables and charts, not the complete downloadable site-level hourly dataset.",
+    "Table 16 observed daily descriptive statistics use counter correction equations and censoring of invalid/event days.",
+    "Table 13 includes separate observed-only and model-imputed annual estimates; these must not be conflated.",
+    "No verified exact geospatial match to the Newman-Pritchard or Eggleston-Pritchard demo corridor."
+  ],
+  "derived_files": [
+    {
+      "filename": "historical-pedestrian-summary-2015.json",
+      "sha256": "433aab730173b6d7623fd4038659f4793cfe0373d2ab90ea056cd747979814a5",
+      "record_count": 4,
+      "derivation": "Four pedestrian rows transcribed from Table 16, printed page 34 (PDF page 41). Compared pypdf extraction with rendered page. No chart digitization, coordinate estimation, scaling or model imputation."
+    }
+  ]
+}

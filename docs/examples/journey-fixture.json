@@ -1,0 +1,2010 @@
+{
+  "checkedAt": "2026-09-19T22:24:45.181Z",
+  "routing": "fixture_only_not_live",
+  "providers": "simulated_not_booked",
+  "audit": "read_only_no_writes",
+  "checks": [],
+  "input": {
+    "objectiveVersion": 1,
+    "origin": {
+      "id": "newman-reference",
+      "name": "Newman Library public reference point",
+      "point": {
+        "lat": 37.2287881,
+        "lng": -80.41916034
+      }
+    },
+    "destination": {
+      "id": "pritchard-reference",
+      "name": "Pritchard Hall public reference point",
+      "point": {
+        "lat": 37.222,
+        "lng": -80.42
+      }
+    },
+    "evaluatedAt": "2026-09-19T22:24:44.876Z",
+    "budgetMinor": 1000,
+    "tired": true,
+    "rides": [
+      {
+        "offer": {
+          "operatorId": "demo-operator",
+          "serviceId": "demo-campus",
+          "quoteId": "fixture-quote",
+          "offerVersion": "1",
+          "displayName": "Simulated campus ride",
+          "mode": "campus_ride",
+          "source": "simulated",
+          "available": true,
+          "issuedAt": "2026-09-19T22:24:44.876Z",
+          "expiresAt": "2026-09-19T22:26:44.876Z",
+          "admission": {
+            "serviceAreaMatch": true,
+            "authSupported": true,
+            "paymentSupported": true
+          },
+          "price": {
+            "currency": "USD",
+            "kind": "fixed",
+            "totalMinor": 200,
+            "includesAllFees": true
+          },
+          "waitMinutes": 5,
+          "travelMinutes": 4,
+          "walkingMinutes": 0,
+          "transfers": 0
+        },
+        "pickup": {
+          "id": "newman-reference",
+          "name": "Newman Library public reference point",
+          "point": {
+            "lat": 37.2287881,
+            "lng": -80.41916034
+          }
+        },
+        "dropoff": {
+          "id": "pritchard-reference",
+          "name": "Pritchard Hall public reference point",
+          "point": {
+            "lat": 37.222,
+            "lng": -80.42
+          }
+        },
+        "pickupAt": "2026-09-19T22:29:44.876Z",
+        "arrivalAt": "2026-09-19T22:33:44.876Z",
+        "pickupPermitted": true
+      }
+    ]
+  },
+  "result": {
+    "journeyVersion": "beacon-journey-v1",
+    "policyVersion": "beacon-journey-rank-v1",
+    "objectiveVersion": 1,
+    "evaluatedAt": "2026-09-19T22:24:45.177Z",
+    "status": "RECOMMENDED",
+    "selected": {
+      "journeyId": "journey:ca3a92dd2214de8d7ad66318ad434cc4dfd7ff28",
+      "kind": "ride",
+      "legs": [
+        {
+          "id": "leg-1",
+          "kind": "wait",
+          "from": {
+            "id": "newman-reference",
+            "name": "Newman Library public reference point",
+            "point": {
+              "lat": 37.2287881,
+              "lng": -80.41916034
+            }
+          },
+          "to": {
+            "id": "newman-reference",
+            "name": "Newman Library public reference point",
+            "point": {
+              "lat": 37.2287881,
+              "lng": -80.41916034
+            }
+          },
+          "startsAt": "2026-09-19T22:24:44.876Z",
+          "endsAt": "2026-09-19T22:29:14.876Z",
+          "route": null,
+          "evidence": {
+            "blocked": false,
+            "validUntil": "2026-09-19T23:00:00.000Z",
+            "facts": [
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202602.pdf",
+                "sourceVersion": "272a2571249b39074b9d239adb4f8f9a865f349707ef37db00c9acfaa01f5a2e",
+                "capturedAt": "2026-09-19T13:48:57.259238Z",
+                "observedAt": "2026-02-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-02:p6:r58:2026-2707",
+                  "reportId": "2026-2707",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing",
+                  "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                  "occurrenceStart": "2026-02-14",
+                  "occurrenceEnd": "2026-02-14",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                "capturedAt": "2026-09-19T13:48:58.562382Z",
+                "observedAt": "2026-03-10",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-03:p4:r28:2026-4399",
+                  "reportId": "2026-4399",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing",
+                  "disposition": "Inactive- Referred\nto Student\nConduct",
+                  "occurrenceStart": "2026-03-10",
+                  "occurrenceEnd": "2026-03-10",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                "capturedAt": "2026-09-19T13:48:58.562382Z",
+                "observedAt": "2026-03-25",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-03:p8:r74:2026-5383",
+                  "reportId": "2026-5383",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-03-20",
+                  "occurrenceEnd": "2026-03-20",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-10",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p4:r35:2026-6567",
+                  "reportId": "2026-6567",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing X 3",
+                  "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                  "occurrenceStart": "2026-04-10",
+                  "occurrenceEnd": "2026-04-10",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-24",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p10:r89:2026-7528",
+                  "reportId": "2026-7528",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Grand Larceny",
+                  "disposition": "Active Inactive\n05/11/2026",
+                  "occurrenceStart": "2025-08-21",
+                  "occurrenceEnd": "2026-04-22",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-24",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p10:r90:2026-7509",
+                  "reportId": "2026-7509",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Profane, Threatening\nLanguage over Public Airway",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-04-10",
+                  "occurrenceEnd": "2026-04-24",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf",
+                "sourceVersion": "30f69522a1417063bdb3ffbe4f2e460b10e8ceabc6885f7b0b773c4aed3bb172",
+                "capturedAt": "2026-09-19T13:49:01.493272Z",
+                "observedAt": "2026-05-01",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-05:p1:r1:2026-7988",
+                  "reportId": "2026-7988",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Failure to Observe Rules and\nRegulations",
+                  "disposition": "Inactive- Referred\nto Student\nConduct",
+                  "occurrenceStart": "2026-05-01",
+                  "occurrenceEnd": "2026-05-01",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202606.pdf",
+                "sourceVersion": "d818032a95f92fa31f0a86aa05f5f1be4d46662164961aa9f16060bce189377c",
+                "capturedAt": "2026-09-19T13:49:02.457771Z",
+                "observedAt": "2026-06-04",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-06:p1:r5:2026-9849",
+                  "reportId": "2026-9849",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing\nViolation of Probation",
+                  "disposition": "Cleared by Arrest",
+                  "occurrenceStart": "2026-06-04",
+                  "occurrenceEnd": "2026-06-04",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-03",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p2:r10:2026-15271",
+                  "reportId": "2026-15271",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2023-11-01",
+                  "occurrenceEnd": "2026-09-01",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-08",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p7:r67:2026-15779",
+                  "reportId": "2026-15779",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-05",
+                  "occurrenceEnd": "2026-09-05",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p13:r123:2026-16344",
+                  "reportId": "2026-16344",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p13:r124:2026-16336",
+                  "reportId": "2026-16336",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny X 2",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r125:2026-16345",
+                  "reportId": "2026-16345",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-15",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r129:2026-16426",
+                  "reportId": "2026-16426",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent X 9\nPetit Larceny",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-14",
+                  "occurrenceEnd": "2026-09-15",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-16",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r133:2026-16551",
+                  "reportId": "2026-16551",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-16",
+                  "occurrenceEnd": "2026-09-16",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-16",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r134:2026-16538",
+                  "reportId": "2026-16538",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-15",
+                  "occurrenceEnd": "2026-09-16",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "weather",
+                "sourceUrl": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
+                "sourceVersion": "48cfb7bae5c4c55408f077e0ec53df2f0dfbfefbf3b16ef96d540dd5c9f2a1cb",
+                "capturedAt": "2026-09-19T22:11:46.469209Z",
+                "observedAt": "2026-09-19T20:00:38Z",
+                "validUntil": "2026-09-19T23:00:00.000Z",
+                "confidence": "forecast",
+                "spatialMatch": "campus_forecast_area",
+                "details": {
+                  "condition": "clear",
+                  "activeOfficialAlert": null,
+                  "routeObserved": false,
+                  "limitation": "NWS campus reference area forecast; not observations on each path"
+                }
+              }
+            ],
+            "unknowns": [
+              "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+              "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+              "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+              "Emergency phone operation, access, current activity and companionship are unknown.",
+              "Published construction coverage is partial; no polygon intersection does not certify that the path is open."
+            ]
+          },
+          "instruction": "Wait at Newman Library public reference point until 2026-09-19T22:29:14.876Z.",
+          "source": "waiting_conditions_unknown",
+          "indoor": null,
+          "sheltered": null
+        },
+        {
+          "id": "leg-2",
+          "kind": "wait",
+          "from": {
+            "id": "newman-reference",
+            "name": "Newman Library public reference point",
+            "point": {
+              "lat": 37.2287881,
+              "lng": -80.41916034
+            }
+          },
+          "to": {
+            "id": "newman-reference",
+            "name": "Newman Library public reference point",
+            "point": {
+              "lat": 37.2287881,
+              "lng": -80.41916034
+            }
+          },
+          "startsAt": "2026-09-19T22:29:14.876Z",
+          "endsAt": "2026-09-19T22:29:44.876Z",
+          "route": null,
+          "evidence": {
+            "blocked": false,
+            "validUntil": "2026-09-19T23:00:00.000Z",
+            "facts": [
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202602.pdf",
+                "sourceVersion": "272a2571249b39074b9d239adb4f8f9a865f349707ef37db00c9acfaa01f5a2e",
+                "capturedAt": "2026-09-19T13:48:57.259238Z",
+                "observedAt": "2026-02-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-02:p6:r58:2026-2707",
+                  "reportId": "2026-2707",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing",
+                  "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                  "occurrenceStart": "2026-02-14",
+                  "occurrenceEnd": "2026-02-14",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                "capturedAt": "2026-09-19T13:48:58.562382Z",
+                "observedAt": "2026-03-10",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-03:p4:r28:2026-4399",
+                  "reportId": "2026-4399",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing",
+                  "disposition": "Inactive- Referred\nto Student\nConduct",
+                  "occurrenceStart": "2026-03-10",
+                  "occurrenceEnd": "2026-03-10",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                "capturedAt": "2026-09-19T13:48:58.562382Z",
+                "observedAt": "2026-03-25",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-03:p8:r74:2026-5383",
+                  "reportId": "2026-5383",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-03-20",
+                  "occurrenceEnd": "2026-03-20",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-10",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p4:r35:2026-6567",
+                  "reportId": "2026-6567",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing X 3",
+                  "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                  "occurrenceStart": "2026-04-10",
+                  "occurrenceEnd": "2026-04-10",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-24",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p10:r89:2026-7528",
+                  "reportId": "2026-7528",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Grand Larceny",
+                  "disposition": "Active Inactive\n05/11/2026",
+                  "occurrenceStart": "2025-08-21",
+                  "occurrenceEnd": "2026-04-22",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                "capturedAt": "2026-09-19T13:49:00.101180Z",
+                "observedAt": "2026-04-24",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-04:p10:r90:2026-7509",
+                  "reportId": "2026-7509",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Profane, Threatening\nLanguage over Public Airway",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-04-10",
+                  "occurrenceEnd": "2026-04-24",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf",
+                "sourceVersion": "30f69522a1417063bdb3ffbe4f2e460b10e8ceabc6885f7b0b773c4aed3bb172",
+                "capturedAt": "2026-09-19T13:49:01.493272Z",
+                "observedAt": "2026-05-01",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-05:p1:r1:2026-7988",
+                  "reportId": "2026-7988",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Failure to Observe Rules and\nRegulations",
+                  "disposition": "Inactive- Referred\nto Student\nConduct",
+                  "occurrenceStart": "2026-05-01",
+                  "occurrenceEnd": "2026-05-01",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202606.pdf",
+                "sourceVersion": "d818032a95f92fa31f0a86aa05f5f1be4d46662164961aa9f16060bce189377c",
+                "capturedAt": "2026-09-19T13:49:02.457771Z",
+                "observedAt": "2026-06-04",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-06:p1:r5:2026-9849",
+                  "reportId": "2026-9849",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Trespassing\nViolation of Probation",
+                  "disposition": "Cleared by Arrest",
+                  "occurrenceStart": "2026-06-04",
+                  "occurrenceEnd": "2026-06-04",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-03",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p2:r10:2026-15271",
+                  "reportId": "2026-15271",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2023-11-01",
+                  "occurrenceEnd": "2026-09-01",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-08",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p7:r67:2026-15779",
+                  "reportId": "2026-15779",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-05",
+                  "occurrenceEnd": "2026-09-05",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p13:r123:2026-16344",
+                  "reportId": "2026-16344",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p13:r124:2026-16336",
+                  "reportId": "2026-16336",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny X 2",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-14",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r125:2026-16345",
+                  "reportId": "2026-16345",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                  "disposition": "Inactive",
+                  "occurrenceStart": "2026-09-12",
+                  "occurrenceEnd": "2026-09-13",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-15",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r129:2026-16426",
+                  "reportId": "2026-16426",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Destruction of Property,\nMonument <$1000 with\nIntent X 9\nPetit Larceny",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-14",
+                  "occurrenceEnd": "2026-09-15",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-16",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r133:2026-16551",
+                  "reportId": "2026-16551",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-16",
+                  "occurrenceEnd": "2026-09-16",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "historical_incident",
+                "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                "capturedAt": "2026-09-19T13:49:04.751853Z",
+                "observedAt": "2026-09-16",
+                "validUntil": null,
+                "confidence": "historical_partial",
+                "spatialMatch": "exact_endpoint_building",
+                "details": {
+                  "recordId": "2026-09:p14:r134:2026-16538",
+                  "reportId": "2026-16538",
+                  "location": "560 Drillfield Drive\n(Newman Library)",
+                  "offense": "Petit Larceny- Building",
+                  "disposition": "Active",
+                  "occurrenceStart": "2026-09-15",
+                  "occurrenceEnd": "2026-09-16",
+                  "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                  "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                  "completeCoverage": false
+                }
+              },
+              {
+                "kind": "weather",
+                "sourceUrl": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
+                "sourceVersion": "48cfb7bae5c4c55408f077e0ec53df2f0dfbfefbf3b16ef96d540dd5c9f2a1cb",
+                "capturedAt": "2026-09-19T22:11:46.469209Z",
+                "observedAt": "2026-09-19T20:00:38Z",
+                "validUntil": "2026-09-19T23:00:00.000Z",
+                "confidence": "forecast",
+                "spatialMatch": "campus_forecast_area",
+                "details": {
+                  "condition": "clear",
+                  "activeOfficialAlert": null,
+                  "routeObserved": false,
+                  "limitation": "NWS campus reference area forecast; not observations on each path"
+                }
+              }
+            ],
+            "unknowns": [
+              "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+              "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+              "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+              "Emergency phone operation, access, current activity and companionship are unknown.",
+              "Published construction coverage is partial; no polygon intersection does not certify that the path is open."
+            ]
+          },
+          "instruction": "Wait at Newman Library public reference point until 2026-09-19T22:29:44.876Z.",
+          "source": "waiting_conditions_unknown",
+          "indoor": null,
+          "sheltered": null
+        },
+        {
+          "id": "leg-3",
+          "kind": "ride",
+          "from": {
+            "id": "newman-reference",
+            "name": "Newman Library public reference point",
+            "point": {
+              "lat": 37.2287881,
+              "lng": -80.41916034
+            }
+          },
+          "to": {
+            "id": "pritchard-reference",
+            "name": "Pritchard Hall public reference point",
+            "point": {
+              "lat": 37.222,
+              "lng": -80.42
+            }
+          },
+          "startsAt": "2026-09-19T22:29:44.876Z",
+          "endsAt": "2026-09-19T22:33:44.876Z",
+          "instruction": "Take Simulated campus ride to Pritchard Hall public reference point.",
+          "route": null,
+          "evidence": null,
+          "source": "simulated",
+          "locationEvidence": {
+            "pickup": {
+              "blocked": false,
+              "validUntil": "2026-09-19T23:00:00.000Z",
+              "facts": [
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202602.pdf",
+                  "sourceVersion": "272a2571249b39074b9d239adb4f8f9a865f349707ef37db00c9acfaa01f5a2e",
+                  "capturedAt": "2026-09-19T13:48:57.259238Z",
+                  "observedAt": "2026-02-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-02:p6:r58:2026-2707",
+                    "reportId": "2026-2707",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing",
+                    "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                    "occurrenceStart": "2026-02-14",
+                    "occurrenceEnd": "2026-02-14",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                  "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                  "capturedAt": "2026-09-19T13:48:58.562382Z",
+                  "observedAt": "2026-03-10",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-03:p4:r28:2026-4399",
+                    "reportId": "2026-4399",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing",
+                    "disposition": "Inactive- Referred\nto Student\nConduct",
+                    "occurrenceStart": "2026-03-10",
+                    "occurrenceEnd": "2026-03-10",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                  "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                  "capturedAt": "2026-09-19T13:48:58.562382Z",
+                  "observedAt": "2026-03-25",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-03:p8:r74:2026-5383",
+                    "reportId": "2026-5383",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-03-20",
+                    "occurrenceEnd": "2026-03-20",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-10",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p4:r35:2026-6567",
+                    "reportId": "2026-6567",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing X 3",
+                    "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                    "occurrenceStart": "2026-04-10",
+                    "occurrenceEnd": "2026-04-10",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-24",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p10:r89:2026-7528",
+                    "reportId": "2026-7528",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Grand Larceny",
+                    "disposition": "Active Inactive\n05/11/2026",
+                    "occurrenceStart": "2025-08-21",
+                    "occurrenceEnd": "2026-04-22",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-24",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p10:r90:2026-7509",
+                    "reportId": "2026-7509",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Profane, Threatening\nLanguage over Public Airway",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-04-10",
+                    "occurrenceEnd": "2026-04-24",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf",
+                  "sourceVersion": "30f69522a1417063bdb3ffbe4f2e460b10e8ceabc6885f7b0b773c4aed3bb172",
+                  "capturedAt": "2026-09-19T13:49:01.493272Z",
+                  "observedAt": "2026-05-01",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-05:p1:r1:2026-7988",
+                    "reportId": "2026-7988",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Failure to Observe Rules and\nRegulations",
+                    "disposition": "Inactive- Referred\nto Student\nConduct",
+                    "occurrenceStart": "2026-05-01",
+                    "occurrenceEnd": "2026-05-01",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202606.pdf",
+                  "sourceVersion": "d818032a95f92fa31f0a86aa05f5f1be4d46662164961aa9f16060bce189377c",
+                  "capturedAt": "2026-09-19T13:49:02.457771Z",
+                  "observedAt": "2026-06-04",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-06:p1:r5:2026-9849",
+                    "reportId": "2026-9849",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing\nViolation of Probation",
+                    "disposition": "Cleared by Arrest",
+                    "occurrenceStart": "2026-06-04",
+                    "occurrenceEnd": "2026-06-04",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-03",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p2:r10:2026-15271",
+                    "reportId": "2026-15271",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2023-11-01",
+                    "occurrenceEnd": "2026-09-01",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-08",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p7:r67:2026-15779",
+                    "reportId": "2026-15779",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-05",
+                    "occurrenceEnd": "2026-09-05",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p13:r123:2026-16344",
+                    "reportId": "2026-16344",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p13:r124:2026-16336",
+                    "reportId": "2026-16336",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny X 2",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r125:2026-16345",
+                    "reportId": "2026-16345",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-15",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r129:2026-16426",
+                    "reportId": "2026-16426",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent X 9\nPetit Larceny",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-14",
+                    "occurrenceEnd": "2026-09-15",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-16",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r133:2026-16551",
+                    "reportId": "2026-16551",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-16",
+                    "occurrenceEnd": "2026-09-16",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-16",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r134:2026-16538",
+                    "reportId": "2026-16538",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-15",
+                    "occurrenceEnd": "2026-09-16",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "weather",
+                  "sourceUrl": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
+                  "sourceVersion": "48cfb7bae5c4c55408f077e0ec53df2f0dfbfefbf3b16ef96d540dd5c9f2a1cb",
+                  "capturedAt": "2026-09-19T22:11:46.469209Z",
+                  "observedAt": "2026-09-19T20:00:38Z",
+                  "validUntil": "2026-09-19T23:00:00.000Z",
+                  "confidence": "forecast",
+                  "spatialMatch": "campus_forecast_area",
+                  "details": {
+                    "condition": "clear",
+                    "activeOfficialAlert": null,
+                    "routeObserved": false,
+                    "limitation": "NWS campus reference area forecast; not observations on each path"
+                  }
+                }
+              ],
+              "unknowns": [
+                "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+                "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+                "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+                "Emergency phone operation, access, current activity and companionship are unknown.",
+                "Published construction coverage is partial; no polygon intersection does not certify that the path is open."
+              ]
+            },
+            "dropoff": {
+              "blocked": false,
+              "validUntil": "2026-09-19T23:00:00.000Z",
+              "facts": [
+                {
+                  "kind": "weather",
+                  "sourceUrl": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
+                  "sourceVersion": "48cfb7bae5c4c55408f077e0ec53df2f0dfbfefbf3b16ef96d540dd5c9f2a1cb",
+                  "capturedAt": "2026-09-19T22:11:46.469209Z",
+                  "observedAt": "2026-09-19T20:00:38Z",
+                  "validUntil": "2026-09-19T23:00:00.000Z",
+                  "confidence": "forecast",
+                  "spatialMatch": "campus_forecast_area",
+                  "details": {
+                    "condition": "clear",
+                    "activeOfficialAlert": null,
+                    "routeObserved": false,
+                    "limitation": "NWS campus reference area forecast; not observations on each path"
+                  }
+                }
+              ],
+              "unknowns": [
+                "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+                "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+                "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+                "Emergency phone operation, access, current activity and companionship are unknown.",
+                "Published construction coverage is partial; no polygon intersection does not certify that the path is open.",
+                "No supported exact endpoint-building historical report join; arbitrary route/address crime coverage is unknown."
+              ]
+            }
+          },
+          "indoor": null,
+          "sheltered": null
+        }
+      ],
+      "departureAt": "2026-09-19T22:24:44.876Z",
+      "arrivalAt": "2026-09-19T22:33:44.876Z",
+      "validUntil": "2026-09-19T22:26:44.876Z",
+      "leaveWaitingAt": "2026-09-19T22:29:14.876Z",
+      "costMinor": 200,
+      "walkingSeconds": 0,
+      "waitingSeconds": 300,
+      "outdoorWaitingSeconds": 0,
+      "unknownWaitingSeconds": 300,
+      "durationSeconds": 540,
+      "scoreUnits": 1040,
+      "offerBinding": {
+        "operatorId": "demo-operator",
+        "serviceId": "demo-campus",
+        "quoteId": "fixture-quote",
+        "offerVersion": "1",
+        "expiresAt": "2026-09-19T22:26:44.876Z",
+        "maximumCostMinor": 200,
+        "priceKind": "fixed",
+        "source": "simulated"
+      },
+      "offerLocationBinding": {
+        "pickup": {
+          "id": "newman-reference",
+          "name": "Newman Library public reference point",
+          "point": {
+            "lat": 37.2287881,
+            "lng": -80.41916034
+          }
+        },
+        "dropoff": {
+          "id": "pritchard-reference",
+          "name": "Pritchard Hall public reference point",
+          "point": {
+            "lat": 37.222,
+            "lng": -80.42
+          }
+        },
+        "pickupAt": "2026-09-19T22:29:44.876Z",
+        "arrivalAt": "2026-09-19T22:33:44.876Z"
+      },
+      "nextStep": {
+        "legId": "leg-1",
+        "instruction": "Wait at Newman Library public reference point until 2026-09-19T22:29:14.876Z.",
+        "showMap": false,
+        "routeId": null
+      },
+      "explanationFacts": [
+        "PREFER_CURRENT_LOCATION",
+        "RECHECK_QUOTE_CONSENT_AND_AUTH_BEFORE_BOOKING"
+      ],
+      "unknowns": [
+        "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+        "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+        "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+        "Emergency phone operation, access, current activity and companionship are unknown.",
+        "Published construction coverage is partial; no polygon intersection does not certify that the path is open.",
+        "WAITING_ACCESS_AND_SHELTER_UNKNOWN"
+      ]
+    },
+    "alternatives": [
+      {
+        "journeyId": "journey:e21993ff3535b528e34fd5e88d4e96133ea987fe",
+        "kind": "walk",
+        "legs": [
+          {
+            "id": "leg-1",
+            "kind": "walk",
+            "from": {
+              "id": "newman-reference",
+              "name": "Newman Library public reference point",
+              "point": {
+                "lat": 37.2287881,
+                "lng": -80.41916034
+              }
+            },
+            "to": {
+              "id": "pritchard-reference",
+              "name": "Pritchard Hall public reference point",
+              "point": {
+                "lat": 37.222,
+                "lng": -80.42
+              }
+            },
+            "startsAt": "2026-09-19T22:24:44.876Z",
+            "endsAt": "2026-09-19T22:35:17.876Z",
+            "instruction": "Fixture path only; do not navigate this example.",
+            "route": {
+              "routeId": "fixture-only-37.2287881-37.222",
+              "from": {
+                "lat": 37.2287881,
+                "lng": -80.41916034
+              },
+              "to": {
+                "lat": 37.222,
+                "lng": -80.42
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    -80.41916034,
+                    37.2287881
+                  ],
+                  [
+                    -80.42,
+                    37.222
+                  ]
+                ]
+              },
+              "distanceMeters": 758.4546622979308,
+              "durationSeconds": 633,
+              "instructions": [
+                {
+                  "text": "Fixture path only; do not navigate this example.",
+                  "distanceMeters": 758.4546622979308,
+                  "durationSeconds": 633
+                }
+              ],
+              "provider": "fixture_only",
+              "capturedAt": "2026-09-19T22:24:44.876Z",
+              "validUntil": "2026-09-19T22:29:44.876Z"
+            },
+            "evidence": {
+              "blocked": false,
+              "validUntil": "2026-09-19T23:00:00.000Z",
+              "facts": [
+                {
+                  "kind": "mapped_lighting",
+                  "sourceUrl": "https://www.openstreetmap.org/node/13651456057",
+                  "sourceVersion": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
+                  "capturedAt": "2026-09-19T22:13:01.620Z",
+                  "observedAt": "2026-03-16T07:17:43Z",
+                  "validUntil": null,
+                  "confidence": "community_unverified",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "node:13651456057",
+                    "mapObject": "lit_tag",
+                    "mappedLitTag": "yes",
+                    "distanceMeters": 11,
+                    "operationalStatus": "unknown",
+                    "timestampMeaning": "map object edit; lighting observation time unknown",
+                    "attribution": "© OpenStreetMap contributors; ODbL 1.0"
+                  }
+                },
+                {
+                  "kind": "mapped_lighting",
+                  "sourceUrl": "https://www.openstreetmap.org/way/1304973341",
+                  "sourceVersion": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
+                  "capturedAt": "2026-09-19T22:13:01.620Z",
+                  "observedAt": "2025-10-14T10:17:56Z",
+                  "validUntil": null,
+                  "confidence": "community_unverified",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "way:1304973341",
+                    "mapObject": "lit_tag",
+                    "mappedLitTag": "yes",
+                    "distanceMeters": 0,
+                    "operationalStatus": "unknown",
+                    "timestampMeaning": "map object edit; lighting observation time unknown",
+                    "attribution": "© OpenStreetMap contributors; ODbL 1.0"
+                  }
+                },
+                {
+                  "kind": "mapped_lighting",
+                  "sourceUrl": "https://www.openstreetmap.org/way/1304973349",
+                  "sourceVersion": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
+                  "capturedAt": "2026-09-19T22:13:01.620Z",
+                  "observedAt": "2026-01-31T08:56:54Z",
+                  "validUntil": null,
+                  "confidence": "community_unverified",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "way:1304973349",
+                    "mapObject": "lit_tag",
+                    "mappedLitTag": "yes",
+                    "distanceMeters": 0,
+                    "operationalStatus": "unknown",
+                    "timestampMeaning": "map object edit; lighting observation time unknown",
+                    "attribution": "© OpenStreetMap contributors; ODbL 1.0"
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202602.pdf",
+                  "sourceVersion": "272a2571249b39074b9d239adb4f8f9a865f349707ef37db00c9acfaa01f5a2e",
+                  "capturedAt": "2026-09-19T13:48:57.259238Z",
+                  "observedAt": "2026-02-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-02:p6:r58:2026-2707",
+                    "reportId": "2026-2707",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing",
+                    "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                    "occurrenceStart": "2026-02-14",
+                    "occurrenceEnd": "2026-02-14",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                  "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                  "capturedAt": "2026-09-19T13:48:58.562382Z",
+                  "observedAt": "2026-03-10",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-03:p4:r28:2026-4399",
+                    "reportId": "2026-4399",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing",
+                    "disposition": "Inactive- Referred\nto Student\nConduct",
+                    "occurrenceStart": "2026-03-10",
+                    "occurrenceEnd": "2026-03-10",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202603.pdf",
+                  "sourceVersion": "07da4cd3ffdf4abb2fa1aad69b92f6021db751cc35af8368cba963a14b6dea3a",
+                  "capturedAt": "2026-09-19T13:48:58.562382Z",
+                  "observedAt": "2026-03-25",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-03:p8:r74:2026-5383",
+                    "reportId": "2026-5383",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-03-20",
+                    "occurrenceEnd": "2026-03-20",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-10",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p4:r35:2026-6567",
+                    "reportId": "2026-6567",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing X 3",
+                    "disposition": "Inactive- Referred\nto Student\nConduct X 3",
+                    "occurrenceStart": "2026-04-10",
+                    "occurrenceEnd": "2026-04-10",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-24",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p10:r89:2026-7528",
+                    "reportId": "2026-7528",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Grand Larceny",
+                    "disposition": "Active Inactive\n05/11/2026",
+                    "occurrenceStart": "2025-08-21",
+                    "occurrenceEnd": "2026-04-22",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202604.pdf",
+                  "sourceVersion": "2dcec9b89fd023fdacc2e7037de676662d35c640aa3a4befc3b2885e3ee9fa28",
+                  "capturedAt": "2026-09-19T13:49:00.101180Z",
+                  "observedAt": "2026-04-24",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-04:p10:r90:2026-7509",
+                    "reportId": "2026-7509",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Profane, Threatening\nLanguage over Public Airway",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-04-10",
+                    "occurrenceEnd": "2026-04-24",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202605.pdf",
+                  "sourceVersion": "30f69522a1417063bdb3ffbe4f2e460b10e8ceabc6885f7b0b773c4aed3bb172",
+                  "capturedAt": "2026-09-19T13:49:01.493272Z",
+                  "observedAt": "2026-05-01",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-05:p1:r1:2026-7988",
+                    "reportId": "2026-7988",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Failure to Observe Rules and\nRegulations",
+                    "disposition": "Inactive- Referred\nto Student\nConduct",
+                    "occurrenceStart": "2026-05-01",
+                    "occurrenceEnd": "2026-05-01",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202606.pdf",
+                  "sourceVersion": "d818032a95f92fa31f0a86aa05f5f1be4d46662164961aa9f16060bce189377c",
+                  "capturedAt": "2026-09-19T13:49:02.457771Z",
+                  "observedAt": "2026-06-04",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-06:p1:r5:2026-9849",
+                    "reportId": "2026-9849",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Trespassing\nViolation of Probation",
+                    "disposition": "Cleared by Arrest",
+                    "occurrenceStart": "2026-06-04",
+                    "occurrenceEnd": "2026-06-04",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-03",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p2:r10:2026-15271",
+                    "reportId": "2026-15271",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2023-11-01",
+                    "occurrenceEnd": "2026-09-01",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-08",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p7:r67:2026-15779",
+                    "reportId": "2026-15779",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-05",
+                    "occurrenceEnd": "2026-09-05",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p13:r123:2026-16344",
+                    "reportId": "2026-16344",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p13:r124:2026-16336",
+                    "reportId": "2026-16336",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny X 2",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-14",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r125:2026-16345",
+                    "reportId": "2026-16345",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent",
+                    "disposition": "Inactive",
+                    "occurrenceStart": "2026-09-12",
+                    "occurrenceEnd": "2026-09-13",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-15",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r129:2026-16426",
+                    "reportId": "2026-16426",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Destruction of Property,\nMonument <$1000 with\nIntent X 9\nPetit Larceny",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-14",
+                    "occurrenceEnd": "2026-09-15",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-16",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r133:2026-16551",
+                    "reportId": "2026-16551",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-16",
+                    "occurrenceEnd": "2026-09-16",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "historical_incident",
+                  "sourceUrl": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+                  "sourceVersion": "400db6da96ee7fe8c85d976b009864cfcdab10e5e53ec64bc64c721b6bc32e96",
+                  "capturedAt": "2026-09-19T13:49:04.751853Z",
+                  "observedAt": "2026-09-16",
+                  "validUntil": null,
+                  "confidence": "historical_partial",
+                  "spatialMatch": "exact_endpoint_building",
+                  "details": {
+                    "recordId": "2026-09:p14:r134:2026-16538",
+                    "reportId": "2026-16538",
+                    "location": "560 Drillfield Drive\n(Newman Library)",
+                    "offense": "Petit Larceny- Building",
+                    "disposition": "Active",
+                    "occurrenceStart": "2026-09-15",
+                    "occurrenceEnd": "2026-09-16",
+                    "buildingGeometrySource": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/FeatureServer/0",
+                    "buildingGeometryVersion": "48757ad69e82725756b62d27130656ce40b83ec8ae2a3c77873bc18138f8e641",
+                    "completeCoverage": false
+                  }
+                },
+                {
+                  "kind": "emergency_phone",
+                  "sourceUrl": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2/query?where=1%3D1&outFields=objectid%2Clocation%2Cid&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+                  "sourceVersion": "61409f684d703dd0dcea19996100a3b56b9116910b67600d818e4fecb6e50021",
+                  "capturedAt": "2026-09-19T15:18:26.087177Z",
+                  "observedAt": null,
+                  "validUntil": null,
+                  "confidence": "official_snapshot",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "131",
+                    "location": "EMRG-Mall between Bookstore and Library",
+                    "distanceMeters": 48,
+                    "operationalStatus": "unknown",
+                    "accessNow": "unknown"
+                  }
+                },
+                {
+                  "kind": "emergency_phone",
+                  "sourceUrl": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2/query?where=1%3D1&outFields=objectid%2Clocation%2Cid&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+                  "sourceVersion": "61409f684d703dd0dcea19996100a3b56b9116910b67600d818e4fecb6e50021",
+                  "capturedAt": "2026-09-19T15:18:26.087177Z",
+                  "observedAt": null,
+                  "validUntil": null,
+                  "confidence": "official_snapshot",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "137",
+                    "location": "EMRG-Owens  Quad (volleyball court)",
+                    "distanceMeters": 8,
+                    "operationalStatus": "unknown",
+                    "accessNow": "unknown"
+                  }
+                },
+                {
+                  "kind": "emergency_phone",
+                  "sourceUrl": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2/query?where=1%3D1&outFields=objectid%2Clocation%2Cid&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+                  "sourceVersion": "61409f684d703dd0dcea19996100a3b56b9116910b67600d818e4fecb6e50021",
+                  "capturedAt": "2026-09-19T15:18:26.087177Z",
+                  "observedAt": null,
+                  "validUntil": null,
+                  "confidence": "official_snapshot",
+                  "spatialMatch": "near_path",
+                  "details": {
+                    "id": "144",
+                    "location": "EMRG-Cassell Coliseum main entrance",
+                    "distanceMeters": 17,
+                    "operationalStatus": "unknown",
+                    "accessNow": "unknown"
+                  }
+                },
+                {
+                  "kind": "weather",
+                  "sourceUrl": "https://api.weather.gov/gridpoints/RNK/58,66/forecast/hourly",
+                  "sourceVersion": "48cfb7bae5c4c55408f077e0ec53df2f0dfbfefbf3b16ef96d540dd5c9f2a1cb",
+                  "capturedAt": "2026-09-19T22:11:46.469209Z",
+                  "observedAt": "2026-09-19T20:00:38Z",
+                  "validUntil": "2026-09-19T23:00:00.000Z",
+                  "confidence": "forecast",
+                  "spatialMatch": "campus_forecast_area",
+                  "details": {
+                    "condition": "clear",
+                    "activeOfficialAlert": null,
+                    "routeObserved": false,
+                    "limitation": "NWS campus reference area forecast; not observations on each path"
+                  }
+                }
+              ],
+              "unknowns": [
+                "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+                "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+                "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+                "Emergency phone operation, access, current activity and companionship are unknown.",
+                "Published construction coverage is partial; no polygon intersection does not certify that the path is open."
+              ]
+            },
+            "source": "fixture_only",
+            "indoor": false,
+            "sheltered": false
+          }
+        ],
+        "departureAt": "2026-09-19T22:24:44.876Z",
+        "arrivalAt": "2026-09-19T22:35:17.876Z",
+        "validUntil": "2026-09-19T22:29:44.876Z",
+        "leaveWaitingAt": null,
+        "costMinor": 0,
+        "walkingSeconds": 633,
+        "waitingSeconds": 0,
+        "outdoorWaitingSeconds": 0,
+        "unknownWaitingSeconds": 0,
+        "durationSeconds": 633,
+        "scoreUnits": 3798,
+        "offerBinding": null,
+        "offerLocationBinding": null,
+        "nextStep": {
+          "legId": "leg-1",
+          "instruction": "Fixture path only; do not navigate this example.",
+          "showMap": true,
+          "routeId": "fixture-only-37.2287881-37.222"
+        },
+        "explanationFacts": [
+          "WALK_HOME_WITH_ROUTER_GEOMETRY"
+        ],
+        "unknowns": [
+          "Current operational lighting and route-wide illumination are unknown; mapped lamps and lit tags are unverified inventory.",
+          "Historical measured lighting is unjoined: coordinate reference system is unverified and observations are from January–March 2026.",
+          "Historical reports are incomplete publication records, not current incident risk; no report is not evidence of no crime.",
+          "Emergency phone operation, access, current activity and companionship are unknown.",
+          "Published construction coverage is partial; no polygon intersection does not certify that the path is open."
+        ]
+      }
+    ],
+    "remainingBudgetMinor": 1000,
+    "committedMinor": 0,
+    "rejected": [],
+    "warnings": [
+      "DIRECT_BUSES_ONLY_NO_TRANSFER_SEARCH",
+      "PROVIDER_BOOKING_AND_LIVE_PROGRESSION_REQUIRE_COORDINATOR",
+      "TRANSIT_NOT_CONFIGURED"
+    ],
+    "execution": {
+      "engine": "local_fallback",
+      "fallbackReason": "WORKSPACE_NOT_CONFIGURED",
+      "auditPersisted": false,
+      "auditStatus": "DISABLED_READ_ONLY"
+    }
+  }
+}

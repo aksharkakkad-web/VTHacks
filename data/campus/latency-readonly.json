@@ -1,0 +1,197 @@
+{
+  "capturedAt": "2026-09-19T17:03:16.026Z",
+  "warehouseId": "586a1b427679f515",
+  "warehouseStateBefore": "STOPPED",
+  "warmupMs": 13728,
+  "warmupStatementId": "01f1b44b-d887-1bdb-9b2b-9186fdac15b7",
+  "measurementScope": "Read-only SQL decision; audit disabled; NOT end-to-end acceptance",
+  "syntheticOffers": true,
+  "runs": 20,
+  "targetMs": 10000,
+  "medianMs": 2104.5,
+  "slowestMs": 10003,
+  "underTargetCount": 0,
+  "passed": false,
+  "samples": [
+    {
+      "run": 1,
+      "elapsedMs": 10003,
+      "engine": "local_fallback",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": null,
+      "fallbackReason": "STATEMENT_TIMEOUT"
+    },
+    {
+      "run": 2,
+      "elapsedMs": 7522,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-e665-153d-b194-0933bed5b77c",
+      "fallbackReason": null
+    },
+    {
+      "run": 3,
+      "elapsedMs": 2696,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-eae2-1470-8f90-866cd671c667",
+      "fallbackReason": null
+    },
+    {
+      "run": 4,
+      "elapsedMs": 2500,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-ec85-10a6-aa51-f15b8aa37adc",
+      "fallbackReason": null
+    },
+    {
+      "run": 5,
+      "elapsedMs": 2966,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-edfc-1661-b263-5b0ea5b32c0f",
+      "fallbackReason": null
+    },
+    {
+      "run": 6,
+      "elapsedMs": 2212,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-efbe-1567-be7a-f1596a1e154d",
+      "fallbackReason": null
+    },
+    {
+      "run": 7,
+      "elapsedMs": 2030,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f110-132c-abfe-ef6585b2ce84",
+      "fallbackReason": null
+    },
+    {
+      "run": 8,
+      "elapsedMs": 2243,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f245-1686-8240-090d6028cdc1",
+      "fallbackReason": null
+    },
+    {
+      "run": 9,
+      "elapsedMs": 2252,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f39f-1b6a-b53c-a41d90765903",
+      "fallbackReason": null
+    },
+    {
+      "run": 10,
+      "elapsedMs": 2273,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f4f3-12aa-9ce0-af692ce2015b",
+      "fallbackReason": null
+    },
+    {
+      "run": 11,
+      "elapsedMs": 1842,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f64e-100b-9f63-d0e4ede7d340",
+      "fallbackReason": null
+    },
+    {
+      "run": 12,
+      "elapsedMs": 1936,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f767-1817-ad2e-0a4dcc960953",
+      "fallbackReason": null
+    },
+    {
+      "run": 13,
+      "elapsedMs": 1727,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f88e-13d3-8b5b-4fab0dff7de6",
+      "fallbackReason": null
+    },
+    {
+      "run": 14,
+      "elapsedMs": 1837,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-f995-1e31-8754-68a4feb3b96d",
+      "fallbackReason": null
+    },
+    {
+      "run": 15,
+      "elapsedMs": 1976,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-faae-10e4-9bc3-715c5b2c9e3d",
+      "fallbackReason": null
+    },
+    {
+      "run": 16,
+      "elapsedMs": 1594,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-fbdc-1312-ba31-ea839394d654",
+      "fallbackReason": null
+    },
+    {
+      "run": 17,
+      "elapsedMs": 1763,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-fccf-170f-88e5-284a9ba74c20",
+      "fallbackReason": null
+    },
+    {
+      "run": 18,
+      "elapsedMs": 2179,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-fddd-1526-b9dc-afafbdca03a8",
+      "fallbackReason": null
+    },
+    {
+      "run": 19,
+      "elapsedMs": 1923,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44b-ff27-1ef3-98a9-79dc84c6926e",
+      "fallbackReason": null
+    },
+    {
+      "run": 20,
+      "elapsedMs": 2003,
+      "engine": "databricks",
+      "status": "RECOMMENDED",
+      "auditPersisted": false,
+      "statementId": "01f1b44c-004e-1702-853d-043edcf91eeb",
+      "fallbackReason": null
+    }
+  ]
+}

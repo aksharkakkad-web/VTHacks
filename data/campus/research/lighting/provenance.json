@@ -1,0 +1,60 @@
+{
+  "source": "OpenStreetMap contributors",
+  "url": "https://overpass-api.de/api/interpreter",
+  "captured_at": "2026-09-19T22:13:01.620Z",
+  "osm_base_timestamp": "2026-09-19T22:11:14Z",
+  "method": "POST",
+  "query": "[out:json][timeout:40];(nwr[\"highway\"=\"street_lamp\"](37.205,-80.44,37.245,-80.395);nwr[\"lit\"](37.205,-80.44,37.245,-80.395););out meta geom;",
+  "bbox": {
+    "south": 37.205,
+    "west": -80.44,
+    "north": 37.245,
+    "east": -80.395
+  },
+  "coordinate_reference_system": "EPSG:4326",
+  "sha256": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
+  "files": [
+    {
+      "path": "osm-lighting-latest.json",
+      "sha256": "e3482fafa0904eff9d2cdd66ded473683882c3cf47962f3f1d97c42b689b6bfa",
+      "role": "unaltered source response"
+    },
+    {
+      "path": "observations.json",
+      "sha256": "95b96684384e61c12645c259574da6b5733e0afcdacf13db495c8a5f0ae68f67",
+      "role": "normalized geometry and lighting metadata"
+    }
+  ],
+  "counts": {
+    "total": 1179,
+    "kinds": {
+      "lit_tag": 1125,
+      "street_lamp": 54
+    },
+    "lit_values": {
+      "no": 98,
+      "yes": 1027,
+      "null": 54
+    },
+    "geometry_types": {
+      "Point": 248,
+      "LineString": 926,
+      "Polygon": 5
+    }
+  },
+  "license": {
+    "name": "ODbL 1.0",
+    "url": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "attribution": "© OpenStreetMap contributors",
+    "attribution_url": "https://www.openstreetmap.org/copyright"
+  },
+  "limitations": [
+    "Community-maintained map assertions; not verified by Virginia Tech or Town of Blacksburg.",
+    "A lit=yes tag is not a measured light level, current operating status, maintained service guarantee, or safety assessment.",
+    "Missing objects or lit tags mean unknown; this is not a complete lamp inventory.",
+    "Last edit timestamps describe the OSM object, not necessarily a lighting survey or lighting-tag edit.",
+    "The wider bbox contains roads, bus stops, pedestrian paths and other objects. Lit tags on bus stops or buildings do not describe adjoining paths.",
+    "Closed ways explicitly tagged area=yes are normalized as Polygon; they are not route centerlines.",
+    "No route-wide illumination score or route coverage is asserted."
+  ]
+}

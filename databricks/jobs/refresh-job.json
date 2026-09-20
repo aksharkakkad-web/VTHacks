@@ -1,0 +1,23 @@
+{
+  "name": "Beacon public campus refresh — hackathon bounded",
+  "description": "Public campus forecasts, schedules and resources only. Four daily slots September 19–20, 2026; notebook stops all fetching/writes at September 20 16:00 UTC. No AI inference in refresh.",
+  "max_concurrent_runs": 1,
+  "timeout_seconds": 600,
+  "performance_target": "STANDARD",
+  "schedule": {
+    "quartz_cron_expression": "0 0 0,6,12,18 19,20 9 ? 2026",
+    "timezone_id": "UTC",
+    "pause_status": "UNPAUSED"
+  },
+  "tasks": [
+    {
+      "task_key": "refresh_public_campus_data",
+      "notebook_task": {
+        "notebook_path": "/Shared/Beacon/refresh-public-data-v2",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 600,
+      "max_retries": 0
+    }
+  ]
+}

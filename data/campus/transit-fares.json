@@ -1,0 +1,10 @@
+[
+  {
+    "agency": "Blacksburg Transit",
+    "cost": 0,
+    "currency": "USD",
+    "applies_to": "All Blacksburg and Christiansburg BT services",
+    "source_id": "bt-fare",
+    "source_url": "https://ridebt.org/fare-information"
+  }
+]

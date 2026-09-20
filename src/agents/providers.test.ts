@@ -1,11 +1,13 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
+import * as transport from "../integrations/ans/transport";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { normalizeQuote, coarseQuote, type ProviderDescriptor } from "./contract";
+import { normalizeQuote, coarseQuote, object, type ProviderDescriptor } from "./contract";
 import { HttpProvider } from "./http-provider";
-import { DemoProvider, providerHandler } from "./demo-provider";
+import { DemoProvider, demoDescriptors, providerHandler } from "./demo-provider";
 import { collectCandidates } from "./discovery";
+import { scopedProviderToken } from "./provider-credentials";
 
 const request = { originZone: "Downtown Blacksburg", destinationZone: "VT residential campus", maxBudget: 10, minimizeWalking: true, minimizeTransfers: true };
 const provider: ProviderDescriptor = { id: "campus_ride", name: "Campus Ride", mode: "campus_ride", baseUrl: "http://127.0.0.1", agentHost: "localhost", functions: ["quote_trip", "request_trip", "trip_status", "cancel_trip"], source: "demo" };
@@ -22,6 +24,25 @@ test("normalizes real provider wire format into the frozen CandidatePlan", () =>
   assert.equal(plan.mode, "campus_ride");
   assert.equal(plan.requiresProviderVerification, true);
   assert.equal(plan.providerId, provider.id);
+});
+
+test("a missing transfer count stays unknown through quote collection", async () => {
+  const quote = normalizeQuote(raw, provider, 1000);
+  const collected = await collectCandidates([{ descriptor: provider, quote: async () => quote }], request, new Set(), 22, 1000);
+  const option = collected.candidates.find(plan => plan.providerId === provider.id);
+  assert.ok(option);
+  assert.equal(Object.hasOwn(option, "transfers"), false);
+  assert.equal(Object.hasOwn(option, "reliability"), false);
+  assert.equal(normalizeQuote({ ...raw, transfers: 0 }, provider, 1000).transfers, 0);
+  assert.equal(normalizeQuote({ ...raw, transfers: 2 }, provider, 1000).transfers, 2);
+});
+
+test("simulated providers explicitly declare the demo's zero-transfer fixture", () => {
+  for (const descriptor of demoDescriptors) {
+    const quote = object(new DemoProvider(descriptor).handle("POST", "/agent/quote", coarseQuote(request)));
+    assert.equal(quote.simulated, true);
+    assert.equal(quote.transfers, 0);
+  }
 });
 
 test("rejects untrusted malformed, stale, mismatched and impossible quotes", () => {
@@ -52,7 +73,7 @@ test("provider HTTP lifecycle is real, idempotent, and releases data on cancella
 });
 
 test("discovery isolates provider failure and excludes failed providers and over-budget quotes", async () => {
-  const okay = { descriptor: provider, quote: async () => normalizeQuote(raw, provider, 1000) };
+  const okay = { descriptor: provider, quote: async () => normalizeQuote(raw, provider) };
   const broken = { descriptor: { ...provider, id: "broken" }, quote: async () => { throw new Error("offline"); } };
   const results = await collectCandidates([okay, broken], request, new Set());
   assert.equal(results.candidates.length, 2);
@@ -66,4 +87,54 @@ test("untrusted HTTP and private provider endpoints are blocked outside explicit
   for (const baseUrl of ["http://example.com", "http://127.0.0.1", "https://127.0.0.1", "https://localhost", "https://user:password@example.com", "https://example.com:8443"]) {
     assert.throws(() => new HttpProvider({ ...provider, source: "ans", baseUrl }));
   }
+});
+
+test("discovery reserves walking capacity within the 16-plan decision contract", async () => {
+  const providers = Array.from({ length: 20 }, (_, i) => {
+    const descriptor = { ...provider, id: `provider-${i}` };
+    return { descriptor, quote: async () => normalizeQuote({ ...raw, provider_id: descriptor.id, simulated: true }, descriptor) };
+  });
+  const result = await collectCandidates(providers, request, new Set());
+  assert.equal(result.candidates.length, 16);
+  assert.equal(result.omittedProviderCount, 5);
+  assert.equal(result.simulatedPlanIds.length, 16);
+  assert.ok(result.candidates.every(p => !("quoteSource" in p)));
+});
+
+test("public quotes never receive provider credentials", async (t) => {
+  const headers: unknown[] = [];
+  t.mock.method(transport, "publicJson", async (_url: string, options: { headers?: unknown }) => {
+    headers.push(options.headers); return { value: raw };
+  });
+  const live = { ...provider, source: "ans" as const, baseUrl: "https://provider.example", agentHost: "provider.example" };
+  await new HttpProvider(live, { token: "fixture-secret" }).quote(request);
+  assert.deepEqual(headers, [{}]);
+});
+
+test("live provider credentials require verified identity and an exact configured endpoint", () => {
+  const live = { ...provider, source: "ans" as const, baseUrl: "https://operator.example/api/demo/providers/campus_ride", agentHost: "operator.example" };
+  const identity = { providerId: live.id, host: live.agentHost, baseUrl: live.baseUrl, source: "ans" as const, validUntil: Date.now() + 60_000, serverFingerprint: "SHA256:" + "ab".repeat(32) };
+  const configuration = JSON.stringify({ [live.id]: { baseUrl: live.baseUrl, token: "fixture-specific-token" } });
+  assert.equal(scopedProviderToken(live, identity, configuration), "fixture-specific-token");
+  assert.equal(scopedProviderToken(live, undefined, configuration), undefined);
+  assert.equal(scopedProviderToken({ ...live, baseUrl: "https://attacker.example" }, identity, configuration), undefined);
+  assert.equal(scopedProviderToken(live, { ...identity, providerId: "other" }, configuration), undefined);
+  assert.equal(scopedProviderToken(live, { ...identity, source: "local-demo" }, configuration), undefined);
+});
+
+test("provider request reconciliation finds accepted bookings and tombstones a cancelled request before arrival", async () => {
+  const descriptor = { ...provider, functions: [...provider.functions, "reconcile_trip"] };
+  const demo = new DemoProvider(descriptor); const server = createServer(providerHandler(demo));
+  server.listen(0, "127.0.0.1"); await once(server, "listening"); const address = server.address(); assert.ok(address && typeof address !== "string");
+  const client = new HttpProvider({ ...descriptor, baseUrl: `http://127.0.0.1:${address.port}` }, { allowLocalDemo: true });
+  try {
+    assert.equal(await client.getRequestStatus("request-one"), undefined);
+    const payload = { tripId: "request-one", pickup: { lat: 37.23, lng: -80.41 }, destination: { lat: 37.22, lng: -80.42 } };
+    const booking = await client.requestTrip(payload);
+    assert.deepEqual(await client.getRequestStatus(payload.tripId), booking);
+    await client.cancelRequest(payload.tripId); assert.equal(demo.hasSensitiveData(booking.id), false);
+    await client.cancelRequest("late-request");
+    const late = await client.requestTrip({ ...payload, tripId: "late-request" });
+    assert.equal(late.status, "cancelled"); assert.equal(demo.hasSensitiveData(late.id), false);
+  } finally { server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); }
 });

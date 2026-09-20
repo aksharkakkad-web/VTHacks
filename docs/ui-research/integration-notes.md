@@ -2,7 +2,11 @@
 
 ## Current evidence
 
-Updated September 19, 2026: this checkout has shared trip contracts and provider agent services under `src/agents/`, but no implemented student `/api/trips/**` route handlers. The UI now accepts an injected frontend transport and explicit sample responses. Mahin’s simulated rideshare backend is the intended authoritative demo source; no live commercial rideshare support is claimed. See `beacon-integration/README.md` and `beacon-integration/contracts-research.md` for the current audited boundary.
+After consolidation, this checkout contains the Trip API, Student Agent, ANS client
+and Databricks adapter alongside this UI. The UI itself still uses its deterministic
+frontend simulation; merging the branches does not wire its controller to the API.
+Its timeline is demonstration evidence, not proof of sponsor integration. The next
+steps are assigned in [the pivot update plan](../Beacon_Pivot_Updates_To_Do.md).
 
 The UI pass does not change the shared contracts. The PRD and `TEAM_CONTRACT.md` remain the authority for backend integration.
 

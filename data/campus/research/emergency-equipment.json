@@ -1,0 +1,1321 @@
+{
+  "schema_version": 1,
+  "dataset": "emergency-equipment",
+  "captured_at": "2026-09-19T13:47:51.641133Z",
+  "records": [
+    {
+      "id": "1602",
+      "building": "BUILDING 1600",
+      "location": "1600 Innovation Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A106",
+      "description": "In common area inside main doors, near stairs",
+      "source_status": "In Service",
+      "last_inspection_at": "2023-09-27T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41811548439081,
+          37.209305104899684
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2002",
+      "building": "BUILDING 1600",
+      "location": "1600 Innovation Drive, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "B206",
+      "description": "In common area of hall, to the left of where you come off the stairs",
+      "source_status": "In Service",
+      "last_inspection_at": "2023-09-27T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4182798856794,
+          37.20923821359464
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2003",
+      "building": "HOGE HALL",
+      "location": "570 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "0",
+      "room": "CR-0C",
+      "description": "Inside doors to Hoge, basement lobby area, closer to Pritchard",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:09:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41883814377839,
+          37.22438853857974
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2005",
+      "building": "HOGE HALL",
+      "location": "570 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "0",
+      "room": "CR-0A",
+      "description": "Inside doors to Hoge, basement lobby area, closer to O'Shag",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:12:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4183010135263,
+          37.224757958151045
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2006",
+      "building": "NEWMAN HALL",
+      "location": "200 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "156",
+      "description": "In main hall between 156 and 158",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:14:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41817890515507,
+          37.22592814750843
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2007",
+      "building": "VAWTER HALL",
+      "location": "180 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A29",
+      "description": "Near entrance",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:16:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41769605714407,
+          37.22678253068234
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2008",
+      "building": "MILES HALL",
+      "location": "410 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "B1",
+      "description": "On east end of hall",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:19:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41669569467066,
+          37.225843133860195
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2009",
+      "building": "WHITEHURST HALL",
+      "location": "240 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A8",
+      "description": "Near Kent St",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-02-23T20:18:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41672344080379,
+          37.2261076507376
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2010",
+      "building": "COCHRANE HALL",
+      "location": "770 Washington Street SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A16",
+      "description": "In lobby",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T21:57:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42209041101759,
+          37.22275099821316
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2011",
+      "building": "EGGLESTON HALL - EAST WING",
+      "location": "500 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A10",
+      "description": "Middle of building in vestibule",
+      "source_status": "In Service",
+      "last_inspection_at": null,
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41939382733891,
+          37.22765158162633
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2012",
+      "building": "HARPER HALL",
+      "location": "240 West Campus Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "CR1A",
+      "description": "Main hallway at room 1025, northern part of building",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:02:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42292217238148,
+          37.22283869341988
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2013",
+      "building": "HILLCREST HALL",
+      "location": "385 West Campus Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "112",
+      "description": "In lobby across from entrance, outside 112A",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T23:24:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42478194949828,
+          37.22379312778638
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2014",
+      "building": "NEW HALL WEST",
+      "location": "190 West Campus Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "B127",
+      "description": "Middle of the lobby",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T21:32:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42254797124897,
+          37.222137417958386
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2015",
+      "building": "NEW RESIDENCE HALL EAST",
+      "location": "590 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A1",
+      "description": "In main lobby by fire panels",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:34:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41933980999268,
+          37.22545762033174
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2016",
+      "building": "PAYNE HALL",
+      "location": "600 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A9",
+      "description": "In recessed area of main hallway,outside room 1B",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:41:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4201296243979,
+          37.22574687538404
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2017",
+      "building": "PEDDREW-YATES HALL",
+      "location": "610 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A17",
+      "description": "Inside main door, just before the hallway door",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:30:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41961759668438,
+          37.2252327056195
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2018",
+      "building": "AMBLER JOHNSTON HALL - EAST WING",
+      "location": "700 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A321",
+      "description": "In main lobby between E and W AJ",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:08:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42097603279683,
+          37.22304294376553
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2019",
+      "building": "PRITCHARD HALL",
+      "location": "630 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "3",
+      "room": "3110",
+      "description": "In lounge at end of hall on 3rd floor",
+      "source_status": "In Service",
+      "last_inspection_at": null,
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42001865442771,
+          37.22425551270759
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2020",
+      "building": "STERRETT CENTER",
+      "location": "230 Sterrett Drive, Blacksburg, VA 24061 USA",
+      "floor": "1",
+      "room": "CR-1",
+      "description": "Central hallway outside rooms 30G and F, near water fountain",
+      "source_status": "In Service",
+      "last_inspection_at": null,
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41378178947447,
+          37.219672098662954
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2021",
+      "building": "DATA AND DECISION SCIENCES",
+      "location": "727 Prices Fork Road, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A107",
+      "description": "Off lobby/main entrance in hallway by restrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-19T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42748548856473,
+          37.23158089844828
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2022",
+      "building": "DATA AND DECISION SCIENCES",
+      "location": "727 Prices Fork Road, Blacksburg, VA 24061, USA",
+      "floor": "4",
+      "room": "D407",
+      "description": "4th floor, outside bathrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-19T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42748548856473,
+          37.23158089844828
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2023",
+      "building": "DATA AND DECISION SCIENCES",
+      "location": "727 Prices Fork Road, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "B207",
+      "description": "2nd floor, outside bathrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-19T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42748548856473,
+          37.23158089844828
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2024",
+      "building": "DATA AND DECISION SCIENCES",
+      "location": "727 Prices Fork Road, Blacksburg, VA 24061, USA",
+      "floor": "3",
+      "room": "C307",
+      "description": "3rd floor, outside bathrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-19T04:00:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42748548856473,
+          37.23158089844828
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2025",
+      "building": "CREATIVITY AND INNOVATION DISTRICT - LIVING LEARNING COMMUNITY",
+      "location": "185 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A119",
+      "description": "First floor, at elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-19T15:31:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41687979301639,
+          37.22762319137844
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2026",
+      "building": "O'SHAUGHNESSY HALL",
+      "location": "530 Washington St. Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "CR-1C",
+      "description": "Main lobby by the double doors to the stairwell",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:47:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41825723392661,
+          37.22536709095006
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2027",
+      "building": "SLUSHER HALL",
+      "location": "201 Ag Quad Ln, Blacksburg VA 24061, USA",
+      "floor": "1",
+      "room": "180",
+      "description": "First floor, off lobby, outside laundry room",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T22:58:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42232215972587,
+          37.22531959202289
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2028",
+      "building": "CAMPBELL HALL - EAST WING",
+      "location": "320 Drillfield Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "107",
+      "description": "In study hall lounge just inside door frame",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T23:04:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4216206402382,
+          37.22634767176744
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2029",
+      "building": "CAMPBELL HALL - MAIN WING",
+      "location": "300 Drillfield Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A15",
+      "description": "In lobby outside lounge, entrance closest to War Memorial Gym",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-26T23:10:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4219352392813,
+          37.226150136159056
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2030",
+      "building": "GROUNDS BUILDING",
+      "location": "185 Sterrett Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A8",
+      "description": "In the hallway between room 104A and the women's restroom",
+      "source_status": "In Service",
+      "last_inspection_at": null,
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41253861851575,
+          37.2195507359722
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2031",
+      "building": "TENNIS COURTS",
+      "location": "553 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": null,
+      "room": null,
+      "description": "On fence between tennis courts, Basketball Practice Facility end",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-31T17:22:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41744638842472,
+          37.2237784832583
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2032",
+      "building": "UPPER QUAD HALL NORTH",
+      "location": "280 Stanger St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "120",
+      "description": "In kitchen, just inside the door",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-07-31T17:47:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4214496647169,
+          37.23111522299266
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2033",
+      "building": "NATIONAL PAN-HELLENIC COUNCIL HOUSE",
+      "location": "3220 Oak Lane, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "100",
+      "description": "Inside front door on wall between restrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-11-14T14:04:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.43579135475339,
+          37.22457083001076
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2034",
+      "building": "SPECIAL PURPOSE HOUSING - BUILDING MN",
+      "location": "3025 Oak Lane, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A50",
+      "description": "In airlock at main entrance to Kappa Alpha Theta",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-08-14T21:06:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4390357710273,
+          37.22412773509831
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2035",
+      "building": "SPECIAL PURPOSE HOUSING - BUILDING D",
+      "location": "2805 Oak Lane, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A1",
+      "description": "In airlock at main entrance",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-11-14T14:10:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.43880179327928,
+          37.22633343168714
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2036",
+      "building": "WAR MEMORIAL GYMNASIUM",
+      "location": "370 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "134A",
+      "description": "On wall first floor acroos the hall from room 133",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-08-14T21:54:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42063321196603,
+          37.22644292908106
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2037",
+      "building": "WAR MEMORIAL GYMNASIUM",
+      "location": "370 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "3",
+      "room": "332",
+      "description": "Outside elevator floor 3R",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-08-14T22:07:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42098262237845,
+          37.2266183484862
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2038",
+      "building": "WAR MEMORIAL GYMNASIUM",
+      "location": "370 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "C266",
+      "description": "By elevator outside basketball court",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-08-14T21:48:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42050230176113,
+          37.22626061009517
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2039",
+      "building": "PRITCHARD HALL",
+      "location": "630 Washington St. SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "CR-1G",
+      "description": "Main lobby, floor 1, near elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-08-15T19:35:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41969368079238,
+          37.224451910581664
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2040",
+      "building": "CREATIVITY AND INNOVATION DISTRICT - LIVING LEARNING COMMUNITY",
+      "location": "185 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "B238",
+      "description": "Second floor, near elevators",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-09-11T17:04:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4167953799522,
+          37.22747040086273
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2041",
+      "building": "ENGEL HALL",
+      "location": "340 West Campus Dr, Blacksburg, VA 24061",
+      "floor": "1",
+      "room": "113",
+      "description": "Between room 113 and elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-09-11T17:19:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42372221838534,
+          37.22364172271785
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2043",
+      "building": "EGGLESTON HALL - EAST WING",
+      "location": "500 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "210",
+      "description": "Outside of room 210 on the right side of the door",
+      "source_status": "In Service",
+      "last_inspection_at": "2024-11-08T02:03:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41938532303435,
+          37.227669432779166
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2045",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "140A",
+      "description": "In lobby, near elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-10T20:12:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4272969918488,
+          37.23017200266558
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2046",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "4",
+      "room": "420",
+      "description": "Off elevator outside room 420",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-10T20:16:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42733313807857,
+          37.23020589194996
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2047",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "3",
+      "room": "330",
+      "description": "Across from elevator, 3rd floor near room 330",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-10T20:22:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42733313807857,
+          37.23020589194996
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2048",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "212",
+      "description": "Between room 220 and the elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-10T20:28:01Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4272969918488,
+          37.23017200266558
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2049",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "0",
+      "room": "040",
+      "description": "By exit door in receiving area",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-14T23:15:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42741333499282,
+          37.22980919282803
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2050",
+      "building": "UNDERGRADUATE SCIENCE LABORATORY BUILDING",
+      "location": "1050 West Campus Drive, Blacksburg, VA 24061, USA",
+      "floor": "5",
+      "room": "E46",
+      "description": "Off west elevator on 5th floor (penthouse/mechanical)",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-14T23:21:01Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42752434084196,
+          37.22984910693997
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2051",
+      "building": "JOHNSON HALL",
+      "location": "500 Washington St SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "124",
+      "description": "At middle lobby near elevator. Across from room 124.",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-01-15T21:36:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4176974781749,
+          37.22556945247187
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2451",
+      "building": "BUILDING 1311",
+      "location": "1311 Research Center Drive, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "2002",
+      "description": "Second floor in hall",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-02-05T20:53:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41899526589037,
+          37.206941974305316
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2455",
+      "building": "BUILDING 1311",
+      "location": "1311 Research Center Drive, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "1002",
+      "description": "Beside stairs, near elevator and exterior doors",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-02-05T21:00:01Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41908942787674,
+          37.20699561058043
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2472",
+      "building": "TRANSIT CENTER",
+      "location": "1324 Perry Street, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A04",
+      "description": "First floor near bathrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-07-21T14:46:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42595421340481,
+          37.2306969758958
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2473",
+      "building": "TRANSIT CENTER",
+      "location": "1324 Perry Street, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "B04",
+      "description": "Second floor near bathrooms",
+      "source_status": "In Service",
+      "last_inspection_at": "2025-07-21T14:51:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42596351178021,
+          37.230687674378196
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2474",
+      "building": "OWENS HALL",
+      "location": "150 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "0",
+      "room": "A22",
+      "description": "To the right of basement double doors facing Eggleston Quad",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-01-14T18:16:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41904231741988,
+          37.2268510624626
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2475",
+      "building": "OWENS HALL",
+      "location": "150 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "C3",
+      "description": "Between the water fountain and room C3",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-01-14T18:21:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41880555289441,
+          37.22667327364323
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2476",
+      "building": "EGGLESTON HALL - WEST WING",
+      "location": "410 Drillfield Dr, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "118",
+      "description": "Between study lounge and main hallway steps",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-01-14T18:31:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42027100224955,
+          37.226917619801554
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2477",
+      "building": "CREATIVITY AND INNOVATION DISTRICT - LIVING LEARNING COMMUNITY",
+      "location": "185 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "6",
+      "room": "F600C",
+      "description": "Floor 6 of C tower in lobby near elevators",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-01-14T18:47:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41650722046954,
+          37.227194765403496
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2478",
+      "building": "CREATIVITY AND INNOVATION DISTRICT - LIVING LEARNING COMMUNITY",
+      "location": "185 Kent St, Blacksburg, VA 24061, USA",
+      "floor": "6",
+      "room": "607",
+      "description": "Floor 6 tower A lounge near elevators",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-01-14T18:52:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.41692919964783,
+          37.22773595576555
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2479",
+      "building": "LAVERY HALL",
+      "location": "430 Old Turner St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A00",
+      "description": "In hallway by water fountains, and near rooms A27 and A29",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-28T18:35:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42278574179458,
+          37.23112650626979
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2480",
+      "building": "JOHNSTON STUDENT CENTER",
+      "location": "920 West Campus Dr, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "CR2",
+      "description": "Outside room 203 (Viva Marketplace)",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-28T18:53:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42451527718782,
+          37.22919953320137
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2481",
+      "building": "COCHRANE HALL",
+      "location": "770 Washington Street SW, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "100",
+      "description": "On the wall between student seating and Leaf and Ladle",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-28T19:07:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42191784824126,
+          37.223374454181915
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2482",
+      "building": "DIETRICK HALL",
+      "location": "285 Ag Quad Ln, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "102",
+      "description": "Beside Deets, at entrance to men's restroom hallway beside stairs",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-28T19:21:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42116799569114,
+          37.224352344892324
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2483",
+      "building": "DIETRICK HALL",
+      "location": "285 Ag Quad Ln, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "B16",
+      "description": "Behind DX, at entrance to men's restroom hallway beside stairs",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-28T19:24:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42086754396632,
+          37.22455211607214
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2484",
+      "building": "HITT HALL",
+      "location": "1385 Perry St, Blacksburg, VA 24061, USA",
+      "floor": "3",
+      "room": "C12",
+      "description": "Between rooms 301 and 302 near elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-29T15:43:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42587954238839,
+          37.22967408670574
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2485",
+      "building": "HITT HALL",
+      "location": "1385 Perry St, Blacksburg, VA 24061, USA",
+      "floor": "2",
+      "room": "B22",
+      "description": "Outside Myers-Lawson School of Construction Entrance and near elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-29T15:46:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42587954238839,
+          37.22967408670574
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    },
+    {
+      "id": "2486",
+      "building": "HITT HALL",
+      "location": "1385 Perry St, Blacksburg, VA 24061, USA",
+      "floor": "1",
+      "room": "A22",
+      "description": "Outside Myers-Lawson School of Construction Entrance and near elevator",
+      "source_status": "In Service",
+      "last_inspection_at": "2026-05-29T15:50:00Z",
+      "operational_status": "unknown",
+      "access_now": "unknown",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.42587954238839,
+          37.22967408670574
+        ]
+      },
+      "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/AEDSTBKitLocations/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cbuildingname%2Ckitstatus%2Ckitlocation%2Cfloornumber%2Croomnumber%2Cgeneraldescription%2Clastinspectiondate&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+      "sha256": "90190561e69993d6358fcb03e7765d90801cbbc92feb0118359fba1d0a325d3d",
+      "captured_at": "2026-09-19T13:47:51.641130Z",
+      "row_count": 65,
+      "coverage": "Blacksburg bbox [-80.46,37.19,-80.38,37.26]",
+      "limitations": "Mapped AED/Stop-the-Bleed inventory in the declared Blacksburg bounding box. Source status and old inspection dates are retained; present operation and building access are unverified.",
+      "attribution": "Public official source. No endorsement; source terms apply."
+    }
+  ],
+  "limitations": [
+    "Mapped AED/Stop-the-Bleed inventory in the declared Blacksburg bounding box. Source status and old inspection dates are retained; present operation and building access are unverified."
+  ]
+}

@@ -1,0 +1,1265 @@
+[
+  {
+    "schema_version": 1,
+    "corridor_id": "newman-pritchard",
+    "source_version": "61418b41798e778974004c5308822975abe894bd2c5403039dadaa7ebd1a84b6",
+    "captured_at": "2026-09-19T06:43:48.221432+00:00",
+    "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/MultimodalRouting_2024_12_13/MapServer/6",
+    "status": "supported",
+    "origin": "Newman Library",
+    "destination": "Pritchard Hall",
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          -80.41928272142276,
+          37.228421944455775
+        ],
+        [
+          -80.41932697723541,
+          37.22841660491502
+        ],
+        [
+          -80.41934843481022,
+          37.22841126562932
+        ],
+        [
+          -80.4193833043845,
+          37.22839845204904
+        ],
+        [
+          -80.41940744338022,
+          37.2283931133149
+        ],
+        [
+          -80.41943158399991,
+          37.22839311283451
+        ],
+        [
+          -80.41945169999815,
+          37.228396316051764
+        ],
+        [
+          -80.4194798630464,
+          37.22840485918654
+        ],
+        [
+          -80.41982046182125,
+          37.22875560459834
+        ],
+        [
+          -80.41998121695735,
+          37.228921148251075
+        ],
+        [
+          -80.41977227135385,
+          37.22905067900888
+        ],
+        [
+          -80.41961311881501,
+          37.22914934105389
+        ],
+        [
+          -80.41929366477252,
+          37.229345810718016
+        ],
+        [
+          -80.41912465547944,
+          37.22944975341824
+        ],
+        [
+          -80.41903880283054,
+          37.22950255368536
+        ],
+        [
+          -80.41866300865422,
+          37.22911478661889
+        ],
+        [
+          -80.41866158385601,
+          37.22911101358432
+        ],
+        [
+          -80.41864427237303,
+          37.22906517013464
+        ],
+        [
+          -80.4186415919338,
+          37.229009163974574
+        ],
+        [
+          -80.41864846440404,
+          37.228982486129645
+        ],
+        [
+          -80.41865554698472,
+          37.228895613757324
+        ],
+        [
+          -80.41864746644133,
+          37.22882138225161
+        ],
+        [
+          -80.41864276481662,
+          37.22876891312018
+        ],
+        [
+          -80.41864171665434,
+          37.22875720990601
+        ],
+        [
+          -80.41863881793705,
+          37.22872485148285
+        ],
+        [
+          -80.41862720161119,
+          37.228633325993215
+        ],
+        [
+          -80.41862255506663,
+          37.228571760242595
+        ],
+        [
+          -80.41889640277714,
+          37.22838875170631
+        ],
+        [
+          -80.41895757140186,
+          37.22834787296396
+        ],
+        [
+          -80.4190787048607,
+          37.228266919966444
+        ],
+        [
+          -80.4190804759063,
+          37.22826573663306
+        ],
+        [
+          -80.41908669145465,
+          37.22826110664801
+        ],
+        [
+          -80.41922827620353,
+          37.228155643245394
+        ],
+        [
+          -80.41924171567798,
+          37.22810137853967
+        ],
+        [
+          -80.41925024152903,
+          37.22809443344612
+        ],
+        [
+          -80.41933191875376,
+          37.2280280266488
+        ],
+        [
+          -80.41935604565953,
+          37.22801144644588
+        ],
+        [
+          -80.41932371570829,
+          37.22799465401864
+        ],
+        [
+          -80.4192478828018,
+          37.2279318591383
+        ],
+        [
+          -80.41919051633755,
+          37.22773407749344
+        ],
+        [
+          -80.41911093618177,
+          37.227633559065374
+        ],
+        [
+          -80.4189813168323,
+          37.22753976287589
+        ],
+        [
+          -80.41897683999223,
+          37.227386286273365
+        ],
+        [
+          -80.41897254182578,
+          37.22723890572953
+        ],
+        [
+          -80.41897553048491,
+          37.22723609652043
+        ],
+        [
+          -80.41903776896629,
+          37.22717757758059
+        ],
+        [
+          -80.4192654196924,
+          37.226963532726955
+        ],
+        [
+          -80.41948610450879,
+          37.22675603492682
+        ],
+        [
+          -80.41955201441257,
+          37.22669406447718
+        ],
+        [
+          -80.41958465997038,
+          37.22666336862321
+        ],
+        [
+          -80.41964261554017,
+          37.22660887651897
+        ],
+        [
+          -80.41941464978935,
+          37.22644257774302
+        ],
+        [
+          -80.41915668455006,
+          37.226254392900636
+        ],
+        [
+          -80.41910164351954,
+          37.22621424075074
+        ],
+        [
+          -80.419085034413,
+          37.22620212448205
+        ],
+        [
+          -80.41900055460147,
+          37.22614049570068
+        ],
+        [
+          -80.41895647910081,
+          37.22610787837475
+        ],
+        [
+          -80.41873127183479,
+          37.22594121351829
+        ],
+        [
+          -80.41871357394731,
+          37.22592811627809
+        ],
+        [
+          -80.41865204339902,
+          37.22588937266365
+        ],
+        [
+          -80.4186345369701,
+          37.225891832010994
+        ],
+        [
+          -80.41857958044721,
+          37.22590655182855
+        ],
+        [
+          -80.41849548237778,
+          37.22592358928643
+        ],
+        [
+          -80.41843301012582,
+          37.225929827563206
+        ],
+        [
+          -80.41842641282446,
+          37.225912114664126
+        ],
+        [
+          -80.41845662213412,
+          37.22590639985798
+        ],
+        [
+          -80.4184939646001,
+          37.22589411683915
+        ],
+        [
+          -80.41853760272953,
+          37.225872514083555
+        ],
+        [
+          -80.41857722732918,
+          37.22584421694113
+        ],
+        [
+          -80.41861590511546,
+          37.22580886823198
+        ],
+        [
+          -80.4186073322422,
+          37.22578903609634
+        ],
+        [
+          -80.41856658022263,
+          37.225803217689695
+        ],
+        [
+          -80.41849988942576,
+          37.22582488780256
+        ],
+        [
+          -80.41845668400099,
+          37.22583327163763
+        ],
+        [
+          -80.4184043559481,
+          37.22583043496666
+        ],
+        [
+          -80.4183579899731,
+          37.2258226687097
+        ],
+        [
+          -80.4183921810671,
+          37.225813045245104
+        ],
+        [
+          -80.41864039726397,
+          37.225743184053165
+        ],
+        [
+          -80.41864661259127,
+          37.22574143458387
+        ],
+        [
+          -80.41873578673109,
+          37.2257104284681
+        ],
+        [
+          -80.41875951066551,
+          37.225704118099195
+        ],
+        [
+          -80.41878204455502,
+          37.225694377994316
+        ],
+        [
+          -80.41880289560473,
+          37.225681421160374
+        ],
+        [
+          -80.41882160782183,
+          37.22566553095109
+        ],
+        [
+          -80.41883777198778,
+          37.22564705487038
+        ],
+        [
+          -80.41885103460753,
+          37.22562639697268
+        ],
+        [
+          -80.41885538890726,
+          37.22561652611906
+        ],
+        [
+          -80.41885885416592,
+          37.22560630918902
+        ],
+        [
+          -80.41885673526592,
+          37.225587733086435
+        ],
+        [
+          -80.41883534249386,
+          37.225563182067255
+        ],
+        [
+          -80.41878572712562,
+          37.225506240843195
+        ],
+        [
+          -80.41870103844444,
+          37.225439369799545
+        ],
+        [
+          -80.4186214278458,
+          37.225374334983144
+        ],
+        [
+          -80.41858066953236,
+          37.225349461486566
+        ],
+        [
+          -80.41854880323872,
+          37.22531906550541
+        ],
+        [
+          -80.41853819047775,
+          37.22530748259635
+        ],
+        [
+          -80.418507971675,
+          37.22527450199185
+        ],
+        [
+          -80.41850756114124,
+          37.225271741732335
+        ],
+        [
+          -80.41850093362714,
+          37.225227163949164
+        ],
+        [
+          -80.4185012365594,
+          37.225204312200994
+        ],
+        [
+          -80.41849774590342,
+          37.22518172659755
+        ],
+        [
+          -80.41849055831425,
+          37.225160032526375
+        ],
+        [
+          -80.41847987281375,
+          37.225139830688796
+        ],
+        [
+          -80.41846598527974,
+          37.22512168046673
+        ],
+        [
+          -80.41844928025323,
+          37.22510608443353
+        ],
+        [
+          -80.41843022029062,
+          37.225093474437976
+        ],
+        [
+          -80.41842387356324,
+          37.225088455610916
+        ],
+        [
+          -80.41840623398053,
+          37.2250726817428
+        ],
+        [
+          -80.41839135010001,
+          37.22505428500684
+        ],
+        [
+          -80.41837960661978,
+          37.2250337408966
+        ],
+        [
+          -80.41837130706921,
+          37.22501158040803
+        ],
+        [
+          -80.41836666596367,
+          37.224988376315004
+        ],
+        [
+          -80.4183658032601,
+          37.22496472836507
+        ],
+        [
+          -80.41836874125647,
+          37.22494124777797
+        ],
+        [
+          -80.41837361701128,
+          37.22492486518619
+        ],
+        [
+          -80.41838040508007,
+          37.22490917810805
+        ],
+        [
+          -80.41838838237659,
+          37.224895201582115
+        ],
+        [
+          -80.41839773313755,
+          37.22488210410884
+        ],
+        [
+          -80.4184092325382,
+          37.22486895754701
+        ],
+        [
+          -80.41842198118611,
+          37.224857018523615
+        ],
+        [
+          -80.41856335892592,
+          37.22478916509346
+        ],
+        [
+          -80.41856957326864,
+          37.22478618269054
+        ],
+        [
+          -80.41870320558309,
+          37.22470188042624
+        ],
+        [
+          -80.41882885355047,
+          37.22460516647654
+        ],
+        [
+          -80.41883398462497,
+          37.22459974027084
+        ],
+        [
+          -80.41890814289226,
+          37.22452130754609
+        ],
+        [
+          -80.41895153048496,
+          37.22448328014204
+        ],
+        [
+          -80.41895999567168,
+          37.22447702282238
+        ],
+        [
+          -80.41899147829481,
+          37.22446001365229
+        ],
+        [
+          -80.41902532571571,
+          37.22444840247131
+        ],
+        [
+          -80.41906061987926,
+          37.22444250421346
+        ],
+        [
+          -80.41909640348979,
+          37.224442478859196
+        ],
+        [
+          -80.41910317142538,
+          37.22438063738081
+        ],
+        [
+          -80.41912359768152,
+          37.22436301690304
+        ],
+        [
+          -80.41918779336024,
+          37.22433693465059
+        ],
+        [
+          -80.41920333902874,
+          37.22430329663394
+        ],
+        [
+          -80.41923788586878,
+          37.224225293239726
+        ],
+        [
+          -80.41934346226546,
+          37.224255275496354
+        ],
+        [
+          -80.41947654186377,
+          37.22427287384355
+        ],
+        [
+          -80.41957407694886,
+          37.22429833875576
+        ],
+        [
+          -80.419600673989,
+          37.224265926957074
+        ],
+        [
+          -80.41962216534641,
+          37.22425735415442
+        ],
+        [
+          -80.41962638527986,
+          37.22424358064421
+        ]
+      ]
+    },
+    "distance_meters": 1077.34,
+    "nearby_phones": [
+      {
+        "phone_id": "137",
+        "location": "EMRG-Owens  Quad (volleyball court)",
+        "distance_meters": 2.36,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      },
+      {
+        "phone_id": "131",
+        "location": "EMRG-Mall between Bookstore and Library",
+        "distance_meters": 2.96,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      },
+      {
+        "phone_id": "148",
+        "location": "EMRG-Oshag/Lee",
+        "distance_meters": 5.32,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      },
+      {
+        "phone_id": "149",
+        "location": "EMRG-Squires Mall  Torg Bridge end",
+        "distance_meters": 15.59,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      }
+    ],
+    "historical_reports": [
+      {
+        "report_id": "2026-15271",
+        "reported_date": "2026-09-03",
+        "offense": "Petit larceny: building",
+        "location": "Newman Library",
+        "occurrence_start": "2023-11-01",
+        "occurrence_end": "2026-09-01",
+        "disposition": "Active",
+        "source_page": 2,
+        "source_id": "vt-crime-september-sample",
+        "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+        "extraction_method": "manually_reviewed_public_source_text",
+        "coverage_note": "Selected 12 records, not complete crime coverage. Reports are not predictions; Active is case disposition, not a live alert.",
+        "match_method": "exact_named_endpoint_place"
+      },
+      {
+        "report_id": "2026-15354",
+        "reported_date": "2026-09-04",
+        "offense": "Petit larceny",
+        "location": "Pritchard Hall",
+        "occurrence_start": "2026-09-02",
+        "occurrence_end": "2026-09-04",
+        "disposition": "Inactive",
+        "source_page": 2,
+        "source_id": "vt-crime-september-sample",
+        "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+        "extraction_method": "manually_reviewed_public_source_text",
+        "coverage_note": "Selected 12 records, not complete crime coverage. Reports are not predictions; Active is case disposition, not a live alert.",
+        "match_method": "exact_named_endpoint_place"
+      }
+    ],
+    "lighting": {
+      "known_meters": 0,
+      "lit_meters": 0,
+      "unlit_meters": 0,
+      "unknown_meters": 1077.34
+    },
+    "limitations": [
+      "Static official campus pathway geometry; current field conditions and access permissions remain unknown.",
+      "Paths start/end at existing network vertices near building reference points, not verified entrances; endpoint offsets are excluded from path distance.",
+      "No lighting observations. Accessibility and slope routing are not verified; NotADA segments are excluded because that tag may include barriers.",
+      "Phone proximity is geometric distance to the path, not a verified accessible detour; operational status is unknown.",
+      "Historical reports are a selected incomplete sample matched only to named endpoint buildings, not incidents on the path or a crime risk measure.",
+      "Conservatively avoids currently dated published construction areas only while construction_avoidance.valid_until is current; area descriptions do not prove every intersecting sidewalk is closed.",
+      "Avoiding published work areas does not prove the remaining path is open, illuminated, accessible or safe."
+    ],
+    "endpoint_offsets_meters": [
+      42.13,
+      2.74
+    ],
+    "construction_avoidance": {
+      "algorithm_version": "official-network-construction-avoidance-v1",
+      "status": "applied",
+      "evaluated_at": "2026-09-19T19:15:25.459759Z",
+      "valid_until": "2026-09-19T20:15:01.582882Z",
+      "source_snapshot_captured_at": "2026-09-19T19:15:02.241804Z",
+      "source_snapshot_version": "f8f8d1b3506a54155cda62d28b899a1ead1dd339c235d16b943e2fef88f72651",
+      "excluded_area_ids": [
+        "areas:17472",
+        "areas:18405",
+        "areas:20175",
+        "areas:20194",
+        "areas:20195",
+        "areas:20251",
+        "areas:20306",
+        "areas:20327",
+        "areas:20333",
+        "areas:20337",
+        "areas:20354",
+        "areas:20356",
+        "areas:20357",
+        "areas:20364"
+      ],
+      "sources": [
+        {
+          "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+          "sha256": "61048f6990cc9cf4d1c2c8c53355ac4ec20c74ea80ec5372a2b0ab26e56b6f9d",
+          "captured_at": "2026-09-19T19:15:01.582882Z",
+          "coverage": "facilities/Construction_Closures/FeatureServer/0"
+        }
+      ],
+      "reason": null
+    }
+  },
+  {
+    "schema_version": 1,
+    "corridor_id": "eggleston-pritchard",
+    "source_version": "e476f3c257a77dfc74f633293ce4728a3259594c653054187d0a93f60e167545",
+    "captured_at": "2026-09-19T06:43:48.221432+00:00",
+    "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/MultimodalRouting_2024_12_13/MapServer/6",
+    "status": "supported",
+    "origin": "Eggleston Hall - East Wing",
+    "destination": "Pritchard Hall",
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          -80.41943120365626,
+          37.22762185348654
+        ],
+        [
+          -80.41947558024803,
+          37.22758010828769
+        ],
+        [
+          -80.4196027483997,
+          37.22766759428403
+        ],
+        [
+          -80.4195771475347,
+          37.227176337610246
+        ],
+        [
+          -80.41955201441257,
+          37.22669406447718
+        ],
+        [
+          -80.41958465997038,
+          37.22666336862321
+        ],
+        [
+          -80.41964261554017,
+          37.22660887651897
+        ],
+        [
+          -80.41941464978935,
+          37.22644257774302
+        ],
+        [
+          -80.41915668455006,
+          37.226254392900636
+        ],
+        [
+          -80.41910164351954,
+          37.22621424075074
+        ],
+        [
+          -80.419085034413,
+          37.22620212448205
+        ],
+        [
+          -80.41900055460147,
+          37.22614049570068
+        ],
+        [
+          -80.41895647910081,
+          37.22610787837475
+        ],
+        [
+          -80.41873127183479,
+          37.22594121351829
+        ],
+        [
+          -80.41871357394731,
+          37.22592811627809
+        ],
+        [
+          -80.41865204339902,
+          37.22588937266365
+        ],
+        [
+          -80.4186345369701,
+          37.225891832010994
+        ],
+        [
+          -80.41857958044721,
+          37.22590655182855
+        ],
+        [
+          -80.41849548237778,
+          37.22592358928643
+        ],
+        [
+          -80.41843301012582,
+          37.225929827563206
+        ],
+        [
+          -80.41842641282446,
+          37.225912114664126
+        ],
+        [
+          -80.41845662213412,
+          37.22590639985798
+        ],
+        [
+          -80.4184939646001,
+          37.22589411683915
+        ],
+        [
+          -80.41853760272953,
+          37.225872514083555
+        ],
+        [
+          -80.41857722732918,
+          37.22584421694113
+        ],
+        [
+          -80.41861590511546,
+          37.22580886823198
+        ],
+        [
+          -80.4186073322422,
+          37.22578903609634
+        ],
+        [
+          -80.41856658022263,
+          37.225803217689695
+        ],
+        [
+          -80.41849988942576,
+          37.22582488780256
+        ],
+        [
+          -80.41845668400099,
+          37.22583327163763
+        ],
+        [
+          -80.4184043559481,
+          37.22583043496666
+        ],
+        [
+          -80.4183579899731,
+          37.2258226687097
+        ],
+        [
+          -80.4183921810671,
+          37.225813045245104
+        ],
+        [
+          -80.41864039726397,
+          37.225743184053165
+        ],
+        [
+          -80.41864661259127,
+          37.22574143458387
+        ],
+        [
+          -80.41873578673109,
+          37.2257104284681
+        ],
+        [
+          -80.41875951066551,
+          37.225704118099195
+        ],
+        [
+          -80.41878204455502,
+          37.225694377994316
+        ],
+        [
+          -80.41880289560473,
+          37.225681421160374
+        ],
+        [
+          -80.41882160782183,
+          37.22566553095109
+        ],
+        [
+          -80.41883777198778,
+          37.22564705487038
+        ],
+        [
+          -80.41885103460753,
+          37.22562639697268
+        ],
+        [
+          -80.41885538890726,
+          37.22561652611906
+        ],
+        [
+          -80.41885885416592,
+          37.22560630918902
+        ],
+        [
+          -80.41885673526592,
+          37.225587733086435
+        ],
+        [
+          -80.41883534249386,
+          37.225563182067255
+        ],
+        [
+          -80.41878572712562,
+          37.225506240843195
+        ],
+        [
+          -80.41870103844444,
+          37.225439369799545
+        ],
+        [
+          -80.4186214278458,
+          37.225374334983144
+        ],
+        [
+          -80.41858066953236,
+          37.225349461486566
+        ],
+        [
+          -80.41854880323872,
+          37.22531906550541
+        ],
+        [
+          -80.41853819047775,
+          37.22530748259635
+        ],
+        [
+          -80.418507971675,
+          37.22527450199185
+        ],
+        [
+          -80.41850756114124,
+          37.225271741732335
+        ],
+        [
+          -80.41850093362714,
+          37.225227163949164
+        ],
+        [
+          -80.4185012365594,
+          37.225204312200994
+        ],
+        [
+          -80.41849774590342,
+          37.22518172659755
+        ],
+        [
+          -80.41849055831425,
+          37.225160032526375
+        ],
+        [
+          -80.41847987281375,
+          37.225139830688796
+        ],
+        [
+          -80.41846598527974,
+          37.22512168046673
+        ],
+        [
+          -80.41844928025323,
+          37.22510608443353
+        ],
+        [
+          -80.41843022029062,
+          37.225093474437976
+        ],
+        [
+          -80.41842387356324,
+          37.225088455610916
+        ],
+        [
+          -80.41840623398053,
+          37.2250726817428
+        ],
+        [
+          -80.41839135010001,
+          37.22505428500684
+        ],
+        [
+          -80.41837960661978,
+          37.2250337408966
+        ],
+        [
+          -80.41837130706921,
+          37.22501158040803
+        ],
+        [
+          -80.41836666596367,
+          37.224988376315004
+        ],
+        [
+          -80.4183658032601,
+          37.22496472836507
+        ],
+        [
+          -80.41836874125647,
+          37.22494124777797
+        ],
+        [
+          -80.41837361701128,
+          37.22492486518619
+        ],
+        [
+          -80.41838040508007,
+          37.22490917810805
+        ],
+        [
+          -80.41838838237659,
+          37.224895201582115
+        ],
+        [
+          -80.41839773313755,
+          37.22488210410884
+        ],
+        [
+          -80.4184092325382,
+          37.22486895754701
+        ],
+        [
+          -80.41842198118611,
+          37.224857018523615
+        ],
+        [
+          -80.41856335892592,
+          37.22478916509346
+        ],
+        [
+          -80.41856957326864,
+          37.22478618269054
+        ],
+        [
+          -80.41870320558309,
+          37.22470188042624
+        ],
+        [
+          -80.41882885355047,
+          37.22460516647654
+        ],
+        [
+          -80.41883398462497,
+          37.22459974027084
+        ],
+        [
+          -80.41890814289226,
+          37.22452130754609
+        ],
+        [
+          -80.41895153048496,
+          37.22448328014204
+        ],
+        [
+          -80.41895999567168,
+          37.22447702282238
+        ],
+        [
+          -80.41899147829481,
+          37.22446001365229
+        ],
+        [
+          -80.41902532571571,
+          37.22444840247131
+        ],
+        [
+          -80.41906061987926,
+          37.22444250421346
+        ],
+        [
+          -80.41909640348979,
+          37.224442478859196
+        ],
+        [
+          -80.41910317142538,
+          37.22438063738081
+        ],
+        [
+          -80.41912359768152,
+          37.22436301690304
+        ],
+        [
+          -80.41918779336024,
+          37.22433693465059
+        ],
+        [
+          -80.41920333902874,
+          37.22430329663394
+        ],
+        [
+          -80.41923788586878,
+          37.224225293239726
+        ],
+        [
+          -80.41934346226546,
+          37.224255275496354
+        ],
+        [
+          -80.41947654186377,
+          37.22427287384355
+        ],
+        [
+          -80.41957407694886,
+          37.22429833875576
+        ],
+        [
+          -80.419600673989,
+          37.224265926957074
+        ],
+        [
+          -80.41962216534641,
+          37.22425735415442
+        ],
+        [
+          -80.41962638527986,
+          37.22424358064421
+        ]
+      ]
+    },
+    "distance_meters": 626.55,
+    "nearby_phones": [
+      {
+        "phone_id": "137",
+        "location": "EMRG-Owens  Quad (volleyball court)",
+        "distance_meters": 3.92,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      },
+      {
+        "phone_id": "148",
+        "location": "EMRG-Oshag/Lee",
+        "distance_meters": 5.32,
+        "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/EmergencyAccessMappingLayers/FeatureServer/2",
+        "operational_status": "unknown"
+      }
+    ],
+    "historical_reports": [
+      {
+        "report_id": "2026-15354",
+        "reported_date": "2026-09-04",
+        "offense": "Petit larceny",
+        "location": "Pritchard Hall",
+        "occurrence_start": "2026-09-02",
+        "occurrence_end": "2026-09-04",
+        "disposition": "Inactive",
+        "source_page": 2,
+        "source_id": "vt-crime-september-sample",
+        "source_url": "https://police.vt.edu/content/dam/police_vt_edu/crime-logs/2026/file_202609.pdf",
+        "extraction_method": "manually_reviewed_public_source_text",
+        "coverage_note": "Selected 12 records, not complete crime coverage. Reports are not predictions; Active is case disposition, not a live alert.",
+        "match_method": "exact_named_endpoint_place"
+      }
+    ],
+    "lighting": {
+      "known_meters": 0,
+      "lit_meters": 0,
+      "unlit_meters": 0,
+      "unknown_meters": 626.55
+    },
+    "limitations": [
+      "Static official campus pathway geometry; current field conditions and access permissions remain unknown.",
+      "Paths start/end at existing network vertices near building reference points, not verified entrances; endpoint offsets are excluded from path distance.",
+      "No lighting observations. Accessibility and slope routing are not verified; NotADA segments are excluded because that tag may include barriers.",
+      "Phone proximity is geometric distance to the path, not a verified accessible detour; operational status is unknown.",
+      "Historical reports are a selected incomplete sample matched only to named endpoint buildings, not incidents on the path or a crime risk measure.",
+      "Conservatively avoids currently dated published construction areas only while construction_avoidance.valid_until is current; area descriptions do not prove every intersecting sidewalk is closed.",
+      "Avoiding published work areas does not prove the remaining path is open, illuminated, accessible or safe."
+    ],
+    "endpoint_offsets_meters": [
+      6.29,
+      2.74
+    ],
+    "construction_avoidance": {
+      "algorithm_version": "official-network-construction-avoidance-v1",
+      "status": "applied",
+      "evaluated_at": "2026-09-19T19:15:25.459759Z",
+      "valid_until": "2026-09-19T20:15:01.582882Z",
+      "source_snapshot_captured_at": "2026-09-19T19:15:02.241804Z",
+      "source_snapshot_version": "f8f8d1b3506a54155cda62d28b899a1ead1dd339c235d16b943e2fef88f72651",
+      "excluded_area_ids": [
+        "areas:17472",
+        "areas:18405",
+        "areas:20175",
+        "areas:20194",
+        "areas:20195",
+        "areas:20251",
+        "areas:20306",
+        "areas:20327",
+        "areas:20333",
+        "areas:20337",
+        "areas:20354",
+        "areas:20356",
+        "areas:20357",
+        "areas:20364"
+      ],
+      "sources": [
+        {
+          "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+          "sha256": "61048f6990cc9cf4d1c2c8c53355ac4ec20c74ea80ec5372a2b0ab26e56b6f9d",
+          "captured_at": "2026-09-19T19:15:01.582882Z",
+          "coverage": "facilities/Construction_Closures/FeatureServer/0"
+        }
+      ],
+      "reason": null
+    }
+  },
+  {
+    "schema_version": 1,
+    "corridor_id": "downtown-pritchard",
+    "source_version": "90e7e39dbee633e92cdb97b1f7f5df648d8999e42d5c3376535101632a4a317b",
+    "captured_at": "2026-09-19T06:43:48.221432+00:00",
+    "source_url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/MultimodalRouting_2024_12_13/MapServer/6",
+    "status": "unsupported",
+    "origin": "Downtown Blacksburg",
+    "destination": "Pritchard Hall",
+    "geometry": null,
+    "distance_meters": null,
+    "nearby_phones": [],
+    "historical_reports": [],
+    "lighting": {
+      "known_meters": 0,
+      "lit_meters": 0,
+      "unlit_meters": 0,
+      "unknown_meters": null
+    },
+    "limitations": [
+      "Static official campus pathway geometry; current field conditions and access permissions remain unknown.",
+      "Paths start/end at existing network vertices near building reference points, not verified entrances; endpoint offsets are excluded from path distance.",
+      "No lighting observations. Accessibility and slope routing are not verified; NotADA segments are excluded because that tag may include barriers.",
+      "Phone proximity is geometric distance to the path, not a verified accessible detour; operational status is unknown.",
+      "Historical reports are a selected incomplete sample matched only to named endpoint buildings, not incidents on the path or a crime risk measure.",
+      "Conservatively avoids currently dated published construction areas only while construction_avoidance.valid_until is current; area descriptions do not prove every intersecting sidewalk is closed.",
+      "Avoiding published work areas does not prove the remaining path is open, illuminated, accessible or safe.",
+      "No verified connected named-endpoint path in this bounded network; no walking route is supplied."
+    ],
+    "endpoint_offsets_meters": null,
+    "construction_avoidance": {
+      "algorithm_version": "official-network-construction-avoidance-v1",
+      "status": "applied",
+      "evaluated_at": "2026-09-19T19:15:25.459759Z",
+      "valid_until": "2026-09-19T20:15:01.582882Z",
+      "source_snapshot_captured_at": "2026-09-19T19:15:02.241804Z",
+      "source_snapshot_version": "f8f8d1b3506a54155cda62d28b899a1ead1dd339c235d16b943e2fef88f72651",
+      "excluded_area_ids": [
+        "areas:17472",
+        "areas:18405",
+        "areas:20175",
+        "areas:20194",
+        "areas:20195",
+        "areas:20251",
+        "areas:20306",
+        "areas:20327",
+        "areas:20333",
+        "areas:20337",
+        "areas:20354",
+        "areas:20356",
+        "areas:20357",
+        "areas:20364"
+      ],
+      "sources": [
+        {
+          "url": "https://arcgis-central.gis.vt.edu/arcgis/rest/services/facilities/Construction_Closures/FeatureServer/0/query?where=1%3D1&outFields=objectid%2Cconstructionsite%2Cclosurestartdate%2Cclosureenddate%2Ccomments&returnGeometry=true&outSR=4326&f=geojson&resultRecordCount=2000",
+          "sha256": "61048f6990cc9cf4d1c2c8c53355ac4ec20c74ea80ec5372a2b0ab26e56b6f9d",
+          "captured_at": "2026-09-19T19:15:01.582882Z",
+          "coverage": "facilities/Construction_Closures/FeatureServer/0"
+        }
+      ],
+      "reason": null
+    }
+  }
+]

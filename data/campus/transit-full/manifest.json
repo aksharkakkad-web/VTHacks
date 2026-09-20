@@ -1,0 +1,23 @@
+{
+  "source_url": "https://www.bt4uclassic.org/gtfs/google_transit.zip",
+  "captured_at": "2026-09-19T22:11:48.589125Z",
+  "sha256": "aed7634f4df2e942f1af101c24d05f53e2b8686013f0bbe843b0e1c8dd34dd85",
+  "source_kind": "scheduled",
+  "agency_timezone": "America/New_York",
+  "counts": {
+    "agency": 1,
+    "stops": 297,
+    "routes": 24,
+    "trips": 3658,
+    "stop_times": 74301,
+    "calendar": 0,
+    "calendar_dates": 181,
+    "feed_info": 1,
+    "service_trips": 10456
+  },
+  "service_start": "2026-09-18",
+  "service_end": "2026-10-01",
+  "service_days": 14,
+  "license_note": "Official public feed; attribution retained. Check BT terms before redistribution beyond this demo.",
+  "limitations": "Scheduled, not live arrivals. Direct same-trip rides only; transfers and walking routes unsupported. Empty service dates remain empty. Refresh/revalidate feed before use."
+}

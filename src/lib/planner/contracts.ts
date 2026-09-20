@@ -1,0 +1,9 @@
+export const topics = ['weather','closures','lighting','activity','crime','notices','transit','waiting_places'] as const;
+export type Topic = typeof topics[number];
+export type PlannerRole = 'student-intent' | 'research-intent' | 'student-explanation';
+export type Intent = {objective:'get_home';priorities:('minimize_walking'|'minimize_waiting'|'minimize_cost'|'minimize_transfers')[];evidenceRequests:{topic:Topic}[];clarification:string|null};
+export type Explanation = {snapshotId:string;selectedPlanId:string;sentences:{text:string;factIds:string[]}[]};
+export type PlannerJob = {version:'beacon-planner-job-v1';jobId:string;role:PlannerRole;snapshotId:string;inputHash:string;issuedAt:string;expiresAt:string;input:Record<string,unknown>};
+export type PlannerCompletion = {version:'beacon-planner-result-v1';jobId:string;leaseId:string;attempt:number;snapshotId:string;inputHash:string;model:string;outcome:'succeeded'|'failed';output:unknown;errorCode:'AUTH_REQUIRED'|'RATE_LIMITED'|'TIMEOUT'|'INVALID_OUTPUT'|'MODEL_UNAVAILABLE'|null};
+export type PlanningView = {version:'beacon-planning-v1';runId:string;phase:'understanding'|'gathering'|'evaluating'|'explaining'|'ready'|'needs_input'|'unavailable';worker:'online'|'offline'|'auth_required'|'rate_limited';modelSource:'codex_subscription'|'none';explanationSource:'llm_grounded'|'template'|'none';snapshotId:string|null;messageCode:string;model?:string;explanation?:string};
+export type Fact = {id:string;text:string};

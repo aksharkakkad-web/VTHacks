@@ -1,13 +1,17 @@
 # Beacon — Final Hackathon PRD
 
+> **Latest approved product direction (September 19):** [Provider-agent pivot: what changes](superpowers/specs/2026-09-19-beacon-provider-network-pivot-design.md) and [updates for Mahin, Rishit and Akshar](superpowers/plans/2026-09-19-beacon-provider-network-pivot.md). Beacon coordinates compatible developer/provider agents; those agents own booking through permitted integrations. Unified account/payment is the target experience, with transport/payment explicitly simulated for the first pivot demo. New shared contracts require alignment before implementation; this does not relax the consent, identity or location gates below.
+
 **Status:** Build-locked, pivot-aware<br>
-**Version:** 1.0<br>
+**Version:** 1.1 — journey coordination framing<br>
 **Build window:** ~30 hours<br>
 **Team size:** 3<br>
 **Platform:** Mobile-first PWA<br>
 **Primary sponsor targets:** Deloitte × Databricks, GoDaddy ANS<br>
 **Primary Deloitte focus area:** Campus Life Intelligence Hub<br>
 **Core demo path:** `GET ME HOME → discover → evaluate → verify → coordinate → fail → recover → arrive`
+
+**September 19 data-track addendum:** The [expanded-pilot status](DATABRICKS_EXPANDED_PILOT_STATUS.md) records the current implementation, limitations and Mahin/Rishit handoff. The intended pilot helps provide an actionable alternative to an offered ride with a driver the user reports has been drinking; Beacon must never infer sobriety. A privacy-preserving exclusion contract still needs team integration. Wider transit/pedestrian data is prepared locally, not a completed or deployed downtown-to-home product. Existing consent, emergency-help and location-sharing gates remain mandatory.
 
 ---
 
@@ -43,6 +47,14 @@ Beacon then:
 
 > **Get me home. Beacon handles the rest.**
 
+### Locked product framing
+
+The problem is the chain of decisions between deciding to leave and actually arriving home. A student who is tired, overwhelmed, or impaired may need to compare options, reach the right pickup point, wait, verify the vehicle, and recover if a bus or ride falls through. A booked ride does not finish those steps by itself.
+
+Uber or Lyft may be the best option; Beacon should recommend a commercial ride when a real integration or clearly labeled handoff makes it available. Beacon's distinctive job is to choose and coordinate the whole trip across available modes, then replan when a step fails. The goal is to reduce avoidable solo walking, outdoor waiting, and improvised choices, while honoring time, price, and user constraints. These are observable trip burdens, not predictions of personal safety.
+
+For the hackathon, ride offers without live provider integrations must be labeled simulated. Current data does not verify street lighting, an open indoor waiting place, a staffed pickup zone, real-time crime risk, or an available sober companion. Do not display any of those as facts or assign a crime/safety score. A future campus pilot could add verified pickup/wait locations, lighting and outage data, official escort availability, and commercial ride handoffs through real partnerships. Shared walking is limited to known contacts who explicitly opt in; never match strangers or infer that someone is sober.
+
 ---
 
 # 1. Why This Product Exists
@@ -57,12 +69,15 @@ A student may need to:
 - compare cost
 - compare wait time
 - compare total trip time
+- figure out where to wait and when to move to a pickup point
+- check that the arriving vehicle matches the provider's details
 - determine how much walking is involved
 - understand transfers
 - search several apps
 - decide what service to trust
 - share location
 - restart everything if the original plan fails
+- avoid being left alone with a failed or delayed plan
 
 That process is especially bad when someone is:
 
@@ -247,6 +262,8 @@ Externally, Beacon returns:
 > **one recommended plan**
 
 The user receives one final confirmation.
+
+Show the recommendation's total time, price, walking, wait, and pickup steps when the underlying provider/data supports them. Distinguish a scheduled or estimated time from a confirmed booking. Show a waiting location only when its availability is verified; otherwise say it is unknown. Remind the user to match the vehicle and driver details supplied by the provider, without implying Beacon verified the physical car. A paid replacement or newly shared precise location requires the applicable confirmation and authorization gate.
 
 Example:
 
@@ -440,6 +457,7 @@ Responsibilities:
 7. Normalize candidates.
 8. Fetch relevant context.
 9. Ask Databricks to evaluate candidates.
+   Include measurable walking/waiting burden and pickup feasibility when available; leave unknown fields unknown.
 10. Return one recommendation.
 11. Wait for user confirmation.
 12. Resolve/verify selected provider with ANS.
@@ -791,7 +809,9 @@ Do not make weather a separate agent.
 
 # 19. Historical Incident Context
 
-This feature is useful but secondary.
+This feature is optional and secondary. The current small, selected incident sample is insufficient for route-level comparison or a crime-risk score. In the hackathon, show incident records only as dated, source-labeled context with coverage limits.
+
+Only consider the pipeline below in a future pilot with sufficiently complete, geocoded, time-bounded official records and a reviewed interpretation. Reported incidents remain historical context, not a forecast of what will happen on a trip.
 
 It must not become a fake “danger score.”
 
@@ -806,15 +826,7 @@ Possible pipeline:
 7. Normalize by route distance.
 8. Return an exposure feature.
 
-Example internal feature:
-
-```text
-historical_incident_exposure = 3.1 incidents / mile
-```
-
-User-facing language:
-
-> Lower historical reported-incident exposure than the walking alternative.
+Only a future pilot with suitable records may make a comparative route claim, and that claim must name its source, time range, and coverage limits.
 
 Never say:
 
@@ -894,9 +906,10 @@ Normalize:
 - travel time
 - total time
 - walking time
+- outdoor waiting time and pickup steps when supported by actual data
 - transfers
 - provider reliability
-- historical context
+- historical context only if a suitable, reviewed data set exists
 - weather friction
 
 ## Stage 4 — Context weighting
@@ -925,11 +938,13 @@ utility =
     - travel_weight * normalized_total_time
     - walking_weight * normalized_walk
     - complexity_weight * normalized_transfers
-    - exposure_weight * normalized_historical_context
+    - exposure_weight * normalized_observed_walk_and_wait_burden
     + reliability_weight * normalized_reliability
 ```
 
 Higher utility is better.
+
+Unknown lighting, indoor waiting availability, and pickup conditions must not silently become favorable scores. A future reviewed historical-context feature may be added separately; it is not a crime probability.
 
 ## Stage 6 — Explanation
 
@@ -2313,9 +2328,7 @@ Beacon owns the objective across independent services, establishes trust, coordi
 
 ## Why not Uber?
 
-Uber is one provider.
-
-Beacon can choose among multiple providers and modes based on the user's context.
+Uber can absolutely be the right ride. Beacon handles the decision and handoffs around that ride: whether it is the best available option, how much solo walking or outdoor waiting it requires, where and when to meet it when those details are known, and what to do if it is delayed or cancels. The agent keeps working toward arrival instead of sending a tired student back through several apps. The hackathon demo does not claim a live Uber integration; commercial rides are a future integration or clearly labeled handoff.
 
 ## Why does this need agents?
 
