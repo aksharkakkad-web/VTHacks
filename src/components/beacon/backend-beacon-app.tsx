@@ -72,7 +72,7 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
   const stage = model.stage;
   const mobility = !journey.error && !journey.offline && !journey.notice && stage !== "cancelling" ? normalized?.mobility : undefined;
   const pairingRequired = journey.error?.code === "PAIRING_REQUIRED" || journey.error?.code === "PAIR_CODE_INVALID";
-  const showPairing = pairingRequired || (presenter && stage === "home");
+  const showPairing = pairingRequired;
   const busy = !!journey.pending;
   const presenterStep = presenter && snapshot?.ride && !["overdue", "arrival"].includes(stage) ? (() => {
     if (["searching", "assigned"].includes(snapshot.ride.stage)) return { label: "Show ride approaching", run: () => journey.demo("advance-ride", { stage: "approaching" }) };
@@ -109,7 +109,6 @@ export function BackendBeaconApp({ presenter = false }: { presenter?: boolean })
           : <JourneyScreen model={model} onAction={act} onDetails={() => setPanel("details")} onHelp={() => setPanel("help")} onStartOver={journey.finish} />}
       </fieldset>
     </div>
-    {presenter ? <button className={styles.presenterTools} type="button" onClick={() => setPanel("technical")}>Presenter</button> : null}
     {(pairingRequired || journey.notice) && !presenter ? <p className={styles.consumerNotice} role="status">{pairingRequired ? "Connect the demo planner to continue." : "Couldn’t refresh. Your last trip update is still shown."}</p> : null}
     {showPairing ? <aside className={styles.setupCard} aria-label="Demo planner setup">
       <strong>{pairingRequired ? "Connect the demo planner" : "Planner setup"}</strong>

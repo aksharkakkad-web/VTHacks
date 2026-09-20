@@ -140,6 +140,10 @@
   line-height: 0.98;
 }
 
+.screen h1[tabindex="-1"]:focus {
+  outline: none;
+}
+
 .centeredIntro p,
 .emptyRecommendation p {
   margin: 9px 0 0;
@@ -545,11 +549,15 @@
   margin-top: 2px;
 }
 
+.homeScreen .bottomActions {
+  position: static;
+}
+
 .routeCard {
   z-index: 2;
   display: grid;
   gap: 0;
-  margin-top: -14px;
+  margin-top: 18px;
   padding: 10px 16px 14px;
 }
 
