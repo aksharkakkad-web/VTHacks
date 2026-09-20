@@ -126,10 +126,10 @@ export function useAtomicJourney(profile: SavedProfile | null, context: TripCont
   }
   async function approve() {
     await command("Confirming your plan…", async epoch => {
-      // Confirm against a fresh authoritative snapshot. The visible recommendation
-      // can race the background poll on serverless deployments; using the cached
-      // ref could reject locally before the confirm request ever reached Beacon.
-      const s = await refresh() ?? current.current; if (!s || !validEpoch(epoch)) return;
+      // Bind consent to the exact authoritative snapshot rendered on screen.
+      // A separate pre-confirm refresh can be cancelled by browser lifecycle work
+      // before the POST is sent, leaving the user on a misleading retry screen.
+      const s = snapshot ?? current.current; if (!s || !validEpoch(epoch)) return;
       await api.confirm(s.trip.id, s);
       if (!validEpoch(epoch)) return;
       await refresh();
