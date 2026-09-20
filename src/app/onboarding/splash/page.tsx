@@ -10,8 +10,8 @@ export default function BeaconSplashPage() {
   const router = useRouter();
   useEffect(() => {
     if (new URLSearchParams(window.location.search).has("gallery")) return;
-    router.prefetch("/onboarding/welcome");
-    queueMicrotask(() => router.replace(readProfile() ? "/app" : "/onboarding/welcome"));
+    router.prefetch("/onboarding/welcome?demo=1");
+    queueMicrotask(() => router.replace(readProfile() ? "/demo" : "/onboarding/welcome?demo=1"));
   }, [router]);
   return (
     <main className={styles.stage} aria-label="Opening Beacon">

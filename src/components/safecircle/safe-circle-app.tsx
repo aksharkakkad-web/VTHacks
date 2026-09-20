@@ -19,6 +19,9 @@ import { demoTransport } from "../../lib/client/beacon/demo-transport";
 import { BackendBeaconApp } from "../beacon/backend-beacon-app";
 import { CAMPUS_LOCATIONS, DEFAULT_FROM_LOCATION_ID, DEFAULT_TO_LOCATION_ID } from "../../lib/client/beacon/campus-locations";
 
+import { createLocalDemo, localDemoAction, localNextLabel, type LocalDemoMode } from "./local-walkthrough";
+import { PrimaryButton, SecondaryButton } from "./primitives";
+
 type AppAction = DemoAction | { type: "APPLY_RESPONSE"; value: unknown; sample?: boolean };
 function appReducer(state: DemoState, action: AppAction): DemoState {
   return action.type === "APPLY_RESPONSE" ? applyTripResponse(state, action.value, action.sample) : transitionDemo(state, action);
@@ -26,15 +29,16 @@ function appReducer(state: DemoState, action: AppAction): DemoState {
 export { PROFILE_STORAGE_KEY } from "../beacon/profile-storage";
 type Panel = "home" | "preferences" | "contact" | "context" | "details" | "help" | "location" | "technical" | "cancel" | null;
 
-export function SafeCircleApp({ demoControls = false, presenter = false, transport, fixture = false }: { demoControls?: boolean; presenter?: boolean; transport?: TripTransport | null; fixture?: boolean }) {
-  if (fixture || transport !== undefined) return <FixtureApp demoControls={demoControls} transport={transport === undefined ? demoTransport : transport} />;
+export function SafeCircleApp({ demoControls = false, presenter = false, transport, fixture = false, localDemo = false }: { demoControls?: boolean; presenter?: boolean; transport?: TripTransport | null; fixture?: boolean; localDemo?: boolean }) {
+  if (fixture || transport !== undefined) return <FixtureApp localDemo={localDemo} demoControls={demoControls} transport={transport === undefined ? demoTransport : transport} />;
   return <BackendBeaconApp presenter={presenter} />;
 }
 
-/** Explicit visual-regression fixtures only; never a fallback after backend errors. */
-function FixtureApp({ demoControls = false, transport = demoTransport }: { demoControls?: boolean; transport?: TripTransport | null }) {
+/** Explicit local demos and visual fixtures; never a fallback after backend errors. */
+function FixtureApp({ demoControls = false, transport = demoTransport, localDemo = false }: { demoControls?: boolean; transport?: TripTransport | null; localDemo?: boolean }) {
   const router = useRouter();
-  const [state, dispatch] = useReducer(appReducer, null, () => createDemoState(null));
+  const [state, dispatch] = useReducer(appReducer, null, () => localDemo ? createLocalDemo() : createDemoState(null));
+  const [demoMode, setDemoMode] = useState<LocalDemoMode>("transit");
   const [panel, setPanel] = useState<Panel>(null);
   const [sessionOnly, setSessionOnly] = useState(false);
   const [locationMessage, setLocationMessage] = useState("");
@@ -79,6 +83,7 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
   }, [transport, state.integration?.tripId]);
 
   useEffect(() => {
+    if (localDemo) return;
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
@@ -97,11 +102,11 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
       catch { setSessionOnly(true); }
     });
     return () => { active = false; };
-  }, [router, transport]);
+  }, [localDemo, router, transport]);
 
   useEffect(() => {
-    if (!saveTrip(state)) queueMicrotask(() => setSessionOnly(true));
-  }, [state]);
+    if (!localDemo && !saveTrip(state)) queueMicrotask(() => setSessionOnly(true));
+  }, [localDemo, state]);
 
   useEffect(() => {
     if (previousStage.current === state.stage) return;
@@ -123,12 +128,13 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
   }, [state.stage, state.offerExpiresAt]);
 
   useEffect(() => {
+    if (localDemo) return;
     const offline = () => dispatch({ type: "SIMULATE", scenario: "offline" });
     const online = () => { dispatch({ type: "RECONNECT" }); if (transport) void transport.request({ kind: "refresh", tripId: stateRef.current.integration?.tripId ?? "trip-demo-2409", attemptId: stateRef.current.attemptId, revision: stateRef.current.integration?.responseRevision ?? 0 }).then(value => dispatch({ type: "APPLY_RESPONSE", value })).catch(() => setConnectionMessage("Reconnection pending. Your trip has not changed.")); };
     window.addEventListener("offline", offline);
     window.addEventListener("online", online);
     return () => { window.removeEventListener("offline", offline); window.removeEventListener("online", online); };
-  }, [transport]);
+  }, [localDemo, transport]);
 
   async function request(kind: TripCommand["kind"], next: DemoState) {
     if (!transport) { setConnectionMessage("Backend connection pending. Demo responses are available in judge controls."); return; }
@@ -145,6 +151,13 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
     finally { pendingCommands.current.delete(key); }
   }
   function act(action: DemoAction) {
+    if (localDemo) {
+      const next = localDemoAction(stateRef.current, action, demoMode);
+      stateRef.current = next;
+      dispatch({ type: "RESTORE_STATE", state: next });
+      setConnectionMessage("");
+      return;
+    }
     if (!navigator.onLine && action.type !== "SIMULATE") return;
     const current = stateRef.current;
     if (action.type === "RESET_PROFILE") {
@@ -173,6 +186,7 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
   }
   function judgeAction(action: DemoAction) {
     if (!demoControls) return;
+    if (localDemo) { act(action); setPanel(null); return; }
     if (action.type === "RESET_PROFILE") { act(action); return; }
     if (transport && stateRef.current.integration?.responseSource === "demo" && ["ADVANCE", "CANCEL_PROVIDER", "SIMULATE", "JUMP"].includes(action.type) && !(action.type === "SIMULATE" && action.scenario === "offline")) {
       const s = stateRef.current;
@@ -192,7 +206,7 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
   function persistProfile(profile: SavedProfile) {
     const valid = validatedProfile(profile);
     if (!valid || !["home", "no-options"].includes(state.stage)) return;
-    setSessionOnly(!saveProfile(valid));
+    if (!localDemo) setSessionOnly(!saveProfile(valid));
     dispatch({ type: "SAVE_PROFILE", profile: valid });
   }
   function testLocation() {
@@ -210,11 +224,20 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
   if (!model.profile) return <BeaconFrame><p role="status" style={{ padding: 24, textAlign: "center" }}>Restoring Beacon…</p></BeaconFrame>;
 
   return <>
+    {localDemo && <section aria-label="Demo walkthrough controls" style={{ maxWidth: 480, margin: "0 auto", padding: "12px 20px", background: "#fbfaf5", color: "#194d3c", display: "grid", gap: 8 }}>
+      <strong>Interactive demo · simulated transport</strong>
+      {state.stage === "home" ? <><span>Choose your journey</span><div style={{ display: "flex", gap: 8 }}><SecondaryButton aria-pressed={demoMode === "transit"} onClick={() => setDemoMode("transit")}>Transit{demoMode === "transit" ? " ✓" : ""}</SecondaryButton><SecondaryButton aria-pressed={demoMode === "rideshare"} onClick={() => setDemoMode("rideshare")}>Rideshare{demoMode === "rideshare" ? " ✓" : ""}</SecondaryButton></div><small>Fixed campus demo route. Uses sample responses. No booking, payment, location tracking, or Telegram delivery.</small></> : <>
+        {localNextLabel(state) && <PrimaryButton onClick={() => act({ type: "ADVANCE", now: Date.now() })}>{localNextLabel(state)}</PrimaryButton>}
+        {state.stage.startsWith("in-trip") && <SecondaryButton onClick={() => act({ type: "SIMULATE", scenario: "overdue" })}>I didn’t get home</SecondaryButton>}
+        {state.stage === "overdue" && <div role="status"><strong>Telegram alert preview · simulated</strong><p>To: Demo contact</p><p>Beacon trip is overdue. Please check in with me — I haven’t confirmed that I’m home.</p><small>No Telegram message was sent. This is a demo preview.</small></div>}
+        <button type="button" onClick={() => { const next = createLocalDemo(); stateRef.current = next; dispatch({ type: "RESTORE_STATE", state: next }); setPanel(null); }}>Restart demo</button>
+      </>}
+    </section>}
     <div data-testid={`screen-${state.stage}`} data-stage={state.stage} data-attempt={state.attemptId ?? ""}>
-      {state.stage === "home" ? <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={() => undefined} onToLocationChange={() => undefined} onStart={() => act({ type: "START_TRIP" })} onEditProfile={() => setPanel("preferences")} />
+      {state.stage === "home" ? <BeaconHomeScreen routeSelectionDisabled={localDemo} model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={() => undefined} onToLocationChange={() => undefined} onStart={() => act({ type: "START_TRIP" })} onEditProfile={() => setPanel("preferences")} />
       : state.stage === "recommendation" || state.stage === "replacement-selected" ? <RecommendationScreen model={model} onGo={() => act({ type: "GO" })} onBack={() => act({ type: "FINISH" })} onDetails={() => setPanel("details")} onSelectPlan={(planId) => act({ type: "SELECT_PLAN", planId, now: Date.now() })} />
       : ["discovering", "collecting-quotes", "evaluating", "replanning-discovery", "replanning-evaluation"].includes(state.stage) ? <FindingScreen model={model} onCancel={() => act({ type: "FINISH" })} />
-      : mobility ? <MobilityScreen mobility={mobility} onWalkComplete={() => act({ type: "WALK_LEG_COMPLETE" })} onArrival={() => act({ type: "CONFIRM_ARRIVAL" })} onBoard={mobility.leg.purpose === "transit-stop" ? () => act({ type: "BOARD_TRANSIT" }) : undefined} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => void request("refresh", state)} />
+      : mobility ? <MobilityScreen mobility={mobility} onWalkComplete={() => act({ type: "WALK_LEG_COMPLETE" })} onArrival={() => act({ type: "CONFIRM_ARRIVAL" })} onBoard={mobility.leg.purpose === "transit-stop" ? () => act({ type: "BOARD_TRANSIT" }) : undefined} onHelp={() => setPanel("help")} onDetails={() => setPanel("details")} onCancel={() => setPanel("cancel")} onRetryRoute={() => localDemo ? setConnectionMessage("This demo uses sample directions; no live route is requested.") : void request("refresh", state)} rideExperience={localDemo && mobility.ride ? { destination: model.profile.homeName, showSimulationDisclosure: true, ...(localNextLabel(state) ? { presenterNext: { label: localNextLabel(state)!, onClick: () => act({ type: "ADVANCE", now: Date.now() }) } } : {}) } : undefined} />
       : <JourneyScreen model={model} onAction={(action) => { if (state.stage === "no-options" && action.type === "FINISH") setPanel("preferences"); else act(action); }} onDetails={() => setPanel("details")} onHelp={() => setPanel("help")} />}
     </div>
     <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">Beacon demo: {state.stage.replaceAll("-", " ")}</span>
@@ -229,6 +252,6 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
     <LocationSheet open={panel === "location"} onOpenChange={open("location")} onRetry={testLocation} />
     <HelpSheet open={panel === "help"} onOpenChange={open("help")} trustedContact={model.profile.trustedContact} />
     <TripDetailsSheet open={panel === "details"} onOpenChange={open("details")} model={model} />
-    {demoControls && <><button className="beacon-judge-button" onClick={() => setPanel("technical")}>Judge controls</button><JourneySheet open={panel === "technical"} onOpenChange={open("technical")} title="Demo controls" description="Apply sample backend responses. No real ride is booked or tracked. These controls are outside the student app."><TechnicalPanel model={model} onAction={judgeAction} onMobilitySample={applyMobilitySample} canApplyMobility={!!state.userApproved} /></JourneySheet></>}
+    {demoControls && !localDemo && <><button className="beacon-judge-button" onClick={() => setPanel("technical")}>Judge controls</button><JourneySheet open={panel === "technical"} onOpenChange={open("technical")} title="Demo controls" description="Apply sample backend responses. No real ride is booked or tracked. These controls are outside the student app."><TechnicalPanel model={model} onAction={judgeAction} onMobilitySample={applyMobilitySample} canApplyMobility={!!state.userApproved} /></JourneySheet></>}
   </>;
 }

@@ -10,9 +10,11 @@ export function DemoEntry({ walkthrough, manual = false, fixture = false, presen
   const router = useRouter();
 
   useEffect(() => {
-    if (walkthrough) return;
+    if (walkthrough || fixture) return;
     router.replace(readProfile() ? `/demo?walkthrough=1${presenter ? "&presenter=1" : ""}` : `/onboarding/welcome?demo=1${presenter ? "&presenter=1" : ""}`);
-  }, [presenter, router, walkthrough]);
+  }, [fixture, presenter, router, walkthrough]);
+
+  if (fixture) return <SafeCircleApp demoControls localDemo fixture transport={null} />;
 
   if (walkthrough) return <SafeCircleApp presenter={presenter} demoControls={presenter} fixture={fixture} {...(manual ? { transport: null } : {})} />;
 
