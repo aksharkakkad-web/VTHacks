@@ -45,13 +45,3 @@
   overflow: auto;
   filter: drop-shadow(0 16px 32px rgb(17 50 42 / 16%));
 }
-.presenterTruth {
-  width: fit-content;
-  margin: 0 auto;
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: rgb(251 250 245 / 94%);
-  color: #62736d;
-  font-size: 10px;
-  line-height: 1.2;
-}

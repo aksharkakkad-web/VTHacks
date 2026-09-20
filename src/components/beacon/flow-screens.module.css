@@ -934,6 +934,267 @@
   bottom: 18px;
 }
 
+.walkingRecommendationScreen {
+  padding-top: 4px;
+}
+
+.walkingIntro {
+  position: relative;
+  z-index: 2;
+  padding: 2px 0 11px;
+}
+
+.walkingIntro h1 {
+  font-size: clamp(28px, 7.25vw, 32px);
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+.walkingIntro p {
+  margin-top: 7px;
+  font-size: 17px;
+}
+
+.walkingScenic {
+  position: relative;
+  width: calc(100% + 40px);
+  height: 230px;
+  flex: 0 0 230px;
+  margin-right: -20px;
+  margin-left: -20px;
+  overflow: hidden;
+  border-block: 1px solid rgb(18 59 59 / 6%);
+  background: #edf3ee;
+}
+
+.walkingScenic img {
+  object-fit: cover;
+  object-position: 50% 63%;
+}
+
+.walkingPlanCard {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  margin-top: -21px;
+  padding: 17px 18px 14px;
+  border: 1px solid rgb(18 59 59 / 8%);
+  border-radius: 23px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgb(37 70 57 / 11%);
+}
+
+.walkingPlanHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.walkingPlanHeader h2 {
+  margin: 0;
+  color: #06262c;
+  font-size: 24px;
+  font-weight: 820;
+  letter-spacing: -0.04em;
+}
+
+.walkingPlanHeader > span {
+  padding: 7px 10px;
+  border-radius: 11px;
+  background: #eaf4ef;
+  color: #275e54;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.walkingCost {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.walkingCost strong {
+  color: #06262c;
+  font-size: 45px;
+  font-weight: 830;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.walkingCost span {
+  color: #65716f;
+  font-size: 14px;
+}
+
+.walkingFacts {
+  display: grid;
+  margin: 12px 0 0;
+  border-top: 1px solid #e1e7e3;
+}
+
+.walkingFacts > div {
+  display: grid;
+  min-height: 56px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e1e7e3;
+}
+
+.walkingFacts dt,
+.walkingFacts dd {
+  margin: 0;
+}
+
+.walkingFacts dt {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #3d756a;
+}
+
+.walkingFacts dt > span:not(:only-child) {
+  color: #65716f;
+  font-size: 12px;
+  font-weight: 670;
+}
+
+.walkingFacts dd {
+  color: #102d30;
+  font-size: 15px;
+  font-weight: 690;
+  text-align: right;
+}
+
+.walkingFacts dd strong,
+.walkingFacts dd small {
+  display: block;
+}
+
+.walkingFacts dd small {
+  max-width: 190px;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+  color: #697572;
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.walkingFacts .walkingDuration {
+  min-height: 70px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.walkingDuration dt {
+  justify-content: end;
+}
+
+.walkingDuration dt > span {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8f4ef;
+  color: #14715f;
+}
+
+.walkingDuration dd {
+  text-align: left;
+}
+
+.walkingDuration dd strong {
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.walkingMapsAction {
+  display: grid;
+  min-height: 54px;
+  grid-template-columns: 27px minmax(0, 1fr) 22px;
+  align-items: center;
+  gap: 11px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border-radius: 15px;
+  background: #edf7f3;
+  color: #0d3436;
+  font-size: 15px;
+  font-weight: 720;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.walkingMapsAction > svg:first-child {
+  color: #187c68;
+}
+
+.walkingMapsAction > svg:last-child {
+  color: #4d6662;
+}
+
+.walkingMapsAction:hover {
+  background: #e0f1ea;
+}
+
+.walkingMapsAction:active {
+  transform: scale(0.988);
+}
+
+.walkingMapsAction:focus-visible {
+  outline: 3px solid #52b89c;
+  outline-offset: 2px;
+}
+
+.walkingReason {
+  display: grid;
+  min-height: 72px;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #eaf5f0;
+  color: #173e3c;
+}
+
+.walkingReason > span {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 62%);
+  color: #176b5c;
+}
+
+.walkingReason p {
+  margin: 0;
+  color: #566a67;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.walkingReason strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #0d3032;
+  font-size: 14px;
+}
+
+.walkingActions {
+  gap: 2px;
+  margin-top: 0;
+}
+
+.walkingActions .detailsAction {
+  min-height: 42px;
+  font-size: 13px;
+}
+
 .planCard {
   z-index: 2;
   margin-top: -8px;
@@ -1918,6 +2179,11 @@
     height: 170px;
   }
 
+  .walkingScenic {
+    height: 190px;
+    flex-basis: 190px;
+  }
+
   .preferencesLandscape {
     height: 138px;
   }
@@ -1926,6 +2192,7 @@
 @media (prefers-reduced-motion: reduce) {
   .iconButton,
   .primaryAction,
+  .walkingMapsAction,
   .switchThumb,
   .detailsAction svg {
     transition: none;

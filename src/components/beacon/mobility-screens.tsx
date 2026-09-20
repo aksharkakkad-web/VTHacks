@@ -1,26 +1,24 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
   AlertCircle,
   ArrowRight,
+  BusFront,
   CarFront,
   Check,
   Clock3,
+  Footprints,
   House,
   MapPin,
   Navigation,
-  RefreshCw,
   ShieldCheck,
 } from "lucide-react";
 import {
   type MobilityReadModel,
   type RideStatusReadModel,
-  type RoutePoint,
   type WalkingRouteReadModel,
 } from "@/lib/client/beacon/read-models";
-import { routePoints } from "@/lib/client/beacon/route-geometry";
-import { renderGoogleWalkingRoute } from "@/lib/client/beacon/google-map-renderer";
 import { BeaconFrame } from "./flow-screens";
 import styles from "./mobility-screens.module.css";
 
@@ -43,6 +41,7 @@ type MobilityScreenProps = {
     onStillTravelling?: () => void;
     onFinish?: () => void;
     presenterNext?: { label: string; onClick: () => void };
+    presenterControlled?: boolean;
     showSimulationDisclosure?: boolean;
   };
 };
@@ -83,21 +82,6 @@ function formatTimestamp(value: string | undefined) {
   return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(date);
 }
 
-function routeSourceLabel(source: WalkingRouteReadModel["source"] | undefined) {
-  if (source === "google-routes") return "Google Routes";
-  if (source === "fixture") return "Contract fixture";
-  return "Route source not confirmed";
-}
-
-function safeRoutePoints(route: WalkingRouteReadModel | undefined) {
-  if (!route?.geometry) return [];
-  try {
-    return routePoints(route).filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lng));
-  } catch {
-    return [];
-  }
-}
-
 function walkCopy(purpose: MobilityReadModel["leg"]["purpose"]) {
   if (purpose === "pickup") return {
     eyebrow: "Walk to pickup",
@@ -116,9 +100,8 @@ function walkStatusCopy(route: WalkingRouteReadModel | undefined) {
   const hasDirections = Boolean(route?.steps?.some((step) => step.instruction.trim().length > 0));
   if (!route || route.status === "unavailable") return "A walking route is unavailable. Use familiar, supported guidance.";
   if (route.status === "loading") return "Beacon is loading the supplied walking route.";
-  if (route.source === "fixture") return route.status === "stale" ? "Route display example; not for navigation. This example may be out of date." : "Route display example; not for navigation.";
   if (route.status === "stale") return hasDirections ? "This route may be out of date. Review the written directions before continuing." : "This route may be out of date, and written directions are unavailable.";
-  return hasDirections ? "Follow the supplied route and written directions." : "Route geometry was supplied. Turn-by-turn directions are unavailable.";
+  return hasDirections ? "Your walking directions are ready." : "Open Google Maps for turn-by-turn directions.";
 }
 
 function rideCopy(ride: RideStatusReadModel | undefined): RideCopy {
@@ -208,100 +191,6 @@ function rideMapCopy(stage: RideStage, destination: string): RideMapCopy {
   }
 }
 
-function FixtureRouteMap({ points }: { points: readonly RoutePoint[] }) {
-  const projected = useMemo(() => {
-    if (points.length === 0) return [];
-    const meanLat = points.reduce((sum, point) => sum + point.lat, 0) / points.length;
-    const longitudeScale = Math.cos((meanLat * Math.PI) / 180);
-    const raw = points.map((point) => ({ x: point.lng * longitudeScale, y: -point.lat }));
-    const minX = Math.min(...raw.map((point) => point.x));
-    const maxX = Math.max(...raw.map((point) => point.x));
-    const minY = Math.min(...raw.map((point) => point.y));
-    const maxY = Math.max(...raw.map((point) => point.y));
-    const width = maxX - minX;
-    const height = maxY - minY;
-    const scale = width === 0 && height === 0 ? 1 : Math.min(900 / Math.max(width, Number.EPSILON), 440 / Math.max(height, Number.EPSILON));
-    const centerX = (minX + maxX) / 2;
-    const centerY = (minY + maxY) / 2;
-    return raw.map((point) => ({ x: 500 + (point.x - centerX) * scale, y: 270 + (point.y - centerY) * scale }));
-  }, [points]);
-
-  if (projected.length === 0) return null;
-  const first = projected[0];
-  const last = projected[projected.length - 1];
-
-  return (
-    <div className={`${styles.mapSurface} ${styles.fixtureMap}`} data-testid="walking-route-map" role="img" aria-label="Contract example route geometry, not for navigation">
-      <svg viewBox="0 0 1000 540" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <polyline points={projected.map((point) => `${point.x},${point.y}`).join(" ")} />
-        <circle className={styles.fixtureStart} cx={first.x} cy={first.y} r="17" />
-        <circle className={styles.fixtureEnd} cx={last.x} cy={last.y} r="22" />
-      </svg>
-      <span className={styles.mapLabel}>Contract example · not for navigation</span>
-    </div>
-  );
-}
-
-function GoogleRouteMap({ points, hasDirections }: { points: readonly RoutePoint[]; hasDirections: boolean }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [state, setState] = useState<"checking" | "rendered" | "sdk-missing" | "invalid-geometry">("checking");
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const result = renderGoogleWalkingRoute(container, points);
-    setState(result.status);
-    return result.cleanup;
-  }, [points]);
-
-  return (
-    <div className={styles.mapSurface}>
-      <div ref={containerRef} className={styles.googleMap} data-testid={state === "rendered" ? "walking-route-map" : undefined} role="img" aria-label="Walking route supplied by Google Routes" />
-      {state !== "rendered" ? (
-        <div className={styles.mapFallback} role="status">
-          <MapPin size={24} aria-hidden="true" />
-          <strong>{state === "sdk-missing" ? "Map setup pending" : state === "invalid-geometry" ? "Map unavailable" : "Preparing map"}</strong>
-          <span>{hasDirections ? "Use the written directions below." : "Turn-by-turn directions are unavailable."}</span>
-        </div>
-      ) : null}
-      <span className={styles.mapLabel}>Google Maps</span>
-    </div>
-  );
-}
-
-function RouteVisual({ route, points }: { route: WalkingRouteReadModel | undefined; points: readonly RoutePoint[] }) {
-  const hasDirections = Boolean(route?.steps?.some((step) => step.instruction.trim().length > 0));
-  if (!route || route.status === "loading") {
-    return (
-      <div className={styles.routePlaceholder} role="status">
-        <RefreshCw className={styles.spinner} size={24} aria-hidden="true" />
-        <strong>{route?.status === "loading" ? "Loading route" : "Route unavailable"}</strong>
-        <span>{route?.status === "loading" ? "Waiting for supplied route geometry." : "Written directions will appear when supplied."}</span>
-        {route?.source === "google-routes" ? <small className={styles.googleAttribution}>Google Maps</small> : null}
-      </div>
-    );
-  }
-  if (points.length === 0 || route.status === "unavailable") {
-    return (
-      <div className={styles.routePlaceholder} role="status">
-        <AlertCircle size={24} aria-hidden="true" />
-        <strong>Route unavailable</strong>
-        <span>Use familiar, supported guidance.</span>
-        {route.source === "google-routes" ? <small className={styles.googleAttribution}>Google Maps</small> : null}
-      </div>
-    );
-  }
-  if (route.source === "google-routes") return <GoogleRouteMap points={points} hasDirections={hasDirections} />;
-  if (route.source === "fixture") return <FixtureRouteMap points={points} />;
-  return (
-    <div className={styles.routePlaceholder} role="status">
-      <AlertCircle size={24} aria-hidden="true" />
-      <strong>Map unavailable</strong>
-      <span>{hasDirections ? "Route source not confirmed. Use the written directions below." : "Route source and written directions are unavailable."}</span>
-    </div>
-  );
-}
-
 function RouteSummary({ route }: { route: WalkingRouteReadModel | undefined }) {
   const distance = formatDistance(route?.distanceMeters);
   const duration = formatDuration(route?.durationSeconds);
@@ -313,28 +202,6 @@ function RouteSummary({ route }: { route: WalkingRouteReadModel | undefined }) {
       {route?.originLabel ? <div><dt>From</dt><dd>{route.originLabel}</dd></div> : null}
       {route?.destinationLabel ? <div><dt>To</dt><dd>{route.destinationLabel}</dd></div> : null}
     </dl>
-  );
-}
-
-function Directions({ route }: { route: WalkingRouteReadModel | undefined }) {
-  const steps = route?.steps?.filter((step) => step.instruction.trim().length > 0) ?? [];
-  return (
-    <section className={styles.directions} aria-labelledby="walking-directions-title">
-      <div className={styles.sectionHeading}>
-        <Navigation size={18} aria-hidden="true" />
-        <h2 id="walking-directions-title">Walking directions</h2>
-      </div>
-      {steps.length ? (
-        <ol>
-          {steps.map((step, index) => (
-            <li key={`${index}-${step.instruction}`}>
-              <span>{index + 1}</span>
-              <p><strong>{step.instruction}</strong>{formatDistance(step.distanceMeters) || formatDuration(step.durationSeconds) ? <small>{[formatDistance(step.distanceMeters), formatDuration(step.durationSeconds)].filter(Boolean).join(" · ")}</small> : null}</p>
-            </li>
-          ))}
-        </ol>
-      ) : <p className={styles.unavailableCopy}>Turn-by-turn directions unavailable.</p>}
-    </section>
   );
 }
 
@@ -355,8 +222,6 @@ function WalkingScreen(props: MobilityScreenProps) {
   const { mobility, onWalkComplete, onHelp, onDetails, onCancel, onRetryRoute } = props;
   const route = mobility.walkingRoute;
   const copy = walkCopy(mobility.leg.purpose);
-  const points = useMemo(() => safeRoutePoints(route), [route]);
-  const updatedAt = formatTimestamp(route?.updatedAt);
   const retryable = route?.status === "unavailable" || route?.status === "stale";
 
   return (
@@ -368,13 +233,10 @@ function WalkingScreen(props: MobilityScreenProps) {
           <span>{walkStatusCopy(route)}</span>
         </header>
 
-        <RouteVisual route={route} points={points} />
-
         <div className={styles.content}>
           {route?.status === "stale" ? <p className={styles.warning}><Clock3 size={18} aria-hidden="true" /><span><strong>Route may be out of date.</strong> Retry before relying on it.</span></p> : null}
           {route?.warning ? <p className={styles.warning}><AlertCircle size={18} aria-hidden="true" /><span>{route.warning}</span></p> : null}
           <RouteSummary route={route} />
-          <Directions route={route} />
           {props.navigation ? (
             <a className={styles.navigationAction} href={props.navigation.googleMapsUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open walking directions to ${props.navigation.destination} in Google Maps`}>
               <Navigation size={20} aria-hidden="true" />
@@ -382,11 +244,10 @@ function WalkingScreen(props: MobilityScreenProps) {
               <ArrowRight size={20} aria-hidden="true" />
             </a>
           ) : null}
-          <p className={styles.updateNote}>{routeSourceLabel(route?.source)} · {updatedAt ? `Updated ${updatedAt}` : "Update time not supplied"}</p>
         </div>
 
         <footer className={styles.footer}>
-          <PrimaryAction onClick={onWalkComplete}>{copy.action}</PrimaryAction>
+          {!props.rideExperience?.presenterControlled ? <PrimaryAction onClick={onWalkComplete}>{copy.action}</PrimaryAction> : null}
           {retryable && onRetryRoute ? <button className={styles.secondaryAction} type="button" onClick={onRetryRoute}>Retry route</button> : null}
           <UtilityActions onDetails={onDetails} onHelp={onHelp} />
           <button className={styles.cancelAction} type="button" onClick={onCancel}>Request cancellation</button>
@@ -523,7 +384,7 @@ function RidePanel({ props, copy }: { props: MobilityScreenProps; copy: RideCopy
       </div>
       <p className={styles.pickupInstruction}><MapPin size={17} aria-hidden="true" />{pickupInstruction}</p>
       {ride?.stale ? <p className={styles.compactWarning}><Clock3 size={15} aria-hidden="true" /> Status may be out of date.</p> : null}
-      {ride?.stage === "riding" || ride?.stage === "completed" ? <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction> : null}
+      {(ride?.stage === "riding" || ride?.stage === "completed") && !rideExperience?.presenterControlled ? <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction> : null}
       <div className={styles.compactActions}>
         <button type="button" onClick={onDetails}>Trip details</button>
         <button type="button" onClick={onHelp}>Get help</button>
@@ -544,6 +405,62 @@ function TransitWaitCard({ instruction, travelling = false }: {instruction?: str
       <p className={styles.statusNote}>No live transit status was supplied. Check the service sign before boarding.</p>
       {instruction ? <p className={styles.statusNote}>{instruction}</p> : null}
     </section>
+  );
+}
+
+function ModeCompletionScreen({ props }: { props: MobilityScreenProps }) {
+  const walking = props.mobility.leg.kind === "walk";
+  const destination = props.rideExperience?.destination || "home";
+  return (
+    <BeaconFrame>
+      <div className={styles.modeCompletion} data-testid={walking ? "walking-complete" : "transit-complete"}>
+        <div className={styles.completionMark} aria-hidden="true">
+          {walking ? <Footprints size={29} /> : <BusFront size={28} />}
+          <span><Check size={17} strokeWidth={3} /></span>
+        </div>
+        <p className={styles.completionEyebrow}>{walking ? "Walk complete" : "Journey complete"}</p>
+        <h1 tabIndex={-1}>You’re home.</h1>
+        <p className={styles.completionBody}>
+          {walking
+            ? `Your walk to ${destination} is complete.`
+            : `Your transit journey to ${destination} is complete.`}
+        </p>
+        <p className={styles.completionPrivacy}>
+          <ShieldCheck size={18} aria-hidden="true" />
+          {walking ? "No provider access was needed." : "Temporary trip access is closed."}
+        </p>
+        <div className={styles.completionActions}>
+          {props.rideExperience?.onFinish ? <PrimaryAction onClick={props.rideExperience.onFinish}>Finish</PrimaryAction> : null}
+          <button className={styles.textAction} type="button" onClick={props.onDetails}>Trip details</button>
+        </div>
+      </div>
+    </BeaconFrame>
+  );
+}
+
+function ModeOverdueScreen({ props }: { props: MobilityScreenProps }) {
+  const walking = props.mobility.leg.kind === "walk";
+  const destination = props.rideExperience?.destination || "home";
+  return (
+    <BeaconFrame>
+      <div className={styles.modeOverdue} data-testid={walking ? "walking-overdue" : "transit-overdue"}>
+        <div className={styles.overdueMark} aria-hidden="true">
+          {walking ? <Footprints size={28} /> : <BusFront size={28} />}
+          <span><AlertCircle size={17} strokeWidth={2.8} /></span>
+        </div>
+        <p className={styles.completionEyebrow}>Arrival check</p>
+        <h1 tabIndex={-1}>Are you home?</h1>
+        <p className={styles.completionBody}>Beacon could not confirm that you reached {destination}.</p>
+        <p className={styles.overdueContact}>{contactStatus(props.rideExperience?.notificationState)}</p>
+        <div className={styles.completionActions}>
+          <PrimaryAction onClick={props.onArrival}>I’m home</PrimaryAction>
+          <div className={styles.overdueActions}>
+            <button className={styles.secondaryAction} type="button" onClick={props.rideExperience?.onStillTravelling}>Still travelling</button>
+            <button className={styles.secondaryAction} type="button" onClick={props.onHelp}>Get help</button>
+          </div>
+        </div>
+      </div>
+    </BeaconFrame>
   );
 }
 
@@ -602,6 +519,12 @@ function RideScreen(props: MobilityScreenProps) {
 
 export function MobilityScreen(props: MobilityScreenProps) {
   const { mobility } = props;
+  if (props.rideExperience?.state === "overdue" && !mobility.ride) {
+    return <ModeOverdueScreen props={props} />;
+  }
+  if ((props.rideExperience?.state === "home" || mobility.leg.status === "complete") && !mobility.ride) {
+    return <ModeCompletionScreen props={props} />;
+  }
   if (mobility.leg.kind === "walk") {
     return <WalkingScreen {...props} />;
   }

@@ -60,7 +60,15 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
       try {
         const value = await transport.request({ kind: "refresh", tripId: current.integration!.tripId, attemptId: current.attemptId, revision: current.integration!.responseRevision });
         if (active) { dispatch({ type: "APPLY_RESPONSE", value }); setConnectionMessage(""); }
-      } catch { if (active) setConnectionMessage("Connection paused. Showing the last known update."); }
+      } catch (error) {
+        if (!active) return;
+        if (error instanceof Error && error.message.includes("(400)")) {
+          dispatch({ type: "SIMULATE", scenario: "session-error" });
+          setConnectionMessage("");
+        } else {
+          setConnectionMessage("Connection paused. Showing the last known update.");
+        }
+      }
       finally { busy = false; }
     }, 500);
     return () => { active = false; window.clearInterval(timer); };
@@ -212,7 +220,6 @@ function FixtureApp({ demoControls = false, transport = demoTransport }: { demoC
     <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">Beacon demo: {state.stage.replaceAll("-", " ")}</span>
     {locationMessage && state.stage === "home" && <p className="sc-integration-note" role="status">{locationMessage}</p>}
     {connectionMessage && <p className="sc-integration-note" role="status">{connectionMessage}</p>}
-    <p className="sc-integration-note">{transport ? "Local fixture mode · no backend journey" : "Manual fixture mode · Judge responses only"}</p>
     {sessionOnly && <p className="sc-integration-note" role="status">Storage unavailable. This demo is saved only while this page stays open.</p>}
     <CancelTripDialog open={panel === "cancel"} onOpenChange={open("cancel")} model={model} onAction={act} />
     <EditHomeSheet open={panel === "home"} onOpenChange={open("home")} profile={model.profile} onSave={persistProfile} />
