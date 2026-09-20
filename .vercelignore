@@ -4,4 +4,12 @@
 *.pem
 *.key
 node_modules
-.next
+.next*
+
+# Local verification artifacts are kept in Git for review, but are not part of
+# the deployed application or any serverless runtime dependency.
+docs
+videos
+coverage
+out
+build
