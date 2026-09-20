@@ -20,8 +20,9 @@ export type NetworkAttempt = {
 export type TripContext = { maxBudget: number; minimizeWalking: boolean; minimizeTransfers: boolean; cannotWalk?: boolean; maxWalkingMinutes?: number; hasBeenDrinking?: boolean; exhausted?: boolean; currentTime: string };
 export type Contact = { name: string; telegramChatId: string; consent: boolean; shareLocation: boolean };
 export type TripRecord = {
+  demoScenarioVariant?: 'baseline' | 'lighting_outage' | 'incident_pressure' | 'rain';
   journeyContract?: 'beacon-journey-v1'; journey?: JourneySnapshot; journeyRevision?: number; journeyConfirmedRevision?: number;
-  completeJourney?: JourneyResult; completeJourneyOrigin?: Point; journeyLegIndex?: number; journeyLocationAccuracy?: number;
+  completeJourney?: JourneyResult; completeJourneyOrigin?: Point; journeyLegIndex?: number; journeyLegStartedAt?: number; journeyLocationAccuracy?: number;
   excludedJourneyServices?: { operatorId: string; serviceId: string }[];
   rideObservation?: RideObservation; arrivalEvidence?: ArrivalEvidence; arrivalStatus?: string;
   trip: Trip; owner: string; context: TripContext;

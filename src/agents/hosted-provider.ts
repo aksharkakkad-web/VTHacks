@@ -2,11 +2,14 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { text, object, type ProviderDescriptor } from "./contract";
 import { DemoProvider, type DemoBooking } from "./demo-provider";
 import { TripError } from "../lib/trip-state/model";
+import { advanceDemoRide, cancelDemoBooking, parseDemoRideEvent, type DemoRideEvent } from './demo-ride-simulation';
 export type StoredBooking = DemoBooking;
 export interface BookingStore {
   create(key: string, booking: StoredBooking): Promise<void>;
   read(key: string): Promise<StoredBooking | undefined>;
   revoke(key: string): Promise<void>;
+  /** Atomic read/validate/update, serialized with cancellation. */
+  advance?(key: string, event: DemoRideEvent, now: number): Promise<StoredBooking>;
 }
 async function input(request: Request) {
   if (!request.headers.get("content-type")?.includes("application/json")) throw new TripError("JSON_REQUIRED", "Use application/json", 415);
@@ -18,9 +21,9 @@ async function input(request: Request) {
   return object(JSON.parse(Buffer.concat(chunks).toString() || "{}"));
 }
 function json(value: unknown, status = 200) { return Response.json(value, { status, headers: { "Cache-Control": "no-store" } }); }
-export function hostedProvider(options: { descriptor: ProviderDescriptor; token?: string; store?: BookingStore; cancellationFeeMinor?: number; decline?: boolean }) {
+export function hostedProvider(options: { descriptor: ProviderDescriptor; token?: string; store?: BookingStore; cancellationFeeMinor?: number; decline?: boolean; demoRideProgress?: boolean; now?: () => number }) {
   const { descriptor, token, store } = options;
-  const publicProvider = new DemoProvider(descriptor, { token, cancellationFeeMinor: options.cancellationFeeMinor, decline: options.decline });
+  const publicProvider = new DemoProvider(descriptor, { token, cancellationFeeMinor: options.cancellationFeeMinor, decline: options.decline, demoRideProgress: options.demoRideProgress ?? process.env.BEACON_DEMO_RIDE_PROGRESS === 'true', now: options.now });
   const key = (id: string) => `${descriptor.id}:${id}`;
   const requestBookingId = (id: string) => createHash("sha256").update(JSON.stringify([descriptor.id, id])).digest("hex");
   return async (request: Request, path: string): Promise<Response> => {
@@ -30,6 +33,12 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
       if (!token || !store) throw new TripError("SERVICE_NOT_CONFIGURED", "Provider booking is not configured", 503);
       const actual = Buffer.from(request.headers.get("authorization") ?? ""); const expected = Buffer.from(`Bearer ${token}`);
       if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) throw new TripError("UNAUTHORIZED", "Unauthorized", 401);
+      if (request.method === 'POST' && path === '/agent/demo-advance') {
+        if (!publicProvider.demoRideProgressEnabled) throw new TripError('DEMO_PROGRESS_DISABLED', 'Demo progression is not enabled', 404);
+        if (!store.advance) throw new TripError('DEMO_STORE_UNAVAILABLE', 'Demo progression requires an atomic booking store', 503);
+        const event = parseDemoRideEvent(await input(request));
+        return json(publicProvider.tripResult(await store.advance(key(event.tripId), event, (options.now ?? Date.now)())));
+      }
       if (request.method === "POST" && path === "/agent/request-trip") {
         if (!descriptor.functions.includes("request_trip")) throw new TripError("UNSUPPORTED", "This provider does not accept bookings", 400);
         const data = await input(request);
@@ -40,16 +49,16 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
         await store.create(key(id), publicProvider.newBooking(id, prepared));
         const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
         if (booking.fingerprint && booking.fingerprint !== prepared.fingerprint) throw new TripError("IDEMPOTENCY_CONFLICT", "Request ID already has different booking terms", 409);
-        return json(booking.result);
+        return json(publicProvider.tripResult(booking));
       }
       if (request.method === "GET" && path.startsWith("/agent/trip-status/")) {
         const id = text(decodeURIComponent(path.slice(19)), "booking id");
         const booking = await store.read(key(id)); if (!booking) throw new TripError("NOT_FOUND", "Booking not found", 404);
-        return json(booking.result);
+        return json(publicProvider.tripResult(booking));
       }
       if (request.method === "GET" && path.startsWith("/agent/request-status/")) {
         const requestId = text(decodeURIComponent(path.slice("/agent/request-status/".length)), "request id");
-        const booking = await store.read(key(requestBookingId(requestId))); return json({ trip: booking?.result ?? null });
+        const booking = await store.read(key(requestBookingId(requestId))); return json({ trip: booking ? publicProvider.tripResult(booking) : null });
       }
       if (request.method === "POST" && path === "/agent/cancel-request") {
         const requestId = text((await input(request)).request_id, "request id");
@@ -59,14 +68,14 @@ export function hostedProvider(options: { descriptor: ProviderDescriptor; token?
         await store.create(key(id), publicProvider.cancellationTombstone(id));
         await store.revoke(key(id));
         const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
-        return json(booking.result);
+        return json(publicProvider.tripResult(booking));
       }
       if (request.method === "POST" && path === "/agent/cancel-trip") {
         const id = text((await input(request)).trip_id, "booking id");
         if (!await store.read(key(id))) throw new TripError("NOT_FOUND", "Booking not found", 404);
         await store.revoke(key(id));
         const booking = await store.read(key(id)); if (!booking) throw new Error("Booking store unavailable");
-        return json(booking.result);
+        return json(publicProvider.tripResult(booking));
       }
       throw new TripError("NOT_FOUND", "Provider operation not found", 404);
     } catch (error) {
@@ -87,23 +96,19 @@ export class RedisBookingStore implements BookingStore {
   }
   async create(key: string, booking: StoredBooking) { await this.command("SET", `beacon:provider:${key}`, JSON.stringify(booking), "NX", "EX", 86400); }
   async read(key: string): Promise<StoredBooking | undefined> { const value = await this.command("GET", `beacon:provider:${key}`); return typeof value === "string" ? JSON.parse(value) : undefined; }
-  async revoke(key: string) {
-    // Settlement and erasure share one atomic operation, including when another
-    // handler is concurrently reconciling or retrying the same request.
-    const lua = `local raw=redis.call('GET',KEYS[1]);if not raw then return 0 end;
-local b=cjson.decode(raw);b.sensitive=nil;local s=b.result.status;
-if s~='completed' and s~='declined' and s~='cancelled' then
- b.result.status='cancelled';local p=b.result.payment;local fee=b.cancellationFeeMinor or 0;
- if p then
-  if p.state=='authorized' then
-   if fee==0 then p.state='voided';p.retainedMinor=0
-   else p.state='captured';p.amountMinor=fee;p.retainedMinor=fee end
-  elseif p.state=='captured' then
-   p.retainedMinor=fee;if fee==0 then p.state='refunded' end
-  end
- end
-end;
-redis.call('SET',KEYS[1],cjson.encode(b),'KEEPTTL');return 1`;
-    await this.command("EVAL", lua, 1, `beacon:provider:${key}`);
+  private async update(key: string, mutate: (booking: StoredBooking) => void): Promise<StoredBooking> {
+    const redisKey = `beacon:provider:${key}`;
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const raw = await this.command('GET', redisKey);
+      if (typeof raw !== 'string') throw new TripError('NOT_FOUND', 'Booking not found', 404);
+      const booking = JSON.parse(raw) as StoredBooking; mutate(booking);
+      // Validate and settle through the same helper as standalone providers;
+      // compare-and-set prevents a concurrent cancellation being overwritten.
+      const saved = await this.command('EVAL', "if redis.call('GET',KEYS[1])~=ARGV[1] then return 0 end;redis.call('SET',KEYS[1],ARGV[2],'KEEPTTL');return 1", 1, redisKey, raw, JSON.stringify(booking));
+      if (saved === 1) return booking;
+    }
+    throw new TripError('BOOKING_STORE_BUSY', 'Retry the demo operation', 503);
   }
+  async revoke(key: string) { await this.update(key, booking => cancelDemoBooking(booking)); }
+  async advance(key: string, event: DemoRideEvent, now: number) { return this.update(key, booking => advanceDemoRide(booking, event, now)); }
 }

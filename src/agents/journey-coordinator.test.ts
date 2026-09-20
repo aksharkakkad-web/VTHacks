@@ -44,6 +44,47 @@ function setup(mode: 'walk'|'bus'|'ride' = 'walk', binding = true) {
 }
 const complete=(view:Awaited<ReturnType<StudentAgent['journey']>>)=>(view.journey as unknown as {complete:JourneyResult|null}).complete;
 
+test('scenario changes are owner scoped, revision bound, and require fresh consent',async()=>{
+  const s=setup('ride');s.deps.demoScenarioEnabled=true;
+  const id=await s.start(),before=await s.view(id);
+  await assert.rejects(s.agent.act(id,'other','scenario',{variant:'rain',journeyRevision:before.journey.revision}),{code:'TRIP_NOT_FOUND'});
+  await assert.rejects(s.agent.act(id,'owner','scenario',{variant:'rain',journeyRevision:0}),{code:'JOURNEY_CHANGED'});
+  await s.agent.act(id,'owner','scenario',{variant:'lighting_outage',journeyRevision:before.journey.revision});
+  assert.equal(s.requests.at(-1)?.demoScenarioVariant,'lighting_outage');
+  assert.equal(s.requests.at(-1)?.objectiveVersion,1);
+  assert.notEqual((await s.view(id)).journey.revision,before.journey.revision);
+  await assert.rejects(s.agent.act(id,'owner','request'),{code:'CONFIRMATION_REQUIRED'});
+  s.deps.demoScenarioEnabled=false;
+  await assert.rejects(s.agent.act(id,'owner','scenario',{variant:'rain',journeyRevision:(await s.view(id)).journey.revision}),{code:'DEMO_DISABLED'});
+});
+
+test('operator ride progress reaches the journey response and completion is not home arrival',async()=>{
+  const s=setup('ride');const id=await s.start();await s.book(id);
+  let calls=0;
+  s.deps.advanceDemoRide=async(_provider,bookingId,stage)=>{
+    calls++;return{id:bookingId,status:stage==='in_trip'||stage==='completed'?stage:'waiting',
+      details:{stage:stage as 'approaching'|'arrived'|'in_trip'|'completed',driver:{displayName:'Demo driver'},vehicle:{make:'Demo',model:'Shuttle',color:'Maroon',licensePlate:'DEMO-01'},updatedAt:s.iso()},
+      payment:{mode:'simulated',currency:'USD',amountMinor:200,retainedMinor:stage==='completed'?200:0,state:stage==='completed'?'captured':'authorized'}};
+  };
+  await assert.rejects(s.agent.act(id,'other','advance-ride',{stage:'approaching'}),{code:'TRIP_NOT_FOUND'});
+  for(const stage of ['approaching','arrived','in_trip','completed']){s.advance(1000);await s.agent.act(id,'owner','advance-ride',{stage});assert.equal((await s.view(id)).ride?.stage,stage);}
+  assert.equal(calls,4);assert.equal((await s.view(id)).trip.state,'NAVIGATING');
+  assert.equal((await s.view(id)).ride?.vehicle?.licensePlate,'DEMO-01');
+  assert.equal((await s.view(id)).coordination.remainingBudgetMinor,800);
+});
+
+test('earlier provider ETA advances indoor wait into the pickup walk and accepts fresh location',async()=>{
+  const s=setup('ride'),bind=s.deps.journeyRideBinding!;
+  const pickup={...origin,point:{lat:origin.point.lat-0.0005,lng:origin.point.lng}};
+  s.deps.journeyRideBinding=async network=>({...await bind(network)!,pickup} as Binding);
+  const id=await s.start();await s.book(id);s.advance(1000);
+  const booking=s.bookings[0].tripId;
+  s.statuses.set(booking,{id:booking,status:'waiting',details:{stage:'approaching',pickupEtaSeconds:30,updatedAt:s.iso()},payment:{mode:'simulated',currency:'USD',amountMinor:200,retainedMinor:0,state:'authorized'}});
+  await s.agent.monitor();assert.equal((await s.view(id)).journey.nextStep?.showMap,true);
+  await s.agent.act(id,'owner','location',{...pickup.point,accuracyMeters:5,recordedAt:s.iso()});
+  assert.equal((await s.view(id)).journey.nextStep?.showMap,false);
+});
+
 test('complete journey preserves disclosed drinking context as walking preference, not inability',async()=>{
   const s=setup();
   const trip=await s.agent.create('owner',{journeyContract:'beacon-journey-v1',origin:origin.point,preferences:{home:home.point,maxBudget:10,walkingPreference:'normal'},temporary_context:{has_been_drinking:true}});

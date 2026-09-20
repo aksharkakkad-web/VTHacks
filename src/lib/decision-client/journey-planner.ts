@@ -5,12 +5,15 @@ import type { FullTransitOption, FullTransitRequest } from '../../integrations/d
 import { validateWalkingRoute, withinWalkingDemoArea, WalkingRoutingError, type Point, type WalkingRoute, type WalkingRouter } from './walking-router';
 import type { PathEvidence } from './path-evidence';
 import type { JourneyRequest, JourneyPlace, WaitingPlace, JourneyLeg, Journey, JourneyResult, JourneyRide } from './journey-types';
+import { createDemoScenario, scenarioCondition, scenarioExposure, type DemoScenarioVariant, type DemoTransitOption } from './demo-scenario';
 
 export type JourneyDependencies = {
   route: WalkingRouter; evidence: (route: WalkingRoute, at: string) => PathEvidence;
   stops?: JourneyPlace[]; transitSourceSha256?: string;
-  directTransit?: (request: FullTransitRequest) => Promise<FullTransitOption | null>;
+  directTransit?: (request: FullTransitRequest) => Promise<FullTransitOption | DemoTransitOption | null>;
   rankOptions?: JourneyRankOptions;
+  /** Server-gated opt-in only; JourneyRequest alone cannot activate synthetic evidence. */
+  demoScenarioVariant?: DemoScenarioVariant;
 };
 const instant = (v: string) => {
   const n = typeof v === 'string' && /(Z|[+-]\d\d:\d\d)$/.test(v) ? Date.parse(v) : NaN;
@@ -43,17 +46,22 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
       !money(input.committedMinor ?? 0) || input.remainingBudgetMinor !== undefined && !money(input.remainingBudgetMinor) ||
       input.maxWalkingMinutes !== undefined && (!Number.isFinite(input.maxWalkingMinutes) || input.maxWalkingMinutes < 0 || input.maxWalkingMinutes > 120) ||
       [input.cannotWalk,input.minimizeWalking,input.tired].some(v => v !== undefined && typeof v !== 'boolean') ||
-      (input.rides?.length ?? 0) > 8 || (input.waitingPlaces?.length ?? 0) > 3) throw new Error('INVALID_JOURNEY_REQUEST');
+      (input.rides?.length ?? 0) > 8 || (input.waitingPlaces?.length ?? 0) > 3 ||
+      input.demoScenarioVariant !== undefined && !['baseline','lighting_outage','incident_pressure','rain'].includes(input.demoScenarioVariant) ||
+      deps.demoScenarioVariant && input.demoScenarioVariant && deps.demoScenarioVariant!==input.demoScenarioVariant) throw new Error('INVALID_JOURNEY_REQUEST');
+  const scenario=deps.demoScenarioVariant ? createDemoScenario(deps.demoScenarioVariant,input.evaluatedAt,origin) : undefined;
   const committed = input.committedMinor ?? 0;
   const remaining = Math.min(Math.max(0,input.budgetMinor-committed),input.remainingBudgetMinor ?? Infinity);
   const maxWalk = input.cannotWalk ? 0 : (input.maxWalkingMinutes ?? 120)*60;
   const warnings = ['DIRECT_BUSES_ONLY_NO_TRANSFER_SEARCH','PROVIDER_BOOKING_AND_LIVE_PROGRESSION_REQUIRE_COORDINATOR'];
+  if(scenario) warnings.push('SYNTHETIC_SCENARIO_NOT_REAL_NAVIGATION_OR_PUBLIC_SAFETY_EVIDENCE');
   const rejected: JourneyResult['rejected'] = [], journeys: Journey[] = [];
   const offerKeys = (input.rides??[]).map(r=>JSON.stringify([r.offer.operatorId,r.offer.serviceId,r.offer.quoteId,r.offer.offerVersion]));
   if(new Set(offerKeys).size!==offerKeys.length) throw new Error('DUPLICATE_QUOTE_BINDING');
-  const current = input.currentWaitingPlace && same(input.currentWaitingPlace.point,origin.point) && validWaiting(input.currentWaitingPlace,at) ? input.currentWaitingPlace : undefined;
+  const currentInput=input.currentWaitingPlace ?? scenario?.currentWaitingPlace;
+  const current = currentInput && same(currentInput.point,origin.point) && validWaiting(currentInput,at) ? currentInput : undefined;
   const waitingChoices: (WaitingPlace|undefined)[]=[current];
-  for(const s of input.waitingPlaces??[]) if(!same(s.point,origin.point) && validWaiting(s,at) && s.accessAllowed===true && (s.indoor===true||s.sheltered===true) && !(current?.indoor===true||current?.sheltered===true)) waitingChoices.push(s);
+  for(const s of input.waitingPlaces??scenario?.waitingPlaces??[]) if(!same(s.point,origin.point) && validWaiting(s,at) && s.accessAllowed===true && (s.indoor===true||s.sheltered===true) && !(current?.indoor===true||current?.sheltered===true)) waitingChoices.push(s);
   const reject = (id: string, reason: string) => { rejected.push({candidateId:id,reasons:[reason]}); };
   const cache = new Map<string,Promise<WalkingRoute | null>>();
   async function route(a: JourneyPlace,b: JourneyPlace): Promise<WalkingRoute | null> {
@@ -70,7 +78,8 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
     const evidence = intervalEvidence(r,t,t+r.durationSeconds*1000);
     if (evidence.blocked) throw new Error('KNOWN_PATH_CLOSURE_OR_ALERT');
     return [{id:'',kind:'walk',from:a,to:b,startsAt:iso(t),endsAt:iso(t+r.durationSeconds*1000),
-      instruction:r.instructions[0]?.text || `Walk to ${b.name}.`,route:r,evidence,source:r.provider,indoor:false,sheltered:false}];
+      instruction:r.instructions[0]?.text || `Walk to ${b.name}.`,route:r,evidence,source:r.provider,indoor:false,sheltered:false,
+      ...(scenario?{scenarioEvidence:[scenarioCondition(scenario.metadata.variant,'walking_path')]}:{})}];
   }
   function intervalEvidence(r: WalkingRoute,t: number,end: number): PathEvidence {
     const base=deps.evidence(r,input.evaluatedAt);
@@ -99,8 +108,9 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
     const access = supported && s.accessAllowed === true;
     return [{id:'',kind:'wait',from:p,to:p,startsAt:iso(t),endsAt:iso(end),route:null,evidence,
       instruction:supported && !access ? `Wait near ${p.name}; check access before entering. Leave at ${iso(end)}.` : `Wait at ${p.name} until ${iso(end)}.`,
-      source:supported ? 'published_hours' : 'waiting_conditions_unknown', indoor:access ? s.indoor : null,sheltered:access ? s.sheltered : null,
-      ...(supported ? {waitingSource:{sourceUrl:s.sourceUrl,sourceVersion:s.sourceVersion,capturedAt:s.capturedAt,validUntil:s.validUntil,accessAllowed:s.accessAllowed}} : {})}];
+      source:supported ? scenario?'synthetic_demo_waiting':'published_hours' : 'waiting_conditions_unknown', indoor:access ? s.indoor : null,sheltered:access ? s.sheltered : null,
+      ...(supported ? {waitingSource:{sourceUrl:s.sourceUrl,sourceVersion:s.sourceVersion,capturedAt:s.capturedAt,validUntil:s.validUntil,accessAllowed:s.accessAllowed}} : {}),
+      ...(scenario?{scenarioEvidence:[scenarioCondition(scenario.metadata.variant,'waiting_point')]}:{})}];
   }
   function finish(kind: Journey['kind'],legs: JourneyLeg[],cost: number,deadline: number,ride: JourneyRide | null,binding: Journey['offerBinding'],facts: string[],leave: string|null) {
     if (!legs.length) throw new Error('ALREADY_AT_DESTINATION');
@@ -123,10 +133,15 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
     if (deadline<=at) throw new Error('JOURNEY_EXPIRED');
     const journeyId=`journey:${hash([input.objectiveVersion,legs,binding])}`;
     const first=legs[0];
+    const exposure=scenario ? scenarioExposure(legs.map(l=>({kind:l.kind,durationSeconds:(instant(l.endsAt)-instant(l.startsAt))/1000,
+      sheltered:l.sheltered===true||l.indoor===true,evidence:l.scenarioEvidence?.[0]??scenarioCondition(scenario.metadata.variant,'waiting_point')}))) : undefined;
     const j:Journey={journeyId,kind,legs,departureAt:iso(at),arrivalAt:iso(previous),validUntil:iso(deadline),leaveWaitingAt:leave,
       costMinor:cost,walkingSeconds:walking,waitingSeconds:waiting,outdoorWaitingSeconds:outdoor,unknownWaitingSeconds:unknown,durationSeconds:(previous-at)/1000,scoreUnits:0,
       offerBinding:binding,offerLocationBinding:ride?{pickup:place(ride.pickup),dropoff:place(ride.dropoff),pickupAt:ride.pickupAt,arrivalAt:ride.arrivalAt}:null,
-      nextStep:{legId:first.id,instruction:first.instruction,showMap:first.kind==='walk',routeId:first.route?.routeId??null},explanationFacts:facts,unknowns:[...unknowns]};
+      nextStep:{legId:first.id,instruction:first.instruction,showMap:first.kind==='walk',routeId:first.route?.routeId??null},
+      explanationFacts:scenario ? [...facts,`SYNTHETIC_SCENARIO:${scenario.metadata.variant}`,`SYNTHETIC_UNLIT_EXPOSURE_SECONDS:${exposure?.lightingExposureSeconds??0}`,
+        `SYNTHETIC_INCIDENT_INDEX_EXPOSURE_SECONDS:${exposure?.incidentPressureSeconds??0}`,`SYNTHETIC_RAIN_WALK_SECONDS:${exposure?.rainWalkingSeconds??0}`] : facts,
+      unknowns:[...unknowns],...(exposure?{scenarioExposure:exposure}:{})};
     if (!journeys.some(x=>x.journeyId===journeyId)) journeys.push(j);
   }
   const failure = (e: unknown) => e instanceof WalkingRoutingError ? `ROUTING_${e.code.toUpperCase()}` : e instanceof Error && /^[A-Z_]{3,80}$/.test(e.message) ? e.message : 'DEPENDENCY_UNAVAILABLE_OR_INVALID';
@@ -155,8 +170,9 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
           if(leave<reaches || s && !validWaiting(s,reaches)) throw new Error('WAITING_PLACE_CLOSED');
           if(toWait && (leave-reaches<120000 || (toWait.durationSeconds+(toPickup?.durationSeconds??0))>(maxWalk))) throw new Error('WAITING_DETOUR_NOT_JUSTIFIED');
           const pickupArrival=leave+(toPickup?.durationSeconds??0)*1000;
-          const legs=[...walkLeg(origin,site,toWait,at),...waitLeg(site,reaches,leave,s),...walkLeg(site,pickup,toPickup,leave),...waitLeg(pickup,pickupArrival,pickupAt),
-            {id:'',kind:'ride' as const,from:pickup,to:dropoff,startsAt:iso(pickupAt),endsAt:iso(arrivalAt),instruction:`Take ${ride.offer.displayName} to ${dropoff.name}.`,route:null,evidence:null,source:ride.offer.source,locationEvidence:{pickup:pointEvidence(pickup,pickupAt),dropoff:pointEvidence(dropoff,arrivalAt)},indoor:null,sheltered:null},...walkLeg(dropoff,destination,lastRoute,arrivalAt)];
+          const legs=[...walkLeg(origin,site,toWait,at),...waitLeg(site,reaches,leave,s),...walkLeg(site,pickup,toPickup,leave),...waitLeg(pickup,pickupArrival,pickupAt,current&&same(pickup.point,current.point)?current:undefined),
+            {id:'',kind:'ride' as const,from:pickup,to:dropoff,startsAt:iso(pickupAt),endsAt:iso(arrivalAt),instruction:`Take ${ride.offer.displayName} to ${dropoff.name}.`,route:null,evidence:null,source:ride.offer.source,locationEvidence:{pickup:pointEvidence(pickup,pickupAt),dropoff:pointEvidence(dropoff,arrivalAt)},indoor:null,sheltered:null,
+              ...(scenario?{scenarioEvidence:[scenarioCondition(scenario.metadata.variant,'pickup_point'),scenarioCondition(scenario.metadata.variant,'dropoff_point')]}:{})},...walkLeg(dropoff,destination,lastRoute,arrivalAt)];
           finish('ride',legs,binding.maximumCostMinor,Math.min(instant(binding.expiresAt),latestLeave),ride,binding,[toWait?'MOVE_FOR_CONFIRMED_SHELTER':'PREFER_CURRENT_LOCATION', 'RECHECK_QUOTE_CONSENT_AND_AUTH_BEFORE_BOOKING'],iso(leave));
         }catch(e){reject(`${candidateId}:wait:${s?.id??'current'}`,failure(e));}
       }
@@ -174,28 +190,36 @@ export async function planJourney(input: JourneyRequest, deps: JourneyDependenci
             const site=s?place(s):origin,toWait=await route(origin,site),access=await route(site,from);
             const accessSeconds=(toWait?.durationSeconds??0)+(access?.durationSeconds??0);
             if(accessSeconds+(egress?.durationSeconds??0)>maxWalk) throw new Error('WALKING_LIMIT_EXCEEDED');
-            const bus=await deps.directTransit({fromStopId:from.id,toStopId:to.id,evaluatedAt:iso(at),accessWalkingMinutes:accessSeconds/60,egressWalkingMinutes:(egress?.durationSeconds??0)/60,maxWaitMinutes:45,walkingSource:'mapped'});
+            const bus=await deps.directTransit({fromStopId:from.id,toStopId:to.id,evaluatedAt:iso(at),accessWalkingMinutes:accessSeconds/60,egressWalkingMinutes:(egress?.durationSeconds??0)/60,maxWaitMinutes:45,walkingSource:scenario?'estimated':'mapped'});
             if(!bus) throw new Error('NO_REACHABLE_DIRECT_BUS');
+            if(scenario) warnings.push(...bus.warnings);
             if(deps.transitSourceSha256 && bus.source.sourceSha256!==deps.transitSourceSha256) throw new Error('TRANSIT_STOP_SOURCE_MISMATCH');
             const departure=instant(bus.source.departureAt),arrival=instant(bus.source.arrivalAt),reaches=at+(toWait?.durationSeconds??0)*1000;
-            if(bus.source.fromStopId!==from.id || bus.source.toStopId!==to.id || bus.source.walkingSource!=='mapped' || bus.candidate.transfers!==0 || bus.candidate.cost!==0 || bus.signals.source!=='scheduled' || departure<=at+accessSeconds*1000+60000 || arrival<=departure || instant(bus.source.capturedAt)>at || at-instant(bus.source.capturedAt)>7*86400000) throw new Error('INVALID_OR_MISSED_BUS');
+            const simulatedBus='synthetic' in bus && bus.synthetic===true;
+            if(simulatedBus!==!!scenario || bus.source.fromStopId!==from.id || bus.source.toStopId!==to.id ||
+              bus.source.walkingSource!==(scenario?'estimated':'mapped') || bus.candidate.transfers!==0 || bus.candidate.cost!==0 ||
+              bus.signals.source!==(scenario?'simulated':'scheduled') || departure<=at+accessSeconds*1000+60000 || arrival<=departure ||
+              instant(bus.source.capturedAt)>at || at-instant(bus.source.capturedAt)>7*86400000) throw new Error('INVALID_OR_MISSED_BUS');
             if(pointEvidence(to,arrival).blocked) throw new Error('KNOWN_BUS_STOP_CLOSURE');
             const latestLeave=departure-(access?.durationSeconds??0)*1000-60000;
             const leave=s?Math.min(latestLeave,instant(s.closesAt)-1000,instant(s.validUntil)-1000):latestLeave;
             if(leave<reaches || s&&!validWaiting(s,reaches)) throw new Error('WAITING_PLACE_CLOSED');
             if(toWait&&leave-reaches<120000) throw new Error('WAITING_DETOUR_NOT_JUSTIFIED');
             const stopArrival=leave+(access?.durationSeconds??0)*1000;
-            finish('bus',[...walkLeg(origin,site,toWait,at),...waitLeg(site,reaches,leave,s),...walkLeg(site,from,access,leave),...waitLeg(from,stopArrival,departure),{id:'',kind:'bus',from,to,startsAt:iso(departure),endsAt:iso(arrival),instruction:`Board ${bus.candidate.providerName} for ${to.name}.`,route:null,evidence:null,source:'scheduled',transitSource:{...bus.source,sourceUrl:'https://www.bt4uclassic.org/gtfs/google_transit.zip',statementId:bus.statementId},locationEvidence:{pickup:pointEvidence(from,departure),dropoff:pointEvidence(to,arrival)},indoor:null,sheltered:null},...walkLeg(to,destination,egress,arrival)],0,
-              Math.min(departure-accessSeconds*1000-60000,instant(bus.signals.validUntil!)),null,null,[`SCHEDULED_TRIP:${bus.source.tripId}`,`TRANSIT_CAPTURE:${bus.source.capturedAt}`,'VEHICLE_GEOMETRY_UNKNOWN',toWait?'MOVE_FOR_CONFIRMED_SHELTER':'PREFER_CURRENT_LOCATION'],iso(leave));
+            finish('bus',[...walkLeg(origin,site,toWait,at),...waitLeg(site,reaches,leave,s),...walkLeg(site,from,access,leave),...waitLeg(from,stopArrival,departure,current&&same(from.point,current.point)?current:undefined),{id:'',kind:'bus',from,to,startsAt:iso(departure),endsAt:iso(arrival),instruction:`Board ${bus.candidate.providerName} for ${to.name}.`,route:null,evidence:null,source:simulatedBus?'simulated':'scheduled',transitSource:{...bus.source,sourceUrl:simulatedBus?'https://beacon-demo.invalid/synthetic-transit':'https://www.bt4uclassic.org/gtfs/google_transit.zip',statementId:bus.statementId,...(simulatedBus?{synthetic:true as const}:{})},locationEvidence:{pickup:pointEvidence(from,departure),dropoff:pointEvidence(to,arrival)},indoor:null,sheltered:null,
+              ...(scenario?{scenarioEvidence:[scenarioCondition(scenario.metadata.variant,'pickup_point'),scenarioCondition(scenario.metadata.variant,'dropoff_point')]}:{})},...walkLeg(to,destination,egress,arrival)],0,
+              Math.min(departure-accessSeconds*1000-60000,instant(bus.signals.validUntil!)),null,null,[simulatedBus?`SYNTHETIC_BUS_TRIP:${bus.source.tripId}`:`SCHEDULED_TRIP:${bus.source.tripId}`,`TRANSIT_CAPTURE:${bus.source.capturedAt}`,'VEHICLE_GEOMETRY_UNKNOWN',toWait?'MOVE_FOR_CONFIRMED_SHELTER':'PREFER_CURRENT_LOCATION'],iso(leave));
           }catch(e){reject(`${id}:wait:${s?.id??'current'}`,failure(e));}
         }
       }catch(e){reject(id,failure(e));}
     }
   } else warnings.push('TRANSIT_NOT_CONFIGURED');
-  const {journeys:ranked,execution}=await rankJourneys(journeys,!!(input.minimizeWalking||input.tired),input.objectiveVersion,input.evaluatedAt,deps.rankOptions);
+  const policy=scenario?'beacon-journey-rank-v2-demo' as const:'beacon-journey-rank-v1' as const;
+  const {journeys:ranked,execution}=await rankJourneys(journeys,!!(input.minimizeWalking||input.tired),input.objectiveVersion,input.evaluatedAt,deps.rankOptions,policy);
   const completedAt=at+Date.now()-started;
   const feasible=ranked.filter(j=>{if(instant(j.validUntil)<=completedAt){reject(j.journeyId,'EXPIRED_DURING_PLANNING');return false;}return true;});
   if(execution.auditPersisted && ranked[0]?.journeyId!==feasible[0]?.journeyId) { execution.auditStatus='PERSISTED_SUPERSEDED_SELECTION';warnings.push('AUDIT_PRECEDES_FINAL_EXPIRY_FILTER'); }
-  return {journeyVersion:'beacon-journey-v1',policyVersion:'beacon-journey-rank-v1',objectiveVersion:input.objectiveVersion,evaluatedAt:iso(completedAt),
-    status:feasible.length?'RECOMMENDED':'NO_FEASIBLE_JOURNEY',selected:feasible[0]??null,alternatives:feasible.slice(1,4),remainingBudgetMinor:remaining,committedMinor:committed,rejected,warnings,execution};
+  return {journeyVersion:'beacon-journey-v1',policyVersion:policy,objectiveVersion:input.objectiveVersion,evaluatedAt:iso(completedAt),
+    status:feasible.length?'RECOMMENDED':'NO_FEASIBLE_JOURNEY',selected:feasible[0]??null,alternatives:feasible.slice(1,4),remainingBudgetMinor:remaining,committedMinor:committed,rejected,warnings,execution,
+    ...(scenario?{demoScenario:scenario.metadata}:{})};
 }

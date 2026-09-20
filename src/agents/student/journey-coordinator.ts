@@ -55,6 +55,7 @@ export async function evaluateCompleteJourney(r: TripRecord, deps: JourneyCoordi
     minimizeWalking: r.context.minimizeWalking || r.context.hasBeenDrinking === true, tired: r.context.exhausted === true,
     cannotWalk: r.context.cannotWalk, maxWalkingMinutes: r.context.maxWalkingMinutes,
     rides, excludedServices: r.excludedJourneyServices ?? [],
+    ...(r.demoScenarioVariant ? { demoScenarioVariant: r.demoScenarioVariant } : {}),
   };
   const result = await deps.getCompleteJourney(request);
   if (unboundOffers) result.warnings = [...new Set([...result.warnings, 'PROVIDER_LOCATION_BINDINGS_UNAVAILABLE'])];
@@ -93,5 +94,6 @@ export async function evaluateCompleteJourney(r: TripRecord, deps: JourneyCoordi
   r.completeJourney = structuredClone(result);
   r.completeJourneyOrigin = { ...origin };
   r.journeyLegIndex = 0;
+  r.journeyLegStartedAt = now;
   return { result, selected, candidates: selected ? [selected, ...alternatives.filter(p => p.planId !== selected.planId)] : [] };
 }

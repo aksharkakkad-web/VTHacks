@@ -19,6 +19,7 @@ import { ingestProviderOutcome } from "../../integrations/databricks/provider-ou
 import { campusWeather } from "../campus-evidence/catalog";
 import { queryRouteContext } from "../../agents/context/runtime";
 import { getActivityRuntime } from "../agent-activity/runtime";
+import { createDemoRideControl } from './demo-ride-control';
 
 type Runtime = { agent: StudentAgent; timer?: ReturnType<typeof setInterval>; };
 const globalRuntime = globalThis as typeof globalThis & { beaconRuntime?: Runtime };
@@ -31,6 +32,7 @@ export function getRuntime(): Runtime {
   if (process.env.VERCEL && !redis) throw new Error("A shared Redis trip store is required on Vercel");
   const store = redis ? new RedisTripStore(redis.url, redis.token) : new FileTripStore(process.env.BEACON_STATE_DIR ?? join(tmpdir(), "beacon-trips-local"));
   const providers = runtimeProviderConfiguration(process.env);
+  const advanceDemoRide = createDemoRideControl(process.env, [...providers.descriptors], providers.tokenFor);
   const uberConfig = uberSandboxConfiguration(process.env);
   const uber = uberConfig ? new UberGuestProvider(uberConfig, { store: redis
     ? new RedisJsonStore(redis.url, redis.token, 'beacon:uber-guest-sandbox:v1', emptyUberGuestProviderState)
@@ -40,6 +42,7 @@ export function getRuntime(): Runtime {
   const directory = demo && process.env.BEACON_ANS_MODE !== "live" ? new LocalDemoDirectory(providers.descriptors, true) : new GoDaddyDirectory({ apiBase: process.env.ANS_BASE_URL, apiKey: process.env.ANS_API_KEY, query: process.env.BEACON_ANS_QUERY });
   const sendNotification = telegramSender({ simulated: notificationMode === "simulated", botToken: process.env.TELEGRAM_BOT_TOKEN, allowedChatIds: process.env.TELEGRAM_ALLOWED_CHAT_IDS });
   const agent = new StudentAgent({ store, directory, demo,
+    demoScenarioEnabled: demo && process.env.BEACON_DEMO_SCENARIO === 'true', advanceDemoRide,
     activity: getActivityRuntime(),
     contextReader: queryRouteContext,
     // The shared demo token belongs only to our configured loopback providers.

@@ -1,5 +1,34 @@
 # Backend completion — September 19
 
+## Current completion run: full scenario demo
+
+Akshar approved a complete, clearly identified synthetic campus demonstration, including simulated ride progress, while real Uber Guest Rides access remains unavailable. The private Application ID/client-secret authentication attempt returned HTTP 401 `unauthorized_client`; that is an app authentication/configuration blocker, not proof of a particular missing permission. Google still needs an approved configured key for real walking routes.
+
+The new demo uses explicit `DEMO_MODE` + `BEACON_DEMO_SCENARIO` flags, complete numeric scenario conditions, scenario-only v2 scoring, per-trip condition changes, owner-scoped ride playback, the real managed Codex worker, and native Databricks ranking when configured. Public data and the v1 policy remain separate. See [DEMO_BACKEND_RUNBOOK.md](DEMO_BACKEND_RUNBOOK.md) for the one-command runtime and Rishit's combined API handoff.
+
+### Final scenario-demo verification
+
+Completed locally on September 19, 2026 (acceptance receipt: `2026-09-20T00:20:40.346Z`). This is the demo backend completion record; the historical sections below describe the earlier candidate.
+
+| Check | Final result |
+| --- | --- |
+| Full authenticated HTTP journey | Passed with actual managed Codex `gpt-5.6-sol` explanations and native Databricks ranking, not fixture inference or local-ranking fallback. |
+| Evidence changes the decision | Baseline selected walking (score 1024); synthetic lighting outage selected the free campus ride (1140). Cancellation selected the independent demo ride ($7, score 1600) within budget and required fresh consent. |
+| Ride and arrival lifecycle | Driver/car/plate, elapsed-time pickup countdown, approaching, arrived, in-trip and completed passed. Ride completion did not claim home arrival; three accurate synthetic location samples spanning 30 seconds completed arrival and cleared private journey data. |
+| Preferences and contact monitoring | Zero budget plus less walking selected the free campus ride. Overdue monitoring recorded a simulated trusted-contact notification. |
+| Backend agent suite | 237 passed, zero failed. |
+| Data/decision suite | 180 passed, zero failed. |
+| Repository gate | Lint, 25 state/checkpoint tests, typecheck and production build passed. Two demo-environment tests also passed. |
+| Independent review | Snapshot/explanation consistency and launcher shutdown findings resolved and narrowly re-reviewed; regression coverage added. |
+
+Native SQL statements: baseline `01f1b488-f09b-18ef-ba9c-4fc07b3730c8`; lighting change `01f1b488-f60c-1d4c-b2cc-f1c3603f0217`; cancellation/replanning `01f1b488-fc6d-1098-b3dd-ef0d8726f167`; zero-budget preference `01f1b489-187c-114c-b3e8-871df8d3ba1d`.
+
+Private local receipt: `/var/folders/qr/0gfz5v8d76gch8wdknd578gc0000gn/T/beacon-demo-6nnNDL/demo-acceptance.json`. It is a temporary artifact, not a portable repository dependency; `npm run demo:check` regenerates receipts. Native checks were read-only: no new cloud audit/import, deployment, real booking, charge or contact message occurred. The full offline fixture check also passed.
+
+Rishit's remaining task is UI wiring against the combined journey response in [DEMO_BACKEND_RUNBOOK.md](DEMO_BACKEND_RUNBOOK.md). Live Google/Uber access, hosted operation and real contact delivery are outside this completed local simulated-demo milestone. The synthetic walking line is illustrative, not navigation; maps handoff delegates the actual path to Google/Apple Maps.
+
+## Earlier integration record
+
 Akshar now owns coordination and Databricks. Rishit owns UI. This is local integration work, not authorization to deploy, push, merge a PR, enable billing, or book a real ride.
 
 ## Approved direction

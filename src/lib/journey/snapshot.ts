@@ -17,6 +17,13 @@ export function syncJourney(r: TripRecord, now: number): JourneySnapshot {
     replanCount:r.replanCount, remainingBudgetMinor:remainingBudgetMinor(r) });
   const step = exact?.legs[r.journeyLegIndex ?? 0];
   const nextStep = step ? { legId:step.id, instruction:step.instruction, showMap:step.kind === 'walk', routeId:step.route?.routeId ?? null } : null;
+  if (nextStep && step?.kind === 'wait' && r.rideObservation?.stage === 'arrived'
+    && step.from.point.lat === exact?.offerLocationBinding?.pickup.point.lat && step.from.point.lng === exact?.offerLocationBinding?.pickup.point.lng) {
+    nextStep.instruction = `Your ride is here. Meet the driver at ${step.from.name}.`;
+  }
+  else if(nextStep && step?.kind === 'wait' && ['assigned','approaching'].includes(r.rideObservation?.stage ?? '')) {
+    nextStep.instruction = `Wait at ${step.from.name}. Your ride is on its way.`;
+  }
   if (r.journey?.binding === binding) {
     r.journey.expectedArrivalAt = r.trip.expectedArrivalAt ?? null;
     r.journey.alertDeadlineAt = r.trip.alertDeadlineAt ?? null;
@@ -54,6 +61,6 @@ export function syncJourney(r: TripRecord, now: number): JourneySnapshot {
     complete:complete ? structuredClone(complete) : null, nextStep,
     estimatedDurationSeconds:selected ? selected.totalMinutes*60 : null, expectedArrivalAt:r.trip.expectedArrivalAt ?? null,
     alertDeadlineAt:r.trip.alertDeadlineAt ?? null, remainingBudgetMinor:remainingBudgetMinor(r), currency:'USD',
-    limitations:exact ? [...exact.unknowns, 'A walking route is not a vehicle route.'] : ['Current illumination and indoor access are unknown.', 'Provider walking totals do not establish pickup and dropoff geometry.', 'A walking route is not a vehicle route.'] };
+    limitations:complete?.demoScenario ? [complete.demoScenario.limitation] : exact ? [...exact.unknowns, 'A walking route is not a vehicle route.'] : ['Current illumination and indoor access are unknown.', 'Provider walking totals do not establish pickup and dropoff geometry.', 'A walking route is not a vehicle route.'] };
   return r.journey;
 }

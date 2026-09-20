@@ -4,6 +4,7 @@ import { planJourney, type JourneyDependencies } from './journey-planner';
 import type { JourneyRequest, JourneyRide, JourneyPlace, WaitingPlace } from './journey-types';
 import { distanceMeters, type WalkingRouter } from './walking-router';
 import type { FullTransitOption } from '../../integrations/databricks/full-transit-query';
+import { demoScenarioRoute, demoScenarioStops, demoScenarioTransit } from './demo-scenario';
 
 export const at='2026-09-19T21:00:00.000Z';
 export const origin:JourneyPlace={id:'origin',name:'Public demo origin',point:{lat:37.2288,lng:-80.4192}};
@@ -162,4 +163,125 @@ test('local stop geometry and native departure must use the same feed source',as
  const stops=[{id:'s1',name:'Origin stop',point:{lat:37.2287,lng:-80.4192}},{id:'s2',name:'Home stop',point:{lat:37.2221,lng:-80.42}}];
  const out=await planJourney(request,{...dependencies,stops,transitSourceSha256:'b'.repeat(64),directTransit:async q=>busOption(q.fromStopId,q.toStopId)});
  assert.ok(!all(out).some(j=>j.kind==='bus'));assert.ok(out.rejected.some(r=>r.reasons.includes('TRANSIT_STOP_SOURCE_MISMATCH')));
+});
+test('scenario-only policy makes baseline walk win and synthetic lighting outage causally switches to ride',async()=>{
+ const scenarioDeps={...dependencies,route:demoScenarioRoute};
+ const quoted=ride();quoted.offer.price.totalMinor=500;
+ const baseline=await planJourney({...request,rides:[quoted],demoScenarioVariant:'baseline'},{...scenarioDeps,demoScenarioVariant:'baseline'});
+ const outage=await planJourney({...request,rides:[quoted],demoScenarioVariant:'lighting_outage'},{...scenarioDeps,demoScenarioVariant:'lighting_outage'});
+ assert.equal(baseline.policyVersion,'beacon-journey-rank-v2-demo');
+ assert.equal(baseline.selected?.kind,'walk');
+ assert.equal(outage.selected?.kind,'ride');
+ assert.equal(outage.demoScenario?.source,'synthetic_demo');
+ assert.equal(outage.selected?.legs[0].scenarioEvidence?.[0].source,'synthetic_demo');
+ assert.ok(all(outage).every(j=>j.legs.every(l=>l.scenarioEvidence?.length)));
+ const baselineWalk=all(baseline).find(j=>j.kind==='walk')!,outageWalk=all(outage).find(j=>j.kind==='walk')!;
+ assert.equal(baselineWalk.scenarioExposure?.lightingExposureSeconds,12);
+ assert.ok((outageWalk.scenarioExposure?.lightingExposureSeconds??0)>400);
+ assert.ok(outageWalk.scoreUnits>baselineWalk.scoreUnits);
+ assert.ok(outage.selected?.legs.some(l=>l.kind==='wait'&&l.sheltered===true));
+});
+test('scenario evidence also changes incident and rain score without representing real crimes',async()=>{
+ const baseline=await planJourney({...request,demoScenarioVariant:'baseline'},{...dependencies,route:demoScenarioRoute,demoScenarioVariant:'baseline'});
+ const incident=await planJourney({...request,demoScenarioVariant:'incident_pressure'},{...dependencies,route:demoScenarioRoute,demoScenarioVariant:'incident_pressure'});
+ const rain=await planJourney({...request,demoScenarioVariant:'rain'},{...dependencies,route:demoScenarioRoute,demoScenarioVariant:'rain'});
+ assert.ok((incident.selected?.scoreUnits??0)>(baseline.selected?.scoreUnits??0));
+ assert.ok((rain.selected?.scoreUnits??0)>(baseline.selected?.scoreUnits??0));
+ assert.match(JSON.stringify(incident.demoScenario),/synthetic/i);
+ assert.doesNotMatch(JSON.stringify(incident),/"kind":"historical_incident"|"recordId":/i);
+});
+test('scenario retains hard walking and budget constraints and default v1 isolation',async()=>{
+ const deps={...dependencies,route:demoScenarioRoute,demoScenarioVariant:'baseline' as const};
+ const baseline=await planJourney({...request,rides:[ride()],demoScenarioVariant:'baseline'},deps);
+ const tired=await planJourney({...request,rides:[ride()],tired:true,demoScenarioVariant:'baseline'},deps);
+ const cannotWalk=await planJourney({...request,rides:[ride()],cannotWalk:true,demoScenarioVariant:'baseline'},deps);
+ const noMoney=await planJourney({...request,rides:[ride()],budgetMinor:0,demoScenarioVariant:'baseline'},deps);
+ const defaultOff=await planJourney({...request,rides:[ride()],demoScenarioVariant:'lighting_outage'},{...dependencies,route:demoScenarioRoute});
+ assert.ok(baseline.selected);
+ assert.equal(tired.selected?.kind,'ride');
+ assert.equal(cannotWalk.selected?.kind,'ride');
+ assert.ok(noMoney.selected);
+ assert.equal(defaultOff.policyVersion,'beacon-journey-rank-v1');
+ assert.equal(defaultOff.demoScenario,undefined);
+ assert.ok(defaultOff.selected?.legs.every(l=>l.scenarioEvidence===undefined));
+});
+test('non-co-located pickup and quote price still affect outage ranking; winner is not canned',async()=>{
+ const actual=ride({id:'synthetic-campus-pickup',name:'Campus pickup (simulated access)',point:{lat:37.229,lng:-80.414}});
+ actual.dropoff={id:'synthetic-home-dropoff',name:'Home drop-off (simulated access)',point:{lat:37.221,lng:-80.420}};
+ actual.offer.price.totalMinor=0;actual.offer.waitMinutes=8;actual.offer.travelMinutes=11;
+ actual.pickupAt=when(480);actual.arrivalAt=when(1140);
+ const deps={...dependencies,route:demoScenarioRoute};
+ const baseline=await planJourney({...request,rides:[actual],demoScenarioVariant:'baseline'},{...deps,demoScenarioVariant:'baseline'});
+ const outage=await planJourney({...request,rides:[actual],demoScenarioVariant:'lighting_outage'},{...deps,demoScenarioVariant:'lighting_outage'});
+ const incident=await planJourney({...request,rides:[actual],demoScenarioVariant:'incident_pressure'},{...deps,demoScenarioVariant:'incident_pressure'});
+ const rain=await planJourney({...request,rides:[actual],demoScenarioVariant:'rain'},{...deps,demoScenarioVariant:'rain'});
+ const costly=structuredClone(actual);costly.offer.price.totalMinor=700;
+ const expensiveOutage=await planJourney({...request,rides:[costly],demoScenarioVariant:'lighting_outage'},{...deps,demoScenarioVariant:'lighting_outage'});
+ assert.equal(baseline.selected?.kind,'walk');
+ assert.equal(outage.selected?.kind,'ride');
+ assert.equal(expensiveOutage.selected?.kind,'walk');
+ assert.ok(incident.selected?.scoreUnits);
+ assert.ok(rain.selected?.scoreUnits);
+});
+test('launcher default co-located trip has a complete simulated bus alternative and baseline/outage flip',async()=>{
+ const start={id:'current-origin',name:'Current location',point:{lat:37.229,lng:-80.414}},home={id:'confirmed-home',name:'Home',point:{lat:37.221,lng:-80.420}};
+ const quoted=ride(start);quoted.dropoff=home;quoted.offer.price.totalMinor=0;quoted.offer.waitMinutes=8;quoted.offer.travelMinutes=11;
+ quoted.pickupAt=when(480);quoted.arrivalAt=when(1140);
+ const stops=demoScenarioStops(start,home),sample=demoScenarioTransit({fromStopId:stops[0].id,toStopId:stops[1].id,evaluatedAt:at,accessWalkingMinutes:0,egressWalkingMinutes:0,maxWaitMinutes:45,walkingSource:'estimated'})!;
+ const deps={...dependencies,route:demoScenarioRoute,stops,transitSourceSha256:sample.source.sourceSha256,directTransit:async(q:import('../../integrations/databricks/full-transit-query').FullTransitRequest)=>demoScenarioTransit(q)};
+ const baseline=await planJourney({...request,origin:start,destination:home,rides:[quoted],demoScenarioVariant:'baseline'},{...deps,demoScenarioVariant:'baseline'});
+ const outage=await planJourney({...request,origin:start,destination:home,rides:[quoted],demoScenarioVariant:'lighting_outage'},{...deps,demoScenarioVariant:'lighting_outage'});
+ assert.equal(baseline.selected?.kind,'walk');assert.equal(outage.selected?.kind,'ride');
+ const bus=all(baseline).find(j=>j.kind==='bus')!;assert.ok(bus);
+ assert.equal(bus.legs.find(l=>l.kind==='bus')?.source,'simulated');
+ assert.equal(bus.legs.find(l=>l.kind==='bus')?.transitSource?.statementId,null);
+ assert.ok(bus.legs.filter(l=>l.kind==='wait').every(l=>l.sheltered===true));
+ assert.ok(all(baseline).every(j=>j.legs.every(l=>l.scenarioEvidence?.length)));
+});
+test('incident-pressure scenario considers a nearby simulated indoor waiting detour',async()=>{
+ const start={id:'current-origin',name:'Current location',point:{lat:37.229,lng:-80.414}},home={id:'confirmed-home',name:'Home',point:{lat:37.221,lng:-80.420}};
+ const quoted=ride(start);quoted.dropoff=home;quoted.offer.price.totalMinor=0;quoted.offer.waitMinutes=8;quoted.offer.travelMinutes=11;
+ quoted.pickupAt=when(480);quoted.arrivalAt=when(1140);
+ const out=await planJourney({...request,origin:start,destination:home,rides:[quoted],demoScenarioVariant:'incident_pressure'},
+   {...dependencies,route:demoScenarioRoute,demoScenarioVariant:'incident_pressure'});
+ assert.equal(out.selected?.kind,'ride');
+ assert.ok(out.selected?.explanationFacts.includes('MOVE_FOR_CONFIRMED_SHELTER'));
+ assert.ok((out.selected?.walkingSeconds??0)>0);
+ assert.ok(out.selected?.legs.some(l=>l.kind==='wait'&&l.sheltered===true));
+});
+test('scenario v2 local score matches bound native SQL, with invalid parity falling back',async()=>{
+ const start={id:'current-origin',name:'Current location',point:{lat:37.229,lng:-80.414}},home={id:'confirmed-home',name:'Home',point:{lat:37.221,lng:-80.420}};
+ const quoted=ride(start);quoted.dropoff=home;quoted.offer.price.totalMinor=0;quoted.offer.waitMinutes=8;quoted.offer.travelMinutes=11;
+ quoted.pickupAt=when(480);quoted.arrivalAt=when(1140);
+ async function run(corrupt=false){
+  let statement='';let features:Record<string,number|string>[]=[];
+  const fetch:typeof globalThis.fetch=async(_url,init)=>{
+   const body=JSON.parse(String(init?.body));statement=body.statement;
+   features=JSON.parse(body.parameters.find((p:{name:string})=>p.name==='features').value);
+   const ordered=[...features].sort((a,b)=>{
+    const score=(f:typeof a)=>Number(f.duration)+Number(f.walking)*Number(f.walkingWeight)+Number(f.outdoor)*2+Number(f.unknownWait)+Number(f.cost)+Number(f.complexity)*60+Number(f.lightingExposure)*10+Number(f.incidentPressure)*12+Number(f.rainWalking)*6;
+    return score(a)-score(b)||Number(a.arrival)-Number(b.arrival)||String(a.id).localeCompare(String(b.id));
+   });
+   const rows=ordered.map(f=>[String(f.id),String(Number(f.duration)+Number(f.walking)*Number(f.walkingWeight)+Number(f.outdoor)*2+Number(f.unknownWait)+Number(f.cost)+Number(f.complexity)*60+Number(f.lightingExposure)*10+Number(f.incidentPressure)*12+Number(f.rainWalking)*6+(corrupt?1:0))]);
+   return Response.json({statement_id:'scenario-rank-sql',status:{state:'SUCCEEDED'},manifest:{schema:{columns:[{name:'journey_id'},{name:'score_units'}]},total_row_count:rows.length},result:{data_array:rows}});
+  };
+  const result=await planJourney({...request,origin:start,destination:home,rides:[quoted],demoScenarioVariant:'lighting_outage'},
+    {...dependencies,route:demoScenarioRoute,demoScenarioVariant:'lighting_outage',rankOptions:{workspace,fetch}});
+  return {result,statement,features};
+ }
+ const valid=await run();assert.equal(valid.result.execution.engine,'databricks');
+ assert.equal(valid.result.policyVersion,'beacon-journey-rank-v2-demo');
+ assert.match(valid.statement,/f\.lightingExposure\*10/);assert.match(valid.statement,/f\.incidentPressure\*12/);
+ assert.ok(valid.features.every(f=>typeof f.lightingExposure==='number'));
+ assert.doesNotMatch(JSON.stringify(valid.features),/37\.229|80\.414|quote|geometry|pickup/);
+ const invalid=await run(true);assert.equal(invalid.result.execution.engine,'local_fallback');
+ assert.equal(invalid.result.selected?.kind,valid.result.selected?.kind);
+});
+test('scenario ranking failure surfaces only a sanitized transport category',async()=>{
+ const result=await planJourney({...request,demoScenarioVariant:'baseline'},
+  {...dependencies,route:demoScenarioRoute,demoScenarioVariant:'baseline',rankOptions:{workspace,
+   fetch:async()=>new Response('private vendor details must not surface',{status:503})}});
+ assert.equal(result.execution.engine,'local_fallback');
+ assert.equal(result.execution.fallbackReason,'WORKSPACE_HTTP_FAILED');
+ assert.doesNotMatch(JSON.stringify(result),/private vendor details/);
 });

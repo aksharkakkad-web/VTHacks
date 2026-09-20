@@ -3,6 +3,8 @@ import { getRuntime } from "./runtime";
 import { TripError } from "./model";
 import { object, text } from "../../agents/contract";
 import type { Action } from "../../agents/student/service";
+import { navigationHandoff } from '../journey/navigation';
+import { bindPlanningToJourney } from '../journey/planning';
 
 const cookieName = "beacon-session";
 export function ownerSession(request: Request, create = false) {
@@ -48,7 +50,7 @@ export function tripAction(request: Request, id: string, action: string, demo = 
       const input = await requestBody(request); requireBearer(request, process.env.BEACON_PROVIDER_EVENT_TOKEN);
       return noStoreJson(await getRuntime().agent.providerEvent(id, text(input.providerId, "provider id"), text(input.bookingId, "booking id"), text(input.event, "event"), input.details));
     }
-    const allowed = demo ? ["cancel-provider", "expire-deadline"] : ["discover", "evaluate", "confirm", "verify", "request", "location", "arrive", "replan"];
+    const allowed = demo ? ["cancel-provider", "expire-deadline", "scenario", "advance-ride"] : ["discover", "evaluate", "confirm", "verify", "request", "location", "arrive", "replan"];
     if (!allowed.includes(action)) throw new TripError("NOT_FOUND", "Operation not found", 404);
     const s = ownerSession(request); const input = await requestBody(request);
     return noStoreJson(await getRuntime().agent.act(id, s.owner, action as Action, input));
@@ -69,4 +71,10 @@ export function tripEvents(request: Request, id: string, action: string) {
 export function resetDemo(request: Request) { return handleTripHttp(async () => { sameOrigin(request); await getRuntime().agent.reset(ownerSession(request).owner); return noStoreJson({ reset: true }); }); }
 export function monitorTrips(request: Request) { return handleTripHttp(async () => { requireBearer(request, process.env.BEACON_MONITOR_TOKEN); await getRuntime().agent.monitor(); return noStoreJson({ checked: true }); }); }
 
-export function getJourney(request:Request,id:string){return handleTripHttp(async()=>noStoreJson(await getRuntime().agent.journey(id,ownerSession(request).owner)));}
+export function getJourney(request:Request,id:string){return handleTripHttp(async()=>{
+  const owner = ownerSession(request).owner;
+  const result = await getRuntime().agent.journey(id,owner);
+  const {getPlannerRuntime} = await import('../planner/runtime');
+  const planning = process.env.BEACON_PLANNER_MODE === 'codex_laptop' ? await getPlannerRuntime().planner.view(owner,id) : null;
+  return noStoreJson({...result, navigation:navigationHandoff(result.journey), planning:bindPlanningToJourney(planning,result.planningSnapshotId)});
+});}

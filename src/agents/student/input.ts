@@ -3,8 +3,10 @@ import { TripError, type Contact, type TripContext } from "../../lib/trip-state/
 import { telegramChatId } from "../../integrations/notifications/telegram";
 import { isPublicCorridor, matchesPublicCorridor, publicCorridorEndpoints } from "../../lib/decision-client/trip-options";
 
-export function parseTripInput(value: unknown, demo: boolean, now: number) {
+export function parseTripInput(value: unknown, demo: boolean, now: number, scenarioEnabled = false) {
   const input = object(value); const prefs = object(input.preferences ?? {});
+  const scenario = input.demoScenarioVariant;
+  if (scenario !== undefined && (!demo || !scenarioEnabled || !['baseline','lighting_outage','incident_pressure','rain'].includes(String(scenario)))) throw new TripError('DEMO_SCENARIO_DISABLED', 'Choose an enabled demo scenario', 400);
   if(input.journeyContract!==undefined&&input.journeyContract!=='beacon-journey-v1')throw new TripError('INVALID_JOURNEY_CONTRACT','Unsupported journey contract',400);
   const temporary = object(input.temporary_context ?? {});
   if (temporary.immediate_danger === true || temporary.medical_emergency === true || temporary.serious_injury === true) throw new TripError("EMERGENCY_HELP_REQUIRED", "Use emergency help immediately; Beacon does not dispatch emergency services.", 422);
@@ -30,6 +32,6 @@ export function parseTripInput(value: unknown, demo: boolean, now: number) {
   // Arbitrary exact addresses are never reused as coarse provider context.
   const originZone = corridorId ? "VT academic campus" : "Downtown Blacksburg"; const destinationZone = "VT residential campus";
   // Hard mobility limits must never be silently ignored by the legacy evaluator.
-  const completeJourney = input.journeyContract === 'beacon-journey-v1' || cannotWalk !== undefined || maxWalkingMinutes !== undefined;
-  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(corridorId ? { corridorId } : {}), ...(completeJourney?{journeyContract:'beacon-journey-v1' as const}:{}) };
+  const completeJourney = input.journeyContract === 'beacon-journey-v1' || cannotWalk !== undefined || maxWalkingMinutes !== undefined || scenarioEnabled;
+  return { private: { origin, home, contact }, context, originZone, destinationZone, ...(scenario === undefined ? {} : {demoScenarioVariant: scenario as 'baseline'|'lighting_outage'|'incident_pressure'|'rain'}), ...(corridorId ? { corridorId } : {}), ...(completeJourney?{journeyContract:'beacon-journey-v1' as const}:{}) };
 }

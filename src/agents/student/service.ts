@@ -25,7 +25,7 @@ import type { ActivityStore } from "../../lib/agent-activity/store";
 import { evaluateCompleteJourney, journeyOrigin, type JourneyCoordinatorDependencies } from './journey-coordinator';
 import { distanceMeters } from '../../lib/decision-client/walking-router';
 
-export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline" | "replan";
+export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline" | "replan" | "scenario" | "advance-ride";
 export type Dependencies = JourneyCoordinatorDependencies & {
   store: TripStore; directory: AgentDirectory; demo: boolean; clock?: () => number; graceMinutes?: number;
   provider: (descriptor: ProviderDescriptor, identity?: VerifiedIdentity) => ProviderAgent;
@@ -36,13 +36,15 @@ export type Dependencies = JourneyCoordinatorDependencies & {
   publicTripOptions?: (corridorId: PublicCorridor, demo: boolean, evaluatedAt: string) => Promise<PublicTripOptions>;
   contextReader?: (request: ContextRequest) => Promise<ContextResponse>;
   activity?: ActivityStore;
+  demoScenarioEnabled?: boolean;
+  advanceDemoRide?: (provider: ProviderDescriptor, bookingId: string, stage: string, eta?: number) => Promise<ProviderTrip>;
 };
 const activeStates = ["NAVIGATING", "WAITING_FOR_PICKUP", "IN_TRIP", "OVERDUE"] as const;
 export class StudentAgent {
   private readonly now: () => number;
   constructor(private readonly deps: Dependencies) { this.now = deps.clock ?? Date.now; }
   async create(owner: string, input: unknown) {
-    const record: TripRecord = { trip: { id: randomUUID(), state: "OBJECTIVE_RECEIVED", candidates: [], providerVerified: false, sensitiveDataReleased: false, alertSent: false, statusMessage: "Finding a way home" }, owner, ...parseTripInput(input, this.deps.demo, this.now()), providers: [], excluded: [], confirmed: false, quoteDeadline: 0, replanCount: 0, events: [] };
+    const record: TripRecord = { trip: { id: randomUUID(), state: "OBJECTIVE_RECEIVED", candidates: [], providerVerified: false, sensitiveDataReleased: false, alertSent: false, statusMessage: "Finding a way home" }, owner, ...parseTripInput(input, this.deps.demo, this.now(), this.deps.demoScenarioEnabled), providers: [], excluded: [], confirmed: false, quoteDeadline: 0, replanCount: 0, events: [] };
     transition(record, "OBJECTIVE_RECEIVED", "OBJECTIVE_RECEIVED", "Trip objective received", this.now());
     syncJourney(record,this.now());
     await this.deps.store.create(record); return record.trip;
@@ -50,6 +52,14 @@ export class StudentAgent {
   async read(id: string, owner: string) { const record = await this.deps.store.read(id); owns(record, owner); return record.trip; }
   private planningFacts(r:TripRecord,plan:CandidatePlan):Fact[]{
     const display={walk:"Walking",transit:"Scheduled transit",campus_ride:"Campus ride",independent_ride:"Independent ride"}[plan.mode]??"Transportation provider";
+    const scenario=r.completeJourney?.demoScenario;
+    if(scenario)return[
+      {id:'selected_plan',text:`${display} is the selected plan.`},
+      {id:'scenario_conditions',text:scenario.summary},
+      {id:'quoted_total',text:`The quoted total is $${plan.cost.toFixed(2)}.`},
+      {id:'trip_burden',text:`The plan includes ${Math.round(plan.walkingMinutes*10)/10} minutes of walking and ${Math.round(plan.waitMinutes*10)/10} minutes of waiting.`},
+      {id:'limitation_demo_scenario',text:'This demonstration uses synthetic campus conditions and simulated rides.'},
+    ];
     const simulated=(r.simulatedPlanIds??[]).includes(plan.planId),lightingUnknown=!r.planSignals?.[plan.planId]||r.planSignals[plan.planId].lighting==="unknown";
     return[
       {id:"selected_plan",text:`${display} is the selected plan.`},
@@ -63,7 +73,7 @@ export class StudentAgent {
     const selectionCurrent=!!r.trip.selectedPlan&&!['FAILED','ARRIVED','COLLECTING_QUOTES'].includes(r.trip.state)&&this.selectedDeadline(r)>this.now();
     const journey=structuredClone(r.journey??syncJourney(r,this.now()));
     if(!selectionCurrent&&!r.booking&&!r.pendingBooking&&['SELECTED','VERIFYING_PROVIDER','OVERDUE'].includes(r.trip.state))journey.nextStep=null;
-    return {journey,trip:structuredClone(r.trip),coordination:coordinationView(r,this.now()),ride:r.rideObservation??null,
+    return {journey,planningSnapshotId:this.planningSnapshotFor(r).snapshotId,trip:structuredClone(r.trip),coordination:coordinationView(r,this.now()),ride:r.rideObservation??null,
       arrival:{status:r.arrivalStatus??'NOT_DETECTED',policy:arrivalPolicy},notification:r.notification?{state:r.notification.state}:null,
       selectionCurrent};
   }
@@ -82,7 +92,7 @@ export class StudentAgent {
     const liabilities = (r.networkAttempts ?? []).map(a => ({ providerId:a.providerId,quoteId:a.quoteId,amountMinor:a.amountMinor,cancellationFeeMinor:a.cancellationFeeMinor,payment:a.payment,outcome:a.outcome??null })).sort((a,b)=>`${a.providerId}:${a.quoteId}`.localeCompare(`${b.providerId}:${b.quoteId}`));
     const snapshotId = digest({
       objective:{maxBudgetMinor:Math.round(r.context.maxBudget*100),minimizeWalking:r.context.minimizeWalking,minimizeTransfers:r.context.minimizeTransfers,cannotWalk:r.context.cannotWalk??false,maxWalkingMinutes:r.context.maxWalkingMinutes??null,hasBeenDrinking:r.context.hasBeenDrinking??false,exhausted:r.context.exhausted??false},
-      state:r.trip.state,replanCount:r.replanCount,excluded:[...r.excluded].sort(),privateRevision:r.private?digest({origin:r.private.origin,home:r.private.home,lastKnown:r.trip.lastKnownLocation??null}):null,
+      state:r.trip.state,replanCount:r.replanCount,demoScenarioVariant:r.demoScenarioVariant??null,excluded:[...r.excluded].sort(),privateRevision:r.private?digest({origin:r.private.origin,home:r.private.home,lastKnown:r.trip.lastKnownLocation??null}):null,
       candidates:r.trip.candidates,binding,liabilities,remainingBudgetMinor:remainingBudgetMinor(r),corridorId:r.corridorId??null,optionEvidence:r.optionEvidence??null,decisionEvidence:r.decisionEvidence??null,
     });
     const preferences:string[]=[];
@@ -96,7 +106,7 @@ export class StudentAgent {
     const topics=[...new Set(_intent.evidenceRequests.map(r=>r.topic))];
     const contextFacts:Fact[]=[];
     const corridor=before.corridorId??(before.originZone==="Downtown Blacksburg"?"downtown-pritchard":undefined);
-    if(topics.length&&this.deps.contextReader&&corridor){
+    if(topics.length&&this.deps.contextReader&&corridor&&!this.deps.demoScenarioEnabled){
       try{
         const request:ContextRequest={version:"beacon-context-v1",requestId:randomUUID(),corridorId:corridor,topics,evaluatedAt:new Date(this.now()).toISOString()};
         const context=this.deps.activity?await this.deps.activity.call(id,{sender:"student",recipient:"safety-research",operation:"context.query",execution:"live",safeData:{}},()=>this.deps.contextReader!(request),result=>({safeData:{evidenceCount:result.evidence.length,gapCount:result.gaps.length,leadCount:result.leads.length,lookupMode:result.lookupMode},execution:"live",evidenceIds:result.evidence.map(e=>e.id)})):await this.deps.contextReader(request);
@@ -178,6 +188,34 @@ export class StudentAgent {
         requireState(record, ["SELECTED", "VERIFYING_PROVIDER"]); await this.coordinate(record);
       }
       if (action === "location") await this.location(record, input);
+      if (action === 'scenario') {
+        if (!this.deps.demo || !this.deps.demoScenarioEnabled) throw new TripError('DEMO_DISABLED', 'Demo scenarios are disabled', 404);
+        const body = object(input);
+        if (body.journeyRevision !== record.journey?.revision) throw new TripError('JOURNEY_CHANGED', 'Review the current journey before changing the scenario');
+        if (!['baseline','lighting_outage','incident_pressure','rain'].includes(String(body.variant))) throw new TripError('INVALID_SCENARIO', 'Choose a supported demo scenario', 400);
+        requireState(record, ['SELECTED','NAVIGATING','WAITING_FOR_PICKUP','IN_TRIP','OVERDUE','COLLECTING_QUOTES']);
+        if (record.pendingBooking) throw new TripError('BOOKING_UNCERTAIN', 'Reconcile the existing booking first');
+        record.demoScenarioVariant = body.variant as TripRecord['demoScenarioVariant'];
+        if (record.booking) await this.recover(record);
+        else { record.confirmed = false; delete record.networkConsent; delete record.identity; delete record.journeyConfirmedRevision; record.replanCount++; await this.discover(record); await this.evaluate(record); }
+      }
+      if (action === 'advance-ride') {
+        if (!this.deps.demo || !this.deps.advanceDemoRide) throw new TripError('DEMO_DISABLED', 'Ride simulation controls are disabled', 404);
+        requireState(record, [...activeStates]);
+        if (!record.booking) throw new TripError('BOOKING_REQUIRED', 'Start a demo ride first');
+        const body = object(input), stage = String(body.stage);
+        if (!['approaching','arrived','in_trip','completed','cancelled'].includes(stage) || body.pickupEtaSeconds !== undefined && (!Number.isSafeInteger(body.pickupEtaSeconds) || Number(body.pickupEtaSeconds) < 0 || Number(body.pickupEtaSeconds) > 3600)) throw new TripError('INVALID_STAGE', 'Choose a supported ride stage', 400);
+        const provider=this.selectedProvider(record),bookingId=record.booking.id;
+        const advance=()=>this.deps.advanceDemoRide!(provider,bookingId,stage,body.pickupEtaSeconds as number | undefined);
+        const result = this.deps.activity ? await this.deps.activity.call(record.trip.id,{sender:'code',recipient:this.providerNode(provider),operation:'provider.status',execution:'simulated',safeData:{}},advance,value=>({safeData:{status:value.status==='in_trip'?'in_progress':value.status,simulated:true},execution:'simulated'})) : await advance();
+        if (result.id !== record.booking.id) throw new TripError('STALE_PROVIDER_EVENT', 'Wrong demo booking');
+        this.observe(record, result); acceptNetworkResult(record, result, this.now());
+        if (result.status === 'cancelled' || result.status === 'declined') await this.recover(record, true, result);
+        else if (result.status === 'completed') this.providerCompleted(record);
+        else if (result.status === 'in_trip') this.log(record, record.trip.state === 'OVERDUE' ? 'OVERDUE' : 'IN_TRIP', 'PROVIDER_IN_TRIP', 'Trip in progress');
+        else this.log(record, record.trip.state === 'OVERDUE' ? 'OVERDUE' : 'WAITING_FOR_PICKUP', 'PROVIDER_STAGE_UPDATED', 'Demo ride status updated');
+        await this.checkDeadline(record);
+      }
       if(action==='replan'){
         const body=object(input);if(body.journeyRevision!==record.journey?.revision)throw new TripError('JOURNEY_CHANGED','Review the current journey before replanning');
         if(!['route_changed','pickup_changed','conditions_changed'].includes(String(body.reason)))throw new TripError('INVALID_REPLAN_REASON','Specify a supported condition change',400);
@@ -199,24 +237,31 @@ export class StudentAgent {
     const journey=r.completeJourney?.selected;
     if(!journey||!['NAVIGATING','WAITING_FOR_PICKUP','IN_TRIP','OVERDUE'].includes(r.trip.state))return;
     let index=r.journeyLegIndex??0;
+    let legStartedAt=r.journeyLegStartedAt??Date.parse(journey.departureAt);
     const stage=r.rideObservation?.stage,rideIndex=journey.legs.findIndex(l=>l.kind==='ride');
-    if(rideIndex>=0&&stage==='in_trip')index=Math.max(index,rideIndex);
-    if(rideIndex>=0&&stage==='completed')index=Math.max(index,rideIndex+1);
+    if(rideIndex>=0&&stage==='in_trip'&&index<rideIndex){index=rideIndex;legStartedAt=this.now();}
+    if(rideIndex>=0&&stage==='completed'&&index<rideIndex+1){index=rideIndex+1;legStartedAt=this.now();}
     // Scheduled times never prove boarding or arrival; movement needs a provider
     // observation or a fresh accurate location near the evaluated leg endpoint.
     while(index<journey.legs.length){
       const leg=journey.legs[index],location=r.trip.lastKnownLocation;
-      if(leg.kind==='wait'&&this.now()>=Date.parse(leg.endsAt)){index++;continue;}
+      if(leg.kind==='wait'&&rideIndex>index){
+        const onward=journey.legs.slice(index+1,rideIndex).filter(l=>l.kind==='walk');
+        const accessSeconds=onward.reduce((sum,l)=>sum+(Date.parse(l.endsAt)-Date.parse(l.startsAt))/1000,0);
+        const eta=r.rideObservation?.pickupEtaSeconds;
+        if(onward.length&&(stage==='arrived'||eta!==null&&eta!==undefined&&eta<=accessSeconds+30)){index++;legStartedAt=this.now();continue;}
+      }
+      if(leg.kind==='wait'&&this.now()>=Date.parse(leg.endsAt)){index++;legStartedAt=this.now();continue;}
       if((leg.kind==='walk'||leg.kind==='bus')&&location&&r.journeyLocationAccuracy!==undefined&&r.journeyLocationAccuracy<=30
-        &&Date.parse(location.recordedAt)>=this.now()-30000&&Date.parse(location.recordedAt)>=Date.parse(leg.startsAt)
-        &&distanceMeters(location,leg.to.point)+r.journeyLocationAccuracy<=30){index++;continue;}
+        &&Date.parse(location.recordedAt)>=this.now()-30000&&Date.parse(location.recordedAt)>=(leg.kind==='walk'?legStartedAt:Date.parse(leg.startsAt))
+        &&distanceMeters(location,leg.to.point)+r.journeyLocationAccuracy<=30){index++;legStartedAt=this.now();continue;}
       break;
     }
-    r.journeyLegIndex=index;syncJourney(r,this.now());
+    r.journeyLegIndex=index;r.journeyLegStartedAt=legStartedAt;syncJourney(r,this.now());
   }
   private providerCompleted(r:TripRecord){
     if(r.trip.state==='NAVIGATING'&&r.rideObservation?.stage==='completed')return;
-    this.log(r,r.trip.state==='OVERDUE'?'OVERDUE':'NAVIGATING','PROVIDER_RIDE_COMPLETED','Ride completed; confirm arrival home or continue location updates');
+    this.log(r,r.trip.state==='OVERDUE'?'OVERDUE':'NAVIGATING','PROVIDER_RIDE_COMPLETED','Ride completed. Checking your location for home arrival.');
   }
   private providerNode(provider:ProviderDescriptor){return ["campus_ride","independent_ride","lyft-demo","transit"].includes(provider.id)?provider.id:"provider";}
   private selectedProvider(r: TripRecord) { const p = r.providers.find((p) => p.id === r.trip.selectedPlan?.providerId); if (!p) throw new TripError("PROVIDER_MISSING", "Selected provider is unavailable"); return p; }

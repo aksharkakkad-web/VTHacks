@@ -1,5 +1,7 @@
 # Backend integration contract — September 19, 2026
 
+> Current demo integration: [DEMO_BACKEND_RUNBOOK.md](DEMO_BACKEND_RUNBOOK.md) adds complete synthetic scenario data, actual scenario ranking, simulated ride progress, and the combined journey/planning/navigation response. Uber authentication was attempted and rejected; its connector is disabled in the runnable demo.
+
 Akshar now owns backend coordination and Databricks integration, including Mahin's earlier backend handoff. Rishit owns the phone experience. No frontend changes are part of this backend follow-up. See [BACKEND_COMPLETION_PLAN.md](BACKEND_COMPLETION_PLAN.md) for the integrated verification and access blockers.
 
 ## Routing boundary
