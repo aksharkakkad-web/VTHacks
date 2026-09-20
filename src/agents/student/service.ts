@@ -341,7 +341,8 @@ export class StudentAgent {
         r.quoteExpirations??={};r.quoteExpirations[selected.planId]=Math.min(r.quoteExpirations[selected.planId]??Infinity,Date.parse(result.selected.validUntil));
         if(this.planDeadline(r,selected.planId)<=this.now())expired();
         r.trip.candidates=candidates;r.trip.selectedPlan=selected;
-        r.trip.recommendation={selectedPlanId:selected.planId,...(candidates[1]?{runnerUpPlanId:candidates[1].planId}:{}),reasonCodes:['COMPLETE_JOURNEY',result.execution.engine==='databricks'?'DATABRICKS_JOURNEY_RANKING':'LOCAL_JOURNEY_FALLBACK'],explanation:result.selected.explanationFacts.join(' '),evaluatedAt:result.evaluatedAt};
+        const demoCarPair=result.warnings.includes('EXPLICIT_DEMO_CAR_PAIR');
+        r.trip.recommendation={selectedPlanId:selected.planId,...(candidates[1]?{runnerUpPlanId:candidates[1].planId}:{}),reasonCodes:['COMPLETE_JOURNEY',result.execution.engine==='databricks'?'DATABRICKS_JOURNEY_RANKING':'LOCAL_JOURNEY_FALLBACK',...(demoCarPair?['DEMO_CAR_PAIR_OVERRIDE','SIMULATED_TRANSPORT']:[])],explanation:result.selected.explanationFacts.join(' '),evaluatedAt:result.evaluatedAt};
         r.trip.providerVerified=false;r.trip.sensitiveDataReleased=Boolean(r.cleanup?.length);delete r.identity;delete r.networkConsent;delete r.journeyConfirmedRevision;r.confirmed=false;
         this.log(r,'SELECTED','PLAN_SELECTED',`${selected.providerName} recommended; awaiting confirmation`);return;
       }catch(error){

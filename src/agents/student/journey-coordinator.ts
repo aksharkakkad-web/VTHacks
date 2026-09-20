@@ -7,6 +7,36 @@ import { TripError, type TripRecord } from '../../lib/trip-state/model';
 import { remainingBudgetMinor } from './coordination';
 import { digest } from '../../lib/planner/validation';
 
+const SQUIRES_POINT = { lat: 37.22960669, lng: -80.41793863 };
+const NEW_HALL_WEST_POINT = { lat: 37.22223872, lng: -80.42257584 };
+const samePoint = (left: Point, right: Point) => left.lat === right.lat && left.lng === right.lng;
+
+/**
+ * One explicit hackathon path must demonstrate the simulated car workflow.
+ * The override is exact-coordinate, demo-only, and uses an already admitted,
+ * fully bound provider journey; it never invents a quote or booking authority.
+ */
+export function applyDemoCarPairPreference(result: JourneyResult, origin: Point, destination: Point, enabled: boolean): JourneyResult {
+  if (!enabled || !samePoint(origin, SQUIRES_POINT) || !samePoint(destination, NEW_HALL_WEST_POINT)) return result;
+  const journeys = [result.selected, ...result.alternatives].filter((journey): journey is Journey => journey !== null);
+  const preferred = journeys.find(journey => journey.kind === 'ride' && journey.offerBinding?.operatorId === 'independent_ride')
+    ?? journeys.find(journey => journey.kind === 'ride');
+  if (!preferred) return result;
+  return {
+    ...result,
+    selected: preferred,
+    alternatives: journeys.filter(journey => journey.journeyId !== preferred.journeyId).slice(0, 3),
+    warnings: [...new Set([...result.warnings, 'EXPLICIT_DEMO_CAR_PAIR'])],
+    execution: {
+      ...result.execution,
+      engine: 'local_fallback',
+      fallbackReason: 'EXPLICIT_DEMO_CAR_PAIR',
+      auditPersisted: false,
+      auditStatus: 'DISABLED_DEMO_OVERRIDE',
+    },
+  };
+}
+
 /** An authoritative local/provider sidecar, never a browser assertion. Receives
  * only admitted coarse quotes; no student coordinates, contact or credentials. */
 export type JourneyRideBinding = Omit<JourneyRide, 'offer'>;
@@ -57,7 +87,8 @@ export async function evaluateCompleteJourney(r: TripRecord, deps: JourneyCoordi
     rides, excludedServices: r.excludedJourneyServices ?? [],
     ...(r.demoScenarioVariant ? { demoScenarioVariant: r.demoScenarioVariant } : {}),
   };
-  const result = await deps.getCompleteJourney(request);
+  const planned = await deps.getCompleteJourney(request);
+  const result = applyDemoCarPairPreference(planned, origin, r.private.home, r.demoScenarioVariant !== undefined);
   if (unboundOffers) result.warnings = [...new Set([...result.warnings, 'PROVIDER_LOCATION_BINDINGS_UNAVAILABLE'])];
   if (result.journeyVersion !== 'beacon-journey-v1' || result.objectiveVersion !== r.replanCount
       || result.remainingBudgetMinor !== remainingBudgetMinor(r) || result.committedMinor !== committedMinor) {
