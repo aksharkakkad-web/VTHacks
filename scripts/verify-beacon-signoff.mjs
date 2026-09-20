@@ -16,14 +16,23 @@ async function shot(page, name) { const path = `${output}/screenshots/${name}.pn
 async function setup(page) {
   console.log("setup:start");
   await page.goto(`${base}/onboarding/welcome?demo=1`);
-  await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
-  await page.reload();
+  // Each walkthrough owns a fresh browser context. Reloading this first page
+  // only aborted Next's in-flight onboarding prefetch; no state needs clearing.
+  await page.waitForLoadState("networkidle");
   await page.getByRole("link", { name: "Get started" }).click();
   await page.getByRole("heading", { name: "Where is home?" }).waitFor();
+  await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: /Set as home/ }).click();
   await page.getByRole("heading", { name: "Your way home." }).waitFor();
+  await page.waitForLoadState("networkidle");
+  const savedNavigation = page.waitForResponse(response => new URL(response.url()).pathname === "/demo" && response.request().method() === "GET");
   await page.getByRole("button", { name: "Save and continue" }).click();
+  await (await savedNavigation).finished();
   await page.waitForURL(/\/demo\?walkthrough=1/);
+  await stage(page, "home");
+  await page.waitForLoadState("networkidle");
+  // This legacy suite verifies the server-owned fixture transport, not the backend integration.
+  await page.goto(`${base}/demo?walkthrough=1&transport=fixture`);
   await stage(page, "home");
   console.log("setup:home");
 }
@@ -63,6 +72,7 @@ try {
   check("normal journey reaches arrival", true);
   await shot(normal.page, "normal-03-arrival");
   const normalVideo = await normal.page.video()?.path();
+  await normal.page.waitForLoadState("networkidle");
   await normal.context.close(); if (normalVideo) results.recordings.push(normalVideo);
 
   const recovery = await newContext(browser, "recovery", true);
@@ -80,6 +90,7 @@ try {
   await stage(recovery.page, "arrival");
   check("replacement journey reaches arrival", true);
   const recoveryVideo = await recovery.page.video()?.path();
+  await recovery.page.waitForLoadState("networkidle");
   await recovery.context.close(); if (recoveryVideo) results.recordings.push(recoveryVideo);
 
   const cancel = await newContext(browser, "cancellation", true);
@@ -95,17 +106,23 @@ try {
   check("cancellation keeps the same attempt correlation", Boolean(before) && before === after, `${before} -> ${after}`);
   await shot(cancel.page, "cancellation-terminal");
   const cancelVideo = await cancel.page.video()?.path();
+  await cancel.page.waitForLoadState("networkidle");
   await cancel.context.close(); if (cancelVideo) results.recordings.push(cancelVideo);
 
   const phone = await newContext(browser, "phone");
   await setup(phone.page); await start(phone.page); await stage(phone.page, "waiting-initial", 30000);
   check("390px phone viewport has no horizontal overflow", await phone.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
   check("normal flow does not require opening Judge controls", await phone.page.getByRole("heading", { name: "Waiting for pickup" }).count() === 1 || await phone.page.getByText("Your request was accepted.", { exact: true }).count() === 1);
+  // This final phone check leaves an actively polling trip; drain its current response.
+  await (await phone.page.waitForResponse(response => response.url().endsWith("/demo/transport"))).finished();
   await phone.context.close();
 } finally { await browser.close(); }
 
-check("no page errors", results.pageErrors.length === 0, JSON.stringify(results.pageErrors));
-check("no console errors", results.consoleErrors.length === 0, JSON.stringify(results.consoleErrors));
-check("no failed browser requests", results.requestFailures.length === 0, JSON.stringify(results.requestFailures));
-await writeFile(`${output}/results.json`, JSON.stringify(results, null, 2));
+try {
+  check("no page errors", results.pageErrors.length === 0, JSON.stringify(results.pageErrors));
+  check("no console errors", results.consoleErrors.length === 0, JSON.stringify(results.consoleErrors));
+  check("no failed browser requests", results.requestFailures.length === 0, JSON.stringify(results.requestFailures));
+} finally {
+  await writeFile(`${output}/results.json`, JSON.stringify(results, null, 2));
+}
 console.log(JSON.stringify({ checks: results.checks.length, recordings: results.recordings.length, screenshots: results.screenshots.length, pageErrors: results.pageErrors.length, consoleErrors: results.consoleErrors.length, requestFailures: results.requestFailures.length }));

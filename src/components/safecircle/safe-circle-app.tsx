@@ -16,6 +16,7 @@ import { applyTripResponse, visibleMobility } from "../../lib/client/beacon/resp
 import { fallbackMobility, mobilitySample, sampleResponse, type MobilitySample } from "../../lib/client/beacon/sample-responses";
 import type { TripCommand, TripTransport } from "../../lib/client/beacon/trip-response";
 import { demoTransport } from "../../lib/client/beacon/demo-transport";
+import { BackendBeaconApp } from "../beacon/backend-beacon-app";
 
 type AppAction = DemoAction | { type: "APPLY_RESPONSE"; value: unknown; sample?: boolean };
 function appReducer(state: DemoState, action: AppAction): DemoState {
@@ -24,7 +25,13 @@ function appReducer(state: DemoState, action: AppAction): DemoState {
 export { PROFILE_STORAGE_KEY } from "../beacon/profile-storage";
 type Panel = "home" | "preferences" | "contact" | "context" | "details" | "help" | "location" | "technical" | "cancel" | null;
 
-export function SafeCircleApp({ demoControls = false, transport = demoTransport }: { demoControls?: boolean; transport?: TripTransport | null }) {
+export function SafeCircleApp({ demoControls = false, transport, fixture = false }: { demoControls?: boolean; transport?: TripTransport | null; fixture?: boolean }) {
+  if (fixture || transport !== undefined) return <FixtureApp demoControls={demoControls} transport={transport === undefined ? demoTransport : transport} />;
+  return <BackendBeaconApp demoControls={demoControls} />;
+}
+
+/** Explicit visual-regression fixtures only; never a fallback after backend errors. */
+function FixtureApp({ demoControls = false, transport = demoTransport }: { demoControls?: boolean; transport?: TripTransport | null }) {
   const router = useRouter();
   const [state, dispatch] = useReducer(appReducer, null, () => createDemoState(null));
   const [panel, setPanel] = useState<Panel>(null);
@@ -36,10 +43,12 @@ export function SafeCircleApp({ demoControls = false, transport = demoTransport 
   const generation = useRef(0);
   const previousStage = useRef(state.stage);
   const model = useMemo(() => deriveViewModel(state), [state]);
+  const integratedTripId = state.integration?.tripId;
+  const responseSource = state.integration?.responseSource;
 
   useEffect(() => { stateRef.current = state; }, [state]);
   useEffect(() => {
-    if (!transport || !state.integration || state.integration.responseSource === "sample" || ["home", "offline", "arrival", "cancelled", "session-error"].includes(state.stage)) return;
+    if (!transport || !integratedTripId || responseSource === "sample" || ["home", "offline", "arrival", "cancelled", "session-error"].includes(state.stage)) return;
     let active = true;
     let busy = false;
     // This timer only requests an authoritative server snapshot. It never dispatches ADVANCE.
@@ -54,7 +63,7 @@ export function SafeCircleApp({ demoControls = false, transport = demoTransport 
       finally { busy = false; }
     }, 500);
     return () => { active = false; window.clearInterval(timer); };
-  }, [transport, state.integration?.tripId, state.integration?.responseSource, state.stage]);
+  }, [transport, integratedTripId, responseSource, state.stage]);
   useEffect(() => {
     if (!transport?.subscribe) return;
     return transport.subscribe(state.integration?.tripId ?? "trip-demo-2409", value => dispatch({ type: "APPLY_RESPONSE", value }));
@@ -202,7 +211,7 @@ export function SafeCircleApp({ demoControls = false, transport = demoTransport 
     <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">Beacon demo: {state.stage.replaceAll("-", " ")}</span>
     {locationMessage && state.stage === "home" && <p className="sc-integration-note" role="status">{locationMessage}</p>}
     {connectionMessage && <p className="sc-integration-note" role="status">{connectionMessage}</p>}
-    {!transport && <p className="sc-integration-note">Manual fixture mode · Judge responses only</p>}
+    <p className="sc-integration-note">{transport ? "Local fixture mode · no backend journey" : "Manual fixture mode · Judge responses only"}</p>
     {sessionOnly && <p className="sc-integration-note" role="status">Storage unavailable. This demo is saved only while this page stays open.</p>}
     <CancelTripDialog open={panel === "cancel"} onOpenChange={open("cancel")} model={model} onAction={act} />
     <EditHomeSheet open={panel === "home"} onOpenChange={open("home")} profile={model.profile} onSave={persistProfile} />

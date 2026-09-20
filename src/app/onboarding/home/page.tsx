@@ -114,7 +114,7 @@ function BeaconHomeContent() {
   return (
     <main className={styles.stage}>
       <section ref={screenRef} className={styles.screen} aria-labelledby="home-heading">
-        <Link className={styles.backButton} href={demoMode ? "/onboarding/welcome?demo=1" : "/onboarding/welcome"} aria-label="Back to welcome">
+        <Link prefetch={false} className={styles.backButton} href={demoMode ? "/onboarding/welcome?demo=1" : "/onboarding/welcome"} aria-label="Back to welcome">
           <ArrowLeft aria-hidden="true" strokeWidth={2} />
         </Link>
 

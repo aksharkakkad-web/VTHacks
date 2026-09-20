@@ -38,7 +38,9 @@
     ".next-beacon/types/**/*.ts",
     ".next-beacon/dev/types/**/*.ts",
     ".next-beacon-dev/types/**/*.ts",
-    ".next-beacon-dev/dev/types/**/*.ts"
+    ".next-beacon-dev/dev/types/**/*.ts",
+    ".next-browser-backend/types/**/*.ts",
+    ".next-browser-backend/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -25,7 +25,7 @@ import type { ActivityStore } from "../../lib/agent-activity/store";
 import { evaluateCompleteJourney, journeyOrigin, type JourneyCoordinatorDependencies } from './journey-coordinator';
 import { distanceMeters } from '../../lib/decision-client/walking-router';
 
-export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel-provider" | "expire-deadline" | "replan" | "scenario" | "advance-ride";
+export type Action = "discover" | "evaluate" | "confirm" | "verify" | "request" | "location" | "arrive" | "cancel" | "cancel-provider" | "expire-deadline" | "replan" | "scenario" | "advance-ride";
 export type Dependencies = JourneyCoordinatorDependencies & {
   store: TripStore; directory: AgentDirectory; demo: boolean; clock?: () => number; graceMinutes?: number;
   provider: (descriptor: ProviderDescriptor, identity?: VerifiedIdentity) => ProviderAgent;
@@ -74,7 +74,7 @@ export class StudentAgent {
     const journey=structuredClone(r.journey??syncJourney(r,this.now()));
     if(!selectionCurrent&&!r.booking&&!r.pendingBooking&&['SELECTED','VERIFYING_PROVIDER','OVERDUE'].includes(r.trip.state))journey.nextStep=null;
     return {journey,planningSnapshotId:this.planningSnapshotFor(r).snapshotId,trip:structuredClone(r.trip),coordination:coordinationView(r,this.now()),ride:r.rideObservation??null,
-      arrival:{status:r.arrivalStatus??'NOT_DETECTED',policy:arrivalPolicy},notification:r.notification?{state:r.notification.state}:null,
+      arrival:{status:r.arrivalStatus??'NOT_DETECTED',policy:arrivalPolicy},notification:r.notification?{state:r.notification.state}:null,cancellation:r.cancellation?structuredClone(r.cancellation):null,
       selectionCurrent};
   }
   private planningSnapshotFor(r: TripRecord): PlanningSnapshot {
@@ -167,6 +167,8 @@ export class StudentAgent {
   async act(id: string, owner: string, action: Action, input: unknown = {}) {
     return this.deps.store.update(id, async (record) => {
       owns(record, owner);
+      if (action === "cancel") { await this.cancelByUser(record); syncJourney(record,this.now()); return structuredClone(record.trip); }
+      if (record.cancellation) throw new TripError("TRIP_CANCELLED", "This trip has been stopped; check its cancellation status");
       if (action === "discover") { requireState(record, ["OBJECTIVE_RECEIVED", "COLLECTING_QUOTES"]); await this.discover(record); }
       if (action === "evaluate") { requireState(record, ["COLLECTING_QUOTES", "SELECTED"]); if (record.confirmed) throw new TripError("ALREADY_CONFIRMED", "Plan is already confirmed"); await this.evaluate(record); }
       if (action === "confirm") {
@@ -525,6 +527,31 @@ export class StudentAgent {
     r.journeyLocationAccuracy=typeof raw.accuracyMeters==='number'&&Number.isFinite(raw.accuracyMeters)&&raw.accuracyMeters>=0?raw.accuracyMeters:undefined;
     if(r.private){const arrival=assessArrival(r.arrivalEvidence,{...location,recordedAt:recorded,accuracyMeters:raw.accuracyMeters},r.private.home,this.now());r.arrivalEvidence=arrival.evidence;r.arrivalStatus=arrival.reason;if(arrival.arrived)await this.arrive(r);}
   }
+  private async cancelByUser(r: TripRecord) {
+    if (!r.cancellation) {
+      if (r.trip.state === "ARRIVED") throw new TripError("INVALID_STATE", "This trip is already complete");
+      const attemptId = r.pendingBooking?.requestId ?? r.booking?.requestId;
+      r.cancellation = { status: "pending", requestedAt: new Date(this.now()).toISOString(), ...(attemptId ? {attemptId} : {}) };
+      this.queueCleanup(r);
+      delete r.private; delete r.identity; delete r.booking; delete r.pendingBooking; delete r.pendingReplacement;
+      delete r.networkConsent; delete r.journeyConfirmedRevision; delete r.arrivalEvidence; delete r.rideObservation;
+      delete r.completeJourney; delete r.completeJourneyOrigin; delete r.journeyLegIndex; delete r.journeyLocationAccuracy;
+      delete r.trip.lastKnownLocation; delete r.trip.alertDeadlineAt; delete r.trip.expectedArrivalAt;
+      r.confirmed = false; r.trip.providerVerified = false; r.trip.sensitiveDataReleased = Boolean(r.cleanup?.length);
+      this.log(r, "FAILED", "USER_CANCEL_REQUESTED", "Trip stopped; checking provider cancellation");
+      await this.deps.store.checkpoint(r);
+    }
+    await this.flushCleanup(r);
+    this.finishUserCancellation(r);
+    await this.flushOutcomes(r);
+  }
+  private finishUserCancellation(r: TripRecord) {
+    if (r.cancellation?.status !== "pending" || r.cleanup?.length) return;
+    r.cancellation.status = "resolved";
+    r.cancellation.resolvedAt = new Date(this.now()).toISOString();
+    delete r.networkAction;
+    this.log(r, "FAILED", "USER_CANCEL_RESOLVED", "Trip cancelled; location sharing ended");
+  }
   private async arrive(r: TripRecord) {
     this.queueCleanup(r);
     delete r.arrivalEvidence;delete r.rideObservation;r.arrivalStatus='ARRIVED';delete r.journeyConfirmedRevision;
@@ -556,6 +583,7 @@ export class StudentAgent {
           if (!client.cancelRequest) throw new Error("Provider cannot cancel requests");
           result = await client.cancelRequest(job.requestId);
         } else result = await client.cancelTrip(job.bookingId);
+        if (r.cancellation && result && !["cancelled", "completed", "declined"].includes(result.status)) throw new Error("Cancellation not confirmed");
         if (job.attemptId) acceptCancellationResult(r, result, this.now(), job.attemptId);
         r.cleanup = r.cleanup!.filter((pending) => pending !== job);
       } catch {
@@ -583,6 +611,7 @@ export class StudentAgent {
       await this.deps.store.update(id, async (r) => {
         await this.flushCleanup(r);
         await this.flushOutcomes(r);
+        if (r.cancellation) { this.finishUserCancellation(r); syncJourney(r,this.now()); return; }
         if (r.pendingBooking) {
           try { await this.reconcileBooking(r); } catch { /* A replacement outage must not disable the deadline. */ }
           if (r.pendingBooking) { await this.checkDeadline(r); return; }

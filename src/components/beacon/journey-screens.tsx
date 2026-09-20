@@ -97,7 +97,7 @@ function copyFor(stage: DemoStage, model: JourneyModel): ScreenCopy {
     body: model.paymentStatus === "pending"
       ? "Trip access is authorized. This demo is checking payment separately; no real card is charged and no booking is accepted yet."
       : model.providerVerified
-        ? "Identity is verified. Beacon is now applying the trip access rules separately."
+        ? model.backendDetails?.operatorVerification === "local_demo" ? "Local demo identity is verified. Beacon is applying the trip access rules separately." : "Identity is verified. Beacon is now applying the trip access rules separately."
         : "Identity and trip access are separate checks. Exact location stays withheld until both pass.",
     tone: "progress",
     icon: <LocateFixed aria-hidden="true" />,
@@ -146,7 +146,7 @@ function copyFor(stage: DemoStage, model: JourneyModel): ScreenCopy {
   if (stage === "arrival") return {
     eyebrow: "Trip complete",
     title: "You’re home.",
-    body: plan?.mode === "walk" || plan?.mode === "transit" ? "This demo plan is complete. Beacon is ready for the next trip." : "Temporary provider access has ended. Beacon is ready for the next trip.",
+    body: model.sensitiveDataReleased ? "Arrival is confirmed. Provider cleanup is still pending; temporary access has not yet been confirmed ended." : plan?.mode === "walk" || plan?.mode === "transit" ? "This plan is complete. Beacon is ready for the next trip." : "Temporary provider access has ended. Beacon is ready for the next trip.",
     tone: "success",
     icon: <House aria-hidden="true" />,
   };
@@ -251,14 +251,14 @@ function copyFor(stage: DemoStage, model: JourneyModel): ScreenCopy {
   if (stage === ("cancelling" as DemoStage)) return {
     eyebrow: "Cancellation pending",
     title: model.bookingStatus === "not-required" ? "Ending this plan." : "Waiting for the provider.",
-    body: model.bookingStatus === "not-required" ? "Closing this local demo plan. No provider booking or payment was requested." : "Keep this attempt open until the provider confirms whether the booking and simulated payment were cancelled.",
+    body: model.bookingStatus === "not-required" ? "Stopping this plan. No provider booking or payment was requested." : "Keep this attempt open until the provider confirms the booking outcome and simulated payment settlement.",
     tone: "warning",
     icon: <RefreshCw aria-hidden="true" />,
   };
   if (stage === ("cancelled" as DemoStage)) return {
     eyebrow: "Cancellation confirmed",
     title: "This trip was cancelled.",
-    body: plan?.mode === "walk" || plan?.mode === "transit" ? "This local demo plan ended. No provider booking or payment was requested." : "The provider reported the booking cancelled. You can return home and start again when ready.",
+    body: model.backendDetails ? "This trip request has ended. Any reported payment settlement is shown in trip details. You can start a new search when ready." : plan?.mode === "walk" || plan?.mode === "transit" ? "This local demo plan ended. No provider booking or payment was requested." : "The provider reported the booking cancelled. You can start a new search when ready.",
     tone: "success",
     icon: <Check aria-hidden="true" />,
   };
@@ -297,10 +297,12 @@ function StatusLine({ state, title, detail }: { state: "done" | "current" | "nex
 }
 
 function JourneyProgress({ stage, model }: { stage: DemoStage; model: JourneyModel }) {
+  const localDemoIdentity = model.backendDetails?.operatorVerification === "local_demo";
+  const identityKnown = model.providerVerified || localDemoIdentity;
   const paymentState = model.paymentStatus === "approved" ? "done" : model.paymentStatus === "declined" ? "failed" : model.paymentStatus === "pending" || model.paymentStatus === "unknown" ? "current" : "next";
   const bookingState = model.bookingStatus === "accepted" ? "done" : model.bookingStatus === "pending" || model.bookingStatus === "unknown" ? "current" : "next";
   const steps: Array<{ title: string; detail: string; state: "done" | "current" | "next" | "failed" }> = [
-    { title: "Provider identity", detail: model.providerVerified ? "Verified" : "Checking", state: model.providerVerified ? "done" : "current" },
+    { title: "Provider identity", detail: localDemoIdentity ? "Local demo trust · not live ANS" : model.providerVerified ? "Verified" : "Checking", state: identityKnown ? "done" : "current" },
     { title: "Trip access", detail: model.sensitiveDataReleased ? "Authorized" : "Exact location withheld", state: model.sensitiveDataReleased ? "done" : stageIs(stage, "authorizing") ? "current" : "next" },
     { title: "Simulated payment", detail: model.paymentStatus.replaceAll("-", " "), state: paymentState },
     { title: "Booking", detail: model.bookingStatus.replaceAll("-", " "), state: bookingState },
@@ -325,7 +327,7 @@ function CompactTripStatus({ model, stage }: { model: JourneyModel; stage: DemoS
         ? "Booking accepted"
         : "Latest trip update";
   const detail = arrived
-    ? (walking || model.selectedPlan?.mode === "transit" ? "No provider booking or payment" : "Provider access ended")
+    ? (model.sensitiveDataReleased ? "Provider cleanup pending" : walking || model.selectedPlan?.mode === "transit" ? "No active provider booking" : "Provider access ended")
     : walking
       ? "No provider booking or payment required"
       : `${model.selectedPlan?.providerName ?? "Service"} · ${model.sensitiveDataReleased ? "trip access active" : "exact location withheld"}`;
@@ -337,15 +339,15 @@ function FactGrid({ model, stage }: { model: JourneyModel; stage: DemoStage }) {
   const provider = plan?.providerName ?? "Unavailable";
   const providerTrip = plan && plan.mode !== "walk" && plan.mode !== "transit";
   const source = plan?.mode === "walk"
-    ? "Walking plan · Demo data"
+    ? model.backendDetails ? "Walking plan" : "Walking plan · Demo data"
     : plan?.mode === "transit"
-      ? "Scheduled transit · Demo data"
-      : "Simulated rideshare · Demo data";
+      ? model.backendDetails ? "Scheduled transit" : "Scheduled transit · Demo data"
+      : model.backendDetails?.simulated === false ? "Ride provider" : "Simulated rideshare · Demo data";
   const pickup = plan?.mode === "walk"
     ? "No pickup required"
     : plan?.mode === "transit"
       ? "Boarding details unavailable"
-      : "Pickup instructions unavailable";
+      : model.backendDetails?.pickupInstructions ?? "Pickup instructions unavailable";
   return (
     <dl className={styles.factGrid}>
       <div><dt>{plan?.mode === "walk" ? "Plan" : "Service"}</dt><dd>{provider}<small>{source}</small></dd></div>
@@ -370,8 +372,11 @@ function FooterActions({
   const { stage } = model;
   const plan = model.selectedPlan;
 
+  if (model.backendDetails && (stageIs(stage, "verifying") || stageIs(stage, "authorizing") || stageIs(stage, "coordinating"))) {
+    return <><PrimaryButton onClick={() => onAction(act("RETRY"))}>Continue this request</PrimaryButton><button className={styles.cancelAction} type="button" onClick={onCancel}>Request cancellation</button></>;
+  }
   if (stage === "arrival" || stage === ("cancelled" as DemoStage)) {
-    return <><PrimaryButton onClick={() => onAction(act("FINISH"))}>Finish</PrimaryButton>{stage === "arrival" && onDetails ? <button className={styles.secondaryAction} type="button" onClick={onDetails}>View trip details</button> : null}</>;
+    return <><PrimaryButton onClick={() => onAction(act("FINISH"))}>Finish</PrimaryButton>{(stage === "arrival" || model.backendDetails) && onDetails ? <button className={styles.secondaryAction} type="button" onClick={onDetails}>View trip details</button> : null}</>;
   }
   if (stage === "overdue") {
     return <><PrimaryButton onClick={() => onAction(act("CONFIRM_ARRIVAL"))}>I’m home</PrimaryButton><button className={styles.secondaryAction} type="button" onClick={() => onAction(act("STILL_TRAVELLING"))}>Still travelling</button>{onHelp ? <button className={styles.secondaryAction} type="button" onClick={onHelp}>Get help</button> : null}<button className={styles.cancelAction} type="button" onClick={onCancel}>Request cancellation</button></>;
@@ -425,11 +430,11 @@ function FooterActions({
 }
 
 function RecoveryFacts({ model }: { model: JourneyModel }) {
-  const fee = model.cancellationFee;
-  const remaining = model.constraints && fee !== undefined ? Math.max(0, model.constraints.maxBudget - fee) : undefined;
+  const fee = model.backendDetails ? model.backendDetails.previousRetainedFee : model.cancellationFee;
+  const remaining = model.backendDetails ? model.backendDetails.remainingBudget : model.constraints && fee !== undefined ? Math.max(0, model.constraints.maxBudget - fee) : undefined;
   return (
     <dl className={styles.recoveryFacts}>
-      <div><dt>Known cancellation fee</dt><dd>{money(fee)}</dd></div>
+      <div><dt>{model.backendDetails ? "Retained fee reported" : "Known cancellation fee"}</dt><dd>{money(fee)}</dd></div>
       <div><dt>Remaining budget</dt><dd>{money(remaining)}</dd></div>
       <div><dt>Old booking</dt><dd>{model.bookingStatus?.replaceAll("-", " ") ?? "unknown"}</dd></div>
       <div><dt>Simulated payment</dt><dd>{model.paymentStatus?.replaceAll("-", " ") ?? "unknown"}</dd></div>
@@ -476,7 +481,7 @@ export function JourneyScreen({ model: baseModel, onAction, onDetails, onHelp }:
 
           <footer className={styles.footer}>
             <FooterActions model={model} onAction={onAction} onDetails={onDetails} onHelp={onHelp} onCancel={() => setCancelOpen(true)} />
-            {model.stage === "session-error" ? <button className={styles.cancelAction} type="button" onClick={() => setResetOpen(true)}>Reset local demo</button> : null}
+            {model.stage === "session-error" && !model.backendDetails ? <button className={styles.cancelAction} type="button" onClick={() => setResetOpen(true)}>Reset local demo</button> : null}
           </footer>
         </div>
       </BeaconFrame>

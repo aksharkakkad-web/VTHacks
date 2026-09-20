@@ -38,7 +38,7 @@ function fixture() {
   const queue = new PlannerQueue(new MemoryJsonStore(emptyPlannerState()), () => now);
   const planner = new HybridPlanner(queue, adapter, () => now);
   return {
-    queue, planner,
+    queue, planner, adapter,
     pair: async () => queue.pair("owner", await queue.createPairing()),
     advance: (ms: number) => { now += ms; },
     arrive: () => { arrived = true; snapshot = "arrived"; },
@@ -140,4 +140,34 @@ test("polling an expired plan never starts another model job", async () => {
   }
   assert.equal((await f.queue.readRun("trip-1"))?.id, before?.id);
   assert.equal(f.counts().evaluations, 1);
+});
+
+test("leased evaluation snapshot changes show progress without stale prose; unrelated changes stay blocked",async()=>{
+ const f=fixture();await f.pair();await f.planner.start('owner','trip-1');
+ await completeCurrent(f.queue,{objective:'get_home',priorities:[],evidenceRequests:[],clarification:null});
+ let release!:()=>void,entered!:()=>void;
+ const held=new Promise<void>(resolve=>{release=resolve;}),started=new Promise<void>(resolve=>{entered=resolve;});
+ const evaluate=f.adapter.evaluate;
+ f.adapter.evaluate=async(...args)=>{const selection=await evaluate(...args);entered();await held;return selection;};
+ const ticking=f.planner.tick();await started;
+ const progress=await f.planner.view('owner','trip-1');
+ assert.equal(progress.phase,'gathering');assert.equal(progress.snapshotId,null);assert.equal(progress.explanation,undefined);assert.equal(progress.explanationSource,'none');
+ const snapshot=f.adapter.snapshot;
+ f.adapter.snapshot=async(...args)=>{const value=await snapshot(...args);return {...value,input:{...value.input,objective:'different'}};};
+ assert.equal((await f.planner.view('owner','trip-1')).messageCode,'PLANNER_STALE_SNAPSHOT');
+ f.adapter.snapshot=snapshot;
+ release();await ticking;
+ assert.equal((await f.planner.view('owner','trip-1')).phase,'explaining');
+});
+
+test("expired evaluator lease never hides an unbound changed snapshot",async()=>{
+ const f=fixture();await f.pair();await f.planner.start('owner','trip-1');
+ await completeCurrent(f.queue,{objective:'get_home',priorities:[],evidenceRequests:[],clarification:null});
+ let release!:()=>void,entered!:()=>void;
+ const held=new Promise<void>(resolve=>{release=resolve;}),started=new Promise<void>(resolve=>{entered=resolve;});
+ const evaluate=f.adapter.evaluate;
+ f.adapter.evaluate=async(...args)=>{const selection=await evaluate(...args);entered();await held;return selection;};
+ const ticking=f.planner.tick();await started;f.advance(90001);
+ assert.equal((await f.planner.view('owner','trip-1')).phase,'unavailable');
+ release();await assert.rejects(ticking,/STALE_SNAPSHOT|STALE_STAGE/);
 });

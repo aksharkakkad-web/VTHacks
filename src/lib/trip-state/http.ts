@@ -50,7 +50,7 @@ export function tripAction(request: Request, id: string, action: string, demo = 
       const input = await requestBody(request); requireBearer(request, process.env.BEACON_PROVIDER_EVENT_TOKEN);
       return noStoreJson(await getRuntime().agent.providerEvent(id, text(input.providerId, "provider id"), text(input.bookingId, "booking id"), text(input.event, "event"), input.details));
     }
-    const allowed = demo ? ["cancel-provider", "expire-deadline", "scenario", "advance-ride"] : ["discover", "evaluate", "confirm", "verify", "request", "location", "arrive", "replan"];
+    const allowed = demo ? ["cancel-provider", "expire-deadline", "scenario", "advance-ride"] : ["discover", "evaluate", "confirm", "verify", "request", "location", "arrive", "replan", "cancel"];
     if (!allowed.includes(action)) throw new TripError("NOT_FOUND", "Operation not found", 404);
     const s = ownerSession(request); const input = await requestBody(request);
     return noStoreJson(await getRuntime().agent.act(id, s.owner, action as Action, input));

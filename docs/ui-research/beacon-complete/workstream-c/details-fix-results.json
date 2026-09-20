@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:3100",
+  "base": "http://localhost:3123",
   "checks": [
     "360: in-trip-initial details open and close with focus restored",
     "360: arrival details open and close with focus restored",
@@ -49,9 +49,9 @@
     {
       "name": "360-long-cancel-rect",
       "rect": {
-        "x": 93.953125,
-        "y": 738.140625,
-        "width": 172.09375,
+        "x": 95.953125,
+        "y": 738,
+        "width": 168.09375,
         "height": 44
       }
     },
@@ -98,9 +98,9 @@
     {
       "name": "393-long-cancel-rect",
       "rect": {
-        "x": 110.453125,
-        "y": 808.1875,
-        "width": 172.09375,
+        "x": 112.453125,
+        "y": 790,
+        "width": 168.09375,
         "height": 44
       }
     },

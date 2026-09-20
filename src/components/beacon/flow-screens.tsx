@@ -480,9 +480,11 @@ export function RecommendationScreen({
 }) {
   const [showAlternatives, setShowAlternatives] = useState(defaultShowAlternatives);
   const plan = model.selectedPlan;
+  const backend = model.backendDetails;
+  const cancellationFee = backend ? backend.cancellationFee : model.cancellationFee;
   const alternatives = useMemo(
-    () => model.trip.candidates.filter((candidate) => candidate.planId !== plan?.planId && planIsEligible(candidate, model)),
-    [model, plan?.planId],
+    () => model.trip.candidates.filter((candidate) => candidate.planId !== plan?.planId && (backend ? candidate.available : planIsEligible(candidate, model))),
+    [model, plan?.planId, backend],
   );
 
   if (!plan) {
@@ -500,7 +502,7 @@ export function RecommendationScreen({
 
   const freeLabel = plan.cost === 0
     ? plan.mode === "campus_ride" ? "Free campus ride" : "No fare"
-    : "Estimated fare";
+    : backend?.quoteId ? "Quoted fare · simulated payment" : "Estimated fare";
   const offerExpiresAt = model.offerExpiresAt
     ? new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(model.offerExpiresAt))
     : null;
@@ -524,10 +526,10 @@ export function RecommendationScreen({
         {model.isReplacement ? (
           <section className={styles.changedTerms} aria-label="Changed replacement terms">
             <h2>New offer — review what changed</h2>
-            <div><span>Previous demo offer</span><strong>$2</strong></div>
+            <div><span>Previous offer</span><strong>{backend ? backend.previousOfferCost === undefined ? "Not reported" : formatCost(backend.previousOfferCost) : "$2"}</strong></div>
             <div><span>Replacement offer</span><strong>{formatCost(plan.cost)}</strong></div>
-            <div><span>Known cancellation fee</span><strong>{formatCost(model.cancellationFee)}</strong></div>
-            <div><span>Budget after known fee</span><strong>{formatCost(Math.max(0, (model.constraints?.maxBudget ?? 0) - model.cancellationFee))}</strong></div>
+            <div><span>Previous retained fee</span><strong>{backend ? backend.previousRetainedFee === undefined ? "Not reported" : formatCost(backend.previousRetainedFee) : formatCost(model.cancellationFee)}</strong></div>
+            <div><span>Remaining budget</span><strong>{backend ? backend.remainingBudget === undefined ? "Not reported" : formatCost(backend.remainingBudget) : formatCost(Math.max(0, (model.constraints?.maxBudget ?? 0) - model.cancellationFee))}</strong></div>
           </section>
         ) : null}
 
@@ -536,7 +538,7 @@ export function RecommendationScreen({
         <section className={`${styles.card} ${styles.planCard}`} aria-labelledby="selected-plan-title">
           <div className={styles.operatorLine}>
             <h2 id="selected-plan-title">{plan.providerName}</h2>
-            <span>{plan.mode === "walk" ? "Walking plan · Demo data" : plan.mode === "transit" ? "Scheduled transit · Demo data" : "Simulated rideshare · Demo data"}</span>
+            <span>{plan.mode === "walk" ? backend ? "Walking plan" : "Walking plan · Demo data" : plan.mode === "transit" ? backend ? "Scheduled transit" : "Scheduled transit · Demo data" : backend?.simulated === false ? "Ride provider" : "Simulated rideshare · Demo data"}</span>
           </div>
           <div className={styles.costBlock}>
             <strong>{formatCost(plan.cost)}</strong>
@@ -560,21 +562,23 @@ export function RecommendationScreen({
           </div>
           <div className={styles.planDetailRow}>
             <MapPin size={21} aria-hidden="true" />
-            <span><strong>Home</strong>{model.profile?.homeName ?? "Saved destination"}</span>
+            <span><strong>Home</strong>{backend ? backend.destinationName ?? "Backend destination" : model.profile?.homeName ?? "Saved destination"}</span>
           </div>
           <div className={styles.offerTerms}>
-            <span><strong>Demo service fee</strong>$0</span>
+            {!backend ? <span><strong>Demo service fee</strong>$0</span> : null}
             <span><strong>Offer valid until</strong>{offerExpiresAt ?? "Validity unavailable"}</span>
-            <span><strong>Cancellation</strong>{model.cancellationFee === 0 ? "$0 demo fee" : `${formatCost(model.cancellationFee)} demo fee`}</span>
+            <span><strong>Cancellation</strong>{cancellationFee === undefined ? "Fee not reported" : `${formatCost(cancellationFee)}${backend ? " quoted fee" : " demo fee"}`}</span>
+            {backend?.quoteId ? <span><strong>Quote</strong>Bound to this offer</span> : null}
           </div>
         </section>
 
         <p className={styles.reasonLine}>{model.recommendation?.explanation ?? "Within your saved budget and travel preferences."}</p>
-        <p className={styles.approvalNote}>{plan.mode === "walk" ? "Confirms this demo walking plan. No booking or payment." : plan.mode === "transit" ? "Scheduled estimates, not live arrivals. No booking or payment in this demo." : "Confirming approves this offer only. Provider identity, trip access, simulated payment, and booking are checked separately."}</p>
+        <p className={styles.approvalNote}>{plan.mode === "walk" ? "Confirms this walking plan. No booking or payment." : plan.mode === "transit" ? "Scheduled estimates, not live arrivals. No booking or payment in this demo." : "Confirming approves this offer only. Provider identity, trip access, simulated payment, and booking are checked separately."}</p>
 
         {showAlternatives ? (
           <section className={styles.alternatives} id="beacon-alternatives" aria-label="Other eligible options">
             <h2>Other options</h2>
+            {backend ? <p>For comparison. Confirm the recommended plan, or change your preferences for a new search.</p> : null}
             {alternatives.map((alternative) => <AlternativePlan key={alternative.planId} plan={alternative} onSelect={onSelectPlan} />)}
           </section>
         ) : null}

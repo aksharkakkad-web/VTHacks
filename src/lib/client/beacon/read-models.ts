@@ -31,6 +31,7 @@ export type RideStatusReadModel = {
 };
 export type JourneyLegReadModel = {
   id: string;
+  instruction?: string;
   kind: "walk" | "wait" | "ride" | "none";
   purpose: "home" | "pickup" | "transit-stop";
   status: "active" | "complete";

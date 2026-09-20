@@ -1,0 +1,1743 @@
+{
+  "base": "http://localhost:3123",
+  "startedAt": "2026-09-20T01:38:40.356Z",
+  "runtime": "production",
+  "modelInference": "fixture_only",
+  "ranking": "offline",
+  "rides": "simulated",
+  "notifications": "simulated",
+  "checks": [
+    "normal: healthy planning never flashes an error screen",
+    "normal: onboarding and UI create a real backend trip",
+    "stale consent revision is rejected",
+    "another browser cannot read owned trip",
+    "consent through UI creates provider booking",
+    "refresh restores same backend trip",
+    "waiting ride has no walking map",
+    "360x800 has no horizontal overflow",
+    "390x844 has no horizontal overflow",
+    "393x852 has no horizontal overflow",
+    "430x932 has no horizontal overflow",
+    "1440x900 has no horizontal overflow",
+    "backend approaching is visibly rendered",
+    "backend arrived is visibly rendered",
+    "backend in_trip is visibly rendered",
+    "backend completed is visibly rendered",
+    "normal UI reaches backend arrival",
+    "Finish returns Home",
+    "recovery: healthy planning never flashes an error screen",
+    "recovery: onboarding and UI create a real backend trip",
+    "consent through UI creates provider booking",
+    "replacement waits for fresh consent",
+    "backend approaching is visibly rendered",
+    "backend arrived is visibly rendered",
+    "backend in_trip is visibly rendered",
+    "backend completed is visibly rendered",
+    "cancellation: healthy planning never flashes an error screen",
+    "cancellation: onboarding and UI create a real backend trip",
+    "consent through UI creates provider booking",
+    "cancellation remains pending while request is in flight",
+    "UI cancellation restores backend terminal response after reload",
+    "walking: healthy planning never flashes an error screen",
+    "walking: onboarding and UI create a real backend trip",
+    "baseline walking recommendation is backend supplied",
+    "active walking displays backend route",
+    "overdue: healthy planning never flashes an error screen",
+    "overdue: onboarding and UI create a real backend trip",
+    "consent through UI creates provider booking",
+    "overdue does not claim a message without a consented destination",
+    "healthy journeys never render a slow-request error",
+    "no page or console errors",
+    "no failed browser requests",
+    "no server errors"
+  ],
+  "screenshots": [
+    "docs/ui-research/backend-integration/screenshots/normal-onboarding-welcome.png",
+    "docs/ui-research/backend-integration/screenshots/normal-onboarding-home.png",
+    "docs/ui-research/backend-integration/screenshots/normal-onboarding-preferences.png",
+    "docs/ui-research/backend-integration/screenshots/normal-offer.png",
+    "docs/ui-research/backend-integration/screenshots/normal-1-verification-pending.png",
+    "docs/ui-research/backend-integration/screenshots/normal-1-request-pending.png",
+    "docs/ui-research/backend-integration/screenshots/normal-pickup.png",
+    "docs/ui-research/backend-integration/screenshots/pickup-360.png",
+    "docs/ui-research/backend-integration/screenshots/pickup-390.png",
+    "docs/ui-research/backend-integration/screenshots/pickup-393.png",
+    "docs/ui-research/backend-integration/screenshots/pickup-430.png",
+    "docs/ui-research/backend-integration/screenshots/pickup-1440.png",
+    "docs/ui-research/backend-integration/screenshots/normal-approaching.png",
+    "docs/ui-research/backend-integration/screenshots/normal-arrived.png",
+    "docs/ui-research/backend-integration/screenshots/normal-in_trip.png",
+    "docs/ui-research/backend-integration/screenshots/normal-completed.png",
+    "docs/ui-research/backend-integration/screenshots/normal-arrival.png",
+    "docs/ui-research/backend-integration/screenshots/normal-finished-home.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-onboarding-welcome.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-onboarding-home.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-onboarding-preferences.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-offer.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-1-verification-pending.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-1-request-pending.png",
+    "docs/ui-research/backend-integration/screenshots/replacement-consent.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-2-verification-pending.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-2-request-pending.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-approaching.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-arrived.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-in_trip.png",
+    "docs/ui-research/backend-integration/screenshots/recovery-completed.png",
+    "docs/ui-research/backend-integration/screenshots/replacement-arrival.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-onboarding-welcome.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-onboarding-home.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-onboarding-preferences.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-offer.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-1-verification-pending.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-1-request-pending.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation-pending.png",
+    "docs/ui-research/backend-integration/screenshots/cancellation.png",
+    "docs/ui-research/backend-integration/screenshots/walking-onboarding-welcome.png",
+    "docs/ui-research/backend-integration/screenshots/walking-onboarding-home.png",
+    "docs/ui-research/backend-integration/screenshots/walking-onboarding-preferences.png",
+    "docs/ui-research/backend-integration/screenshots/walking-offer.png",
+    "docs/ui-research/backend-integration/screenshots/walking-route.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-onboarding-welcome.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-onboarding-home.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-onboarding-preferences.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-offer.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-1-verification-pending.png",
+    "docs/ui-research/backend-integration/screenshots/overdue-1-request-pending.png",
+    "docs/ui-research/backend-integration/screenshots/overdue.png"
+  ],
+  "recordings": [
+    "docs/ui-research/backend-integration/recordings/normal.webm",
+    "docs/ui-research/backend-integration/recordings/recovery.webm",
+    "docs/ui-research/backend-integration/recordings/cancellation.webm"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "httpFailures": [],
+  "network": [
+    {
+      "source": "student_ui",
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 2,
+        "planId": "network:ae730ef906ae7a13f1ae891de8eaf0b49dff119247430dae847a4a03eda6fbee",
+        "quoteId": "08ca9b31-960f-4087-ab93-25d6108062b7.[signature-redacted]"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/arrive",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/3f4e2c49-3af9-4056-ba88-1b636377ddbf/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 2,
+        "planId": "network:40a7a22772e2765114504d774668c413ff7732a925019c2747f296ffdeef7129",
+        "quoteId": "61d7dd24-60f2-4ede-ae67-43f0261b2516.[signature-redacted]"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/14457688-041f-41b2-87b8-97563533d706/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 6,
+        "planId": "network:8096965c3daf363d1af799427cabaded72b4ac8a08393974e3eaf05c33015211",
+        "quoteId": "34055d82-975f-4df4-891e-39245a1d917b.[signature-redacted]"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/14457688-041f-41b2-87b8-97563533d706/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/14457688-041f-41b2-87b8-97563533d706/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/14457688-041f-41b2-87b8-97563533d706/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/14457688-041f-41b2-87b8-97563533d706/advance-ride",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/arrive",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/14457688-041f-41b2-87b8-97563533d706/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 2,
+        "planId": "network:59f2b471f58f277ae26a8f2e378b831944d1a471bb0000cd0265e137d34883e2",
+        "quoteId": "1694b375-ced8-4365-abb3-941d6fcbb25c.[signature-redacted]"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/cancel",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/ea666cce-0e42-4257-a6f4-7b809bfcf77c/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 2,
+        "planId": "journey:journey:3241e4ab843249ddc0912f97f6ff99d3b28007fc"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/751d0443-f2b4-45b0-9cc9-576e00189023/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/demo/planner/pair",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/planning",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/confirm",
+      "method": "POST",
+      "status": 200,
+      "confirmation": {
+        "journeyRevision": 2,
+        "planId": "network:b53b98af3c8fe497dc29c523b75a36adb56c5d265fb7106d85df0473d7bb2ae2",
+        "quoteId": "2e6a99ad-a726-43ac-bda8-13601872bd65.[signature-redacted]"
+      }
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/verify",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/request",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/demo/trips/f258d165-cdac-4cf2-a182-63594d69a829/expire-deadline",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "test_driver",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "student_ui",
+      "path": "/api/trips/f258d165-cdac-4cf2-a182-63594d69a829/journey",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "uiStages": [
+    {
+      "name": "normal",
+      "stage": "home"
+    },
+    {
+      "name": "normal",
+      "stage": "discovering"
+    },
+    {
+      "name": "normal",
+      "stage": "home"
+    },
+    {
+      "name": "normal",
+      "stage": "discovering"
+    },
+    {
+      "name": "normal",
+      "stage": "recommendation"
+    },
+    {
+      "name": "normal",
+      "stage": "verifying-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "coordinating-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "waiting-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "waiting-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "arriving-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "in-trip-initial"
+    },
+    {
+      "name": "normal",
+      "stage": "arrival"
+    },
+    {
+      "name": "normal",
+      "stage": "home"
+    },
+    {
+      "name": "recovery",
+      "stage": "home"
+    },
+    {
+      "name": "recovery",
+      "stage": "discovering"
+    },
+    {
+      "name": "recovery",
+      "stage": "home"
+    },
+    {
+      "name": "recovery",
+      "stage": "discovering"
+    },
+    {
+      "name": "recovery",
+      "stage": "recommendation"
+    },
+    {
+      "name": "recovery",
+      "stage": "verifying-initial"
+    },
+    {
+      "name": "recovery",
+      "stage": "coordinating-initial"
+    },
+    {
+      "name": "recovery",
+      "stage": "waiting-initial"
+    },
+    {
+      "name": "recovery",
+      "stage": "replacement-selected"
+    },
+    {
+      "name": "recovery",
+      "stage": "verifying-replacement"
+    },
+    {
+      "name": "recovery",
+      "stage": "coordinating-replacement"
+    },
+    {
+      "name": "recovery",
+      "stage": "waiting-replacement"
+    },
+    {
+      "name": "recovery",
+      "stage": "arriving-replacement"
+    },
+    {
+      "name": "recovery",
+      "stage": "in-trip-replacement"
+    },
+    {
+      "name": "recovery",
+      "stage": "arrival"
+    },
+    {
+      "name": "cancellation",
+      "stage": "home"
+    },
+    {
+      "name": "cancellation",
+      "stage": "discovering"
+    },
+    {
+      "name": "cancellation",
+      "stage": "home"
+    },
+    {
+      "name": "cancellation",
+      "stage": "discovering"
+    },
+    {
+      "name": "cancellation",
+      "stage": "recommendation"
+    },
+    {
+      "name": "cancellation",
+      "stage": "verifying-initial"
+    },
+    {
+      "name": "cancellation",
+      "stage": "coordinating-initial"
+    },
+    {
+      "name": "cancellation",
+      "stage": "waiting-initial"
+    },
+    {
+      "name": "cancellation",
+      "stage": "cancelling"
+    },
+    {
+      "name": "cancellation",
+      "stage": "cancelled"
+    },
+    {
+      "name": "cancellation",
+      "stage": "cancelled"
+    },
+    {
+      "name": "walking",
+      "stage": "home"
+    },
+    {
+      "name": "walking",
+      "stage": "discovering"
+    },
+    {
+      "name": "walking",
+      "stage": "home"
+    },
+    {
+      "name": "walking",
+      "stage": "discovering"
+    },
+    {
+      "name": "walking",
+      "stage": "recommendation"
+    },
+    {
+      "name": "walking",
+      "stage": "verifying-initial"
+    },
+    {
+      "name": "walking",
+      "stage": "coordinating-initial"
+    },
+    {
+      "name": "walking",
+      "stage": "in-trip-initial"
+    },
+    {
+      "name": "overdue",
+      "stage": "home"
+    },
+    {
+      "name": "overdue",
+      "stage": "discovering"
+    },
+    {
+      "name": "overdue",
+      "stage": "home"
+    },
+    {
+      "name": "overdue",
+      "stage": "discovering"
+    },
+    {
+      "name": "overdue",
+      "stage": "collecting-quotes"
+    },
+    {
+      "name": "overdue",
+      "stage": "recommendation"
+    },
+    {
+      "name": "overdue",
+      "stage": "verifying-initial"
+    },
+    {
+      "name": "overdue",
+      "stage": "coordinating-initial"
+    },
+    {
+      "name": "overdue",
+      "stage": "waiting-initial"
+    },
+    {
+      "name": "overdue",
+      "stage": "overdue"
+    }
+  ],
+  "planning": [
+    {
+      "name": "normal",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_NOT_STARTED"
+    },
+    {
+      "name": "normal",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "normal",
+      "state": "SELECTED",
+      "phase": "explaining",
+      "messageCode": "PLANNER_EXPLAINING"
+    },
+    {
+      "name": "normal",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "VERIFYING_PROVIDER",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "IN_TRIP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "NAVIGATING",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "normal",
+      "state": "ARRIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_NOT_STARTED"
+    },
+    {
+      "name": "recovery",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "recovery",
+      "state": "SELECTED",
+      "phase": "explaining",
+      "messageCode": "PLANNER_EXPLAINING"
+    },
+    {
+      "name": "recovery",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "VERIFYING_PROVIDER",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "VERIFYING_PROVIDER",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "IN_TRIP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "NAVIGATING",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "recovery",
+      "state": "ARRIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_NOT_STARTED"
+    },
+    {
+      "name": "cancellation",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "cancellation",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "cancellation",
+      "state": "SELECTED",
+      "phase": "explaining",
+      "messageCode": "PLANNER_EXPLAINING"
+    },
+    {
+      "name": "cancellation",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "VERIFYING_PROVIDER",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "FAILED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "cancellation",
+      "state": "FAILED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "walking",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_NOT_STARTED"
+    },
+    {
+      "name": "walking",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "walking",
+      "state": "SELECTED",
+      "phase": "explaining",
+      "messageCode": "PLANNER_EXPLAINING"
+    },
+    {
+      "name": "walking",
+      "state": "SELECTED",
+      "phase": "ready",
+      "messageCode": "PLAN_READY_GROUNDED"
+    },
+    {
+      "name": "walking",
+      "state": "SELECTED",
+      "phase": "ready",
+      "messageCode": "PLAN_READY_GROUNDED"
+    },
+    {
+      "name": "walking",
+      "state": "NAVIGATING",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "overdue",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_NOT_STARTED"
+    },
+    {
+      "name": "overdue",
+      "state": "OBJECTIVE_RECEIVED",
+      "phase": "understanding",
+      "messageCode": "PLANNER_UNDERSTANDING"
+    },
+    {
+      "name": "overdue",
+      "state": "COLLECTING_QUOTES",
+      "phase": "gathering",
+      "messageCode": "PLANNER_GATHERING"
+    },
+    {
+      "name": "overdue",
+      "state": "SELECTED",
+      "phase": "ready",
+      "messageCode": "PLAN_READY_GROUNDED"
+    },
+    {
+      "name": "overdue",
+      "state": "SELECTED",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "overdue",
+      "state": "VERIFYING_PROVIDER",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "overdue",
+      "state": "WAITING_FOR_PICKUP",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    },
+    {
+      "name": "overdue",
+      "state": "OVERDUE",
+      "phase": "unavailable",
+      "messageCode": "PLANNER_STALE_SNAPSHOT"
+    }
+  ],
+  "status": "passed",
+  "finishedAt": "2026-09-20T01:39:13.818Z"
+}

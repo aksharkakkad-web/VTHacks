@@ -61,7 +61,7 @@ export function CancelTripDialog({
   model: DemoViewModel;
   onAction: (action: DemoAction) => void;
 }) {
-  const fee = model.cancellationFee;
+  const fee = model.backendDetails ? model.backendDetails.cancellationFee : model.cancellationFee;
   const submitted = !["not-required", "not-started", "cancelled"].includes(model.bookingStatus);
 
   function requestCancellation() {
@@ -76,7 +76,7 @@ export function CancelTripDialog({
       title={submitted ? "Cancel this request?" : "Stop this trip request?"}
       description={submitted
         ? "Beacon must wait for the provider to confirm the cancellation."
-        : "You’ll return home and this plan will not be requested."}
+        : "This trip request will stop. You can start a new search afterward."}
     >
       <div className={styles.consequenceCard}>
         <AlertTriangle size={22} aria-hidden="true" />
@@ -250,20 +250,28 @@ export function TripContextSheet({ open, onOpenChange, current, onApply, onClear
 }
 
 export function TripDetailsSheet({ open, onOpenChange, model }: OpenProps & { model: DemoViewModel }) {
+  const backend = model.backendDetails;
   const mode = model.selectedPlan?.mode;
   const providerTrip = mode !== undefined && mode !== "walk" && mode !== "transit";
   const source = mode === "walk"
-    ? "Walking plan · Demo data"
+    ? backend ? "Walking plan" : "Walking plan · Demo data"
     : mode === "transit"
-      ? "Scheduled transit · Demo data"
+      ? backend ? "Scheduled transit" : "Scheduled transit · Demo data"
       : providerTrip
-        ? "Simulated rideshare · Demo data"
+        ? backend?.simulated === false ? "Ride provider" : "Simulated rideshare · Demo data"
         : "Source unavailable";
   return (
     <JourneySheet open={open} onOpenChange={onOpenChange} title="Trip details" description="Latest information supplied to Beacon.">
       <dl className={styles.detailList}>
         <div><dt>Plan</dt><dd>{model.selectedPlan?.providerName ?? "Unavailable"}</dd></div>
         <div><dt>Source</dt><dd>{source}</dd></div>
+        {backend?.operatorName ? <div><dt>Operator</dt><dd>{backend.operatorName}</dd></div> : null}
+        {backend?.operatorVerification ? <div><dt>Verification</dt><dd>{backend.operatorVerification === "ans_verified" ? "ANS verified" : backend.operatorVerification === "local_demo" ? "Local demo verification" : "Not verified"}</dd></div> : null}
+        {backend?.quoteId ? <div><dt>Quote</dt><dd>Bound to this offer</dd></div> : null}
+        {backend?.destinationName ? <div><dt>Destination</dt><dd>{backend.destinationName}</dd></div> : null}
+        {backend?.expectedArrivalAt ? <div><dt>Expected arrival</dt><dd>{new Intl.DateTimeFormat("en-US", {hour:"numeric", minute:"2-digit"}).format(new Date(backend.expectedArrivalAt))} · plan estimate</dd></div> : null}
+        {backend?.payments?.map((payment,index)=><div key={index}><dt>Payment {index+1}</dt><dd>{payment.state} · ${payment.amount.toFixed(2)} · ${payment.retained.toFixed(2)} retained · simulated</dd></div>)}
+        {backend ? <div><dt>Contact notification</dt><dd>{backend.notificationState === "sent" ? "Accepted by Telegram" : backend.notificationState === "simulated" ? "Demo only · no message sent" : backend.notificationState === "sending" ? "Sending" : backend.notificationState === "uncertain" ? "Delivery unconfirmed" : backend.notificationState === "failed" ? "Not sent" : "No notification reported"}</dd></div> : null}
         {providerTrip ? <div><dt>Booking</dt><dd>{model.bookingStatus.replaceAll("-", " ")}</dd></div> : null}
         {providerTrip ? <div><dt>Payment</dt><dd>{model.paymentStatus.replaceAll("-", " ")} · simulated</dd></div> : null}
         {providerTrip ? <div><dt>Location sharing</dt><dd>{model.sensitiveDataReleased ? "Authorized for this active trip" : "Exact location withheld"}</dd></div> : null}

@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ".next/**",
     ".next-beacon/**",
     ".next-beacon-dev/**",
+    ".next-browser-backend/**",
+    ".next-gallery-check/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

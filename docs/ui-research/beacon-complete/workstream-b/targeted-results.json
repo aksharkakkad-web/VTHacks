@@ -1,6 +1,6 @@
 {
-  "base": "http://localhost:3100",
-  "galleryBase": "http://localhost:3000",
+  "base": "http://localhost:3123",
+  "galleryBase": "http://localhost:3124",
   "checks": [
     "Offer price, source, expiry, and fee precede static confirmation at 320/360/390/393/430; visible journey controls meet 44px.",
     "Alternative selection updates the review to $8.40 Rideshare and remains pre-booking with explicit simulated source.",

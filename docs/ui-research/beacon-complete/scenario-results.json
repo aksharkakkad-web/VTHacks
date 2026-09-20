@@ -1,9 +1,92 @@
 {
-  "base": "http://localhost:3000",
-  "checks": [],
+  "base": "http://localhost:3123",
+  "mode": "manual-fixture",
+  "checks": [
+    "Explicit provider responses recover; replacement cannot progress without fresh consent",
+    "Walking skips payment and booking",
+    "Scheduled transit boarding and arrival without booking/payment",
+    "Offline blocks actions; explicit reconciliation response resumes original attempt",
+    "Verification failure withholds location and retries",
+    "No suitable plan → edit preferences → explicit new result",
+    "Overdue, help and still-travelling",
+    "Cancellation confirmation → pending → explicit final result",
+    "Unknown booking stays uncertain until explicit same-attempt response",
+    "Unknown payment stays uncertain until explicit same-attempt response",
+    "Declined simulated payment requires fresh confirmation",
+    "Changed offer refreshes before approval",
+    "Slow request retry",
+    "Unavailable location returns to explicit demo pickup",
+    "Refresh and explicit fixture URL restore active fixture attempt",
+    "Repeated confirmation creates one attempt",
+    "Corrupt saved trip fails closed"
+  ],
   "shots": [
-    "FAILURE"
+    "R1-provider-failed",
+    "R2-reconciliation",
+    "R3-replacement-search",
+    "R4-fresh-confirmation",
+    "R4-replacement-arrival",
+    "W-walking",
+    "T-boarding",
+    "T-travelling",
+    "E6-offline",
+    "E6-reconnecting",
+    "E3-verification-failed",
+    "E1-no-plan",
+    "E10-overdue",
+    "S-help",
+    "E11-cancel-confirm",
+    "E11-cancelling",
+    "E11-cancelled",
+    "E5-booking-unknown",
+    "E5-payment-unknown",
+    "E4-payment-declined",
+    "E2-offer-changed",
+    "E9-slow",
+    "E8-location",
+    "E7-session-error",
+    "viewport-compact-home",
+    "viewport-compact-plan",
+    "viewport-compact-consent",
+    "viewport-compact-trip",
+    "viewport-small-home",
+    "viewport-small-plan",
+    "viewport-small-consent",
+    "viewport-small-trip",
+    "viewport-iphone-home",
+    "viewport-iphone-plan",
+    "viewport-iphone-consent",
+    "viewport-iphone-trip",
+    "viewport-large-home",
+    "viewport-large-plan",
+    "viewport-large-consent",
+    "viewport-large-trip",
+    "viewport-desktop-home",
+    "viewport-desktop-plan",
+    "viewport-desktop-consent",
+    "viewport-desktop-trip"
   ],
   "errors": [],
-  "controls": []
+  "controls": [
+    {
+      "viewport": "compact",
+      "small": []
+    },
+    {
+      "viewport": "small",
+      "small": []
+    },
+    {
+      "viewport": "iphone",
+      "small": []
+    },
+    {
+      "viewport": "large",
+      "small": []
+    },
+    {
+      "viewport": "desktop",
+      "small": []
+    }
+  ]
 }

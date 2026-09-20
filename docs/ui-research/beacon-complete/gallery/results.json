@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:3000",
+  "base": "http://localhost:3123",
   "viewport": "390x844",
   "shots": [
     {

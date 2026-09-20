@@ -33,6 +33,8 @@ type MobilityScreenProps = {
   onCancel: () => void;
   onRetryRoute?: () => void;
   onBoard?: () => void;
+  boardingLabel?: string;
+  navigation?: { destination: string; googleMapsUrl: string; appleMapsUrl: string };
 };
 
 type RideCopy = { eyebrow: string; title: string; body: string; tone: "progress" | "success" | "warning" };
@@ -292,6 +294,7 @@ function WalkingScreen(props: MobilityScreenProps) {
           {route?.warning ? <p className={styles.warning}><AlertCircle size={18} aria-hidden="true" /><span>{route.warning}</span></p> : null}
           <RouteSummary route={route} />
           <Directions route={route} />
+          {props.navigation && <p className={styles.updateNote}>Open directions to {props.navigation.destination}: <a href={props.navigation.googleMapsUrl} target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href={props.navigation.appleMapsUrl} target="_blank" rel="noopener noreferrer">Apple Maps</a>. The external app chooses its own path.</p>}
           <p className={styles.updateNote}>{routeSourceLabel(route?.source)} · {updatedAt ? `Updated ${updatedAt}` : "Update time not supplied"}</p>
         </div>
 
@@ -352,14 +355,15 @@ function RideFacts({ ride }: { ride: RideStatusReadModel | undefined }) {
   );
 }
 
-function TransitWaitCard() {
+function TransitWaitCard({ instruction, travelling = false }: {instruction?: string; travelling?: boolean}) {
   return (
     <section className={styles.statusCard} aria-labelledby="transit-wait-title">
       <div className={styles.statusTopline}>
         <span><Clock3 size={20} aria-hidden="true" /></span>
-        <p><small id="transit-wait-title">Boarding status</small><strong>Waiting for your confirmation</strong></p>
+        <p><small id="transit-wait-title">Scheduled transit</small><strong>{travelling ? "Following your transit plan" : "Check your service before boarding"}</strong></p>
       </div>
       <p className={styles.statusNote}>No live transit status was supplied. Check the service sign before boarding.</p>
+      {instruction ? <p className={styles.statusNote}>{instruction}</p> : null}
     </section>
   );
 }
@@ -368,6 +372,7 @@ function RideScreen(props: MobilityScreenProps) {
   const { mobility, onArrival, onHelp, onDetails, onCancel, onBoard } = props;
   const ride = mobility.ride;
   const transitWaiting = mobility.leg.kind === "wait" && mobility.leg.purpose === "transit-stop" && mobility.leg.status === "active";
+  const transitTravelling = mobility.leg.kind === "ride" && mobility.leg.purpose === "transit-stop" && !ride;
   const hasRideFields = Boolean(ride && (
     ride.providerSource !== "unknown" ||
     ride.stage !== "unknown" ||
@@ -384,7 +389,7 @@ function RideScreen(props: MobilityScreenProps) {
   ));
   const copy = transitWaiting
     ? { eyebrow: "Waiting at your stop", title: "Board when your service arrives.", body: "Check the service sign before boarding.", tone: "progress" as const }
-    : rideCopy(ride);
+    : transitTravelling ? {eyebrow:"Scheduled transit",title:"Follow your transit plan.",body:"Use the supplied service guidance. No live vehicle tracking is available.",tone:"progress" as const} : rideCopy(ride);
   const activeRide = Boolean(mobility.leg.status === "active" && ((ride && ride.stage !== "completed" && ride.stage !== "cancelled") || transitWaiting));
 
   return (
@@ -397,12 +402,12 @@ function RideScreen(props: MobilityScreenProps) {
         </header>
 
         <div className={`${styles.content} ${styles.rideContent}`}>
-          {transitWaiting && !hasRideFields ? <TransitWaitCard /> : <RideFacts ride={ride} />}
+          {(transitWaiting || transitTravelling) && !hasRideFields ? <TransitWaitCard instruction={mobility.leg.instruction} travelling={transitTravelling} /> : <RideFacts ride={ride} />}
         </div>
 
         <footer className={styles.footer}>
-          {transitWaiting && onBoard ? <PrimaryAction onClick={onBoard}>I’ve boarded</PrimaryAction> : null}
-          {mobility.leg.kind === "ride" && mobility.leg.status === "active" && ride?.stage !== "completed" && ride?.stage !== "cancelled" ? <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction> : null}
+          {transitWaiting && onBoard ? <PrimaryAction onClick={onBoard}>{props.boardingLabel ?? "I’ve boarded"}</PrimaryAction> : null}
+          {mobility.leg.kind === "ride" && mobility.leg.status === "active" && ride?.stage !== "cancelled" ? <PrimaryAction onClick={onArrival}>I’m home</PrimaryAction> : null}
           <UtilityActions onDetails={onDetails} onHelp={onHelp} />
           {activeRide ? <button className={styles.cancelAction} type="button" onClick={onCancel}>Request cancellation</button> : null}
         </footer>

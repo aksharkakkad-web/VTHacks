@@ -1,6 +1,6 @@
-locator.click: Timeout 30000ms exceeded.
+locator.tap: Timeout 30000ms exceeded.
 Call log:
-[2m  - waiting for getByRole('button', { name: 'Close Demo controls', exact: true })[22m
+[2m  - waiting for getByRole('button', { name: 'I’m on board', exact: true })[22m
 
-    at judge (/Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-scenarios.mjs:16:154)
-    at async file:///Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-scenarios.mjs:19:105
+    at tap (/Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-scenarios.mjs:13:72)
+    at /Users/rishits/Documents/ChatGPT/vthacks/scripts/verify-beacon-scenarios.mjs:22:330

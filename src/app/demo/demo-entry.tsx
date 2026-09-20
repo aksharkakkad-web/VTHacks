@@ -6,7 +6,7 @@ import { BeaconFrame } from "@/components/beacon/flow-screens";
 import { readProfile } from "@/components/beacon/profile-storage";
 import { SafeCircleApp } from "@/components/safecircle/safe-circle-app";
 
-export function DemoEntry({ walkthrough, manual = false }: { walkthrough: boolean; manual?: boolean }) {
+export function DemoEntry({ walkthrough, manual = false, fixture = false }: { walkthrough: boolean; manual?: boolean; fixture?: boolean }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function DemoEntry({ walkthrough, manual = false }: { walkthrough: boolea
     router.replace(readProfile() ? "/demo?walkthrough=1" : "/onboarding/welcome?demo=1");
   }, [router, walkthrough]);
 
-  if (walkthrough) return <SafeCircleApp demoControls {...(manual ? { transport: null } : {})} />;
+  if (walkthrough) return <SafeCircleApp demoControls fixture={fixture} {...(manual ? { transport: null } : {})} />;
 
   return (
     <BeaconFrame>

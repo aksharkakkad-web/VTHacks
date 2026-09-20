@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:3000",
+  "base": "http://localhost:3123",
   "checks": [
     {
       "name": "normal journey reaches recommendation from transport responses",
@@ -136,8 +136,8 @@
     "docs/ui-research/beacon-signoff/screenshots/normal-01-recommendation.png"
   ],
   "recordings": [
-    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@a5829241c73e171fcde9722fb16bfd7c.webm",
-    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@af705cc507e4a7ecc310cf58ceec4481.webm",
-    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@1e4867220978cf0d20a5d3eba2895081.webm"
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@c94f66fd8fbdbc2631929cdf83c5dfe8.webm",
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@7d7c2bc4a6da2e79f98328cb709fb5e8.webm",
+    "/Users/rishits/Documents/ChatGPT/vthacks/docs/ui-research/beacon-signoff/recordings/page@b12fc5c6c407e8911a411660c3a7b492.webm"
   ]
 }

@@ -1,0 +1,38 @@
+{
+  "base": "http://localhost:3123",
+  "fixtureCases": [
+    "malformed snapshot",
+    "delayed older revision",
+    "DISCOVERING in-flight response fixture",
+    "REPLANNING in-flight response fixture"
+  ],
+  "checks": [
+    "restoration retains same recommendation trip",
+    "restoration retains consent requirement",
+    "DISCOVERING reload restores existing identity",
+    "DISCOVERING restore does not create a new trip",
+    "REPLANNING reload restores existing identity",
+    "REPLANNING restore does not create a new trip",
+    "offline reconnect sends no mutation",
+    "online restores authoritative recommendation",
+    "malformed response does not show arrival",
+    "malformed response recovers via retry",
+    "confirmed restored plan resumes without new consent",
+    "replacement revision advances",
+    "delayed older response cannot regress selected replacement",
+    "backend is verifying before reload",
+    "verified restored ride reaches pickup",
+    "riding refresh restores same real trip",
+    "riding refresh has no walking map",
+    "arrival refresh remains completed",
+    "arrival refresh retains completed trip identity",
+    "missing restore never auto-creates a trip",
+    "missing restore keeps original trip identity",
+    "unauthorized restore never auto-creates a trip",
+    "unauthorized restore keeps original trip identity",
+    "lifecycle checks have no page crashes"
+  ],
+  "failures": [],
+  "pageErrors": [],
+  "status": "passed"
+}

@@ -11,6 +11,7 @@ await mkdir(output, { recursive: true });
 const context = await browser.newContext({ viewport: { width:390, height:844 }, reducedMotion:'reduce' });
 const page = await context.newPage();
 const errors=[];
+async function fixture(){await page.goto(`${base}/demo?walkthrough=1&transport=fixture`);await page.getByRole('button',{name:'Get me home',exact:true}).waitFor();}
 page.on('pageerror', e=>errors.push(e.message));
 page.on('console',message=>{if(message.type()==='error') errors.push(message.text());});
 async function capture(name) {
@@ -37,6 +38,7 @@ try {
   await budget.fill('17');
   await page.getByRole('button',{name:/Save and continue/i}).click();
   await page.getByRole('button',{name:/Get me home/i}).waitFor();
+  await fixture();
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('safecircle.profile.v1')).maxBudget),17);
   await capture('02-home');
   await page.getByRole('button',{name:/Get me home/i}).click();
@@ -59,7 +61,7 @@ try {
   await capture('06-arrival');
   await page.getByRole('button',{name:'Finish',exact:true}).click();
   await page.getByRole('button',{name:/Get me home/i}).waitFor();
-  await page.goto(base);
+  await fixture();
   await page.getByRole('button',{name:/Get me home/i}).waitFor();
   for(const width of [320,1440]) {
     await page.setViewportSize({width,height:width===320?568:1000});
@@ -81,6 +83,7 @@ try {
   await page.goto(`${base}/onboarding/preferences`);
   await page.getByRole('spinbutton').fill('0');
   await page.getByRole('button',{name:/Save and continue/i}).click();
+  await fixture();
   await page.getByRole('button',{name:/Get me home/i}).click();
   await page.getByTestId('screen-no-options').waitFor({timeout:15000});
   await page.getByRole('button',{name:'Change preferences'}).click();
@@ -103,7 +106,7 @@ try {
   await privatePage.getByRole('button',{name:/Set as home/i}).click();
   await privatePage.getByRole('button',{name:/Save and continue/i}).click();
   await privatePage.getByRole('button',{name:/Get me home/i}).waitFor();
-  await privatePage.getByText('Storage unavailable. This demo is saved only while this page stays open.').waitFor();
+  await privatePage.getByText('Storage unavailable: keep this tab open to retain the trip identifier.').waitFor();
   await privateContext.close();
   assert.deepEqual(errors,[]);
   console.log('PASS: onboarding, exact budget, save, search, cancel, recommendation, verification, arrival, returner, 320/390/1440px.');

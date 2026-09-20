@@ -82,7 +82,24 @@ export type DemoScenario =
   | "context-fallback"
   | "overdue";
 
+export type BackendDetails = {
+  destinationName?: string;
+  expectedArrivalAt?: string;
+  pickupInstructions?: string;
+  payments?: {state: string; amount: number; retained: number}[];
+  quoteId?: string;
+  operatorName?: string;
+  operatorVerification?: string;
+  cancellationFee?: number;
+  remainingBudget?: number;
+  previousOfferCost?: number;
+  previousRetainedFee?: number;
+  notificationState?: string;
+  simulated?: boolean;
+};
+
 export type DemoState = {
+  backendDetails?: BackendDetails;
   integration?: IntegrationState;
   stage: DemoStage;
   paymentStatus: PaymentStatus;
@@ -146,6 +163,7 @@ export type TechnicalStep = {
 };
 
 export type DemoViewModel = {
+  backendDetails?: BackendDetails;
   paymentStatus: PaymentStatus;
   bookingStatus: BookingStatus;
   attemptId?: string;

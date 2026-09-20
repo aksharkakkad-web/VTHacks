@@ -1,0 +1,40 @@
+{
+  "url": "http://localhost:3123",
+  "checks": [
+    "Manifest, icons, standalone metadata, safe-area viewport; Chromium installability reports zero errors",
+    "Service worker installs, public-only cache, offline shell and reconnect retry",
+    "Storage blocked: onboarding remains usable, persistence limits visible"
+  ],
+  "manifest": {
+    "name": "Beacon",
+    "short_name": "Beacon",
+    "description": "A calm campus mobility coordinator that helps you get home.",
+    "start_url": "/",
+    "id": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#fbfaf6",
+    "theme_color": "#fbfaf6",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/beacon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/beacon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      }
+    ]
+  },
+  "install": {
+    "installabilityErrors": []
+  },
+  "cached": [
+    "/offline.html",
+    "/beacon-192.png"
+  ]
+}

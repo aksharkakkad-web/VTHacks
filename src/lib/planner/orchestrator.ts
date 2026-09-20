@@ -1,7 +1,7 @@
 import type { ActivityStore } from "../agent-activity/store";
 import type { Fact, Intent, Explanation, PlannerCompletion, PlanningView } from "./contracts";
 import type { PlannerQueue } from "./queue";
-import { validateOutput } from "./validation";
+import { digest, validateOutput } from "./validation";
 
 export type PlanningSnapshot = { snapshotId:string; terminal:boolean; input:Record<string,unknown>; selectedPlanId?:string; expiresAt?:number; facts?:Fact[] };
 export type PlanningSelection = { snapshotId:string; selectedPlanId:string; expiresAt:number; facts:Fact[] };
@@ -26,6 +26,7 @@ function grounded(value:unknown,run:{snapshotId:string;selectedPlanId?:string;fa
 }
 
 export class HybridPlanner {
+ private evaluating = new Map<string,{stageToken:string;inputHash:string}>();
  constructor(private queue:PlannerQueue,private trips:PlanningTripAdapter,private now:()=>number=Date.now,private activity?:ActivityStore){}
 
  async start(owner:string,tripId:string){
@@ -66,6 +67,7 @@ export class HybridPlanner {
     const current=await this.trips.snapshot(run.tripId,run.owner);
     if(current.terminal)throw new Error("STALE_SNAPSHOT");
     await this.queue.setRunPhase(run.tripId,run.id,stageToken,"gathering","PLANNER_GATHERING");
+    if(current.snapshotId===run.snapshotId&&!current.selectedPlanId)this.evaluating.set(run.id,{stageToken,inputHash:digest(current.input)});
     const selection=current.selectedPlanId&&current.expiresAt&&current.expiresAt>this.now()&&current.facts?.length?{snapshotId:current.snapshotId,selectedPlanId:current.selectedPlanId,expiresAt:current.expiresAt,facts:current.facts}:current.snapshotId===run.snapshotId?await this.trips.evaluate(run.tripId,run.owner,run.snapshotId,intent):(()=>{throw new Error("STALE_SNAPSHOT");})();
     if(selection.expiresAt<=this.now())throw new Error("STALE_SNAPSHOT");
     const explanationJob=await this.queue.queueExplanation(run,stageToken,selection);
@@ -88,12 +90,18 @@ export class HybridPlanner {
   }catch(error){
    await this.queue.finishRun(run,stageToken,{phase:"unavailable",messageCode:error instanceof Error&&error.message==="STALE_SNAPSHOT"?"PLANNER_STALE_SNAPSHOT":"PLANNER_STAGE_UNAVAILABLE",explanationSource:"none"}).catch(()=>{});
    throw error;
-  }
+  }finally{this.evaluating.delete(run.id);}
  }
 
  async view(owner:string,tripId:string):Promise<PlanningView>{
   const current=await this.trips.snapshot(tripId,owner);const run=await this.queue.readRun(tripId);const worker=await this.queue.worker();
   if(!run||run.owner!==owner)return{version:"beacon-planning-v1",runId:"none",phase:"unavailable",worker:worker.state,modelSource:"none",explanationSource:"none",snapshotId:null,messageCode:"PLANNER_NOT_STARTED"};
+  // Our active evaluator changes the trip snapshot before queueExplanation binds
+  // the new selection. Expose only progress during that leased operation, never
+  // old prose or confirmation authority. Changed objective inputs remain stale.
+  const evaluating=this.evaluating.get(run.id);
+  if(evaluating&&run.phase==="gathering"&&run.stageToken===evaluating.stageToken&&(run.stageUntil??0)>this.now()&&!current.terminal&&(current.expiresAt??Infinity)>this.now()&&digest(current.input)===evaluating.inputHash)
+   return{version:"beacon-planning-v1",runId:run.id,phase:"gathering",worker:worker.state,modelSource:"none",explanationSource:"none",snapshotId:null,messageCode:"PLANNER_GATHERING"};
   // Polling is read-only: changed/expired selections need an explicit planning action.
   const stale=current.terminal||current.snapshotId!==run.snapshotId||(run.selectionExpiresAt??Infinity)<=this.now()||(current.expiresAt??Infinity)<=this.now();
   return{version:"beacon-planning-v1",runId:run.id,phase:stale?"unavailable":run.phase,worker:worker.state,modelSource:run.model?"codex_subscription":"none",explanationSource:stale?"none":run.explanationSource,snapshotId:stale?null:run.snapshotId,messageCode:stale?"PLANNER_STALE_SNAPSHOT":run.messageCode,...(!stale&&run.model?{model:run.model}:{}),...(!stale&&run.explanation?{explanation:run.explanation}:{})};

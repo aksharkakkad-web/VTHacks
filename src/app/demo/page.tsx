@@ -6,5 +6,5 @@ export default async function DemoPage({
   searchParams: Promise<{ walkthrough?: string; transport?: string }>;
 }) {
   const query = await searchParams;
-  return <DemoEntry walkthrough={query.walkthrough === "1"} manual={query.transport === "manual"} />;
+  return <DemoEntry walkthrough={query.walkthrough === "1"} manual={query.transport === "manual"} fixture={query.transport === "fixture"} />;
 }

@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:3000",
+  "base": "http://localhost:3123",
   "checks": [
     {
       "name": "360x800 splash honors reduced motion",

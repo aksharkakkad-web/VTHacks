@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const base = process.env.BEACON_URL || "http://localhost:3100";
-const galleryBase = process.env.BEACON_GALLERY_URL || "http://localhost:3000";
+const galleryBase = process.env.BEACON_GALLERY_URL || base;
 const out = "docs/ui-research/beacon-complete/workstream-b";
 const profile = {
   homeName: "Pritchard Hall",
@@ -78,7 +78,7 @@ async function seed(stage, patch = {}) {
     localStorage.setItem("safecircle.profile.v1", JSON.stringify(savedProfile));
     sessionStorage.setItem("beacon.demo-trip.v2", JSON.stringify({ version: 2, mode: "local-simulation", state: savedState }));
   }, { savedProfile: profile, savedState: state });
-  await page.goto(`${base}/app`);
+  await page.goto(`${base}/demo?walkthrough=1&transport=manual`);
   await page.locator(`[data-stage="${stage}"]`).waitFor({ timeout: 15_000 });
   return state;
 }
@@ -129,7 +129,7 @@ try {
   await page.getByRole("heading", { name: "Rideshare", exact: true }).waitFor();
   assert.equal(await page.locator("[data-stage='recommendation']").count(), 1, "changing option must not create an attempt");
   assert.match(await page.locator("body").innerText(), /\$8\.40/);
-  assert.match(await page.locator("body").innerText(), /Beacon demo operator · simulated/);
+  assert.match(await page.locator("body").innerText(), /Simulated rideshare · Demo data/);
   await shot("alternative-rideshare");
   checks.push("Alternative selection updates the review to $8.40 Rideshare and remains pre-booking with explicit simulated source.");
 
@@ -168,8 +168,9 @@ try {
   galleryPage.on("pageerror", (error) => galleryErrors.push(error.message));
   await galleryPage.goto(`${galleryBase}/beacon-system`);
   await galleryPage.getByRole("button", { name: /08 Recommended plan/ }).click();
-  await galleryPage.getByLabel("Long content").check();
-  await galleryPage.getByLabel("Reduced motion").check();
+  const screenGallery = galleryPage.getByRole("region", { name: /^Every student-facing state/ });
+  await screenGallery.getByLabel("Long content").check();
+  await screenGallery.getByLabel("Reduced motion").check();
   await galleryPage.evaluate(() => document.fonts.ready);
   const galleryAudit = await galleryPage.evaluate(() => ({
     overflow: document.documentElement.scrollWidth > window.innerWidth,
