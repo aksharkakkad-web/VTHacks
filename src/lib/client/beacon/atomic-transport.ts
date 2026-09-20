@@ -11,9 +11,9 @@ export const atomicTransport={
  async journey(id:string,signal?:AbortSignal){return parseAtomicJourney(await http(`${path(id)}/journey`,undefined,signal));},
  planning:(id:string)=>http(`${path(id)}/planning`,{}),
  confirm:(id:string,snapshot:AtomicJourney)=>http(`${path(id)}/confirm`,{
-  planId:snapshot.journey.selectedPlanId,
+  planId:snapshot.trip.selectedPlan?.planId,
   journeyRevision:snapshot.journey.revision,
-  ...(snapshot.journey.selectedOffer?{quoteId:snapshot.journey.selectedOffer.quoteId}:{}),
+  ...(snapshot.coordination.selectedOffer?{quoteId:snapshot.coordination.selectedOffer.quoteId}:{}),
  }),
  verify:(id:string)=>http(`${path(id)}/verify`,{}),
  request:(id:string)=>http(`${path(id)}/request`,{}),
