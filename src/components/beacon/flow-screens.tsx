@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronRight,
   Clock3,
+  ExternalLink,
   Footprints,
   House,
   Map,
@@ -640,6 +641,7 @@ export function RecommendationScreen({
   onBack,
   onDetails,
   onSelectPlan,
+  navigation,
   defaultShowAlternatives = false,
 }: {
   model: DemoViewModel;
@@ -647,6 +649,7 @@ export function RecommendationScreen({
   onBack: VoidCallback;
   onDetails: VoidCallback;
   onSelectPlan?: (planId: string) => void;
+  navigation?: { destination: string; googleMapsUrl: string };
   defaultShowAlternatives?: boolean;
 }) {
   const [showAlternatives, setShowAlternatives] = useState(defaultShowAlternatives);
@@ -690,12 +693,103 @@ export function RecommendationScreen({
     return <CampusRideConfirmation onGo={onGo} onBack={onBack} onDetails={onDetails} />;
   }
 
+  if (plan.mode === "walk") {
+    const destinationName = backend?.destinationName ?? model.profile?.homeName ?? "Home";
+    const destinationDetail = model.profile?.homeAddress && model.profile.homeAddress !== destinationName
+      ? model.profile.homeAddress
+      : destinationName !== "Home" ? destinationName : "Saved destination";
+    const walkingReason = navigation
+      ? `Google Maps will choose the walking path to ${navigation.destination}.`
+      : "This option has no fare or provider handoff. Route details are not available yet.";
+
+    return (
+      <BeaconFrame onBack={onBack}>
+        <div className={`${styles.screen} ${styles.walkingRecommendationScreen}`}>
+          <div className={`${styles.centeredIntro} ${styles.walkingIntro}`}>
+            <h1>Your walking plan is ready.</h1>
+            <p>Walking is your best option.</p>
+          </div>
+
+          <div className={styles.walkingScenic} aria-hidden="true">
+            <Image src="/beacon-preferences/campus.png" alt="" fill sizes="(max-width: 430px) 100vw, 430px" priority />
+          </div>
+
+          <section className={styles.walkingPlanCard} aria-labelledby="selected-plan-title">
+            <div className={styles.walkingPlanHeader}>
+              <h2 id="selected-plan-title">Walking</h2>
+              <span>Walking plan</span>
+            </div>
+            <div className={styles.walkingCost}>
+              <strong>{formatCost(plan.cost)}</strong>
+              <span>{freeLabel}</span>
+            </div>
+
+            <dl className={styles.walkingFacts}>
+              <div className={styles.walkingDuration}>
+                <dt><span><Clock3 size={22} aria-hidden="true" /></span></dt>
+                <dd><strong>{plan.totalMinutes} min</strong><small>To home</small></dd>
+              </div>
+              <div>
+                <dt><Footprints size={22} aria-hidden="true" /><span>Walking time</span></dt>
+                <dd>{plan.walkingMinutes} min walking</dd>
+              </div>
+              <div>
+                <dt><MapPin size={22} aria-hidden="true" /><span>Destination</span></dt>
+                <dd><strong>{destinationName}</strong><small>{destinationDetail}</small></dd>
+              </div>
+            </dl>
+
+            {navigation ? (
+              <a
+                className={styles.walkingMapsAction}
+                href={navigation.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open walking directions to ${navigation.destination} in Google Maps`}
+              >
+                <MapPin size={23} aria-hidden="true" />
+                <span>Open in Google Maps</span>
+                <ExternalLink size={20} aria-hidden="true" />
+              </a>
+            ) : null}
+          </section>
+
+          <aside className={styles.walkingReason} aria-label="Why Beacon recommends this plan">
+            <span aria-hidden="true"><Map size={23} /></span>
+            <p><strong>Recommended walking route</strong>{walkingReason}</p>
+          </aside>
+
+          {showAlternatives ? (
+            <section className={styles.alternatives} id="beacon-alternatives" aria-label="Other eligible options">
+              <h2>Other options</h2>
+              {alternatives.map((alternative) => <AlternativePlan key={alternative.planId} plan={alternative} onSelect={onSelectPlan} />)}
+            </section>
+          ) : null}
+
+          <div className={`${styles.bottomActions} ${styles.walkingActions}`}>
+            <PrimaryAction onClick={onGo}>Start walking</PrimaryAction>
+            <button
+              className={styles.detailsAction}
+              type="button"
+              onClick={toggleDetails}
+              aria-expanded={alternatives.length > 0 ? showAlternatives : undefined}
+              aria-controls={alternatives.length > 0 ? "beacon-alternatives" : undefined}
+            >
+              {alternatives.length > 0 ? "See other options" : "Trip details"}
+              {alternatives.length > 0 ? <ChevronDown className={showAlternatives ? styles.rotated : undefined} size={18} aria-hidden="true" /> : null}
+            </button>
+          </div>
+        </div>
+      </BeaconFrame>
+    );
+  }
+
   return (
     <BeaconFrame onBack={onBack}>
       <div className={`${styles.screen} ${styles.recommendationScreen} ${model.isReplacement ? styles.replacementRecommendation : ""}`}>
         <div className={styles.centeredIntro}>
-          <h1>{plan.mode === "walk" ? "Your walking plan is ready." : plan.mode === "transit" ? "Your transit plan is ready." : "Your plan is ready."}</h1>
-          <p>{plan.mode === "walk" ? "Walking is your best option." : `${plan.providerName} is your best option.`}</p>
+          <h1>{plan.mode === "transit" ? "Your transit plan is ready." : "Your plan is ready."}</h1>
+          <p>{plan.providerName} is your best option.</p>
         </div>
 
         {model.isReplacement ? (
@@ -708,24 +802,22 @@ export function RecommendationScreen({
           </section>
         ) : null}
 
-        <ScenicArtwork variant={plan.mode === "walk" ? "home" : "ride"} />
+        <ScenicArtwork variant="ride" />
 
         <section className={`${styles.card} ${styles.planCard}`} aria-labelledby="selected-plan-title">
           <div className={styles.operatorLine}>
             <h2 id="selected-plan-title">{plan.providerName}</h2>
-            <span>{plan.mode === "walk" ? backend ? "Walking plan" : "Walking plan · Demo data" : plan.mode === "transit" ? backend ? "Scheduled transit" : "Scheduled transit · Demo data" : backend?.simulated === false ? "Ride provider" : "Simulated rideshare · Demo data"}</span>
+            <span>{plan.mode === "transit" ? backend ? "Scheduled transit" : "Scheduled transit · Demo data" : backend?.simulated === false ? "Ride provider" : "Simulated rideshare · Demo data"}</span>
           </div>
           <div className={styles.costBlock}>
             <strong>{formatCost(plan.cost)}</strong>
             <span>{freeLabel}</span>
           </div>
-          <div className={`${styles.planMetrics} ${plan.mode === "walk" ? styles.singleMetric : ""}`}>
-            {plan.mode !== "walk" ? (
-              <div>
-                <span className={styles.metricIcon}><Clock3 size={22} aria-hidden="true" /></span>
-                <p><strong>{plan.waitMinutes} min</strong><span>{plan.mode === "transit" ? "Scheduled departure" : "Pickup"}</span></p>
-              </div>
-            ) : null}
+          <div className={styles.planMetrics}>
+            <div>
+              <span className={styles.metricIcon}><Clock3 size={22} aria-hidden="true" /></span>
+              <p><strong>{plan.waitMinutes} min</strong><span>{plan.mode === "transit" ? "Scheduled departure" : "Pickup"}</span></p>
+            </div>
             <div>
               <span className={styles.metricIcon}><Clock3 size={22} aria-hidden="true" /></span>
               <p><strong>{plan.totalMinutes} min</strong><span>To home</span></p>
@@ -748,7 +840,7 @@ export function RecommendationScreen({
         </section>
 
         <p className={styles.reasonLine}>{model.recommendation?.explanation ?? "Within your saved budget and travel preferences."}</p>
-        <p className={styles.approvalNote}>{plan.mode === "walk" ? "Confirms this walking plan. No booking or payment." : plan.mode === "transit" ? "Scheduled estimates, not live arrivals. No booking or payment in this demo." : "Confirming approves this offer only. Provider identity, trip access, simulated payment, and booking are checked separately."}</p>
+        <p className={styles.approvalNote}>{plan.mode === "transit" ? "Scheduled estimates, not live arrivals. No booking or payment in this demo." : "Confirming approves this offer only. Provider identity, trip access, simulated payment, and booking are checked separately."}</p>
 
         {showAlternatives ? (
           <section className={styles.alternatives} id="beacon-alternatives" aria-label="Other eligible options">
@@ -759,7 +851,7 @@ export function RecommendationScreen({
         ) : null}
 
         <div className={styles.bottomActions}>
-          <PrimaryAction onClick={onGo}>{plan.mode === "walk" ? "Confirm walking plan" : plan.mode === "transit" ? "Confirm transit plan" : "Confirm this plan"}</PrimaryAction>
+          <PrimaryAction onClick={onGo}>{plan.mode === "transit" ? "Confirm transit plan" : "Confirm this plan"}</PrimaryAction>
           <button
             className={styles.detailsAction}
             type="button"

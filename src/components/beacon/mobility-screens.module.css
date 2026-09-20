@@ -191,8 +191,6 @@
 .directions li small { margin-top: 3px; color: var(--sc-muted); font-size: 11px; }
 .unavailableCopy { margin: 0; padding: 14px; color: var(--sc-muted); font-size: 13px; }
 
-.updateNote { margin: 0; color: var(--sc-muted); font-size: 11px; line-height: 1.4; text-align: center; }
-
 .navigationAction {
   display: grid;
   min-height: 52px;
@@ -277,6 +275,171 @@
 .secondaryAction:active { transform: scale(0.985); }
 
 .spinner { animation: spin 900ms linear infinite; }
+
+.modeCompletion {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 42px 24px max(26px, calc(18px + env(safe-area-inset-bottom)));
+  background: var(--sc-paper);
+  color: #0d2d30;
+  text-align: center;
+}
+
+.completionMark {
+  position: relative;
+  display: grid;
+  width: 82px;
+  height: 82px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e4f2eb;
+  color: #146b5b;
+}
+
+.completionMark > span {
+  position: absolute;
+  right: -2px;
+  bottom: 2px;
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 3px solid var(--sc-paper);
+  border-radius: 50%;
+  background: #2a9b7f;
+  color: white;
+}
+
+.completionEyebrow {
+  margin: 24px 0 7px;
+  color: #1b7763;
+  font-size: 12px;
+  font-weight: 790;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.modeCompletion h1 {
+  margin: 0;
+  color: #06262c;
+  font-size: clamp(38px, 10vw, 48px);
+  font-weight: 820;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.modeCompletion h1:focus { outline: none; }
+
+.completionBody {
+  max-width: 310px;
+  margin: 12px 0 0;
+  color: #61706d;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.completionPrivacy {
+  display: inline-flex;
+  max-width: 320px;
+  min-height: 48px;
+  align-items: center;
+  gap: 9px;
+  margin: 28px 0 0;
+  padding: 10px 13px;
+  border-radius: 14px;
+  background: #edf5f0;
+  color: #315b53;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.completionPrivacy svg { flex: 0 0 auto; color: #18715f; }
+
+.completionActions {
+  display: grid;
+  width: 100%;
+  gap: 5px;
+  margin-top: 34px;
+}
+
+.completionActions .textAction {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: #52615f;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.completionActions .textAction:focus-visible {
+  outline: 3px solid #52b89c;
+  outline-offset: 2px;
+}
+
+.modeOverdue {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 42px 24px max(26px, calc(18px + env(safe-area-inset-bottom)));
+  background: var(--sc-paper);
+  color: #0d2d30;
+  text-align: center;
+}
+
+.modeOverdue h1 {
+  margin: 0;
+  color: #06262c;
+  font-size: clamp(36px, 9.5vw, 46px);
+  font-weight: 820;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.modeOverdue h1:focus { outline: none; }
+
+.overdueMark {
+  position: relative;
+  display: grid;
+  width: 82px;
+  height: 82px;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf1e9;
+  color: #43685f;
+}
+
+.overdueMark > span {
+  position: absolute;
+  right: -2px;
+  bottom: 2px;
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 3px solid var(--sc-paper);
+  border-radius: 50%;
+  background: #b97822;
+  color: white;
+}
+
+.overdueContact {
+  margin: 20px 0 0;
+  color: #315b53;
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.overdueActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
 
 .rideShell {
   display: flex;

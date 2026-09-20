@@ -5,6 +5,7 @@ import { object, text } from "../../agents/contract";
 import type { Action } from "../../agents/student/service";
 import { navigationHandoff } from '../journey/navigation';
 import { bindPlanningToJourney } from '../journey/planning';
+import { hasSameBrowserOrigin } from '../http/same-origin';
 
 const cookieName = "beacon-session";
 export function ownerSession(request: Request, create = false) {
@@ -14,8 +15,7 @@ export function ownerSession(request: Request, create = false) {
   return { owner: createHash("sha256").update(token).digest("hex"), cookie: existing === token ? undefined : `${cookieName}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400${new URL(request.url).protocol === "https:" ? "; Secure" : ""}` };
 }
 export function sameOrigin(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) throw new TripError("ORIGIN_REJECTED", "Cross-origin mutation rejected", 403);
+  if (!hasSameBrowserOrigin(request)) throw new TripError("ORIGIN_REJECTED", "Cross-origin mutation rejected", 403);
 }
 export async function requestBody(request: Request) {
   if (!request.headers.get("content-type")?.includes("application/json")) throw new TripError("JSON_REQUIRED", "Use application/json", 415);

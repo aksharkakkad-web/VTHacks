@@ -1,9 +1,10 @@
 import type { PlannerCompletion, PlannerRole } from "./contracts";
 import { TripError } from "../trip-state/model";
+import { hasSameBrowserOrigin } from "../http/same-origin";
 
 const cookieName="beacon-session";
 function ownerSession(request:Request,create=false){const existing=request.headers.get("cookie")?.split(";").map(c=>c.trim()).find(c=>c.startsWith(`${cookieName}=`))?.slice(cookieName.length+1);const token=existing&&/^[a-f0-9]{64}$/.test(existing)?existing:create?randomBytes(32).toString("hex"):undefined;if(!token)throw new TripError("AUTH_REQUIRED","Start a trip in this browser first",401);return{owner:createHash("sha256").update(token).digest("hex"),cookie:existing===token?undefined:`${cookieName}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400${new URL(request.url).protocol==="https:"?"; Secure":""}`};}
-function sameOrigin(request:Request){const origin=request.headers.get("origin");if(origin&&origin!==new URL(request.url).origin)throw new TripError("ORIGIN_REJECTED","Cross-origin mutation rejected",403);}
+function sameOrigin(request:Request){if(!hasSameBrowserOrigin(request))throw new TripError("ORIGIN_REJECTED","Cross-origin mutation rejected",403);}
 async function requestBody(request:Request){if(!request.headers.get("content-type")?.includes("application/json"))throw new TripError("JSON_REQUIRED","Use application/json",415);if(Number(request.headers.get("content-length")??0)>16384)throw new TripError("BODY_TOO_LARGE","Request too large",413);const text=await request.text();if(Buffer.byteLength(text)>16384)throw new TripError("BODY_TOO_LARGE","Request too large",413);try{const value=text?JSON.parse(text):{};if(!value||typeof value!=="object"||Array.isArray(value))throw new Error();return value as Record<string,unknown>;}catch{throw new TripError("INVALID_JSON","JSON object required",400);}}
 function requireBearer(request:Request,expected:string){const actual=Buffer.from(request.headers.get("authorization")??""),wanted=Buffer.from(`Bearer ${expected}`);if(actual.length!==wanted.length||!timingSafeEqual(actual,wanted))throw new TripError("UNAUTHORIZED","Unauthorized",401);}
 function noStoreJson(value:unknown,status=200,cookie?:string){return Response.json(value,{status,headers:{"Cache-Control":"no-store",...(cookie?{"Set-Cookie":cookie}:{})}});}

@@ -22,7 +22,7 @@ import styles from "./specimen.module.css";
 import { CAMPUS_LOCATIONS, DEFAULT_FROM_LOCATION_ID, DEFAULT_TO_LOCATION_ID } from "@/lib/client/beacon/campus-locations";
 
 type GalleryGroup = "Journey" | "Modes" | "Recovery" | "Errors" | "Sheets";
-type Variant = "walk-recommendation" | "walk-active" | "transit-recommendation" | "transit-boarding" | "transit-active";
+type Variant = "walk-recommendation" | "walk-active" | "walk-complete" | "transit-recommendation" | "transit-boarding" | "transit-active";
 type Sheet = "home" | "preferences" | "location" | "context" | "options" | "details" | "help" | "contact" | "cancel";
 
 type GalleryItem = {
@@ -53,6 +53,7 @@ const items: GalleryItem[] = [
   { id: "14", label: "You’re home", group: "Journey", stage: "arrival", component: "journey" },
   { id: "W1", label: "Walking recommendation", group: "Modes", component: "recommendation", variant: "walk-recommendation" },
   { id: "W2", label: "Walking active", group: "Modes", component: "journey", variant: "walk-active" },
+  { id: "W3", label: "Walking complete", group: "Modes", component: "journey", variant: "walk-complete" },
   { id: "T1", label: "Transit recommendation", group: "Modes", component: "recommendation", variant: "transit-recommendation" },
   { id: "T2", label: "Transit boarding", group: "Modes", component: "journey", variant: "transit-boarding" },
   { id: "T3", label: "Transit active", group: "Modes", component: "journey", variant: "transit-active" },
@@ -94,7 +95,8 @@ function modelFor(item: GalleryItem, longContent: boolean): DemoViewModel | null
     state = snapshotForStage(createDemoState(modeProfile), "recommendation", FIXTURE_TIME);
     const planId = item.variant.startsWith("walk") ? "walk-008" : "transit-017";
     state = transitionDemo(state, { type: "SELECT_PLAN", planId, now: FIXTURE_TIME });
-    if (item.variant.endsWith("active") || item.variant === "transit-boarding") state = transitionDemo(state, { type: "GO", now: FIXTURE_TIME });
+    if (item.variant.endsWith("active") || item.variant === "transit-boarding" || item.variant === "walk-complete") state = transitionDemo(state, { type: "GO", now: FIXTURE_TIME });
+    if (item.variant === "walk-complete") state = transitionDemo(state, { type: "CONFIRM_ARRIVAL", now: FIXTURE_TIME });
     if (item.variant === "transit-active") state = transitionDemo(state, { type: "ADVANCE", now: FIXTURE_TIME });
   } else if (item.stage === "offline" || item.stage === "reconnecting") {
     state = snapshotForStage(state, "waiting-initial", FIXTURE_TIME);
@@ -153,6 +155,7 @@ function Preview({ item, longContent }: { item: GalleryItem; longContent: boolea
   if (item.component === "home") return <BeaconHomeScreen model={model} campusLocations={CAMPUS_LOCATIONS} fromLocationId={DEFAULT_FROM_LOCATION_ID} toLocationId={DEFAULT_TO_LOCATION_ID} onFromLocationChange={ignore} onToLocationChange={ignore} onStart={ignore} onEditProfile={ignore} />;
   if (item.component === "finding") return <FindingScreen model={model} onCancel={ignore} />;
   if (item.component === "recommendation") return <RecommendationScreen model={model} onGo={ignore} onBack={ignore} onDetails={ignore} onSelectPlan={ignorePlan} />;
+  if (item.variant === "walk-complete") return <MobilityScreen mobility={{ leg: { id: "gallery-completed-walk", kind: "walk", purpose: "home", status: "complete" } }} onWalkComplete={ignore} onArrival={ignore} onHelp={ignore} onDetails={ignore} onCancel={ignore} rideExperience={{ state: "home", destination: model.profile?.homeName, onFinish: ignore }} />;
   const mobility = fallbackMobility({ ...createDemoState(model.profile), stage: model.stage, selectedPlanId: model.selectedPlan?.planId });
   if (mobility) return <MobilityScreen mobility={mobility} onWalkComplete={ignore} onArrival={ignore} onHelp={ignore} onDetails={ignore} onCancel={ignore} onRetryRoute={ignore} onBoard={ignore} />;
   return <JourneyScreen model={model} onAction={ignoreAction} onDetails={ignore} onHelp={ignore} />;
